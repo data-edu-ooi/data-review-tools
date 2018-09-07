@@ -164,11 +164,11 @@ def main(sDir, array, subsite, node, sensor, delivery_methods, begin, end, now):
 
 
 if __name__ == '__main__':
-    sDir = '/Users/lgarzio/Documents/OOI/test'
+    sDir = '/Users/lgarzio/Documents/OOI'
     array = []  # ['CP','CE']
-    subsite = ['GI03FLMA']  # ['GI03FLMA','GI03FLMB']
+    subsite = []  # ['GI03FLMA','GI03FLMB']
     node = []
-    inst = ['CTDMO']  # ['CTDMO', 'FLOR']
+    inst = []  # ['CTDMO', 'FLOR']
     delivery_methods = []  # ['streamed', 'telemetered, 'recovered']
     begin = ''  # 2014-01-01T00:00:00
     end = ''  # 2015-01-01T00:00:00

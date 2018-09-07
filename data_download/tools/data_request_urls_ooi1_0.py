@@ -98,11 +98,11 @@ def main(sDir, array, subsite, node, inst, delivery_methods, now=dt.datetime.now
 
 
 if __name__ == '__main__':
-    sDir = '/Users/lgarzio/Documents/OOI/test'
+    sDir = '/Users/lgarzio/Documents/OOI'
     array = []  # ['CP','CE']
-    subsite = ['GI03FLMA']  # ['GI03FLMA','GI03FLMB']
+    subsite = []  # ['GI03FLMA','GI03FLMB']
     node = []
-    inst = ['CTDMOG040']  # ['CTDMO,FLOR']
-    delivery_methods = ['recovered']  # ['streamed','telemetered,'recovered']
+    inst = []  # ['CTDMO,FLOR']
+    delivery_methods = []  # ['streamed','telemetered,'recovered']
     now = dt.datetime.now().strftime('%Y%m%dT%H%M')
     main(sDir, array, subsite, node, inst, delivery_methods, now)
