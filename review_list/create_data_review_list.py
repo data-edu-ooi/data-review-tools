@@ -45,6 +45,7 @@ am_df = am_df.sort_values(by=['Reference Designator', 'deploymentNumber'])
 am_df['in_am'] = 'yes'
 
 ds = pd.merge(db_refdes, am_df, on='Reference Designator', how='outer')
+ds['array_code'] = ds['Reference Designator'].str[0:2]
 ds['subsite'] = ds['Reference Designator'].str.split('-').str[0]
 ds['node'] = ds['Reference Designator'].str.split('-').str[1]
 ds['sensor'] = ds['Reference Designator'].str.split('-').str[2] + '-' + ds['Reference Designator'].str.split('-').str[3]
@@ -60,5 +61,6 @@ ds.loc[ds['stopDateTime'].isnull(), 'status'] = 'not for review'
 ds.loc[(ds['sensor'].str.contains('ZPLS|CAMDS|FLOBN|OSMOIA|MASSP|PPSDNA|RASFL')), 'status'] = 'not for review'
 ds.loc[(ds['sensor'].str.contains('BOTPT')), 'status'] = 'for review'  # include BOTPT (has no end date in AM)
 
-cols = ['subsite', 'node', 'sensor', 'deploymentNumber', 'startDateTime', 'stopDateTime', 'in_am', 'in_qcdb_science', 'status']
+cols = ['array_code', 'Reference Designator', 'subsite', 'node', 'sensor', 'deploymentNumber', 'startDateTime', 'stopDateTime', 'in_am',
+        'in_qcdb_science', 'status']
 ds.to_csv('data_review_list.csv', index=False, columns=cols)
