@@ -64,6 +64,7 @@ def main(sDir, urls, username, token, now):
     if 'y' in cont:
         stime = time.time()
         summary_file = os.path.join(sDir, 'data_request_summary_{}.csv'.format(now))
+        thredds_urls = []
         with open(summary_file, 'a') as summary:
             writer = csv.writer(summary)
             writer.writerow(['status', 'request_url', 'outputUrl'])
@@ -85,6 +86,8 @@ def main(sDir, urls, username, token, now):
 
             status, outputUrl = define_status_outputUrl(r)
 
+            thredds_urls.append(outputUrl)
+
             wformat = '%s,%s,%s\n'
             newline = (status, url, outputUrl)
             with open(summary_file, 'a') as summary:
@@ -104,14 +107,16 @@ def main(sDir, urls, username, token, now):
             mins = etime/60
             print '\nTime elapsed sending data requests: %.2f minutes' % mins
 
+        return thredds_urls
+
     else:
         print '\nCancelling data requests.'
 
 
 if __name__ == '__main__':
     sDir = '/Users/lgarzio/Documents/OOI'
-    urls = 'data_request_urls_20180907T0916.csv'
-    username = 'username'
-    token = 'token'
+    urls = 'data_request_urls_20180910T1153.csv'
+    username = 'OOIAPI-BJOX1E3EIP431N'
+    token = 'MS122F2C06J1V7'
     now = dt.datetime.now().strftime('%Y%m%dT%H%M')
     main(sDir, urls, username, token, now)
