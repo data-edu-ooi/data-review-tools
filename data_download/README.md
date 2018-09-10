@@ -2,7 +2,7 @@
 This toolbox contains examples and tools to download data from uFrame via the OOI Machine to Machine (M2M) interface. 
 
 ### Scripts
-- [download_data_local.py](https://github.com/data-edu-ooi/data-review-tools/blob/master/data_download/download_data_local.py): Imports tools that build netCDF data request urls for science streams of the instruments input by the user (does not check against the Datateam Database), sends those requests (if prompted), and downloads the netCDF, provenance, and annotation files to a local machine.
+- [download_data_local.py](https://github.com/data-edu-ooi/data-review-tools/blob/master/data_download/download_data_local.py): Imports tools that build netCDF data request urls for science streams of the instruments input by the user (does not check against the Datateam Database), sends those requests (if prompted), and downloads the netCDF, provenance, and annotation files to a local directory.
 
 - [download_data_nc_interactive.py](https://github.com/data-edu-ooi/data-review-tools/blob/master/data_download/download_data_nc_interactive.py): Imports tools that compare the [OOI Datateam Database](http://ooi.visualocean.net/) to [ooinet.oceanobservatories.org](https://ooinet.oceanobservatories.org/), builds netCDF data request urls, sends the requests, and writes a summary of the status of the data requests. This interactive tool prompts the user for inputs. Data can be downloaded for multiple platforms, instruments, data streams, etc.
 
@@ -21,7 +21,7 @@ This toolbox contains examples and tools to download data from uFrame via the OO
 
 - [send_data_requests_nc.py](https://github.com/data-edu-ooi/data-review-tools/blob/master/data_download/tools/send_data_requests_nc.py): Sends data request urls and provides a summary output that contains the links to the THREDDS data server.
 
-- [thredds_download_nc.py](https://github.com/data-edu-ooi/data-review-tools/blob/master/data_download/tools/thredds_download_nc.py): Downloads netCDF, provenance, and annotation files from a THREDDS directory to local machine.
+- [thredds_download_nc.py](https://github.com/data-edu-ooi/data-review-tools/blob/master/data_download/tools/thredds_download_nc.py): Downloads netCDF, provenance, and annotation files from a THREDDS directory to a local directory.
 
 ### Example files
 - [data_download.csv](https://github.com/data-edu-ooi/data-review-tools/blob/master/data_download/example_files/data_download.csv): Example csv file for optional input to [download_data_ooi1_0.py](https://github.com/data-edu-ooi/data-review-tools/blob/master/data_download/download_data_ooi1_0.py)

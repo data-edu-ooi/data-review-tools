@@ -115,8 +115,8 @@ def main(sDir, urls, username, token, now):
 
 if __name__ == '__main__':
     sDir = '/Users/lgarzio/Documents/OOI'
-    urls = 'data_request_urls_20180910T1153.csv'
-    username = 'OOIAPI-BJOX1E3EIP431N'
-    token = 'MS122F2C06J1V7'
+    urls = 'data_request_urls_20180907T0916.csv'
+    username = 'username'
+    token = 'token'
     now = dt.datetime.now().strftime('%Y%m%dT%H%M')
     main(sDir, urls, username, token, now)
