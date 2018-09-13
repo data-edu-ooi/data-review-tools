@@ -22,7 +22,7 @@ This toolbox contains examples and tools to download data from uFrame via the OO
 ### Functions
 - [data_request_tools.py](https://github.com/data-edu-ooi/data-review-tools/blob/master/data_download/functions/data_request_tools.py): A collection of tools used to create data request urls.
 
-- [interactive_inputs.py](https://github.com/data-edu-ooi/data-review-tools/blob/master/data_download/functions/interactive_inputs.py): Fitlers the OOI Datateam Database and provides interactive inputs for data download.
+- [interactive_inputs.py](https://github.com/data-edu-ooi/data-review-tools/blob/master/data_download/functions/interactive_inputs.py): Filters the OOI Datateam Database and provides interactive inputs for data download.
 
 
 ### Example files
