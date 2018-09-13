@@ -14,11 +14,12 @@ token: OOI API password
 """
 
 import datetime as dt
-from tools import data_request_urls_nocheck, send_data_requests_nc, data_request_tools, thredds_download_nc
+from tools import data_request_urls_nocheck, send_data_requests_nc, thredds_download_nc
+from functions import data_request_tools
 
 sDir = '/Users/lgarzio/Documents/OOI'
-username = ''
-token = ''
+username = 'username'
+token = 'token'
 
 data_request_tools.create_dir(sDir)
 now = dt.datetime.now().strftime('%Y%m%dT%H%M')

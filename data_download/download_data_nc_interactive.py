@@ -14,7 +14,8 @@ token: OOI API password
 """
 
 import datetime as dt
-from tools import data_request_urls, send_data_requests_nc, data_request_tools, interactive_inputs
+from tools import data_request_urls, send_data_requests_nc
+from functions import data_request_tools, interactive_inputs
 
 sDir = '/Users/lgarzio/Documents/OOI'
 username = 'username'

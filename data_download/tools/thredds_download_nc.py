@@ -18,7 +18,7 @@ import pandas as pd
 import os
 import requests
 import time
-import data_request_tools
+from functions import data_request_tools
 
 
 def get_elements(url, tag_name, attribute_name):

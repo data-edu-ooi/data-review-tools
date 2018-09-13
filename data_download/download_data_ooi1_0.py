@@ -21,7 +21,8 @@ import datetime as dt
 import pandas as pd
 import os
 import itertools
-from tools import data_request_tools, interactive_inputs, data_request_urls_ooi1_0, send_data_requests_nc
+from tools import data_request_urls_ooi1_0, send_data_requests_nc
+from functions import data_request_tools, interactive_inputs
 
 sDir = '/Users/lgarzio/Documents/OOI'
 f = ''  # optional i.e. 'data_download.csv'
