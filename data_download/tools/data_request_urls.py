@@ -25,7 +25,7 @@ import datetime as dt
 import os
 import pandas as pd
 import requests
-from functions import data_request_tools
+from tools import data_request_tools
 
 
 def data_request_urls(df, begin, end):
@@ -39,7 +39,7 @@ def data_request_urls(df, begin, end):
         if j['source'] == 'qcdb_and_gui_catalog' and j['stream_type'] == 'Science':
 
             refdes = j['reference_designator']
-            inst_req = data_request_tools.refdes_format(refdes)
+            inst_req = refdes_format(refdes)
             method = j['method']
             stream = j['stream_name']
 
