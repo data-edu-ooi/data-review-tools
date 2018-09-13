@@ -14,14 +14,14 @@ token: OOI API password
 """
 
 import datetime as dt
-from tools import data_request_urls, send_data_requests_nc, data_request_tools
-from functions import interactive_inputs
+import functions.common as cf
+from tools import data_request_urls, send_data_requests_nc, data_request_tools, interactive_inputs
 
 sDir = '/Users/lgarzio/Documents/OOI'
 username = 'username'
 token = 'token'
 
-data_request_tools.create_dir(sDir)
+cf.create_dir(sDir)
 now = dt.datetime.now().strftime('%Y%m%dT%H%M')
 
 array, subsite, node, inst, delivery_methods = interactive_inputs.return_interactive_inputs()

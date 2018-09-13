@@ -18,7 +18,7 @@ import pandas as pd
 import os
 import requests
 import time
-from tools import data_request_tools
+import functions.common as cf
 
 
 def get_elements(url, tag_name, attribute_name):
@@ -36,7 +36,7 @@ def get_elements(url, tag_name, attribute_name):
 
 def main(sDir, thredds_urls):
     server_url = 'https://opendap.oceanobservatories.org'
-    data_request_tools.create_dir(sDir)
+    cf.create_dir(sDir)
     if type(thredds_urls) == list:
         thredds_list = thredds_urls
     else:
@@ -63,7 +63,7 @@ def main(sDir, thredds_urls):
         subsite = folder.split('-')[1]
         refdes = '-'.join((subsite, folder.split('-')[2], folder.split('-')[3], folder.split('-')[4]))
         output_dir = os.path.join(sDir, subsite, refdes, folder)
-        data_request_tools.create_dir(output_dir)
+        cf.create_dir(output_dir)
 
         catalog_url = t.replace('.html', '.xml')
         files = []

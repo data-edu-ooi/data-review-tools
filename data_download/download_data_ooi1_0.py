@@ -21,15 +21,15 @@ import datetime as dt
 import pandas as pd
 import os
 import itertools
-from tools import data_request_urls_ooi1_0, send_data_requests_nc, data_request_tools
-from functions import interactive_inputs
+import functions.common as cf
+from tools import data_request_urls_ooi1_0, send_data_requests_nc, data_request_tools, interactive_inputs
 
-sDir = '/Users/lgarzio/Documents/OOI/test'
+sDir = '/Users/lgarzio/Documents/OOI'
 f = ''  # optional i.e. 'data_download.csv'
-username = 'OOIAPI-BJOX1E3EIP431N'
-token = 'MS122F2C06J1V7'
+username = 'username'
+token = 'token'
 
-data_request_tools.create_dir(sDir)
+cf.create_dir(sDir)
 now = dt.datetime.now().strftime('%Y%m%dT%H%M')
 
 if not f:

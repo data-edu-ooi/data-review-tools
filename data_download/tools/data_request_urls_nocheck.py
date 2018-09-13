@@ -23,7 +23,8 @@ import datetime as dt
 import os
 import pandas as pd
 import requests
-from tools import data_request_tools
+import data_request_tools
+import functions.common as cf
 
 
 def data_request_urls(df, begin, end):
@@ -101,7 +102,7 @@ def gui_streams_science():
 
 
 def main(sDir, array, subsite, node, sensor, delivery_methods, begin, end, now):
-    data_request_tools.create_dir(sDir)
+    cf.create_dir(sDir)
     begin = data_request_tools.format_date(begin)
     end = data_request_tools.format_date(end)
 

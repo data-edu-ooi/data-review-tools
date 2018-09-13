@@ -14,13 +14,14 @@ token: OOI API password
 """
 
 import datetime as dt
+import functions.common as cf
 from tools import data_request_urls_nocheck, send_data_requests_nc, thredds_download_nc, data_request_tools
 
 sDir = '/Users/lgarzio/Documents/OOI'
 username = 'username'
 token = 'token'
 
-data_request_tools.create_dir(sDir)
+cf.create_dir(sDir)
 now = dt.datetime.now().strftime('%Y%m%dT%H%M')
 
 arrays = raw_input('\nPlease select arrays (CE, CP, GA, GI, GP, GS, RS). Must be comma separated (if choosing multiple) or press enter to select all: ') or ''

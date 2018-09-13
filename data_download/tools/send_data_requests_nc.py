@@ -19,7 +19,7 @@ import requests
 import pandas as pd
 import csv
 import time
-from tools import data_request_tools
+import functions.common as cf
 
 
 def define_status_outputUrl(r):
@@ -53,7 +53,7 @@ def define_status_outputUrl(r):
 
 
 def main(sDir, urls, username, token, now):
-    data_request_tools.create_dir(sDir)
+    cf.create_dir(sDir)
     if type(urls) == list:
         url_list = urls
     else:

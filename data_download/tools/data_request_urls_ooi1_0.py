@@ -21,7 +21,8 @@ import datetime as dt
 import os
 import pandas as pd
 import csv
-from tools import data_request_tools
+import data_request_tools
+import functions.common as cf
 
 
 def build_data_request_urls(df):
@@ -48,7 +49,7 @@ def build_data_request_urls(df):
 
 
 def main(sDir, array, subsite, node, inst, delivery_methods, now=dt.datetime.now().strftime('%Y%m%dT%H%M')):
-    data_request_tools.create_dir(sDir)
+    cf.create_dir(sDir)
     rl = pd.read_csv('https://raw.githubusercontent.com/data-edu-ooi/data-review-tools/master/review_list/data_review_list.csv')
 
     dmethods = data_request_tools.define_methods(delivery_methods)

@@ -6,7 +6,6 @@ Modified on Sep 7 2018
 @brief: This is a collection of tools for use in creating data request urls.
 """
 
-import os
 import itertools
 import pandas as pd
 import datetime as dt
@@ -18,17 +17,6 @@ def check_str(x):
     else:
         y = []
     return y
-
-
-def create_dir(new_dir):
-    if not os.path.isdir(new_dir):
-        try:
-            os.makedirs(new_dir)
-        except OSError:
-            if os.path.exists(new_dir):
-                pass
-            else:
-                raise
 
 
 def define_methods(delivery_method):
