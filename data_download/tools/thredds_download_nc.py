@@ -16,8 +16,6 @@ import urllib2
 import urllib
 import pandas as pd
 import os
-import requests
-import time
 import functions.common as cf
 
 
@@ -47,15 +45,7 @@ def main(sDir, thredds_urls):
         print t
 
         # Check that the data request has been fulfilled
-        check_complete = t.replace('/catalog/', '/fileServer/')
-        check_complete = check_complete.replace('/catalog.html', '/status.txt')
-
-        session = requests.session()
-        r = session.get(check_complete)
-        while r.status_code != requests.codes.ok:
-            print 'Data request is still fulfilling. Trying again in 1 minute.'
-            time.sleep(60)
-            r = session.get(check_complete)
+        cf.check_request_status(t)
 
         # Create local folders and download files
         print 'Downloading files'

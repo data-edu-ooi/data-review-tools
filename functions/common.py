@@ -2,35 +2,20 @@
 import os
 import pandas as pd
 import requests
-import numpy as np
 import re
 import itertools
+import time
 
 
-def get_nc_urls(catalog_urls):
-    """
-    Return a list of urls to access netCDF files in THREDDS
-    :param urls: List of THREDDS catalog urls
-    :return: List of netCDF urls for data access
-    """
-    tds_url = 'https://opendap.oceanobservatories.org/thredds/dodsC'
-    datasets = []
-    for i in catalog_urls:
-        dataset = requests.get(i).text
-        ii = re.findall(r'href=[\'"]?([^\'" >]+)', dataset)
-        x = re.findall(r'(ooi/.*?.nc)', dataset)
-        for i in x:
-            if i.endswith('.nc') == False:
-                x.remove(i)
-        for i in x:
-            try:
-                float(i[-4])
-            except:
-                x.remove(i)
-        dataset = [os.path.join(tds_url, i) for i in x]
-        datasets.append(dataset)
-    datasets = list(itertools.chain(*datasets))
-    return datasets
+def check_request_status(thredds_url):
+    check_complete = thredds_url.replace('/catalog/', '/fileServer/')
+    check_complete = check_complete.replace('/catalog.html', '/status.txt')
+    session = requests.session()
+    r = session.get(check_complete)
+    while r.status_code != requests.codes.ok:
+        print 'Data request is still fulfilling. Trying again in 1 minute.'
+        time.sleep(60)
+        r = session.get(check_complete)
 
 
 def create_dir(new_dir):
@@ -55,7 +40,7 @@ def get_global_ranges(platform, node, sensor, variable, api_user=None, api_token
         r = requests.get(url, auth=(api_user, api_token), verify=False)
 
     if r.status_code is 200:
-        if r.json(): # If r.json is not empty
+        if r.json():  # If r.json is not empty
             values = pd.io.json.json_normalize(r.json())
             t1 = values[values['qcParameterPK.streamParameter'] == variable]
             if not t1.empty:
@@ -76,3 +61,32 @@ def get_global_ranges(platform, node, sensor, variable, api_user=None, api_token
         local_min = None
         local_max = None
     return [local_min, local_max]
+
+
+def get_nc_urls(catalog_urls):
+    """
+    Return a list of urls to access netCDF files in THREDDS
+    :param urls: List of THREDDS catalog urls
+    :return: List of netCDF urls for data access
+    """
+    tds_url = 'https://opendap.oceanobservatories.org/thredds/dodsC'
+    datasets = []
+    for i in catalog_urls:
+        # check that the request has fulfilled
+        check_request_status(i)
+
+        dataset = requests.get(i).text
+        ii = re.findall(r'href=[\'"]?([^\'" >]+)', dataset)
+        x = re.findall(r'(ooi/.*?.nc)', dataset)
+        for i in x:
+            if i.endswith('.nc') == False:
+                x.remove(i)
+        for i in x:
+            try:
+                float(i[-4])
+            except:
+                x.remove(i)
+        dataset = [os.path.join(tds_url, i) for i in x]
+        datasets.append(dataset)
+    datasets = list(itertools.chain(*datasets))
+    return datasets
