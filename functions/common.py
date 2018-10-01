@@ -45,13 +45,6 @@ def create_dir(new_dir):
                 raise
 
 
-def reject_outliers(data, m=3):
-    # function to reject outliers beyond 3 standard deviations of the mean.
-    # data: numpy array containing data
-    # m: the number of standard deviations from the mean. Default: 3
-    return abs(data - np.nanmean(data)) < m * np.nanstd(data)
-
-
 def get_global_ranges(platform, node, sensor, variable, api_user=None, api_token=None):
     port = '12578'
     base_url = '{}/qcparameters/inv/{}/{}/{}/'.format(port, platform, node, sensor)
