@@ -45,6 +45,8 @@ am_df = am_df.sort_values(by=['Reference Designator', 'deploymentNumber'])
 am_df['in_am'] = 'yes'
 
 ds = pd.merge(db_refdes, am_df, on='Reference Designator', how='outer')
+ds.deploymentNumber = ds.deploymentNumber.fillna(0.0).astype(int)  # turn deployment numbers back to ints
+ds.deploymentNumber = ds.deploymentNumber.replace({0: None})
 ds['array_code'] = ds['Reference Designator'].str[0:2]
 ds['subsite'] = ds['Reference Designator'].str.split('-').str[0]
 ds['node'] = ds['Reference Designator'].str.split('-').str[1]
