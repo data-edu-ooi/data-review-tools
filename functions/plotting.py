@@ -21,7 +21,7 @@ def plot_timeseries(x, y, stdev=None):
         ind = reject_outliers(y, stdev)
         yD = y.data[ind]
         x = x[ind]
-        outliers = str(len(ind.data) - sum(ind.data))
+        outliers = str(len(y) - len(yD))
         leg_text = ('removed {} outliers (SD={})'.format(outliers, stdev),)
 
     fig, ax = plt.subplots()

@@ -30,6 +30,16 @@ def create_dir(new_dir):
                 raise
 
 
+def filter_collocated_instruments(main_sensor, datasets):
+    # Remove collocated instruments from a list of datasets from THREDDS
+    datasets_filtered = []
+    for d in datasets:
+        fname = d.split('/')[-1]
+        if main_sensor in fname:
+            datasets_filtered.append(d)
+    return datasets_filtered
+
+
 def get_global_ranges(platform, node, sensor, variable, api_user=None, api_token=None):
     port = '12578'
     base_url = '{}/qcparameters/inv/{}/{}/{}/'.format(port, platform, node, sensor)
@@ -66,7 +76,7 @@ def get_global_ranges(platform, node, sensor, variable, api_user=None, api_token
 def get_nc_urls(catalog_urls):
     """
     Return a list of urls to access netCDF files in THREDDS
-    :param urls: List of THREDDS catalog urls
+    :param catalog_urls: List of THREDDS catalog urls
     :return: List of netCDF urls for data access
     """
     tds_url = 'https://opendap.oceanobservatories.org/thredds/dodsC'
