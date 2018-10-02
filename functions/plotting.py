@@ -4,12 +4,33 @@ import matplotlib.ticker as ticker
 import matplotlib.dates as mdates
 import os
 import numpy as np
+import re
 
 
-def format_date_axis(define_axis, figure):
+def format_date_axis(axis, figure):
     df = mdates.DateFormatter('%Y-%m-%d')
-    define_axis.xaxis.set_major_formatter(df)
+    axis.xaxis.set_major_formatter(df)
     figure.autofmt_xdate()
+
+
+def plot_timeseries(x, y, stdev=None):
+    if stdev is None:
+        yD = y.data
+        leg_text = ()
+    else:
+        ind = reject_outliers(y, stdev)
+        yD = y.data[ind]
+        x = x[ind]
+        outliers = str(len(ind.data) - sum(ind.data))
+        leg_text = ('removed {} outliers (SD={})'.format(outliers, stdev),)
+
+    fig, ax = plt.subplots()
+    plt.grid()
+    plt.plot(x, yD, '.', markersize=2)
+    ax.set_ylabel((y.name + " (" + y.units + ")"), fontsize=9)
+    format_date_axis(ax, fig)
+    ax.legend(leg_text, loc='best', fontsize=6)
+    return fig, ax
     
 
 def reject_outliers(data, m=3):
@@ -20,16 +41,19 @@ def reject_outliers(data, m=3):
     
 
 def save_fig(save_dir, file_name, res=300):
-    """
-    Save figure to a directory with a resolution of 150 DPI
-    :param save_dir: Location of the directory to save the file
-    :param file_name: The name of the file to save
-    :param res: Resolution in DPI of the image to save
-    :return: None
-    """
+    # save figure to a directory with a resolution of 300 DPI
     save_file = os.path.join(save_dir, file_name)
     plt.savefig(str(save_file), dpi=res)
     plt.close()
+
+
+def science_vars(ds_variables):
+    # return a list of only science variables
+    misc_vars = ['quality', 'string', 'timestamp', 'deployment', 'provenance', 'qc', 'time', 'mission', 'obs', 'id',
+                 'serial_number', 'volt', 'ref', 'sig', 'amp', 'rph', 'calphase', 'phase', 'therm', 'description']
+    reg_ex = re.compile('|'.join(misc_vars))
+    sci_vars = [s for s in ds_variables if not reg_ex.search(s)]
+    return sci_vars
 
 
 def y_axis_disable_offset(define_axis):
