@@ -5,6 +5,7 @@ import requests
 import re
 import itertools
 import time
+import xarray as xr
 
 
 def check_request_status(thredds_url):
@@ -100,3 +101,21 @@ def get_nc_urls(catalog_urls):
         datasets.append(dataset)
     datasets = list(itertools.chain(*datasets))
     return datasets
+
+
+def nc_attributes(nc_file):
+    """
+    Return global information from a netCDF file
+    :param nc_file: url for a netCDF file on the THREDDs server
+    """
+    with xr.open_dataset(nc_file) as ds:
+        fname = nc_file.split('/')[-1].split('.nc')[0]
+        subsite = ds.subsite
+        node = ds.node
+        sensor = ds.sensor
+        refdes = '-'.join((subsite, node, sensor))
+        method = ds.collection_method
+        stream = ds.stream
+        deployment = fname[0:14]
+
+    return fname, subsite, refdes, method, stream, deployment

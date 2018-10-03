@@ -19,18 +19,12 @@ def main(sDir, f):
     datasets = cf.get_nc_urls(ff['outputUrl'].tolist())
     for d in datasets:
         print d
+        fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(d)
+        save_dir = os.path.join(sDir, subsite, refdes, deployment)
+        cf.create_dir(save_dir)
+
         with xr.open_dataset(d, mask_and_scale=False) as ds:
             ds = ds.swap_dims({'obs': 'time'})
-            fname = d.split('/')[-1].split('.nc')[0]
-            subsite = ds.subsite
-            node = ds.node
-            sensor = ds.sensor
-            refdes = '-'.join((subsite, node, sensor))
-            method = ds.collection_method
-            deployment = fname[0:14]
-            save_dir = os.path.join(sDir, subsite, refdes, deployment)
-            cf.create_dir(save_dir)
-
             sci_vars = pf.science_vars(ds.data_vars.keys())
 
             t = ds['time'].data

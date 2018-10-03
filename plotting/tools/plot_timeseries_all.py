@@ -29,21 +29,14 @@ def main(sDir, f):
             deployments.append(int(d.split('/')[-1][13]))
             end_times.append(pd.to_datetime(d.split('/')[-1][-18:-3]))
 
-        # get global attributes
-        with xr.open_dataset(datasets_sel[0], mask_and_scale=False) as ds_ncfile:
-            subsite = ds_ncfile.subsite
-            node = ds_ncfile.node
-            sensor = ds_ncfile.sensor
-            refdes = '-'.join((subsite, node, sensor))
-            method = ds_ncfile.collection_method
-            stream = ds_ncfile.stream
-            fname = '-'.join((refdes, method, stream))
-            save_dir = os.path.join(sDir, subsite, refdes, method)
-            cf.create_dir(save_dir)
+        # get global attributes from one file
+        fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(datasets_sel[0])
+        save_dir = os.path.join(sDir, subsite, refdes, method)
+        cf.create_dir(save_dir)
+        sname = '-'.join((refdes, method, stream))
 
         with xr.open_mfdataset(datasets_sel, mask_and_scale=False) as ds:
             sci_vars = pf.science_vars(ds.data_vars.keys())
-
             ds = ds.swap_dims({'obs': 'time'})
             t = ds['time'].data
             t0 = pd.to_datetime(t.min()).strftime('%Y-%m-%dT%H:%M:%S')
@@ -59,7 +52,7 @@ def main(sDir, f):
                              fontsize=8)
                 for etimes in end_times:
                     ax.axvline(x=etimes,  color='k', linestyle='--', linewidth=.6)
-                sfile = '_'.join((fname, y.name))
+                sfile = '_'.join((sname, y.name))
                 pf.save_fig(save_dir, sfile)
 
                 # Plot data with outliers removed
@@ -68,7 +61,7 @@ def main(sDir, f):
                              fontsize=8)
                 for etimes in end_times:
                     ax.axvline(x=etimes,  color='k', linestyle='--', linewidth=.6)
-                sfile = '_'.join((fname, y.name, 'rmoutliers'))
+                sfile = '_'.join((sname, y.name, 'rmoutliers'))
                 pf.save_fig(save_dir, sfile)
 
 
