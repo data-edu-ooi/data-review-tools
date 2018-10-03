@@ -13,7 +13,19 @@ def format_date_axis(axis, figure):
     figure.autofmt_xdate()
 
 
+def format_yaxis(axis):
+    # format y-axis to disable offset
+    y_formatter = ticker.ScalarFormatter(useOffset=False)
+    axis.yaxis.set_major_formatter(y_formatter)
+
+
 def plot_timeseries(x, y, stdev=None):
+    """
+    Create a simple timeseries plot
+    :param x: array containing data for x-axis (e.g. time)
+    :param y: .nc data array for plotting on the y-axis, including data values, coordinates, and variable attributes
+    :param stdev: desired standard deviation to exclude from plotting
+    """
     if stdev is None:
         yD = y.data
         leg_text = ()
@@ -30,6 +42,33 @@ def plot_timeseries(x, y, stdev=None):
     ax.set_ylabel((y.name + " (" + y.units + ")"), fontsize=9)
     format_date_axis(ax, fig)
     ax.legend(leg_text, loc='best', fontsize=6)
+    return fig, ax
+
+def plot_timeseries_panel(ds, x, vars, colors, stdev=None):
+    fig, ax = plt.subplots(len(vars), sharex=True)
+
+    for i in range(len(vars)):
+        y = ds[vars[i]]
+
+        if stdev is None:
+            yD = y.data
+            xD = x
+            leg_text = ()
+        else:
+            ind = reject_outliers(y, stdev)
+            yD = y.data[ind]
+            xD = x[ind]
+            outliers = str(len(y) - len(yD))
+            leg_text = ('{}: rm {} outliers'.format(y.name, outliers),)
+
+        c = colors[i]
+        ax[i].plot(xD, yD, '.', markersize=2, color=c)
+        ax[i].set_ylabel(('(' + y.units + ')'), fontsize=5)
+        ax[i].tick_params(axis='y', labelsize=6)
+        ax[i].legend(leg_text, loc='best', fontsize=4)
+        format_yaxis(ax[i])
+        if i == len(vars) - 1:  # if the last variable has been plotted
+            format_date_axis(ax[i], fig)
     return fig, ax
     
 

@@ -119,3 +119,15 @@ def nc_attributes(nc_file):
         deployment = fname[0:14]
 
     return fname, subsite, refdes, method, stream, deployment
+
+
+def return_science_vars(stream):
+    # return only the science variables (defined in preload) for a data stream
+    sci_vars = []
+    dr = 'http://datareview.marine.rutgers.edu/streams/view/{}.json'.format(stream)
+    r = requests.get(dr)
+    params = r.json()['stream']['parameters']
+    for p in params:
+        if p['data_product_type'] == 'Science Data':
+            sci_vars.append(p['name'])
+    return sci_vars
