@@ -13,12 +13,6 @@ def format_date_axis(axis, figure):
     figure.autofmt_xdate()
 
 
-def format_yaxis(axis):
-    # format y-axis to disable offset
-    y_formatter = ticker.ScalarFormatter(useOffset=False)
-    axis.yaxis.set_major_formatter(y_formatter)
-
-
 def plot_timeseries(x, y, stdev=None):
     """
     Create a simple timeseries plot
@@ -41,10 +35,19 @@ def plot_timeseries(x, y, stdev=None):
     plt.plot(x, yD, '.', markersize=2)
     ax.set_ylabel((y.name + " (" + y.units + ")"), fontsize=9)
     format_date_axis(ax, fig)
+    y_axis_disable_offset(ax)
     ax.legend(leg_text, loc='best', fontsize=6)
     return fig, ax
 
 def plot_timeseries_panel(ds, x, vars, colors, stdev=None):
+    """
+    Create a timeseries plot with horizontal panels of each science parameter
+    :param ds: dataset (e.g. .nc file opened with xarray) containing data for plotting
+    :param x: array containing data for x-axis (e.g. time)
+    :param vars: list of science variables to plot
+    :param colors: list of colors to be used for plotting
+    :param stdev: desired standard deviation to exclude from plotting
+    """
     fig, ax = plt.subplots(len(vars), sharex=True)
 
     for i in range(len(vars)):
@@ -66,16 +69,18 @@ def plot_timeseries_panel(ds, x, vars, colors, stdev=None):
         ax[i].set_ylabel(('(' + y.units + ')'), fontsize=5)
         ax[i].tick_params(axis='y', labelsize=6)
         ax[i].legend(leg_text, loc='best', fontsize=4)
-        format_yaxis(ax[i])
+        y_axis_disable_offset(ax[i])
         if i == len(vars) - 1:  # if the last variable has been plotted
             format_date_axis(ax[i], fig)
     return fig, ax
     
 
 def reject_outliers(data, m=3):
-    # function to reject outliers beyond 3 standard deviations of the mean.
-    # data: numpy array containing data
-    # m: the number of standard deviations from the mean. Default: 3
+    """
+    Reject outliers beyond m standard deviations of the mean.
+    :param data: numpy array containing data
+    :param m: number of standard deviations from the mean. Default: 3
+    """
     return abs(data - np.nanmean(data)) < m * np.nanstd(data)
     
 
@@ -95,6 +100,7 @@ def science_vars(ds_variables):
     return sci_vars
 
 
-def y_axis_disable_offset(define_axis):
+def y_axis_disable_offset(axis):
+    # format y-axis to disable offset
     y_formatter = ticker.ScalarFormatter(useOffset=False)
-    define_axis.yaxis.set_major_formatter(y_formatter)
+    axis.yaxis.set_major_formatter(y_formatter)
