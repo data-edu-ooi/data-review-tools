@@ -3,16 +3,15 @@
 Created on Oct 4 2018
 
 @author: Lori Garzio
-@brief: This script is used create two profile plots of raw and science variables for a mobile instrument (e.g.
-profilers and gliders) by deployment and delivery method: 1) plot all data, 2) plot data, omitting outliers beyond 5
-standard deviations. The user has the option of selecting a specific time range to plot.
+@brief: This script is used create cross-section plots of science variables for a mobile instrument (e.g. profilers
+and gliders) by deployment and delivery method: 1) plot all data, 2) plot data, omitting outliers beyond 5 standard
+deviations. When plotting glider data, zeros and negative values are excluded for both plots, and are not calculated as
+part of the standard deviation. The user has the option of selecting a specific time range to plot.
 """
 
 import os
 import pandas as pd
 import xarray as xr
-import numpy as np
-import matplotlib.cm as cm
 import datetime as dt
 import functions.common as cf
 import functions.plotting as pf
@@ -48,8 +47,8 @@ def main(sDir, f, start_time, end_time):
                 else:
                     pressure = 'int_ctd_pressure'
 
-                raw_vars = cf.return_raw_vars(vars)
-                raw_vars = [s for s in raw_vars if s not in [pressure]]  # remove pressure from sci_vars
+                sci_vars = cf.return_science_vars(stream)
+                sci_vars = [s for s in sci_vars if s not in [pressure]]  # remove pressure from sci_vars
 
                 save_dir = os.path.join(sDir, subsite, refdes, deployment)
                 cf.create_dir(save_dir)
@@ -59,25 +58,23 @@ def main(sDir, f, start_time, end_time):
                 t1 = pd.to_datetime(t.max()).strftime('%Y-%m-%dT%H:%M:%S')
                 title = ' '.join((deployment, refdes, method))
 
-                colors = cm.rainbow(np.linspace(0, 1, len(t)))
-
                 y = ds[pressure]
 
                 print('Plotting variables...')
-                for var in raw_vars:
+                for var in sci_vars:
                     print var
-                    x = ds[var]
+                    z = ds[var]
 
                     # Plot all data
-                    fig, ax = pf.plot_profiles(x, y, colors, stdev=None)
+                    fig, ax = pf.plot_xsection(subsite, t, y, z, stdev=None)
                     ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-                    sfile = '_'.join((fname, x.name))
+                    sfile = '_'.join((fname, z.name))
                     pf.save_fig(save_dir, sfile)
 
                     # Plot data with outliers removed
-                    fig, ax = pf.plot_profiles(x, y, colors, stdev=5)
+                    fig, ax = pf.plot_xsection(subsite, t, y, z, stdev=5)
                     ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-                    sfile = '_'.join((fname, x.name, 'rmoutliers'))
+                    sfile = '_'.join((fname, z.name, 'rmoutliers'))
                     pf.save_fig(save_dir, sfile)
 
 

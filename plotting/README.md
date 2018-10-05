@@ -13,5 +13,7 @@ This toolbox contains tools to plot data.
 
 - [plot_timeseries.py](https://github.com/data-edu-ooi/data-review-tools/blob/master/plotting/tools/plot_timeseries.py): Create two timeseries plots of raw and science variables for all deployments of a reference designator by delivery method: 1) plot all data, 2) plot data, omitting outliers beyond 3 standard deviations. The user has the option of selecting a specific time range to plot.
 
+- [plot_xsection.py](https://github.com/data-edu-ooi/data-review-tools/blob/master/plotting/tools/plot_xsection.py): Create two timeseries plots of raw and science variables for all deployments of a reference designator by delivery method: 1) plot all data, 2) plot data, omitting outliers beyond 3 standard deviations. When plotting glider data, zeros and negative values are excluded for both plots, and are not calculated as part of the standard deviation. The user has the option of selecting a specific time range to plot.
+
 ### Example files
 - [ctdmo_data_request_summary.csv](https://github.com/data-edu-ooi/data-review-tools/blob/master/plotting/example_files/ctdmo_data_request_summary.csv): Example csv file containing CTDMO datasets from one platform to plot. This can be an output from one of the [data download tools](https://github.com/data-edu-ooi/data-review-tools/tree/master/data_download) and must contain a column labeled 'outputUrl'.

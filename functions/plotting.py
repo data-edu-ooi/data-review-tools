@@ -4,7 +4,6 @@ import matplotlib.ticker as ticker
 import matplotlib.dates as mdates
 import os
 import numpy as np
-import re
 
 
 def format_date_axis(axis, figure):
@@ -104,28 +103,44 @@ def plot_timeseries_panel(ds, x, vars, colors, stdev=None):
     return fig, ax
 
 
-def plot_xsection(x, y, z, stdev=None):
+def plot_xsection(subsite, x, y, z, stdev=None):
     """
     Create a cross-section plot for mobile instruments
+    :param subsite: subsite part of reference designator to plot
     :param x:  array containing data for x-axis (e.g. time)
     :param y: .nc data array containing data for plotting on the y-axis (e.g. pressure)
     :param z: .nc data array containing data for plotting variable of interest (e.g. density)
     :param stdev: desired standard deviation to exclude from plotting
     """
+    z_data = z.data
+    # when plotting gliders, remove zeros (glider fill values) and negative numbers
+    if 'MOAS' in subsite:
+        z_data[z_data <= 0.0] = np.nan
+        zeros = str(len(z) - np.count_nonzero(~np.isnan(z_data)))
+
     if stdev is None:
         xD = x
         yD = y.data
-        zD = z.data
-        leg_text = ()
+        zD = z_data
     else:
         ind = reject_outliers(z, stdev)
         xD = x[ind]
         yD = y.data[ind]
-        zD = z.data[ind]
-        outliers = str(len(z) - len(zD))
-        leg_text = ('removed {} outliers (SD={})'.format(outliers, stdev),)
+        zD = z_data[ind]
+        outliers = str(len(z_data) - len(zD))
+
+    try:
+        zeros
+    except NameError:
+        zeros = None
+
+    try:
+        outliers
+    except NameError:
+        outliers = None
 
     fig, ax = plt.subplots()
+    plt.margins(y=.08, x=.02)
     xc = ax.scatter(xD, yD, c=zD, s=2, edgecolor='None')
     ax.invert_yaxis()
 
@@ -136,7 +151,16 @@ def plot_xsection(x, y, z, stdev=None):
 
     ax.set_ylabel((y.name + " (" + y.units + ")"), fontsize=9)
     format_date_axis(ax, fig)
-    ax.legend(leg_text, loc='best', fontsize=6)
+
+    if zeros is None and type(outliers) is str:
+        leg = ('rm: {} outliers (SD={})'.format(outliers, stdev),)
+        ax.legend(leg, loc=1, fontsize=6)
+    if type(zeros) is str and outliers is None:
+        leg = ('rm: {} values <=0.0'.format(zeros),)
+        ax.legend(leg, loc=1, fontsize=6)
+    if type(zeros) is str and type(outliers) is str:
+        leg = ('rm: {} values <=0.0, rm: {} outliers (SD={})'.format(zeros, outliers, stdev),)
+        ax.legend(leg, loc=1, fontsize=6)
     return fig, ax
 
 
