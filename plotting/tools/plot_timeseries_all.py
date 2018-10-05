@@ -3,7 +3,7 @@
 Created on Oct 2 2018
 
 @author: Lori Garzio
-@brief: This script is used create two timeseries plots of each science variable for all deployments of a reference
+@brief: This script is used create two timeseries plots of raw and science variables for all deployments of a reference
 designator by delivery method: 1) plot all data, 2) plot data, omitting outliers beyond 3 standard deviations.
 """
 
@@ -36,14 +36,14 @@ def main(sDir, f):
         sname = '-'.join((refdes, method, stream))
 
         with xr.open_mfdataset(datasets_sel, mask_and_scale=False) as ds:
-            sci_vars = pf.science_vars(ds.data_vars.keys())
+            raw_vars = cf.return_raw_vars(ds.data_vars.keys())
             ds = ds.swap_dims({'obs': 'time'})
             t = ds['time'].data
             t0 = pd.to_datetime(t.min()).strftime('%Y-%m-%dT%H:%M:%S')
             t1 = pd.to_datetime(t.max()).strftime('%Y-%m-%dT%H:%M:%S')
             title = ' '.join((refdes, method))
 
-            for var in sci_vars:
+            for var in raw_vars:
                 y = ds[var]
 
                 # Plot all data

@@ -3,9 +3,9 @@
 Created on Oct 4 2018
 
 @author: Lori Garzio
-@brief: This script is used create two profile plots of all science variables for a mobile instrument (e.g. profilers and
-gliders) by deployment and delivery method: 1) plot all data, 2) plot data, omitting outliers beyond 5 standard
-deviations. The user has the option of selecting a specific time range to plot.
+@brief: This script is used create two profile plots of raw and science variables for a mobile instrument (e.g.
+profilers and gliders) by deployment and delivery method: 1) plot all data, 2) plot data, omitting outliers beyond 5
+standard deviations. The user has the option of selecting a specific time range to plot.
 """
 
 import os
@@ -44,8 +44,8 @@ def main(sDir, f, start_time, end_time):
                 else:
                     pressure = 'int_ctd_pressure'
 
-                sci_vars = pf.science_vars(vars)
-                sci_vars = [s for s in sci_vars if s not in [pressure]]  # remove pressure from sci_vars
+                raw_vars = cf.return_raw_vars(vars)
+                raw_vars = [s for s in raw_vars if s not in [pressure]]  # remove pressure from sci_vars
 
                 fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(d)
                 save_dir = os.path.join(sDir, subsite, refdes, deployment)
@@ -61,7 +61,7 @@ def main(sDir, f, start_time, end_time):
                 y = ds[pressure]
 
                 print('Plotting variables...')
-                for var in sci_vars:
+                for var in raw_vars:
                     print var
                     x = ds[var]
 

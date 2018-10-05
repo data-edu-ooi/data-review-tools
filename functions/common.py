@@ -121,6 +121,15 @@ def nc_attributes(nc_file):
     return fname, subsite, refdes, method, stream, deployment
 
 
+def return_raw_vars(ds_variables):
+    # return a list of raw variables (eliminating engineering, qc, and timestamps)
+    misc_vars = ['quality', 'string', 'timestamp', 'deployment', 'provenance', 'qc', 'time', 'mission', 'obs', 'id',
+                 'serial_number', 'volt', 'ref', 'sig', 'amp', 'rph', 'calphase', 'phase', 'therm', 'description']
+    reg_ex = re.compile('|'.join(misc_vars))
+    raw_vars = [s for s in ds_variables if not reg_ex.search(s)]
+    return raw_vars
+
+
 def return_science_vars(stream):
     # return only the science variables (defined in preload) for a data stream
     sci_vars = []

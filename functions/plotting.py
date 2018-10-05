@@ -35,7 +35,7 @@ def plot_profiles(x, y, colors, stdev=None):
     fig, ax = plt.subplots()
     plt.grid()
     ax.scatter(xD, yD, c=colors, s=2, edgecolor='None')
-    plt.gca().invert_yaxis()
+    ax.invert_yaxis()
     ax.set_xlabel((x.name + " (" + x.units + ")"), fontsize=9)
     ax.set_ylabel((y.name + " (" + y.units + ")"), fontsize=9)
     ax.legend(leg_text, loc='best', fontsize=6)
@@ -104,6 +104,42 @@ def plot_timeseries_panel(ds, x, vars, colors, stdev=None):
     return fig, ax
 
 
+def plot_xsection(x, y, z, stdev=None):
+    """
+    Create a cross-section plot for mobile instruments
+    :param x:  array containing data for x-axis (e.g. time)
+    :param y: .nc data array containing data for plotting on the y-axis (e.g. pressure)
+    :param z: .nc data array containing data for plotting variable of interest (e.g. density)
+    :param stdev: desired standard deviation to exclude from plotting
+    """
+    if stdev is None:
+        xD = x
+        yD = y.data
+        zD = z.data
+        leg_text = ()
+    else:
+        ind = reject_outliers(z, stdev)
+        xD = x[ind]
+        yD = y.data[ind]
+        zD = z.data[ind]
+        outliers = str(len(z) - len(zD))
+        leg_text = ('removed {} outliers (SD={})'.format(outliers, stdev),)
+
+    fig, ax = plt.subplots()
+    xc = ax.scatter(xD, yD, c=zD, s=2, edgecolor='None')
+    ax.invert_yaxis()
+
+    # add colorbar
+    bar = fig.colorbar(xc, ax=ax, label=(z.name + " (" + z.units + ")"))
+    bar
+    bar.formatter.set_useOffset(False)
+
+    ax.set_ylabel((y.name + " (" + y.units + ")"), fontsize=9)
+    format_date_axis(ax, fig)
+    ax.legend(leg_text, loc='best', fontsize=6)
+    return fig, ax
+
+
 def pressure_var(vars):
     """
     Return the pressure (dbar) variable in a dataset.
@@ -136,15 +172,6 @@ def save_fig(save_dir, file_name, res=150):
     save_file = os.path.join(save_dir, file_name)
     plt.savefig(str(save_file), dpi=res)
     plt.close()
-
-
-def science_vars(ds_variables):
-    # return a list of only science variables
-    misc_vars = ['quality', 'string', 'timestamp', 'deployment', 'provenance', 'qc', 'time', 'mission', 'obs', 'id',
-                 'serial_number', 'volt', 'ref', 'sig', 'amp', 'rph', 'calphase', 'phase', 'therm', 'description']
-    reg_ex = re.compile('|'.join(misc_vars))
-    sci_vars = [s for s in ds_variables if not reg_ex.search(s)]
-    return sci_vars
 
 
 def y_axis_disable_offset(axis):
