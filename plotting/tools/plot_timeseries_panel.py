@@ -4,7 +4,8 @@ Created on Oct 3 2018
 
 @author: Lori Garzio
 @brief: This script is used create timeseries panel plots of all science variables for an instrument,
-deployment, and delivery method. These plots omit data outside of 5 standard deviations.
+deployment, and delivery method. These plots omit data outside of 5 standard deviations.  The user has the option of
+selecting a specific time range to plot.
 """
 
 import os

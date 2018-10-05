@@ -4,8 +4,8 @@ Created on Oct 4 2018
 
 @author: Lori Garzio
 @brief: This script is used create two profile plots of all science variables for a mobile instrument (e.g. profilers and
-gliders) by deployment, and delivery method: 1) plot all data, 2) plot data, omitting outliers beyond 5 standard
-deviations.
+gliders) by deployment and delivery method: 1) plot all data, 2) plot data, omitting outliers beyond 5 standard
+deviations. The user has the option of selecting a specific time range to plot.
 """
 
 import os
