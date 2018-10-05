@@ -116,6 +116,8 @@ def get_database():
     db_stream_desc = db_stream_desc.rename(columns={'name': 'stream_name'})
     db_stream_desc = db_stream_desc[['stream_name', 'stream_type']]
     db_merged = pd.merge(db_inst_stream, db_stream_desc, on='stream_name', how='outer')
+    # drop duplicate rows (in the case where telemetered and recovered stream names are the same)
+    db_merged = db_merged.drop_duplicates()
     db_merged['in_qcdb'] = 'yes'
     db_merged = db_merged[db_merged.reference_designator.notnull()]
     db_merged['array_code'] = db_merged['reference_designator'].str[0:2]
