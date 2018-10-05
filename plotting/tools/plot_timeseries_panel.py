@@ -21,20 +21,21 @@ import functions.plotting as pf
 def main(sDir, f, start_time, end_time):
     ff = pd.read_csv(os.path.join(sDir, f))
     url_list = ff['outputUrl'].tolist()
-    for u in url_list:
+    for i, u in enumerate(url_list):
+        print '\nUrl {} of {}: {}'.format(i + 1, len(url_list), u)
         main_sensor = u.split('/')[-2].split('-')[4]
         datasets = cf.get_nc_urls([u])
         datasets_sel = cf.filter_collocated_instruments(main_sensor, datasets)
 
-        for d in datasets_sel:
-            print d
+        for ii, d in enumerate(datasets_sel):
+            print '\nDataset {} of {}: {}'.format(ii + 1, len(datasets_sel), d)
             with xr.open_dataset(d, mask_and_scale=False) as ds:
                 ds = ds.swap_dims({'obs': 'time'})
 
                 if start_time is not None and end_time is not None:
                     ds = ds.sel(time=slice(start_time, end_time))
                     if len(ds['time'].data) == 0:
-                        print 'No data to plot from specified time range'
+                        print 'No data to plot for specified time range: ({} to {})'.format(start_time, end_time)
                         continue
 
                 fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(d)
@@ -60,7 +61,7 @@ def main(sDir, f, start_time, end_time):
 
 if __name__ == '__main__':
     sDir = '/Users/lgarzio/Documents/OOI/DataReviews'
-    f = 'data_request_summary_copy.csv'
-    start_time = dt.datetime(2015, 4, 20, 0, 0, 0)  # optional, set to None if plotting all data
-    end_time = dt.datetime(2016, 5, 20, 0, 0, 0)  # optional, set to None if plotting all data
+    f = 'data_request_summary.csv'
+    start_time = None  # dt.datetime(2015, 4, 20, 0, 0, 0)  # optional, set to None if plotting all data
+    end_time = None  # dt.datetime(2016, 5, 20, 0, 0, 0)  # optional, set to None if plotting all data
     main(sDir, f, start_time, end_time)

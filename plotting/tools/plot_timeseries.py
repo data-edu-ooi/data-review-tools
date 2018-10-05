@@ -18,8 +18,8 @@ import functions.plotting as pf
 def main(sDir, f, start_time, end_time):
     ff = pd.read_csv(os.path.join(sDir, f))
     datasets = cf.get_nc_urls(ff['outputUrl'].tolist())
-    for d in datasets:
-        print d
+    for i, d in enumerate(datasets):
+        print '\nDataset {} of {}: {}'.format(i + 1, len(datasets), d)
         with xr.open_dataset(d, mask_and_scale=False) as ds:
             ds = ds.swap_dims({'obs': 'time'})
             sci_vars = pf.science_vars(ds.data_vars.keys())
@@ -27,7 +27,7 @@ def main(sDir, f, start_time, end_time):
             if start_time is not None and end_time is not None:
                 ds = ds.sel(time=slice(start_time, end_time))
                 if len(ds['time'].data) == 0:
-                    print 'No data to plot from specified time range'
+                    print 'No data to plot for specified time range: ({} to {})'.format(start_time, end_time)
                     continue
 
             fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(d)

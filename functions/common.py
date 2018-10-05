@@ -109,7 +109,7 @@ def nc_attributes(nc_file):
     :param nc_file: url for a netCDF file on the THREDDs server
     """
     with xr.open_dataset(nc_file) as ds:
-        fname = nc_file.split('/')[-1].split('.nc')[0]
+        fname = nc_file.split('/')[-1].split('.nc')[0].split('.')[0]
         subsite = ds.subsite
         node = ds.node
         sensor = ds.sensor

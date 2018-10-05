@@ -13,6 +13,35 @@ def format_date_axis(axis, figure):
     figure.autofmt_xdate()
 
 
+def plot_profiles(x, y, colors, stdev=None):
+    """
+    Create a profile plot for mobile instruments
+    :param x: .nc data array containing data for plotting variable of interest (e.g. density)
+    :param y: .nc data array containing data for plotting on the y-axis (e.g. pressure)
+    :param colors: list of colors to be used for plotting
+    :param stdev: desired standard deviation to exclude from plotting
+    """
+    if stdev is None:
+        xD = x.data
+        yD = y.data
+        leg_text = ()
+    else:
+        ind = reject_outliers(x, stdev)
+        xD = x.data[ind]
+        yD = y.data[ind]
+        outliers = str(len(x) - len(xD))
+        leg_text = ('removed {} outliers (SD={})'.format(outliers, stdev),)
+
+    fig, ax = plt.subplots()
+    plt.grid()
+    ax.scatter(xD, yD, c=colors, s=2, edgecolor='None')
+    plt.gca().invert_yaxis()
+    ax.set_xlabel((x.name + " (" + x.units + ")"), fontsize=9)
+    ax.set_ylabel((y.name + " (" + y.units + ")"), fontsize=9)
+    ax.legend(leg_text, loc='best', fontsize=6)
+    return fig, ax
+
+
 def plot_timeseries(x, y, stdev=None):
     """
     Create a simple timeseries plot
@@ -73,7 +102,25 @@ def plot_timeseries_panel(ds, x, vars, colors, stdev=None):
         if i == len(vars) - 1:  # if the last variable has been plotted
             format_date_axis(ax[i], fig)
     return fig, ax
-    
+
+
+def pressure_var(vars):
+    """
+    Return the pressure (dbar) variable in a dataset.
+    :param vars: list of all variables in a dataset
+    """
+    pressure_vars = ['int_ctd_pressure', 'pressure', 'seawater_pressure', 'ctdpf_ckl_seawater_pressure',
+                     'ctdbp_seawater_pressure', 'ctdmo_seawater_pressure', 'ctdbp_no_seawater_pressure',
+                     'sci_water_pressure_dbar']
+    pvars = list(set(pressure_vars).intersection(vars))
+    if len(pvars) > 1:
+        print('More than 1 pressure variable found in the file')
+    elif len(pvars) == 0:
+        print('No pressure variable found in the file')
+    else:
+        pvar = str(pvars[0])
+        return pvar
+
 
 def reject_outliers(data, m=3):
     """
@@ -84,8 +131,8 @@ def reject_outliers(data, m=3):
     return abs(data - np.nanmean(data)) < m * np.nanstd(data)
     
 
-def save_fig(save_dir, file_name, res=300):
-    # save figure to a directory with a resolution of 300 DPI
+def save_fig(save_dir, file_name, res=150):
+    # save figure to a directory with a resolution of 150 DPI
     save_file = os.path.join(save_dir, file_name)
     plt.savefig(str(save_file), dpi=res)
     plt.close()
