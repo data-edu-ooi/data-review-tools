@@ -4,6 +4,7 @@ import matplotlib.ticker as ticker
 import matplotlib.dates as mdates
 import os
 import numpy as np
+import functions.common as cf
 
 
 def format_date_axis(axis, figure):
@@ -25,7 +26,7 @@ def plot_profiles(x, y, colors, stdev=None):
         yD = y.data
         leg_text = ()
     else:
-        ind = reject_outliers(x, stdev)
+        ind = cf.reject_outliers(x, stdev)
         xD = x.data[ind]
         yD = y.data[ind]
         outliers = str(len(x) - len(xD))
@@ -52,7 +53,7 @@ def plot_timeseries(x, y, stdev=None):
         yD = y.data
         leg_text = ()
     else:
-        ind = reject_outliers(y, stdev)
+        ind = cf.reject_outliers(y, stdev)
         yD = y.data[ind]
         x = x[ind]
         outliers = str(len(y) - len(yD))
@@ -86,7 +87,7 @@ def plot_timeseries_panel(ds, x, vars, colors, stdev=None):
             xD = x
             leg_text = ()
         else:
-            ind = reject_outliers(y, stdev)
+            ind = cf.reject_outliers(y, stdev)
             yD = y.data[ind]
             xD = x[ind]
             outliers = str(len(y) - len(yD))
@@ -123,7 +124,7 @@ def plot_xsection(subsite, x, y, z, stdev=None):
         yD = y.data
         zD = z_data
     else:
-        ind = reject_outliers(z, stdev)
+        ind = cf.reject_outliers(z, stdev)
         xD = x[ind]
         yD = y.data[ind]
         zD = z_data[ind]
@@ -169,7 +170,7 @@ def pressure_var(vars):
     Return the pressure (dbar) variable in a dataset.
     :param vars: list of all variables in a dataset
     """
-    pressure_vars = ['int_ctd_pressure', 'pressure', 'seawater_pressure', 'ctdpf_ckl_seawater_pressure',
+    pressure_vars = ['int_ctd_pressure', 'seawater_pressure', 'ctdpf_ckl_seawater_pressure',
                      'ctdbp_seawater_pressure', 'ctdmo_seawater_pressure', 'ctdbp_no_seawater_pressure',
                      'sci_water_pressure_dbar']
     pvars = list(set(pressure_vars).intersection(vars))
@@ -181,15 +182,6 @@ def pressure_var(vars):
         pvar = str(pvars[0])
         return pvar
 
-
-def reject_outliers(data, m=3):
-    """
-    Reject outliers beyond m standard deviations of the mean.
-    :param data: numpy array containing data
-    :param m: number of standard deviations from the mean. Default: 3
-    """
-    return abs(data - np.nanmean(data)) < m * np.nanstd(data)
-    
 
 def save_fig(save_dir, file_name, res=150):
     # save figure to a directory with a resolution of 150 DPI

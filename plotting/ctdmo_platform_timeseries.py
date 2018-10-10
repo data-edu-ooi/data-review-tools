@@ -53,7 +53,7 @@ def plot_ctdmo(data_dict, var, stdev=None):
         t = value['time']
         y = value['yD']
         if stdev != None:
-            ind = pf.reject_outliers(value['yD'], stdev)
+            ind = cf.reject_outliers(value['yD'], stdev)
             t = t[ind]
             y = y[ind]
 

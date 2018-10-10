@@ -6,6 +6,7 @@ import re
 import itertools
 import time
 import xarray as xr
+import numpy as np
 
 
 def check_request_status(thredds_url):
@@ -121,6 +122,26 @@ def nc_attributes(nc_file):
     return fname, subsite, refdes, method, stream, deployment
 
 
+def reject_outliers(data, m=3):
+    """
+    Reject outliers beyond m standard deviations of the mean.
+    :param data: numpy array containing data
+    :param m: number of standard deviations from the mean. Default: 3
+    """
+    return abs(data - np.nanmean(data)) < m * np.nanstd(data)
+
+
+def return_stream_vars(stream):
+    # return all variables that should be found in a stream (from the data review database)
+    stream_vars = []
+    dr = 'http://datareview.marine.rutgers.edu/streams/view/{}.json'.format(stream)
+    r = requests.get(dr)
+    params = r.json()['stream']['parameters']
+    for p in params:
+        stream_vars.append(p['name'])
+    return stream_vars
+
+
 def return_raw_vars(ds_variables):
     # return a list of raw variables (eliminating engineering, qc, and timestamps)
     misc_vars = ['quality', 'string', 'timestamp', 'deployment', 'provenance', 'qc', 'time', 'mission', 'obs', 'id',
@@ -140,3 +161,24 @@ def return_science_vars(stream):
         if p['data_product_type'] == 'Science Data':
             sci_vars.append(p['name'])
     return sci_vars
+
+
+def variable_statistics(variable, stdev=None):
+    """
+    Calculate statistics for a variable of interest
+    :param variable: array containing data
+    :param stdev: desired standard deviation to exclude from analysis
+    """
+    if stdev is None:
+        varD = variable.data
+        num_outliers = 0
+    else:
+        ind = reject_outliers(variable, stdev)
+        varD = variable[ind].data
+        num_outliers = str(len(variable) - len(varD))
+
+    var_mean = round(np.nanmean(varD), 4)
+    var_min = round(np.nanmin(varD), 4)
+    var_max = round(np.nanmax(varD), 4)
+    var_SD = round(np.nanstd(varD), 4)
+    return [num_outliers, var_mean, var_min, var_max, var_SD]

@@ -50,7 +50,7 @@ def main(sDir, f):
                     axes[i].spines['right'].set_position(('axes', 1. + right_additive * i))
                 y = ds[sci_vars[i]]
 
-                ind = pf.reject_outliers(y, 5)
+                ind = cf.reject_outliers(y, 5)
                 yD = y.data[ind]
                 x = t[ind]
 
