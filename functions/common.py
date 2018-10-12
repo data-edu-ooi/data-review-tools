@@ -7,6 +7,7 @@ import itertools
 import time
 import xarray as xr
 import numpy as np
+from geopy.distance import geodesic
 
 
 def check_request_status(thredds_url):
@@ -30,6 +31,31 @@ def create_dir(new_dir):
                 pass
             else:
                 raise
+
+
+def deploy_location_check(refdes):
+    # Calculate the distance in kilometers between an instrument's location (defined in asset management) and previous
+    # deployment locations
+    deploy_loc = {}
+    dr_data = refdes_datareview_json(refdes)
+    for d in dr_data['instrument']['deployments']:
+        dd = d['deployment_number']
+        deploy_loc[dd] = {}
+        deploy_loc[dd]['lat'] = d['latitude']
+        deploy_loc[dd]['lon'] = d['longitude']
+
+    # put info in a data frame and sort to make sure the deployments are in ascending order
+    df = pd.DataFrame.from_dict(deploy_loc, orient='index').sort_index()
+    y = {}
+    for i, k in df.iterrows():
+        if i > 1:
+            loc1 = [k['lat'], k['lon']]
+            for x in range(i-1):
+                compare = 'diff_km_D{}_to_D{}'.format(i, x+1)
+                loc0 = [df.loc[x+1]['lat'], df.loc[x+1]['lon']]
+                diff_loc = round(geodesic(loc0, loc1).kilometers, 4)
+                y.update({compare: diff_loc})
+    return y
 
 
 def filter_collocated_instruments(main_sensor, datasets):
@@ -120,6 +146,15 @@ def nc_attributes(nc_file):
         deployment = fname[0:14]
 
     return fname, subsite, refdes, method, stream, deployment
+
+
+def refdes_datareview_json(refdes):
+    # returns information about a reference designator from the Data Review Database
+    url = 'http://datareview.marine.rutgers.edu/instruments/view/'
+    ref_des_url = os.path.join(url, refdes)
+    ref_des_url += '.json'
+    r = requests.get(ref_des_url).json()
+    return r
 
 
 def reject_outliers(data, m=3):

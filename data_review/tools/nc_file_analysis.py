@@ -7,7 +7,6 @@ sDir: location to save summary output
 url: list of THREDDs urls containing .nc files to analyze.
 """
 
-import requests
 import os
 import xarray as xr
 import pandas as pd
@@ -66,14 +65,6 @@ def insert_into_dict(d, key, value):
     return d
 
 
-def request_datareview_json(ref_des):
-    url = 'http://datareview.marine.rutgers.edu/instruments/view/'
-    ref_des_url = os.path.join(url, ref_des)
-    ref_des_url += '.json'
-    data = requests.get(ref_des_url).json()
-    return data
-
-
 def main(sDir, url_list):
     rd_list = []
     for uu in url_list:
@@ -87,6 +78,11 @@ def main(sDir, url_list):
         data = OrderedDict(deployments=OrderedDict())
         save_dir = os.path.join(sDir, r.split('-')[0], r)
         cf.create_dir(save_dir)
+
+        # Deployment location test
+        deploy_loc_test = cf.deploy_location_check(r)
+        data['location_comparison'] = deploy_loc_test
+
         for u in url_list:
             splitter = u.split('/')[-2].split('-')
             rd_check = '-'.join((splitter[1], splitter[2], splitter[3], splitter[4]))
@@ -111,7 +107,7 @@ def main(sDir, url_list):
                                 deploy = np.unique(ds['deployment'].data)[0]
 
                                 # Get info from the data review database
-                                dr_data = request_datareview_json(refdes)
+                                dr_data = cf.refdes_datareview_json(refdes)
                                 stream_vars = cf.return_stream_vars(data_stream)
                                 sci_vars = cf.return_science_vars(data_stream)
                                 deploy_info = get_deployment_information(dr_data, deploy)
