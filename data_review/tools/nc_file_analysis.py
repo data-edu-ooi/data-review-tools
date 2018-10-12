@@ -1,0 +1,278 @@
+#!/usr/bin/env python
+"""
+Created on Feb 2 2017 by Mike Smith
+Modified on Oct 8 2018 by Lori Garzio
+@brief Automated analysis of .nc files from a THREDDs server. Provides a json output by reference designator.
+sDir: location to save summary output
+url: list of THREDDs urls containing .nc files to analyze.
+"""
+
+import requests
+import os
+import xarray as xr
+import pandas as pd
+import re
+import numpy as np
+from collections import OrderedDict
+import json
+import datetime as dt
+import netCDF4 as nc
+import functions.common as cf
+import functions.plotting as pf
+
+
+def compare_lists(list1, list2):
+    match = []
+    unmatch = []
+    for i in list1:
+        if i in list2:
+            match.append(i)
+        else:
+            unmatch.append(i)
+    return match, unmatch
+
+
+def eliminate_common_variables(list):
+    # time is in this list because it doesn't show up as a variable in an xarray ds
+    common = ['quality_flag', 'provenance', 'id', 'deployment', 'obs', 'lat', 'lon']
+    regex = re.compile(r'\b(?:%s)\b' % '|'.join(common))
+    list = [s for s in list if not regex.search(s)]
+    return list
+
+
+def gap_test(df):
+    gap_list = []
+    df['diff'] = df['time'].diff()
+    index_gap = df['diff'][df['diff'] > pd.Timedelta(days=1)].index.tolist()
+    for i in index_gap:
+        gap_list.append([pd.to_datetime(str(df['time'][i-1])).strftime('%Y-%m-%dT%H:%M:%S'),
+                         pd.to_datetime(str(df['time'][i])).strftime('%Y-%m-%dT%H:%M:%S')])
+    return gap_list
+
+
+def get_deployment_information(data, deployment):
+    d_info = [x for x in data['instrument']['deployments'] if x['deployment_number'] == deployment]
+    if d_info:
+        return d_info[0]
+    else:
+        return None
+
+
+def insert_into_dict(d, key, value):
+    if key not in d:
+        d[key] = [value]
+    else:
+        d[key].append(value)
+    return d
+
+
+def request_datareview_json(ref_des):
+    url = 'http://datareview.marine.rutgers.edu/instruments/view/'
+    ref_des_url = os.path.join(url, ref_des)
+    ref_des_url += '.json'
+    data = requests.get(ref_des_url).json()
+    return data
+
+
+def main(sDir, url_list):
+    rd_list = []
+    for uu in url_list:
+        elements = uu.split('/')[-2].split('-')
+        rd = '-'.join((elements[1], elements[2], elements[3], elements[4]))
+        if rd not in rd_list:
+            rd_list.append(rd)
+
+    json_file_list = []
+    for r in rd_list:
+        data = OrderedDict(deployments=OrderedDict())
+        save_dir = os.path.join(sDir, r.split('-')[0], r)
+        cf.create_dir(save_dir)
+        for u in url_list:
+            splitter = u.split('/')[-2].split('-')
+            rd_check = '-'.join((splitter[1], splitter[2], splitter[3], splitter[4]))
+            catalog_rms = '-'.join((r, splitter[-2], splitter[-1]))
+
+            # complete the analysis by reference designator
+            if rd_check == r:
+                datasets = cf.get_nc_urls([u])
+                for dataset in datasets:
+                    filename = os.path.basename(dataset)
+                    if 'ENG000000' not in filename:
+                        print dataset
+                        fname, subsite, refdes, method, data_stream, deployment = cf.nc_attributes(dataset)
+
+                        # check the information in the filename to the information in the catalog url to skip
+                        # analysis of collocated datasets
+                        file_rms = '-'.join((refdes, method, data_stream))
+                        if file_rms == catalog_rms:
+                            print 'Analyzing file'
+
+                            with xr.open_dataset(dataset, mask_and_scale=False) as ds:
+                                deploy = np.unique(ds['deployment'].data)[0]
+
+                                # Get info from the data review database
+                                dr_data = request_datareview_json(refdes)
+                                stream_vars = cf.return_stream_vars(data_stream)
+                                sci_vars = cf.return_science_vars(data_stream)
+                                deploy_info = get_deployment_information(dr_data, deploy)
+
+                                # Grab deployment Variables
+                                deploy_start = str(deploy_info['start_date'])
+                                deploy_stop = str(deploy_info['stop_date'])
+                                deploy_lon = deploy_info['longitude']
+                                deploy_lat = deploy_info['latitude']
+                                deploy_depth = deploy_info['deployment_depth']
+
+                                # Add reference designator to dictionary
+                                try:
+                                    data['refdes']
+                                except KeyError:
+                                    data['refdes'] = refdes
+
+                                deployments = data['deployments'].keys()
+                                data_start = pd.to_datetime(ds.time_coverage_start).strftime('%Y-%m-%dT%H:%M:%S')
+                                data_stop = pd.to_datetime(ds.time_coverage_end).strftime('%Y-%m-%dT%H:%M:%S')
+
+                                # Add deployment and info to dictionary and initialize delivery method sub-dictionary
+                                if deployment not in deployments:
+                                    data['deployments'][deployment] = OrderedDict(deploy_start=deploy_start,
+                                                                                  deploy_stop=deploy_stop,
+                                                                                  lon=deploy_lon,
+                                                                                  lat=deploy_lat,
+                                                                                  deploy_depth=deploy_depth,
+                                                                                  method=OrderedDict())
+
+                                # Add delivery methods to dictionary and initialize stream sub-dictionary
+                                methods = data['deployments'][deployment]['method'].keys()
+                                if method not in methods:
+                                    data['deployments'][deployment]['method'][method] = OrderedDict(
+                                        stream=OrderedDict())
+
+                                # Add streams to dictionary and initialize file sub-dictionary
+                                streams = data['deployments'][deployment]['method'][method]['stream'].keys()
+
+                                if data_stream not in streams:
+                                    data['deployments'][deployment]['method'][method]['stream'][
+                                        data_stream] = OrderedDict(file=OrderedDict())
+
+                                # Get a list of data gaps >1 day
+                                time_df = pd.DataFrame(ds['time'].data, columns=['time'])
+                                gap_list = gap_test(time_df)
+
+                                # Check that the timestamps in the file are unique
+                                time = ds['time']
+                                len_time = time.__len__()
+                                len_time_unique = np.unique(time).__len__()
+                                if len_time == len_time_unique:
+                                    time_test = 'pass'
+                                else:
+                                    time_test = 'fail'
+
+                                # Check that the timestamps in the file are in ascending order
+                                # convert time to number
+                                time_in = [dt.datetime.utcfromtimestamp(np.datetime64(x).astype('O')/1e9) for x in
+                                           ds['time'].values]
+                                time_data = nc.date2num(time_in, 'seconds since 1900-01-01')
+
+                                # Create a list of True or False by iterating through the array of time and checking if
+                                # every time stamp is increasing
+                                result = [(time_data[k + 1] - time_data[k]) > 0 for k in range(len(time_data) - 1)]
+
+                                # Print outcome of the iteration with the list of indices when time is not increasing
+                                if result.count(True) == len(time) - 1:
+                                    time_ascending = 'pass'
+                                else:
+                                    ind_fail = {k: time_in[k] for k, v in enumerate(result) if v is False}
+                                    time_ascending = 'fail: {}'.format(ind_fail)
+
+                                # Compare variables in file to variables in Data Review Database
+                                ds_variables = ds.data_vars.keys() + ds.coords.keys()
+                                ds_variables = eliminate_common_variables(ds_variables)
+                                ds_variables = [x for x in ds_variables if 'qc' not in x]
+                                [_, unmatch1] = compare_lists(stream_vars, ds_variables)
+                                [_, unmatch2] = compare_lists(ds_variables, stream_vars)
+
+                                # Check deployment pressure from asset management against pressure variable in file
+                                if 'MOAS' in subsite and 'CTD' in refdes:
+                                    press = 'sci_water_pressure_dbar'
+                                elif 'MOAS' not in subsite and 'CTD' in refdes:
+                                    press = pf.pressure_var(ds_variables)
+                                else:
+                                    press = 'int_ctd_pressure'
+
+                                # calculate mean pressure from data, excluding outliers +/- 3 SD
+                                try:
+                                    pressure = ds[press]
+                                    [press_outliers, pressure_mean, _, _, _, _] = cf.variable_statistics(pressure, 3)
+                                    pressure_units = pressure.units
+                                    if not deploy_depth:
+                                        pressure_diff = 'no_deploy_depth'
+                                    else:
+                                        pressure_diff = round(pressure_mean - deploy_depth, 4)
+                                except KeyError:
+                                    press = 'no seawater pressure'
+                                    pressure_diff = None
+                                    pressure_mean = None
+                                    pressure_units = None
+                                    press_outliers = None
+
+                                # Add files and info to dictionary
+                                filenames = data['deployments'][deployment]['method'][method]['stream'][data_stream][
+                                    'file'].keys()
+
+                                if filename not in filenames:
+                                    data['deployments'][deployment]['method'][method]['stream'][data_stream]['file'][
+                                        filename] = OrderedDict(
+                                        file_downloaded=pd.to_datetime(splitter[0]).strftime('%Y-%m-%dT%H:%M:%S'),
+                                        data_start=data_start,
+                                        data_stop=data_stop,
+                                        time_gaps=gap_list,
+                                        unique_timestamps=time_test,
+                                        n_timestamps=len(time),
+                                        ascending_timestamps=time_ascending,
+                                        pressure_comparison=dict(pressure_mean=pressure_mean, units=pressure_units,
+                                                                 num_outliers=press_outliers, diff=pressure_diff,
+                                                                 variable=press),
+                                        vars_in_file=ds_variables,
+                                        vars_not_in_file=[x for x in unmatch1 if 'time' not in x],
+                                        vars_not_in_db=unmatch2,
+                                        sci_var_stats=OrderedDict())
+
+                                # calculate statistics for science variables, excluding outliers +/- 5 SD
+                                for v in sci_vars:
+                                    try:
+                                        var = ds[v]
+                                        [num_outliers, mean, vmin, vmax, sd, n] = cf.variable_statistics(var, 5)
+                                        var_units = var.units
+                                    except KeyError:
+                                        num_outliers = None
+                                        mean = None
+                                        vmin = None
+                                        vmax = None
+                                        sd = None
+                                        n = 'variable not found in file'
+                                        var_units = None
+
+                                    data['deployments'][deployment]['method'][method]['stream'][data_stream][
+                                        'file'][
+                                        filename]['sci_var_stats'][v] = dict(num_outliers_excluded=num_outliers,
+                                                                             mean=mean,
+                                                                             min=vmin,
+                                                                             max=vmax,
+                                                                             stdev=sd,
+                                                                             n=n,
+                                                                             units=var_units)
+
+        sfile = os.path.join(save_dir, '{}-file_analysis.json'.format(r))
+        with open(sfile, 'w') as outfile:
+            json.dump(data, outfile)
+
+        json_file_list.append(str(sfile))
+
+    return json_file_list
+
+if __name__ == '__main__':
+    sDir = '/Users/lgarzio/Documents/repo/OOI/data-edu-ooi/data-review-tools/data_review/output'
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181001T150658-GP03FLMA-RIM01-02-CTDMOG040-recovered_host-ctdmo_ghqr_sio_mule_instrument/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181001T150707-GP03FLMA-RIM01-02-CTDMOG040-recovered_inst-ctdmo_ghqr_instrument_recovered/catalog.html']
+    main(sDir, url_list)

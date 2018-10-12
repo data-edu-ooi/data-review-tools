@@ -177,8 +177,10 @@ def variable_statistics(variable, stdev=None):
         varD = variable[ind].data
         num_outliers = str(len(variable) - len(varD))
 
-    var_mean = round(np.nanmean(varD), 4)
-    var_min = round(np.nanmin(varD), 4)
-    var_max = round(np.nanmax(varD), 4)
-    var_SD = round(np.nanstd(varD), 4)
-    return [num_outliers, var_mean, var_min, var_max, var_SD]
+    mean = round(np.nanmean(varD), 4)
+    min = round(np.nanmin(varD), 4)
+    max = round(np.nanmax(varD), 4)
+    sd = round(np.nanstd(varD), 4)
+    n = len(varD)
+
+    return [num_outliers, mean, min, max, sd, n]
