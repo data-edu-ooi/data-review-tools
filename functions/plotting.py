@@ -26,9 +26,13 @@ def plot_profiles(x, y, colors, stdev=None):
         yD = y.data
         leg_text = ()
     else:
-        ind = cf.reject_outliers(x, stdev)
-        xD = x.data[ind]
-        yD = y.data[ind]
+        ind = cf.reject_extreme_values(x)
+        x = x[ind]
+        y = y[ind]
+        
+        ind2 = cf.reject_outliers(x, stdev)
+        xD = x.data[ind2]
+        yD = y.data[ind2]
         outliers = str(len(x) - len(xD))
         leg_text = ('removed {} outliers (SD={})'.format(outliers, stdev),)
 
@@ -53,16 +57,26 @@ def plot_timeseries(x, y, stdev=None):
         yD = y.data
         leg_text = ()
     else:
-        ind = cf.reject_outliers(y, stdev)
-        yD = y.data[ind]
+        ind = cf.reject_extreme_values(y)
+        y = y[ind]
         x = x[ind]
+
+        ind2 = cf.reject_outliers(y, stdev)
+        yD = y.data[ind2]
+        x = x[ind2]
         outliers = str(len(y) - len(yD))
         leg_text = ('removed {} outliers (SD={})'.format(outliers, stdev),)
 
     fig, ax = plt.subplots()
     plt.grid()
     plt.plot(x, yD, '.', markersize=2)
-    ax.set_ylabel((y.name + " (" + y.units + ")"), fontsize=9)
+
+    try:
+        y_units = y.units
+    except AttributeError:
+        y_units = 'no_units'
+
+    ax.set_ylabel((y.name + " (" + y_units + ")"), fontsize=9)
     format_date_axis(ax, fig)
     y_axis_disable_offset(ax)
     ax.legend(leg_text, loc='best', fontsize=6)
@@ -87,9 +101,13 @@ def plot_timeseries_panel(ds, x, vars, colors, stdev=None):
             xD = x
             leg_text = ()
         else:
-            ind = cf.reject_outliers(y, stdev)
-            yD = y.data[ind]
-            xD = x[ind]
+            ind = cf.reject_extreme_values(y)
+            y = y[ind]
+            x = x[ind]
+
+            ind2 = cf.reject_outliers(y, stdev)
+            yD = y.data[ind2]
+            x = x[ind2]
             outliers = str(len(y) - len(yD))
             leg_text = ('{}: rm {} outliers'.format(y.name, outliers),)
 
@@ -124,10 +142,15 @@ def plot_xsection(subsite, x, y, z, stdev=None):
         yD = y.data
         zD = z_data
     else:
-        ind = cf.reject_outliers(z, stdev)
-        xD = x[ind]
-        yD = y.data[ind]
-        zD = z_data[ind]
+        ind = cf.reject_extreme_values(z)
+        x = x[ind]
+        y = y[ind]
+        z_data = z_data[ind]
+        
+        ind2 = cf.reject_outliers(z, stdev)
+        xD = x[ind2]
+        yD = y.data[ind2]
+        zD = z_data[ind2]
         outliers = str(len(z_data) - len(zD))
 
     try:

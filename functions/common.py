@@ -157,6 +157,11 @@ def refdes_datareview_json(refdes):
     return r
 
 
+def reject_extreme_values(data):
+    # Reject extreme values
+    return (data > -1e6) & (data < 1e6)
+
+
 def reject_outliers(data, m=3):
     """
     Reject outliers beyond m standard deviations of the mean.
@@ -180,7 +185,8 @@ def return_stream_vars(stream):
 def return_raw_vars(ds_variables):
     # return a list of raw variables (eliminating engineering, qc, and timestamps)
     misc_vars = ['quality', 'string', 'timestamp', 'deployment', 'provenance', 'qc', 'time', 'mission', 'obs', 'id',
-                 'serial_number', 'volt', 'ref', 'sig', 'amp', 'rph', 'calphase', 'phase', 'therm', 'description']
+                 'serial_number', 'volt', 'ref', 'sig', 'amp', 'rph', 'calphase', 'phase', 'therm', 'description',
+                 'lat', 'lon']
     reg_ex = re.compile('|'.join(misc_vars))
     raw_vars = [s for s in ds_variables if not reg_ex.search(s)]
     return raw_vars
@@ -208,9 +214,12 @@ def variable_statistics(variable, stdev=None):
         varD = variable.data
         num_outliers = 0
     else:
-        ind = reject_outliers(variable, stdev)
-        varD = variable[ind].data
-        num_outliers = str(len(variable) - len(varD))
+        ind = reject_extreme_values(variable)
+        var = variable[ind]
+
+        ind2 = reject_outliers(var, stdev)
+        varD = var[ind2].data
+        num_outliers = len(variable) - len(varD)
 
     mean = round(np.nanmean(varD), 4)
     min = round(np.nanmin(varD), 4)
