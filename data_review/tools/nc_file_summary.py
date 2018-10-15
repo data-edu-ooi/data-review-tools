@@ -28,8 +28,9 @@ def main(f):
                         'deploy_depth', 'pressure_mean', 'pressure_diff', 'pressure_var', 'pressure_units',
                         'num_pressure_outliers', 'missing_vars_file', 'missing_vars_db', 'time_gaps',
                         'ascending_timestamp_test', 'unique_timestamp_test', 'filename']
-    vsummary_headers = ['deployment', 'file_downloaded', 'method', 'stream', 'variable', 'units', 'mean',
-                        'min', 'max', 'stdev', 'n', 'num_outliers_excluded', 'filename']
+    vsummary_headers = ['deployment', 'file_downloaded', 'method', 'stream', 'variable', 'units',  'fill_value',
+                        'n_all', 'n_outliers', 'n_nans', 'n_fillvalues', 'n_stats', 'mean', 'min', 'max', 'stdev',
+                        'filename']
     fsummary_rows = []
     vsummary_rows = []
     for d in deployments:
@@ -74,10 +75,14 @@ def main(f):
                         min = vsummary['min']
                         max = vsummary['max']
                         stdev = vsummary['stdev']
-                        n = vsummary['n']
-                        oe = vsummary['num_outliers_excluded']
+                        n_stats = vsummary['n_stats']
+                        n_o = vsummary['n_outliers']
+                        n_nan = vsummary['n_nans']
+                        n_fv = vsummary['n_fillvalues']
+                        fv = vsummary['fill_value']
 
-                        vsummary_rows.append([d, dwnl, m, s, v, units, mean, min, max, stdev, n, oe, fname])
+                        vsummary_rows.append([d, dwnl, m, s, v, units, fv, nt, n_o, n_nan, n_fv, n_stats, mean, min,
+                                              max, stdev, fname])
 
     fdf = pd.DataFrame(fsummary_rows, columns=fsummary_headers)
     fdf.to_csv('{}/{}_file_summary_bydeployment.csv'.format(os.path.dirname(f), refdes), index=False)

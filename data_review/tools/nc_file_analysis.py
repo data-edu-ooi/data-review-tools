@@ -238,26 +238,43 @@ def main(sDir, url_list):
                                 for v in sci_vars:
                                     try:
                                         var = ds[v]
-                                        [num_outliers, mean, vmin, vmax, sd, n] = cf.variable_statistics(var, 5)
+
+                                        # reject Nans
+                                        var_nonan = var[~np.isnan(var)]
+                                        n_nan = len(var) - len(var_nonan)
+
+                                        # reject fill values
+                                        fv = str(var._FillValue)
+                                        var_nonan_nofv = var_nonan[var_nonan != var._FillValue]
+                                        n_fv = len(var) - n_nan - len(var_nonan_nofv)
+
+                                        [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_nonan_nofv, 5)
                                         var_units = var.units
+
                                     except KeyError:
                                         num_outliers = None
                                         mean = None
                                         vmin = None
                                         vmax = None
                                         sd = None
-                                        n = 'variable not found in file'
+                                        n_stats = 'variable not found in file'
                                         var_units = None
+                                        n_nan = None
+                                        n_fv = None
+                                        fv = None
 
                                     data['deployments'][deployment]['method'][method]['stream'][data_stream][
                                         'file'][
-                                        filename]['sci_var_stats'][v] = dict(num_outliers_excluded=num_outliers,
+                                        filename]['sci_var_stats'][v] = dict(n_outliers=num_outliers,
                                                                              mean=mean,
                                                                              min=vmin,
                                                                              max=vmax,
                                                                              stdev=sd,
-                                                                             n=n,
-                                                                             units=var_units)
+                                                                             n_stats=n_stats,
+                                                                             units=var_units,
+                                                                             n_nans=n_nan,
+                                                                             n_fillvalues=n_fv,
+                                                                             fill_value=fv)
 
         sfile = os.path.join(save_dir, '{}-file_analysis.json'.format(r))
         with open(sfile, 'w') as outfile:
