@@ -7,6 +7,8 @@ Tools for automated analysis of OOI netCDF files downloaded from uFrame.
 ### Tools
 - [compare_methods.py](https://github.com/data-edu-ooi/data-review-tools/blob/master/data_review/tools/compare_methods.py): Compares science data from multiple delivery methods for one instrument.
 
+- [define_preferred_stream.py](https://github.com/data-edu-ooi/data-review-tools/blob/master/data_review/tools/define_preferred_stream.py): Define the delivery method and data stream(s) preferred for analysis. For uncabled instruments, recovered-instrument is preferred before recovered-host and telemetered.
+
 - [nc_file_analysis.py](https://github.com/data-edu-ooi/data-review-tools/blob/master/data_review/tools/nc_file_analysis.py): Automated analysis of .nc files from a THREDDs server. Summarizes data by deployment, delivery method, data stream, and science parameter and provides a .json output by reference designator. Analysis includes: 
 	- compare data start and end times to deployment start and end times
 	- compare deployment depth from asset managment to pressure data in file 
