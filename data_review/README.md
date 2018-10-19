@@ -2,7 +2,7 @@
 Tools for automated analysis of OOI netCDF files downloaded from uFrame.
 
 ### Scripts
-- [analyze_nc_data.py](https://github.com/data-edu-ooi/data-review-tools/blob/master/data_review/analyze_nc_data.py): Wrapper script that imports tools to analyze netCDF files and provide summary outputs.
+- [analyze_nc_data.py](https://github.com/data-edu-ooi/data-review-tools/blob/master/data_review/analyze_nc_data.py): Wrapper script that imports tools to analyze OOI netCDF files and provide summary outputs.
 
 ### Tools
 - [compare_methods.py](https://github.com/data-edu-ooi/data-review-tools/blob/master/data_review/tools/compare_methods.py): Compares science data from multiple delivery methods for one instrument.

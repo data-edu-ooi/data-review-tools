@@ -38,11 +38,12 @@ def main(f):
 
         if d not in sdict.keys():
             sdict.update({d: preferred_method_stream})
-    print sdict
 
     sfile = '{}/{}-preferred_stream.json'.format(os.path.dirname(f), refdes)
     with open(sfile, 'w') as outfile:
         json.dump(sdict, outfile)
+
+    return sdict
 
 
 if __name__ == '__main__':
