@@ -13,12 +13,15 @@ import json
 import functions.common as cf
 
 
-def var_units(variable):
-    try:
-        y_units = variable.units
-    except AttributeError:
-        y_units = 'no_units'
-    return y_units
+def get_ds_variable_info(dataset, variable_name, rename):
+    ds_df = dataset[variable_name].to_dataframe()
+    ds_units = var_units(dataset[variable_name])
+    ds_df.rename(columns={str(variable_name): rename}, inplace=True)
+    n = len(ds_df[rename])
+    n_nan = sum(ds_df[rename].isnull())
+    ds_df['time'] = ds_df['time'].map(lambda time: time.strftime('%Y-%m-%d %H:%M:%S'))
+
+    return [ds_df, ds_units, n, n_nan]
 
 
 def long_names(dataset, vars):
@@ -37,6 +40,39 @@ def long_names(dataset, vars):
     return pd.DataFrame({'name': name, 'long_name': long_name})
 
 
+def missing_data_times(df):
+    md_list = []
+    n_list = []
+    index_break = []
+    ilist = df.index.tolist()
+
+    for i, n in enumerate(ilist):
+        if i == 0:
+            index_break.append(ilist[i])
+        elif i == (len(ilist) - 1):
+            index_break.append(ilist[i])
+        else:
+            if (n - ilist[i-1]) > 1:
+                index_break.append(ilist[i-1])
+                index_break.append(ilist[i])
+
+    for ii, nn in enumerate(index_break):
+        if ii % 2 == 0:  # check that the index is an even number
+            md_list.append([pd.to_datetime(str(df['time'][nn])).strftime('%Y-%m-%dT%H:%M:%S'),
+                            pd.to_datetime(str(df['time'][index_break[ii + 1]])).strftime('%Y-%m-%dT%H:%M:%S')])
+            n_list.append(index_break[ii + 1] - nn + 1)
+
+    return dict(missing_data_gaps=md_list, n_missing=n_list, n_missing_total=sum(n_list))
+
+
+def var_units(variable):
+    try:
+        y_units = variable.units
+    except AttributeError:
+        y_units = 'no_units'
+    return y_units
+
+
 def main(sDir, url_list):
     # get summary lists of reference designators and delivery methods
     rd_list = []
@@ -50,6 +86,7 @@ def main(sDir, url_list):
         if rdm not in rdm_list:
             rdm_list.append(rdm)
 
+    json_file_list = []
     for r in rd_list:
         print r
         rdm_filtered = [k for k in rdm_list if r in k]
@@ -105,10 +142,8 @@ def main(sDir, url_list):
                                     summary['deployments'][d]['comparison'][compare] = dict(vars=dict())
 
                                 ds0 = xr.open_dataset(f0)
-                                ds0 = ds0.swap_dims({'obs': 'time'})
                                 ds0_sci_vars = cf.return_science_vars(ds0.stream)
                                 ds1 = xr.open_dataset(f1)
-                                ds1 = ds1.swap_dims({'obs': 'time'})
                                 ds1_sci_vars = cf.return_science_vars(ds1.stream)
 
                                 # find where the variable long names are the same
@@ -121,18 +156,12 @@ def main(sDir, url_list):
                                 for rr in mapping.itertuples():
                                     index, long_name, name_ds0, name_ds1 = rr
 
-                                    # Compare data from two data streams. Cut timestamps to the nearest second.
-                                    ds0_var = ds0[name_ds0].to_dataframe()
-                                    ds0_units = var_units(ds0[name_ds0])
+                                    # Compare data from two data streams (cut timestamps to the nearest second).
                                     ds0_rename = '_'.join((str(name_ds0), 'ds0'))
-                                    ds0_var.rename(columns={str(name_ds0): ds0_rename}, inplace=True)
-                                    ds0_var.index = ds0_var.index.map(lambda time: time.strftime('%Y-%m-%d %H:%M:%S'))
+                                    [ds0_df, ds0_units, n0, n0_nan] = get_ds_variable_info(ds0, name_ds0, ds0_rename)
 
-                                    ds1_var = ds1[name_ds1].to_dataframe()
-                                    ds1_units = var_units(ds1[name_ds1])
                                     ds1_rename = '_'.join((str(name_ds1), 'ds1'))
-                                    ds1_var.rename(columns={str(name_ds1): ds1_rename}, inplace=True)
-                                    ds1_var.index = ds1_var.index.map(lambda time: time.strftime('%Y-%m-%d %H:%M:%S'))
+                                    [ds1_df, ds1_units, n1, n1_nan] = get_ds_variable_info(ds1, name_ds1, ds1_rename)
 
                                     # Compare units
                                     if ds0_units == ds1_units:
@@ -140,21 +169,48 @@ def main(sDir, url_list):
                                     else:
                                         unit_test = 'fail'
 
-                                    # Where timestamps are the same, calculate the difference between data points.
-                                    m = pd.merge(ds0_var, ds1_var, left_index=True, right_index=True)
-                                    m = m[m[ds0_rename].notnull() & m[ds1_rename].notnull()]  # drop NaNs
+                                    # Merge dataframes from both methods
+                                    m = pd.merge(ds0_df, ds1_df, on='time', how='outer')
+
+                                    # Drop rows where both variables are NaNs, and make sure the timestamps are in order
+                                    m.dropna(subset=[[ds0_rename, ds1_rename]], how='all', inplace=True)
+                                    m = m.sort_values('time').reset_index(drop=True)
+
+                                    # Find where data are missing in one dataset and available in the other
+                                    ds0_missing = m.loc[m[ds0_rename].isnull()]
+                                    if len(ds0_missing) > 0:
+                                        ds0_missing_dict = missing_data_times(ds0_missing)
+                                    else:
+                                        ds0_missing_dict = 'no missing data'
+
+                                    ds1_missing = m.loc[m[ds1_rename].isnull()]
+                                    if len(ds1_missing) > 0:
+                                        ds1_missing_dict = missing_data_times(ds1_missing)
+                                    else:
+                                        ds1_missing_dict = 'no missing data'
+
+                                    # Where the data intersect, calculate the difference between the methods
+                                    m = m[m[ds0_rename].notnull() & m[ds1_rename].notnull()]
                                     diff = m[ds0_rename] - m[ds1_rename]
-                                    n_diff_greater_zero = len(diff) - sum(abs(diff) >= 0)
+                                    n_diff_g_zero = len(diff) - sum(abs(diff) >= 0)
 
                                     min_diff = round(min(abs(diff)), 10)
                                     max_diff = round(max(abs(diff)), 10)
+
                                     summary['deployments'][d]['comparison'][compare]['vars'][str(long_name)] = dict(
                                         var0=name_ds0, var0_units=ds0_units, var1=name_ds1, var1_units=ds1_units,
-                                        unit_test=unit_test, n=len(diff), n_diff_greater_zero=n_diff_greater_zero,
-                                        min_abs_diff=min_diff, max_abs_diff=max_diff)
+                                        unit_test=unit_test, n_comparison=len(diff), n_diff_greater_zero=n_diff_g_zero,
+                                        min_abs_diff=min_diff, max_abs_diff=max_diff, n_ds0=n0, n_ds0_nan=n0_nan,
+                                        n_ds1=n1, n_ds1_nan=n1_nan, ds0_missing=ds0_missing_dict,
+                                        ds1_missing=ds1_missing_dict)
+
         sfile = os.path.join(save_dir, '{}-method_comparison.json'.format(r))
         with open(sfile, 'w') as outfile:
             json.dump(summary, outfile)
+
+        json_file_list.append(str(sfile))
+
+    return json_file_list
 
 
 if __name__ == '__main__':
