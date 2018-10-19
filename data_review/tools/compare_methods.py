@@ -40,7 +40,7 @@ def long_names(dataset, vars):
     return pd.DataFrame({'name': name, 'long_name': long_name})
 
 
-def missing_data_times(df):
+def missing_data_times(df, method):
     md_list = []
     n_list = []
     index_break = []
@@ -62,7 +62,14 @@ def missing_data_times(df):
                             pd.to_datetime(str(df['time'][index_break[ii + 1]])).strftime('%Y-%m-%dT%H:%M:%S')])
             n_list.append(index_break[ii + 1] - nn + 1)
 
-    return dict(missing_data_gaps=md_list, n_missing=n_list, n_missing_total=sum(n_list))
+    n_total = sum(n_list)
+
+    # don't print out each data gap for telemetered data, because it's usually way too much
+    if method == 'telemetered':
+        md_list = '{} data gaps'.format(len(md_list))
+        n_list = '{} data gaps'.format(len(n_list))
+
+    return dict(missing_data_gaps=md_list, n_missing=n_list, n_missing_total=n_total)
 
 
 def var_units(variable):
@@ -88,7 +95,6 @@ def main(sDir, url_list):
 
     json_file_list = []
     for r in rd_list:
-        print r
         rdm_filtered = [k for k in rdm_list if r in k]
         dinfo = {}
         if len(rdm_filtered) == 1:
@@ -97,6 +103,7 @@ def main(sDir, url_list):
         elif len(rdm_filtered) > 1 & len(rdm_filtered) <= 3:
             save_dir = os.path.join(sDir, r.split('-')[0], r)
             cf.create_dir(save_dir)
+            print 'Comparing data from different methods for: {}'.format(r)
             for i in range(len(rdm_filtered)):
                 u = [x for x in url_list if rdm_filtered[i] in x][0]
                 splitter = u.split('/')[-2].split('-')
@@ -143,8 +150,10 @@ def main(sDir, url_list):
 
                                 ds0 = xr.open_dataset(f0)
                                 ds0_sci_vars = cf.return_science_vars(ds0.stream)
+                                ds0_method = compare.split(' ')[0].split('-')[0]
                                 ds1 = xr.open_dataset(f1)
                                 ds1_sci_vars = cf.return_science_vars(ds1.stream)
+                                ds1_method = compare.split(' ')[1].split('-')[0]
 
                                 # find where the variable long names are the same
                                 ds0names = long_names(ds0, ds0_sci_vars)
@@ -176,16 +185,16 @@ def main(sDir, url_list):
                                     m.dropna(subset=[[ds0_rename, ds1_rename]], how='all', inplace=True)
                                     m = m.sort_values('time').reset_index(drop=True)
 
-                                    # Find where data are missing in one dataset and available in the other
+                                    # Find where data are available in one dataset and missing in the other
                                     ds0_missing = m.loc[m[ds0_rename].isnull()]
                                     if len(ds0_missing) > 0:
-                                        ds0_missing_dict = missing_data_times(ds0_missing)
+                                        ds0_missing_dict = missing_data_times(ds0_missing, ds0_method)
                                     else:
                                         ds0_missing_dict = 'no missing data'
 
                                     ds1_missing = m.loc[m[ds1_rename].isnull()]
                                     if len(ds1_missing) > 0:
-                                        ds1_missing_dict = missing_data_times(ds1_missing)
+                                        ds1_missing_dict = missing_data_times(ds1_missing, ds1_method)
                                     else:
                                         ds1_missing_dict = 'no missing data'
 
