@@ -293,8 +293,15 @@ def main(sDir, url_list):
 
         sfile = os.path.join(save_dir, '{}-method_comparison.json'.format(r))
         dinfo_df = pd.DataFrame(dinfo)
-        mdict = dict()
-        if len(dinfo) > 2:  # if there is more than 1 stream per delivery method
+
+        umethods = []
+        ustreams = []
+        for k in dinfo.keys():
+            umethods.append(k.split('-')[0])
+            ustreams.append(k.split('-')[1])
+
+        if len(np.unique(ustreams)) > len(np.unique(umethods)):  # if there is more than 1 stream per delivery method
+            mdict = dict()
             method_stream_df = word_check(dinfo)
             for cs in (np.unique(method_stream_df['stream_name_compare'])).tolist():
                 print 'Common stream_name: {}'.format(cs)
