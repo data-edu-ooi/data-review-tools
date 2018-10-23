@@ -12,6 +12,7 @@ import os
 import pandas as pd
 import xarray as xr
 import datetime as dt
+import numpy as np
 import functions.common as cf
 import functions.plotting as pf
 
@@ -41,19 +42,30 @@ def main(sDir, f, start_time, end_time):
             title = ' '.join((deployment, refdes, method))
 
             for var in raw_vars:
+                print var
                 y = ds[var]
+                fv = y._FillValue
 
-                # Plot all data
-                fig, ax = pf.plot_timeseries(t, y, stdev=None)
-                ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-                sfile = '_'.join((fname, y.name))
-                pf.save_fig(save_dir, sfile)
+                # Check if the array is all NaNs
+                if sum(np.isnan(y.data)) == len(y.data):
+                    print 'Array of all NaNs - kipping plot.'
 
-                # Plot data with outliers removed
-                fig, ax = pf.plot_timeseries(t, y, stdev=5)
-                ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-                sfile = '_'.join((fname, y.name, 'rmoutliers'))
-                pf.save_fig(save_dir, sfile)
+                # Check if the array is all fill values
+                elif len(y[y != fv]) == 0:
+                    print 'Array of all fill values - skipping plot.'
+
+                else:
+                    # Plot all data
+                    fig, ax = pf.plot_timeseries(t, y, stdev=None)
+                    ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+                    sfile = '_'.join((fname, y.name))
+                    pf.save_fig(save_dir, sfile)
+
+                    # Plot data with outliers removed
+                    fig, ax = pf.plot_timeseries(t, y, stdev=5)
+                    ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+                    sfile = '_'.join((fname, y.name, 'rmoutliers'))
+                    pf.save_fig(save_dir, sfile)
 
 
 if __name__ == '__main__':
