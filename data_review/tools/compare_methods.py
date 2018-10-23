@@ -7,29 +7,23 @@ Created on 10/15/2018
 
 Summary output:
 ds0: index=0 dataset in comparison list
-var0: variable name
-var0_units: variable units
-n_ds0: number of data points for the variable being analyzed
-n_ds0_nan: number of NaNs in the dataset for the variable being analyzed
-
 ds1 = index=1 dataset in comparison list
-var1: variable name
-var1_units: variable units
-n_ds1: number of data points for the variable being analyzed
-n_ds1_nan: number of NaNs in the dataset for the variable being analyzed
+
+name: variable name
+units: variable units
+n: number of data points for the variable being analyzed
+n_nan: number of NaNs in the dataset for the variable being analyzed
+missing: summary of data missing from the indexed dataset
+
+missing_data_gaps: list of time ranges where data are missing from one dataset (data are available in the other dataset)
+n_missing: list of number of data points missing from each corresponding time range in missing_data_gaps
+n_missing_total: total number of missing data points (data are available in the other dataset)
 
 unit_test: pass/fail check if the units for the variables in the two datasets are the same
 n_comparison: number of data points compared between the two methods
 min_abs_diff: minimum absolute difference calculated between the two datasets
 max_abs_diff: maximum absolute difference calculated between the two datasets
 n_diff_greater_zero: count of absolute differences that are >0
-
-ds0_missing: summary of data missing from the index=0 dataset
-ds1_missing: summary of data missing from the index=1 dataset
-
-missing_data_gaps: list of time ranges where data are missing from one dataset (data are available in the other dataset)
-n_missing: list of number of data points missing from each corresponding time range in missing_data_gaps
-n_missing_total: total number of missing data points (data are available in the other dataset)
 """
 
 import os
@@ -78,7 +72,7 @@ def compare_data(df):
                             ds1names.rename(columns={'name': 'name_ds1'}, inplace=True)
                             mapping = pd.merge(ds0names, ds1names, on='long_name', how='inner')
                             print '----------------------'
-                            print d
+                            print '{}: {}'.format(d, compare)
                             print '----------------------'
 
                             for rr in mapping.itertuples():
@@ -121,17 +115,15 @@ def compare_data(df):
                                 # Where the data intersect, calculate the difference between the methods
                                 m = m[m[ds0_rename].notnull() & m[ds1_rename].notnull()]
                                 diff = m[ds0_rename] - m[ds1_rename]
-                                n_diff_g_zero = len(diff) - sum(abs(diff) >= 0)
+                                n_diff_g_zero = sum(abs(diff) > 0.99999999999999999)
 
                                 min_diff = round(min(abs(diff)), 10)
                                 max_diff = round(max(abs(diff)), 10)
-
                                 summary['deployments'][d]['comparison'][compare]['vars'][str(long_name)] = dict(
-                                    var0=name_ds0, var0_units=ds0_units, var1=name_ds1, var1_units=ds1_units,
+                                    ds0=dict(name=name_ds0, units=ds0_units, n=n0, n_nan=n0_nan, missing=ds0_missing_dict),
+                                    ds1=dict(name=name_ds1, units=ds1_units, n=n1, n_nan=n1_nan, missing=ds1_missing_dict),
                                     unit_test=unit_test, n_comparison=len(diff), n_diff_greater_zero=n_diff_g_zero,
-                                    min_abs_diff=min_diff, max_abs_diff=max_diff, n_ds0=n0, n_ds0_nan=n0_nan,
-                                    n_ds1=n1, n_ds1_nan=n1_nan, ds0_missing=ds0_missing_dict,
-                                    ds1_missing=ds1_missing_dict)
+                                    min_abs_diff=min_diff, max_abs_diff=max_diff)
     return summary
 
 
@@ -270,7 +262,7 @@ def main(sDir, url_list):
         elif len(rdm_filtered) > 1 & len(rdm_filtered) <= 3:
             save_dir = os.path.join(sDir, r.split('-')[0], r)
             cf.create_dir(save_dir)
-            print 'Comparing data from different methods for: {}'.format(r)
+            print '\nComparing data from different methods for: {}'.format(r)
             for i in range(len(rdm_filtered)):
                 urls = [x for x in url_list if rdm_filtered[i] in x]
                 for u in urls:

@@ -239,7 +239,7 @@ def main(sDir, url_list):
                                     try:
                                         var = ds[v]
 
-                                        # reject Nans
+                                        # reject NaNs
                                         var_nonan = var[~np.isnan(var)]
                                         n_nan = len(var) - len(var_nonan)
 

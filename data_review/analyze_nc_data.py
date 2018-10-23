@@ -28,4 +28,7 @@ for j in json_nc_analysis:
     ps = define_preferred_stream.main(j)
     mc = [k for k in json_method_comparison if refdes in k]
     if len(mc) == 1:
+        print '{}: writing summary files'.format(refdes)
         nc_file_summary.main(j, ps, mc[0])
+    else:
+        print 'Too many method comparison files provided.'
