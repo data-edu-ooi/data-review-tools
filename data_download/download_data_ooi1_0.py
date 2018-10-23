@@ -61,4 +61,10 @@ else:
 
     f_url_list = list(itertools.chain(*url_list))
 
-send_data_requests_nc.main(sDir, f_url_list, username, token, now)
+thredds_output_urls = send_data_requests_nc.main(sDir, f_url_list, username, token, now)
+
+print 'Seeing if the requests have fulfilled...'
+for i in range(len(thredds_output_urls)):
+    url = thredds_output_urls[i]
+    print '\nDataset {} of {}: {}'.format((i + 1), len(thredds_output_urls), url)
+    cf.check_request_status(url)

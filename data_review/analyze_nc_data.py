@@ -10,7 +10,7 @@ f: file containing THREDDs urls with .nc files to analyze. The column containing
 """
 
 import pandas as pd
-
+import functions.common as cf
 from tools import nc_file_analysis, define_preferred_stream, compare_methods, nc_file_summary
 
 sDir = '/Users/lgarzio/Documents/repo/OOI/data-edu-ooi/data-review-tools/data_review/output'
@@ -18,6 +18,13 @@ f = '/Users/lgarzio/Documents/OOI/DataReviews/test/data_request_summary.csv'
 
 ff = pd.read_csv(f)
 url_list = ff['outputUrl'].tolist()
+
+# check that the requests have fulfilled before continuing with the analysis
+print 'Seeing if the requests have fulfilled...'
+for i in range(len(url_list)):
+    url = url_list[i]
+    print '\nDataset {} of {}: {}'.format((i + 1), len(url_list), url)
+    cf.check_request_status(url)
 
 json_nc_analysis = nc_file_analysis.main(sDir, url_list)
 
