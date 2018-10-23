@@ -4,6 +4,32 @@ Created on 10/15/2018
 @author Lori Garzio
 @author Leila Belabbassi
 @brief Compares science data from multiple delivery methods for one instrument.
+
+Summary output:
+ds0: index=0 dataset in comparison list
+var0: variable name
+var0_units: variable units
+n_ds0: number of data points for the variable being analyzed
+n_ds0_nan: number of NaNs in the dataset for the variable being analyzed
+
+ds1 = index=1 dataset in comparison list
+var1: variable name
+var1_units: variable units
+n_ds1: number of data points for the variable being analyzed
+n_ds1_nan: number of NaNs in the dataset for the variable being analyzed
+
+unit_test: pass/fail check if the units for the variables in the two datasets are the same
+n_comparison: number of data points compared between the two methods
+min_abs_diff: minimum absolute difference calculated between the two datasets
+max_abs_diff: maximum absolute difference calculated between the two datasets
+n_diff_greater_zero: count of absolute differences that are >0
+
+ds0_missing: summary of data missing from the index=0 dataset
+ds1_missing: summary of data missing from the index=1 dataset
+
+missing_data_gaps: list of time ranges where data are missing from one dataset (data are available in the other dataset)
+n_missing: list of number of data points missing from each corresponding time range in missing_data_gaps
+n_missing_total: total number of missing data points (data are available in the other dataset)
 """
 
 import os
@@ -136,6 +162,19 @@ def long_names(dataset, vars):
     return pd.DataFrame({'name': name, 'long_name': long_name})
 
 
+def merge_two_dicts(dict1, dict2):
+    # add info from dict2 to dict1
+    if len(dict1) == 0:
+        dict1.update(dict2)
+    else:
+        for d in dict2['deployments'].keys():
+            if d not in dict1['deployments'].keys():
+                dict1['deployments'][d] = dict2['deployments'][d]
+            else:
+                dict1['deployments'][d]['comparison'].update(dict2['deployments'][d]['comparison'])
+    return dict1
+
+
 def missing_data_times(df, method):
     md_list = []
     n_list = []
@@ -252,11 +291,13 @@ def main(sDir, url_list):
             print 'More than 3 methods provided. Please provide fewer datasets for analysis.'
             continue
 
+        sfile = os.path.join(save_dir, '{}-method_comparison.json'.format(r))
         dinfo_df = pd.DataFrame(dinfo)
+        mdict = dict()
         if len(dinfo) > 2:  # if there is more than 1 stream per delivery method
             method_stream_df = word_check(dinfo)
             for cs in (np.unique(method_stream_df['stream_name_compare'])).tolist():
-                print cs
+                print 'Common stream_name: {}'.format(cs)
                 method_stream_list = []
                 for row in method_stream_df.itertuples():
                     index, method, stream_name, stream_name_compare = row
@@ -264,17 +305,18 @@ def main(sDir, url_list):
                         method_stream_list.append('-'.join((method, stream_name)))
                 dinfo_df_filtered = dinfo_df[method_stream_list]
                 summary_dict = compare_data(dinfo_df_filtered)
-                sfile = os.path.join(save_dir, '{}-{}-method_comparison.json'.format(r, cs))
+
+                # merge dictionaries for all streams for one reference designator
+                mdict = merge_two_dicts(mdict, summary_dict)
                 with open(sfile, 'w') as outfile:
-                    json.dump(summary_dict, outfile)
-                json_file_list.append(str(sfile))
+                    json.dump(mdict, outfile)
 
         else:
             summary_dict = compare_data(dinfo_df)
-            sfile = os.path.join(save_dir, '{}-method_comparison.json'.format(r))
             with open(sfile, 'w') as outfile:
                 json.dump(summary_dict, outfile)
-            json_file_list.append(str(sfile))
+
+        json_file_list.append(str(sfile))
 
     return json_file_list
 
