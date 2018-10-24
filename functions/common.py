@@ -39,21 +39,24 @@ def deploy_location_check(refdes):
     # deployment locations
     deploy_loc = {}
     dr_data = refdes_datareview_json(refdes)
-    for d in dr_data['instrument']['deployments']:
+    for i, d in enumerate(dr_data['instrument']['deployments']):
+        deploy_loc[i] = {}
         dd = d['deployment_number']
-        deploy_loc[dd] = {}
-        deploy_loc[dd]['lat'] = d['latitude']
-        deploy_loc[dd]['lon'] = d['longitude']
+        deploy_loc[i]['deployment'] = d['deployment_number']
+        deploy_loc[i]['lat'] = d['latitude']
+        deploy_loc[i]['lon'] = d['longitude']
 
-    # put info in a data frame and sort to make sure the deployments are in ascending order
+    # put info in a data frame
     df = pd.DataFrame.from_dict(deploy_loc, orient='index').sort_index()
     y = {}
     for i, k in df.iterrows():
-        if i > 1:
+        if i > 0:
             loc1 = [k['lat'], k['lon']]
-            for x in range(i-1):
-                compare = 'diff_km_D{}_to_D{}'.format(i, x+1)
-                loc0 = [df.loc[x+1]['lat'], df.loc[x+1]['lon']]
+            d1 = int(k['deployment'])
+            for x in range(i):
+                info0 = df.iloc[x]
+                compare = 'diff_km_D{}_to_D{}'.format(d1, int(info0['deployment']))
+                loc0 = [info0['lat'], info0['lon']]
                 diff_loc = round(geodesic(loc0, loc1).kilometers, 4)
                 y.update({compare: diff_loc})
     return y
