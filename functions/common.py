@@ -41,7 +41,6 @@ def deploy_location_check(refdes):
     dr_data = refdes_datareview_json(refdes)
     for i, d in enumerate(dr_data['instrument']['deployments']):
         deploy_loc[i] = {}
-        dd = d['deployment_number']
         deploy_loc[i]['deployment'] = d['deployment_number']
         deploy_loc[i]['lat'] = d['latitude']
         deploy_loc[i]['lon'] = d['longitude']
