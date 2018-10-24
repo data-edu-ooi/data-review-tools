@@ -39,11 +39,11 @@ def main(f, ps, mc):
     if type(mc) == str:
         mc = load_json_file(mc)
 
-    fsummary_headers = ['deployment', 'file_downloaded', 'preferred_method', 'stream', 'other_methods', 'deploy_start',
-                        'data_start', 'time_delta_start', 'deploy_stop', 'data_stop', 'time_delta_stop', 'n_timestamps',
-                        'deploy_depth', 'pressure_mean', 'pressure_diff', 'pressure_var', 'pressure_units',
-                        'num_pressure_outliers', 'missing_vars_file', 'missing_vars_db', 'time_gaps',
-                        'ascending_timestamp_test', 'unique_timestamp_test', 'filename']
+    fsummary_headers = ['deployment', 'file_downloaded', 'preferred_method', 'stream', 'other_methods',
+                        'time_delta_start', 'time_delta_stop', 'n_timestamps', 'deploy_depth', 'pressure_mean',
+                        'pressure_diff', 'pressure_var', 'pressure_units', 'num_pressure_outliers', 'missing_vars_file',
+                        'missing_vars_db', 'time_gaps', 'ascending_timestamp_test', 'unique_timestamp_test',
+                        'file_coordinates', 'filename']
     vsummary_headers = ['deployment', 'file_downloaded', 'preferred_method', 'stream', 'variable', 'units', 'fill_value',
                         'n_all', 'n_outliers', 'n_nans', 'n_fillvalues', 'n_stats', 'mean', 'min', 'max', 'stdev',
                         'filename']
@@ -66,6 +66,7 @@ def main(f, ps, mc):
                         other_methods = [str(x) for x in ddata['method'].keys() if x not in [m]]
                         fsummary = ddata['method'][m]['stream'][s]['file'][fname]
                         dwnl = fsummary['file_downloaded']
+                        coords = fsummary['file_coordinates']
                         dstart = fsummary['data_start']
                         dstop = fsummary['data_stop']
                         gaps = fsummary['time_gaps']
@@ -86,9 +87,9 @@ def main(f, ps, mc):
                         else:
                             tdelta_stop = time_delta(dstop, stop)
 
-                        fsummary_rows.append([d, dwnl, m, s, other_methods, start, dstart, str(tdelta_start), stop,
-                                              dstop, str(tdelta_stop), nt, depth, mpress, press_diff, vpress, upress,
-                                              opress, v_missing_f, v_missing_db, gaps, at, ut, fname])
+                        fsummary_rows.append([d, dwnl, m, s, other_methods, str(tdelta_start), str(tdelta_stop), nt,
+                                              depth, mpress, press_diff, vpress, upress, opress, v_missing_f,
+                                              v_missing_db, gaps, at, ut, coords, fname])
 
                         # build the summary of comparison of science variables among delivery methods
                         try:

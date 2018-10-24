@@ -75,6 +75,7 @@ def main(sDir, url_list):
 
     json_file_list = []
     for r in rd_list:
+        print '\n{}'.format(r)
         data = OrderedDict(deployments=OrderedDict())
         save_dir = os.path.join(sDir, r.split('-')[0], r)
         cf.create_dir(save_dir)
@@ -153,6 +154,15 @@ def main(sDir, url_list):
 
                                 # Get a list of data gaps >1 day
                                 time_df = pd.DataFrame(ds['time'].data, columns=['time'])
+
+                                # add deployment start and end dates to the dataframe, to capture gaps at the beginning
+                                # and end of the deployment
+                                time_df.loc[-1] = pd.to_datetime(deploy_start)
+                                time_df.index = time_df.index + 1
+                                time_df = time_df.sort_index()
+                                if deploy_stop != 'None':
+                                    time_df.loc[len(time_df)] = pd.to_datetime(deploy_stop)
+
                                 gap_list = gap_test(time_df)
 
                                 # Check that the timestamps in the file are unique
@@ -200,17 +210,21 @@ def main(sDir, url_list):
                                 try:
                                     pressure = ds[press]
                                     [press_outliers, pressure_mean, _, _, _, _] = cf.variable_statistics(pressure, 3)
-                                    pressure_units = pressure.units
                                     if not deploy_depth:
                                         pressure_diff = 'no_deploy_depth'
                                     else:
                                         pressure_diff = round(pressure_mean - deploy_depth, 4)
+                                    try:
+                                        pressure_units = pressure.units
+                                    except AttributeError:
+                                        pressure_units = 'no units attribute for pressure'
+
                                 except KeyError:
                                     press = 'no seawater pressure'
                                     pressure_diff = None
                                     pressure_mean = None
-                                    pressure_units = None
                                     press_outliers = None
+                                    pressure_units = None
 
                                 # Add files and info to dictionary
                                 filenames = data['deployments'][deployment]['method'][method]['stream'][data_stream][
@@ -220,11 +234,12 @@ def main(sDir, url_list):
                                     data['deployments'][deployment]['method'][method]['stream'][data_stream]['file'][
                                         filename] = OrderedDict(
                                         file_downloaded=pd.to_datetime(splitter[0]).strftime('%Y-%m-%dT%H:%M:%S'),
+                                        file_coordinates=ds.coords.keys(),
                                         data_start=data_start,
                                         data_stop=data_stop,
                                         time_gaps=gap_list,
                                         unique_timestamps=time_test,
-                                        n_timestamps=len(time),
+                                        n_timestamps=len_time,
                                         ascending_timestamps=time_ascending,
                                         pressure_comparison=dict(pressure_mean=pressure_mean, units=pressure_units,
                                                                  num_outliers=press_outliers, diff=pressure_diff,
