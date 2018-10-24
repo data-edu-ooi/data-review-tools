@@ -15,6 +15,7 @@ import numpy as np
 from collections import OrderedDict
 import json
 import datetime as dt
+from datetime import timedelta
 import netCDF4 as nc
 import functions.common as cf
 import functions.plotting as pf
@@ -120,6 +121,14 @@ def main(sDir, url_list):
                                 deploy_lat = deploy_info['latitude']
                                 deploy_depth = deploy_info['deployment_depth']
 
+                                # Calculate days deployed
+                                if deploy_stop != 'None':
+                                    r_deploy_start = pd.to_datetime(deploy_start).replace(hour=0, minute=0, second=0)
+                                    r_deploy_stop = (pd.to_datetime(deploy_stop) + timedelta(days=1)).replace(hour=0, minute=0, second=0)
+                                    n_days_deployed = (r_deploy_stop - r_deploy_start).days
+                                else:
+                                    n_days_deployed = None
+
                                 # Add reference designator to dictionary
                                 try:
                                     data['refdes']
@@ -134,6 +143,7 @@ def main(sDir, url_list):
                                 if deployment not in deployments:
                                     data['deployments'][deployment] = OrderedDict(deploy_start=deploy_start,
                                                                                   deploy_stop=deploy_stop,
+                                                                                  n_days_deployed=n_days_deployed,
                                                                                   lon=deploy_lon,
                                                                                   lat=deploy_lat,
                                                                                   deploy_depth=deploy_depth,
@@ -154,15 +164,6 @@ def main(sDir, url_list):
 
                                 # Get a list of data gaps >1 day
                                 time_df = pd.DataFrame(ds['time'].data, columns=['time'])
-
-                                # add deployment start and end dates to the dataframe, to capture gaps at the beginning
-                                # and end of the deployment
-                                time_df.loc[-1] = pd.to_datetime(deploy_start)
-                                time_df.index = time_df.index + 1
-                                time_df = time_df.sort_index()
-                                if deploy_stop != 'None':
-                                    time_df.loc[len(time_df)] = pd.to_datetime(deploy_stop)
-
                                 gap_list = gap_test(time_df)
 
                                 # Check that the timestamps in the file are unique
@@ -190,6 +191,10 @@ def main(sDir, url_list):
                                 else:
                                     ind_fail = {k: time_in[k] for k, v in enumerate(result) if v is False}
                                     time_ascending = 'fail: {}'.format(ind_fail)
+
+                                # Count the number of days for which there is at least 1 timestamp
+                                n_days = len(np.unique(time.data.astype('datetime64[D]')))
+
 
                                 # Compare variables in file to variables in Data Review Database
                                 ds_variables = ds.data_vars.keys() + ds.coords.keys()
@@ -240,6 +245,7 @@ def main(sDir, url_list):
                                         time_gaps=gap_list,
                                         unique_timestamps=time_test,
                                         n_timestamps=len_time,
+                                        n_days=n_days,
                                         ascending_timestamps=time_ascending,
                                         pressure_comparison=dict(pressure_mean=pressure_mean, units=pressure_units,
                                                                  num_outliers=press_outliers, diff=pressure_diff,

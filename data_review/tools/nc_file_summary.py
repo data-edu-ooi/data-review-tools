@@ -40,9 +40,9 @@ def main(f, ps, mc):
         mc = load_json_file(mc)
 
     fsummary_headers = ['deployment', 'file_downloaded', 'preferred_method', 'stream', 'other_methods',
-                        'time_delta_start', 'time_delta_stop', 'n_timestamps', 'deploy_depth', 'pressure_mean',
+                        'time_delta_start', 'time_delta_stop', 'n_days_deployed', 'n_timestamps', 'n_days', 'deploy_depth', 'pressure_mean',
                         'pressure_diff', 'pressure_var', 'pressure_units', 'num_pressure_outliers', 'missing_vars_file',
-                        'missing_vars_db', 'time_gaps', 'ascending_timestamp_test', 'unique_timestamp_test',
+                        'missing_vars_db', 'file_time_gaps', 'ascending_timestamp_test', 'unique_timestamp_test',
                         'file_coordinates', 'filename']
     vsummary_headers = ['deployment', 'file_downloaded', 'preferred_method', 'stream', 'variable', 'units', 'fill_value',
                         'n_all', 'n_outliers', 'n_nans', 'n_fillvalues', 'n_stats', 'mean', 'min', 'max', 'stdev',
@@ -58,6 +58,7 @@ def main(f, ps, mc):
         start = ddata['deploy_start']
         stop = ddata['deploy_stop']
         depth = ddata['deploy_depth']
+        n_days_deployed = ddata['n_days_deployed']
         for m in ddata['method'].keys():
             for s in ddata['method'][m]['stream'].keys():
                 ms = '-'.join((m, s))
@@ -75,6 +76,7 @@ def main(f, ps, mc):
                         at = fsummary['ascending_timestamps']
                         ut = fsummary['unique_timestamps']
                         nt = fsummary['n_timestamps']
+                        nd = fsummary['n_days']
                         vpress = fsummary['pressure_comparison']['variable']
                         mpress = fsummary['pressure_comparison']['pressure_mean']
                         upress = fsummary['pressure_comparison']['units']
@@ -87,7 +89,7 @@ def main(f, ps, mc):
                         else:
                             tdelta_stop = time_delta(dstop, stop)
 
-                        fsummary_rows.append([d, dwnl, m, s, other_methods, str(tdelta_start), str(tdelta_stop), nt,
+                        fsummary_rows.append([d, dwnl, m, s, other_methods, str(tdelta_start), str(tdelta_stop), n_days_deployed, nt, nd,
                                               depth, mpress, press_diff, vpress, upress, opress, v_missing_f,
                                               v_missing_db, gaps, at, ut, coords, fname])
 
