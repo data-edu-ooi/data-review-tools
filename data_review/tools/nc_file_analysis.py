@@ -216,7 +216,7 @@ def main(sDir, url_list):
                                     pressure = ds[press]
                                     [press_outliers, pressure_mean, _, _, _, _] = cf.variable_statistics(pressure, 3)
                                     if not deploy_depth:
-                                        pressure_diff = 'no_deploy_depth'
+                                        pressure_diff = 'no deploy depth in AM'
                                     else:
                                         pressure_diff = round(pressure_mean - deploy_depth, 4)
                                     try:
@@ -225,8 +225,11 @@ def main(sDir, url_list):
                                         pressure_units = 'no units attribute for pressure'
 
                                 except KeyError:
-                                    press = 'no seawater pressure'
-                                    pressure_diff = None
+                                    press = 'no seawater pressure in file'
+                                    if not deploy_depth:
+                                        pressure_diff = 'no deploy depth in AM and no seawater pressure in file'
+                                    else:
+                                        pressure_diff = 'no seawater pressure in file'
                                     pressure_mean = None
                                     press_outliers = None
                                     pressure_units = None
