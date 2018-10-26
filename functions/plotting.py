@@ -188,15 +188,26 @@ def plot_xsection(subsite, x, y, z, stdev=None):
     return fig, ax
 
 
-def pressure_var(vars):
+def pressure_var(dataset, vars):
     """
     Return the pressure (dbar) variable in a dataset.
     :param vars: list of all variables in a dataset
     """
-    pressure_vars = ['int_ctd_pressure', 'seawater_pressure', 'ctdpf_ckl_seawater_pressure',
+    pressure_variables = ['int_ctd_pressure', 'seawater_pressure', 'ctdpf_ckl_seawater_pressure', 'sci_water_pressure_dbar',
                      'ctdbp_seawater_pressure', 'ctdmo_seawater_pressure', 'ctdbp_no_seawater_pressure',
-                     'sci_water_pressure_dbar', 'pressure_depth']
-    pvars = list(set(pressure_vars).intersection(vars))
+                     'sci_water_pressure_dbar', 'pressure_depth', 'abs_seafloor_pressure', 'presf_tide_pressure',
+                     'presf_wave_burst_pressure', 'pressure', 'velpt_pressure', 'ctd_dbar', 'vel3d_k_pressure',
+                     'seafloor_pressure']
+    pvariables = list(set(pressure_variables).intersection(vars))
+    pvars = []
+    for press_var in pvariables:
+        try:
+            units = dataset[press_var].units
+            if units == 'dbar':
+                pvars.append(str(press_var))
+        except AttributeError:
+            continue
+
     if len(pvars) > 1:
         print('More than 1 pressure variable found in the file')
     elif len(pvars) == 0:

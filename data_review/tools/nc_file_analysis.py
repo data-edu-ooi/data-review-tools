@@ -213,12 +213,7 @@ def main(sDir, url_list):
                                     [_, unmatch2] = compare_lists(ds_variables, stream_vars)
 
                                     # Check deployment pressure from asset management against pressure variable in file
-                                    if 'MOAS' in subsite and 'CTD' in refdes:
-                                        press = 'sci_water_pressure_dbar'
-                                    elif 'MOAS' not in subsite and 'CTD' in refdes:
-                                        press = pf.pressure_var(ds_variables)
-                                    else:
-                                        press = 'int_ctd_pressure'
+                                    press = pf.pressure_var(ds, ds_variables)
 
                                     # calculate mean pressure from data, excluding outliers +/- 3 SD
                                     try:

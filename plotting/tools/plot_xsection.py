@@ -42,10 +42,8 @@ def main(sDir, f, start_time, end_time):
 
                 if 'MOAS' in subsite and 'CTD' in main_sensor:  # for glider CTDs, pressure is a coordinate
                     pressure = 'sci_water_pressure_dbar'
-                elif 'MOAS' not in subsite and 'CTD' in main_sensor:
-                    pressure = pf.pressure_var(vars)
                 else:
-                    pressure = 'int_ctd_pressure'
+                    pressure = pf.pressure_var(ds, vars)
 
                 sci_vars = cf.return_science_vars(stream)
                 sci_vars = [s for s in sci_vars if s not in [pressure]]  # remove pressure from sci_vars
