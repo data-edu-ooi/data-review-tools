@@ -117,7 +117,11 @@ def main(f, ps, mc):
                             max = vsummary['max']
                             stdev = vsummary['stdev']
                             n_stats = vsummary['n_stats']
-                            percent_valid_data = round((float(n_stats)/float(nt) * 100), 2)
+
+                            if type(n_stats) == unicode:
+                                percent_valid_data = 'stats not calculated'
+                            else:
+                                percent_valid_data = round((float(n_stats)/float(nt) * 100), 2)
                             n_o = vsummary['n_outliers']
                             n_nan = vsummary['n_nans']
                             n_fv = vsummary['n_fillvalues']
@@ -186,7 +190,11 @@ def main(f, ps, mc):
 
                         # Check if any percent_valid_data values (for science variables) are < 95
                         pvd_test = dict()
-                        x99 = len([x for x in valid_list if x > 99.00])
+                        snc = len([x for x in valid_list if x == 'stats not calculated'])
+                        if snc > 0:
+                            pvd_test['stats not calculated'] = snc
+
+                        x99 = len([x for x in valid_list if (type(x) is not str and x > 99.00)])
                         if x99 > 0:
                             pvd_test['99'] = x99
 
@@ -223,7 +231,10 @@ def main(f, ps, mc):
                                 md_missing_days = 0
                                 md = ast.literal_eval(md)
                                 for md_gap in md['missing_data_gaps']:
-                                    md_add_days = (pd.to_datetime(md_gap[1]) - pd.to_datetime(md_gap[0])).days
+                                    if len(md_gap) > 2:  # if there is only one date listed
+                                        md_add_days = 1
+                                    else:
+                                        md_add_days = (pd.to_datetime(md_gap[1]) - pd.to_datetime(md_gap[0])).days
                                     md_missing_days = md_missing_days + md_add_days
                                 n_missing_gaps.append(len(md['missing_data_gaps']))
                                 n_missing_days.append(md_missing_days)

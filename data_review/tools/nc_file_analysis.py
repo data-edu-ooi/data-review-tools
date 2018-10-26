@@ -218,11 +218,24 @@ def main(sDir, url_list):
                                     # calculate mean pressure from data, excluding outliers +/- 3 SD
                                     try:
                                         pressure = ds[press]
-                                        [press_outliers, pressure_mean, _, _, _, _] = cf.variable_statistics(pressure, 3)
+                                        num_dims = len(pressure.dims)
+                                        if num_dims > 1:
+                                            print 'variable has more than 1 dimension'
+                                            press_outliers = 'not calculated yet: variable has more than 1 dimension'
+                                            pressure_mean = np.nanmean(pressure.data)
+
+                                        else:
+                                            if len(pressure) > 1:
+                                                [press_outliers, pressure_mean, _, _, _, _] = cf.variable_statistics(pressure, 3)
+                                            else:  # if there is only 1 data point
+                                                press_outliers = 0
+                                                pressure_mean = round(ds[press].data.tolist()[0], 4)
+
                                         if not deploy_depth:
                                             pressure_diff = 'no deploy depth in AM'
                                         else:
                                             pressure_diff = round(pressure_mean - deploy_depth, 4)
+
                                         try:
                                             pressure_units = pressure.units
                                         except AttributeError:
@@ -264,20 +277,43 @@ def main(sDir, url_list):
 
                                     # calculate statistics for science variables, excluding outliers +/- 5 SD
                                     for v in sci_vars:
+                                        print v
                                         try:
                                             var = ds[v]
-
-                                            # reject NaNs
-                                            var_nonan = var[~np.isnan(var)]
-                                            n_nan = len(var) - len(var_nonan)
-
-                                            # reject fill values
                                             fv = str(var._FillValue)
-                                            var_nonan_nofv = var_nonan[var_nonan != var._FillValue]
-                                            n_fv = len(var) - n_nan - len(var_nonan_nofv)
+                                            num_dims = len(var.dims)
+                                            if num_dims > 1:
+                                                print 'variable has more than 1 dimension'
+                                                num_outliers = None
+                                                mean = None
+                                                vmin = None
+                                                vmax = None
+                                                sd = None
+                                                n_stats = 'variable has more than 1 dimension'
+                                                var_units = var.units
+                                                n_nan = None
+                                                n_fv = None
+                                                fv = None
+                                            else:
+                                                # reject NaNs
+                                                var_nonan = var[~np.isnan(var)]
+                                                n_nan = len(var) - len(var_nonan)
 
-                                            [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_nonan_nofv, 5)
-                                            var_units = var.units
+                                                # reject fill values
+                                                var_nonan_nofv = var_nonan[var_nonan != var._FillValue]
+                                                n_fv = len(var) - n_nan - len(var_nonan_nofv)
+
+                                                if len(var_nonan_nofv) > 1:
+                                                    [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_nonan_nofv, 5)
+                                                else:
+                                                    num_outliers = 0
+                                                    mean = round(var_nonan_nofv.data.tolist()[0], 4)
+                                                    vmin = None
+                                                    vmax = None
+                                                    sd = None
+                                                    n_stats = 1
+
+                                                var_units = var.units
 
                                         except KeyError:
                                             num_outliers = None

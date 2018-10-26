@@ -17,6 +17,7 @@ f = '/Users/lgarzio/Documents/OOI/DataReviews/test/data_request_summary.csv'
 
 ff = pd.read_csv(f)
 url_list = ff['outputUrl'].tolist()
+url_list = [u for u in url_list if u not in 'no_output_url']
 
 json_nc_analysis = nc_file_analysis.main(sDir, url_list)
 
