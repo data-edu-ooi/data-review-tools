@@ -163,7 +163,7 @@ def main(f, ps, mc):
                         elif 'fail' in str(at) and 'pass' in str(ut):
                             time_test = 'fail ascending timestamp test'
                         elif 'fail' in str(at) and 'fail' in str(ut):
-                            time_test = 'fail ascending and unique timestamp tests'
+                            time_test = 'fail unique and ascending timestamp tests'
 
                         # Location difference from first deployment of instrument
                         loc_diff = []
@@ -190,15 +190,15 @@ def main(f, ps, mc):
                         if x95 > 0:
                             pvd_test['>95'] = x95
 
-                        x75_95 = len([x for x in valid_list if 75.00 > x >= 95.00])
+                        x75_95 = len([x for x in valid_list if 75.00 < x <= 95.00])
                         if x75_95 > 0:
                             pvd_test['75_95'] = x75_95
 
-                        x50_75 = len([x for x in valid_list if 50.00 > x >= 75.00])
+                        x50_75 = len([x for x in valid_list if 50.00 < x <= 75.00])
                         if x50_75 > 0:
                             pvd_test['50_75'] = x50_75
 
-                        x25_50 = len([x for x in valid_list if 25.00 > x >= 50.00])
+                        x25_50 = len([x for x in valid_list if 25.00 < x <= 50.00])
                         if x25_50 > 0:
                             pvd_test['25_50'] = x25_50
 
