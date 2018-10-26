@@ -234,6 +234,9 @@ def word_check(method_stream_dict):
             fix = s.split(wordi[0])
             if len(fix) == 2:
                 ss_new.append(fix[0] + fix[1].split('_recovered')[0])
+        elif '_recovered' in s:
+            ss_new.append(s.split('_recovered')[0])
+
         else:
             ss_new.append(s)
     return pd.DataFrame({'method': mm, 'stream_name': ss, 'stream_name_compare': ss_new})
@@ -327,4 +330,5 @@ if __name__ == '__main__':
         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181001T150707-GP03FLMA-RIM01-02-CTDMOG040-recovered_inst-ctdmo_ghqr_instrument_recovered/catalog.html',
         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181001T150716-GP03FLMA-RIM01-02-CTDMOG040-telemetered-ctdmo_ghqr_sio_mule_instrument/catalog.html',
         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181001T150726-GP03FLMA-RIM01-02-CTDMOG041-recovered_host-ctdmo_ghqr_sio_mule_instrument/catalog.html']
+
     main(sDir, url_list)
