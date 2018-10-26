@@ -186,26 +186,29 @@ def main(f, ps, mc):
 
                         # Check if any percent_valid_data values (for science variables) are < 95
                         pvd_test = dict()
-                        x95 = len([x for x in valid_list if x > 95.00])
+                        x99 = len([x for x in valid_list if x > 99.00])
+                        if x99 > 0:
+                            pvd_test['99'] = x99
+
+                        x95 = len([x for x in valid_list if 95.00 < x <= 99.00])
                         if x95 > 0:
-                            pvd_test['>95'] = x95
+                            pvd_test['95'] = x95
 
-                        x75_95 = len([x for x in valid_list if 75.00 < x <= 95.00])
-                        if x75_95 > 0:
-                            pvd_test['75_95'] = x75_95
+                        x75 = len([x for x in valid_list if 75.00 < x <= 95.00])
+                        if x75 > 0:
+                            pvd_test['75'] = x75
 
-                        x50_75 = len([x for x in valid_list if 50.00 < x <= 75.00])
-                        if x50_75 > 0:
-                            pvd_test['50_75'] = x50_75
+                        x50 = len([x for x in valid_list if 50.00 < x <= 75.00])
+                        if x50 > 0:
+                            pvd_test['50'] = x50
 
-                        x25_50 = len([x for x in valid_list if 25.00 < x <= 50.00])
-                        if x25_50 > 0:
-                            pvd_test['25_50'] = x25_50
-
-                        x25 = len([x for x in valid_list if x <= 25.00])
+                        x25 = len([x for x in valid_list if 25.00 < x <= 50.00])
                         if x25 > 0:
-                            pvd_test['<25'] = x25
+                            pvd_test['25'] = x25
 
+                        x0 = len([x for x in valid_list if x <= 25.00])
+                        if x0 > 0:
+                            pvd_test['0'] = x0
 
                         # Check if data are found in a "non-preferred" stream for any science variable
                         md_unique = np.unique(missing_data_list).tolist()
