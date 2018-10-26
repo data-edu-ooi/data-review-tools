@@ -195,7 +195,7 @@ def pressure_var(vars):
     """
     pressure_vars = ['int_ctd_pressure', 'seawater_pressure', 'ctdpf_ckl_seawater_pressure',
                      'ctdbp_seawater_pressure', 'ctdmo_seawater_pressure', 'ctdbp_no_seawater_pressure',
-                     'sci_water_pressure_dbar']
+                     'sci_water_pressure_dbar', 'pressure_depth']
     pvars = list(set(pressure_vars).intersection(vars))
     if len(pvars) > 1:
         print('More than 1 pressure variable found in the file')
