@@ -133,7 +133,10 @@ def main(sDir, url_list):
                                     # Calculate days deployed
                                     if deploy_stop != 'None':
                                         r_deploy_start = pd.to_datetime(deploy_start).replace(hour=0, minute=0, second=0)
-                                        r_deploy_stop = (pd.to_datetime(deploy_stop) + timedelta(days=1)).replace(hour=0, minute=0, second=0)
+                                        if deploy_stop.split('T')[1] == '00:00:00':
+                                            r_deploy_stop = pd.to_datetime(deploy_stop)
+                                        else:
+                                            r_deploy_stop = (pd.to_datetime(deploy_stop) + timedelta(days=1)).replace(hour=0, minute=0, second=0)
                                         n_days_deployed = (r_deploy_stop - r_deploy_start).days
                                     else:
                                         n_days_deployed = None
@@ -352,4 +355,5 @@ if __name__ == '__main__':
     sDir = '/Users/lgarzio/Documents/repo/OOI/data-edu-ooi/data-review-tools/data_review/output'
     url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181001T150658-GP03FLMA-RIM01-02-CTDMOG040-recovered_host-ctdmo_ghqr_sio_mule_instrument/catalog.html',
                 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181001T150707-GP03FLMA-RIM01-02-CTDMOG040-recovered_inst-ctdmo_ghqr_instrument_recovered/catalog.html']
+
     main(sDir, url_list)
