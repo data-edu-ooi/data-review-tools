@@ -15,6 +15,24 @@ import json
 import ast
 
 
+def group_percents(summary_dict, lst):
+    percent_grps = [99.00, [95.00, 99.00], [75.00, 95.00], [50.00, 75.00], [25.00, 50.00], 25.00]
+    for grp in percent_grps:
+        if grp == 99.00:
+            x99 = len([x for x in lst if (type(x) is not str and x > grp)])
+            if x99 > 0:
+                summary_dict['99'] = x99
+        elif grp == 25.00:
+            x0 = len([x for x in lst if x <= grp])
+            if x0 > 0:
+                summary_dict['0'] = x0
+        else:
+            xgrp = len([x for x in lst if grp[0] < x <= grp[1]])
+            if xgrp > 0:
+                summary_dict[str(int(grp[0]))] = xgrp
+    return summary_dict
+
+
 def load_json_file(f):
     if f.endswith('.json'):
         info = json.load(open(f, 'r'))
@@ -45,13 +63,16 @@ def main(f, ps, mc):
                         'time_delta_start', 'time_delta_end', 'start_days_missing', 'end_days_missing',
                         'location_diff_km', 'n_days_deployed', 'n_timestamps', 'n_days', 'deploy_depth', 'pressure_mean',
                         'pressure_diff', 'pressure_var', 'pressure_units', 'num_pressure_outliers', 'missing_vars_file',
-                        'missing_vars_db', 'file_time_gaps', 'gaps_num', 'gaps_num_days',
-                        'timestamp_test', 'valid_data_test', 'full_dataset_test', 'file_coordinates', 'coordinate_test', 'filename']
+                        'missing_vars_db', 'file_time_gaps', 'gaps_num', 'gaps_num_days', 'timestamp_test',
+                        'n_science_vars', 'valid_data_test', 'variable_comparison_test', 'full_dataset_test',
+                        'file_coordinates', 'coordinate_test', 'filename']
     vsummary_headers = ['deployment', 'preferred_method', 'stream', 'variable', 'units', 'fill_value',
-                        'n_all', 'n_outliers', 'n_nans', 'n_fillvalues', 'n_stats', 'percent_valid_data', 'mean', 'min', 'max', 'stdev']
+                        'n_all', 'n_outliers', 'n_nans', 'n_fillvalues', 'n_stats', 'percent_valid_data', 'mean', 'min',
+                        'max', 'stdev']
     csummary_headers = ['deployment', 'preferred_method_stream', 'comparison_method_stream', 'long_name',
                         'preferred_name', 'preferred_units', 'unit_comparison_test', 'preferred_n', 'preferred_n_nan',
-                        'missing_data', 'n_comparison', 'min_abs_diff', 'max_abs_diff', 'n_diff_greater_zero']
+                        'missing_data', 'n_comparison', 'min_abs_diff', 'max_abs_diff', 'n_diff_greater_zero',
+                        'percent_diff_greater_zero']
     fsummary_rows = []
     vsummary_rows = []
     csummary_rows = []
@@ -67,6 +88,7 @@ def main(f, ps, mc):
                 if ms in ps[d]:
                     # build the summary of comparison of science variables among delivery methods
                     missing_data_list = []
+                    diff_gzero_list = []
                     try:
                         for compare_str in mc['deployments'][d]['comparison'].keys():
                             if str(ms) in str(compare_str):
@@ -92,16 +114,18 @@ def main(f, ps, mc):
                                     min_abs_diff = compare_summary['min_abs_diff']
                                     max_abs_diff = compare_summary['max_abs_diff']
                                     n_diff_greater_zero = compare_summary['n_diff_greater_zero']
+                                    percent_diff_greater_zero = round((float(n_diff_greater_zero)/float(n_comparison) * 100), 2)
 
                                     missing_data_list.append(str(missing_data))
+                                    diff_gzero_list.append(percent_diff_greater_zero)
 
                                     csummary_rows.append([d, str(preferred_stream_name), str(comparison_stream_name),
                                                           var, name, units, unit_test, n, n_nan, missing_data,
                                                           n_comparison, min_abs_diff, max_abs_diff,
-                                                          n_diff_greater_zero])
+                                                          n_diff_greater_zero, percent_diff_greater_zero])
                     except KeyError:
                         csummary_rows.append([d, ms, 'no other methods available for comparison', None, None, None,
-                                              None, None, None, None, None, None, None, None])
+                                              None, None, None, None, None, None, None, None, None])
 
                     for fname in ddata['method'][m]['stream'][s]['file'].keys():
                         fsummary = ddata['method'][m]['stream'][s]['file'][fname]
@@ -129,8 +153,8 @@ def main(f, ps, mc):
 
                             valid_list.append(percent_valid_data)
 
-                            vsummary_rows.append([d, m, s, v, units, fv, nt, n_o, n_nan, n_fv, n_stats, percent_valid_data, mean, min,
-                                                  max, stdev])
+                            vsummary_rows.append([d, m, s, v, units, fv, nt, n_o, n_nan, n_fv, n_stats,
+                                                  percent_valid_data, mean, min, max, stdev])
 
                         # build file summary
                         other_methods = [str(x) for x in ddata['method'].keys() if x not in [m]]
@@ -148,6 +172,7 @@ def main(f, ps, mc):
                         upress = fsummary['pressure_comparison']['units']
                         press_diff = fsummary['pressure_comparison']['diff']
                         opress = fsummary['pressure_comparison']['num_outliers']
+                        n_science_vars = len(valid_list)
 
                         tdelta_start = time_delta(start, dstart)
                         if stop == 'None':
@@ -194,29 +219,7 @@ def main(f, ps, mc):
                         if snc > 0:
                             pvd_test['stats not calculated'] = snc
 
-                        x99 = len([x for x in valid_list if (type(x) is not str and x > 99.00)])
-                        if x99 > 0:
-                            pvd_test['99'] = x99
-
-                        x95 = len([x for x in valid_list if 95.00 < x <= 99.00])
-                        if x95 > 0:
-                            pvd_test['95'] = x95
-
-                        x75 = len([x for x in valid_list if 75.00 < x <= 95.00])
-                        if x75 > 0:
-                            pvd_test['75'] = x75
-
-                        x50 = len([x for x in valid_list if 50.00 < x <= 75.00])
-                        if x50 > 0:
-                            pvd_test['50'] = x50
-
-                        x25 = len([x for x in valid_list if 25.00 < x <= 50.00])
-                        if x25 > 0:
-                            pvd_test['25'] = x25
-
-                        x0 = len([x for x in valid_list if x <= 25.00])
-                        if x0 > 0:
-                            pvd_test['0'] = x0
+                        pvd_test = group_percents(pvd_test, valid_list)
 
                         # Check if data are found in a "non-preferred" stream for any science variable
                         md_unique = np.unique(missing_data_list).tolist()
@@ -244,6 +247,14 @@ def main(f, ps, mc):
                             fd_test = 'fail: data found in another stream (gaps: {} days: {})'.format(n_missing_gaps,
                                                                                                       n_missing_days)
 
+                        # Check that the difference between multiple methods for science variables is less than 0
+                        comparison_test = dict()
+                        if len(diff_gzero_list) > 0:
+                            compare_check = [100.00 - dgz for dgz in diff_gzero_list]
+                            comparison_test = group_percents(comparison_test, compare_check)
+                        else:
+                            comparison_test = None
+
                         # Check the coordinates in the file
                         check_coords = list(set(['obs', 'time', 'pressure', 'lat', 'lon']) - set(coords))
 
@@ -256,7 +267,8 @@ def main(f, ps, mc):
                                               tdelta_start.days, tdelta_stop_days, loc_diff, n_days_deployed, nt,
                                               nd,
                                               depth, mpress, press_diff, vpress, upress, opress, v_missing_f,
-                                              v_missing_db, gaps, n_gaps, n_gaps_days, time_test, pvd_test, fd_test, coords, coord_test, fname])
+                                              v_missing_db, gaps, n_gaps, n_gaps_days, time_test, n_science_vars,
+                                              pvd_test, comparison_test, fd_test, coords, coord_test, fname])
 
     fdf = pd.DataFrame(fsummary_rows, columns=fsummary_headers)
     fdf.to_csv('{}/{}_file_summary.csv'.format(os.path.dirname(f), refdes), index=False)
