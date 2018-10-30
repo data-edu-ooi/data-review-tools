@@ -207,6 +207,36 @@ def return_science_vars(stream):
     return sci_vars
 
 
+def stream_word_check(method_stream_dict):
+    # check stream names for cases where extra words are used in the names
+    omit_word = ['_dcl', '_imodem', '_conc']
+    mm = []
+    ss = []
+    ss_new = []
+
+    for y in method_stream_dict.keys():
+        mm.append(str(y).split('-')[0])
+        ss.append(str(y).split('-')[1])
+
+    for s in ss:
+        wordi = []
+        for word in omit_word:
+            if word in s:
+                wordi.append(word)
+                break
+
+        if wordi:
+            fix = s.split(wordi[0])
+            if len(fix) == 2:
+                ss_new.append(fix[0] + fix[1].split('_recovered')[0])
+        elif '_recovered' in s:
+            ss_new.append(s.split('_recovered')[0])
+
+        else:
+            ss_new.append(s)
+    return pd.DataFrame({'method': mm, 'stream_name': ss, 'stream_name_compare': ss_new})
+
+
 def variable_statistics(variable, stdev=None):
     """
     Calculate statistics for a variable of interest

@@ -93,13 +93,14 @@ def compare_data(df):
                                     unit_test = 'fail'
 
                                 # Merge dataframes from both methods
-                                m = pd.merge(ds0_df, ds1_df, on='time', how='outer')
+                                merged = pd.merge(ds0_df, ds1_df, on='time', how='outer')
 
                                 # Drop rows where both variables are NaNs, and make sure the timestamps are in order
-                                m.dropna(subset=[[ds0_rename, ds1_rename]], how='all', inplace=True)
-                                m = m.sort_values('time').reset_index(drop=True)
+                                merged.dropna(subset=[[ds0_rename, ds1_rename]], how='all', inplace=True)
+                                merged = merged.sort_values('time').reset_index(drop=True)
+                                m_intersect = merged[merged[ds0_rename].notnull() & merged[ds1_rename].notnull()]
 
-                                if len(m) == 0:
+                                if len(m_intersect) == 0:
                                     n_comparison = 0
                                     n_diff_g_zero = None
                                     min_diff = None
@@ -108,7 +109,7 @@ def compare_data(df):
                                     ds1_missing_dict = "timestamp_seconds do not match"
 
                                 # If the number of data points for comparison is less than 5% of the smaller sample size
-                                elif float(len(m))/float(min(n0, n1))*100 < 5.00:
+                                elif float(len(m_intersect))/float(min(n0, n1))*100 < 5.00:
                                     n_comparison = 0
                                     n_diff_g_zero = None
                                     min_diff = None
@@ -117,28 +118,25 @@ def compare_data(df):
                                     ds1_missing_dict = "<5% timestamp_seconds match"
                                 else:
                                     # Find where data are available in one dataset and missing in the other
-                                    ds0_missing = m.loc[m[ds0_rename].isnull()]
+                                    ds0_missing = merged.loc[merged[ds0_rename].isnull()]
                                     if len(ds0_missing) > 0:
                                         ds0_missing_dict = missing_data_times(ds0_missing, ds0_method)
                                     else:
                                         ds0_missing_dict = 'no missing data'
 
-                                    ds1_missing = m.loc[m[ds1_rename].isnull()]
+                                    ds1_missing = merged.loc[merged[ds1_rename].isnull()]
                                     if len(ds1_missing) > 0:
                                         ds1_missing_dict = missing_data_times(ds1_missing, ds1_method)
                                     else:
                                         ds1_missing_dict = 'no missing data'
 
                                     # Where the data intersect, calculate the difference between the methods
-                                    m = m[m[ds0_rename].notnull() & m[ds1_rename].notnull()]
-                                    diff = m[ds0_rename] - m[ds1_rename]
+                                    diff = m_intersect[ds0_rename] - m_intersect[ds1_rename]
                                     n_diff_g_zero = sum(abs(diff) > 0.99999999999999999)
 
                                     min_diff = round(min(abs(diff)), 10)
                                     max_diff = round(max(abs(diff)), 10)
                                     n_comparison = len(diff)
-
-
 
                                 summary['deployments'][d]['comparison'][compare]['vars'][str(long_name)] = dict(
                                     ds0=dict(name=name_ds0, units=ds0_units, n=n0, n_nan=n0_nan, missing=ds0_missing_dict),
@@ -233,36 +231,6 @@ def var_units(variable):
     return y_units
 
 
-def word_check(method_stream_dict):
-    # check stream names for cases where extra words are used in the names
-    omit_word = ['_dcl', '_imodem', '_conc']
-    mm = []
-    ss = []
-    ss_new = []
-
-    for y in method_stream_dict.keys():
-        mm.append(str(y).split('-')[0])
-        ss.append(str(y).split('-')[1])
-
-    for s in ss:
-        wordi = []
-        for word in omit_word:
-            if word in s:
-                wordi.append(word)
-                break
-
-        if wordi:
-            fix = s.split(wordi[0])
-            if len(fix) == 2:
-                ss_new.append(fix[0] + fix[1].split('_recovered')[0])
-        elif '_recovered' in s:
-            ss_new.append(s.split('_recovered')[0])
-
-        else:
-            ss_new.append(s)
-    return pd.DataFrame({'method': mm, 'stream_name': ss, 'stream_name_compare': ss_new})
-
-
 def main(sDir, url_list):
     # get summary lists of reference designators and delivery methods
     rd_list = []
@@ -318,7 +286,7 @@ def main(sDir, url_list):
 
         if len(np.unique(ustreams)) > len(np.unique(umethods)):  # if there is more than 1 stream per delivery method
             mdict = dict()
-            method_stream_df = word_check(dinfo)
+            method_stream_df = cf.stream_word_check(dinfo)
             for cs in (np.unique(method_stream_df['stream_name_compare'])).tolist():
                 print 'Common stream_name: {}'.format(cs)
                 method_stream_list = []
