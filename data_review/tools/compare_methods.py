@@ -99,36 +99,57 @@ def compare_data(df):
                                 m.dropna(subset=[[ds0_rename, ds1_rename]], how='all', inplace=True)
                                 m = m.sort_values('time').reset_index(drop=True)
 
-                                # Find where data are available in one dataset and missing in the other
-                                ds0_missing = m.loc[m[ds0_rename].isnull()]
-                                if len(ds0_missing) > 0:
-                                    ds0_missing_dict = missing_data_times(ds0_missing, ds0_method)
+                                if len(m) == 0:
+                                    n_comparison = 0
+                                    n_diff_g_zero = None
+                                    min_diff = None
+                                    max_diff = None
+                                    ds0_missing_dict = "timestamp_seconds do not match"
+                                    ds1_missing_dict = "timestamp_seconds do not match"
+
+                                # If the number of data points for comparison is less than 5% of the smaller sample size
+                                elif float(len(m))/float(min(n0, n1))*100 < 5.00:
+                                    n_comparison = 0
+                                    n_diff_g_zero = None
+                                    min_diff = None
+                                    max_diff = None
+                                    ds0_missing_dict = "<5% timestamp_seconds match"
+                                    ds1_missing_dict = "<5% timestamp_seconds match"
                                 else:
-                                    ds0_missing_dict = 'no missing data'
+                                    # Find where data are available in one dataset and missing in the other
+                                    ds0_missing = m.loc[m[ds0_rename].isnull()]
+                                    if len(ds0_missing) > 0:
+                                        ds0_missing_dict = missing_data_times(ds0_missing, ds0_method)
+                                    else:
+                                        ds0_missing_dict = 'no missing data'
 
-                                ds1_missing = m.loc[m[ds1_rename].isnull()]
-                                if len(ds1_missing) > 0:
-                                    ds1_missing_dict = missing_data_times(ds1_missing, ds1_method)
-                                else:
-                                    ds1_missing_dict = 'no missing data'
+                                    ds1_missing = m.loc[m[ds1_rename].isnull()]
+                                    if len(ds1_missing) > 0:
+                                        ds1_missing_dict = missing_data_times(ds1_missing, ds1_method)
+                                    else:
+                                        ds1_missing_dict = 'no missing data'
 
-                                # Where the data intersect, calculate the difference between the methods
-                                m = m[m[ds0_rename].notnull() & m[ds1_rename].notnull()]
-                                diff = m[ds0_rename] - m[ds1_rename]
-                                n_diff_g_zero = sum(abs(diff) > 0.99999999999999999)
+                                    # Where the data intersect, calculate the difference between the methods
+                                    m = m[m[ds0_rename].notnull() & m[ds1_rename].notnull()]
+                                    diff = m[ds0_rename] - m[ds1_rename]
+                                    n_diff_g_zero = sum(abs(diff) > 0.99999999999999999)
 
-                                min_diff = round(min(abs(diff)), 10)
-                                max_diff = round(max(abs(diff)), 10)
+                                    min_diff = round(min(abs(diff)), 10)
+                                    max_diff = round(max(abs(diff)), 10)
+                                    n_comparison = len(diff)
+
+
+
                                 summary['deployments'][d]['comparison'][compare]['vars'][str(long_name)] = dict(
                                     ds0=dict(name=name_ds0, units=ds0_units, n=n0, n_nan=n0_nan, missing=ds0_missing_dict),
                                     ds1=dict(name=name_ds1, units=ds1_units, n=n1, n_nan=n1_nan, missing=ds1_missing_dict),
-                                    unit_test=unit_test, n_comparison=len(diff), n_diff_greater_zero=n_diff_g_zero,
+                                    unit_test=unit_test, n_comparison=n_comparison, n_diff_greater_zero=n_diff_g_zero,
                                     min_abs_diff=min_diff, max_abs_diff=max_diff)
     return summary
 
 
 def get_ds_variable_info(dataset, variable_name, rename):
-    ds_df = dataset[variable_name].to_dataframe()
+    ds_df = pd.DataFrame({'time': dataset['time'].data, variable_name: dataset[variable_name].data})
     ds_units = var_units(dataset[variable_name])
     ds_df.rename(columns={str(variable_name): rename}, inplace=True)
     n = len(ds_df[rename])
