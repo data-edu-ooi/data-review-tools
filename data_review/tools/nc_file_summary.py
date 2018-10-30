@@ -19,9 +19,16 @@ def group_percents(summary_dict, lst):
     percent_grps = [99.00, [95.00, 99.00], [75.00, 95.00], [50.00, 75.00], [25.00, 50.00], 25.00]
     for grp in percent_grps:
         if grp == 99.00:
-            x99 = len([x for x in lst if (type(x) is not str and x > grp)])
-            if x99 > 0:
-                summary_dict['99'] = x99
+            x99 = []
+            ilst = []
+            for i, x in enumerate(lst):
+                if type(x) is not str and x > grp:
+                    x99.append(x)
+                elif type(x) is not str and x <= grp:
+                    ilst.append(i)
+            #x99 = len([x for x in lst if (type(x) is not str and x > grp)])
+            if len(x99) > 0:
+                summary_dict['99'] = len(x99)
         elif grp == 25.00:
             x0 = len([x for x in lst if x <= grp])
             if x0 > 0:
@@ -30,7 +37,7 @@ def group_percents(summary_dict, lst):
             xgrp = len([x for x in lst if grp[0] < x <= grp[1]])
             if xgrp > 0:
                 summary_dict[str(int(grp[0]))] = xgrp
-    return summary_dict
+    return summary_dict, ilst
 
 
 def load_json_file(f):
@@ -64,8 +71,8 @@ def main(f, ps, mc):
                         'location_diff_km', 'n_days_deployed', 'n_timestamps', 'n_days', 'deploy_depth', 'pressure_mean',
                         'pressure_diff', 'pressure_var', 'pressure_units', 'num_pressure_outliers', 'missing_vars_file',
                         'missing_vars_db', 'file_time_gaps', 'gaps_num', 'gaps_num_days', 'timestamp_test',
-                        'n_science_vars', 'valid_data_test', 'variable_comparison_test', 'full_dataset_test',
-                        'file_coordinates', 'coordinate_test', 'filename']
+                        'n_science_vars', 'valid_data_test', 'variable_comparison_details', 'variable_comparison_test',
+                        'full_dataset_test', 'file_coordinates', 'coordinate_test', 'filename']
     vsummary_headers = ['deployment', 'preferred_method', 'stream', 'variable', 'units', 'fill_value',
                         'n_all', 'n_outliers', 'n_nans', 'n_fillvalues', 'n_stats', 'percent_valid_data', 'mean', 'min',
                         'max', 'stdev']
@@ -89,6 +96,7 @@ def main(f, ps, mc):
                     # build the summary of comparison of science variables among delivery methods
                     missing_data_list = []
                     diff_gzero_list = []
+                    var_list = []
                     try:
                         for compare_str in mc['deployments'][d]['comparison'].keys():
                             if str(ms) in str(compare_str):
@@ -103,6 +111,7 @@ def main(f, ps, mc):
                                     comparison_stream_name = ds0
 
                                 for var in mc['deployments'][d]['comparison'][compare_str]['vars'].keys():
+                                    var_list.append(var)
                                     compare_summary = mc['deployments'][d]['comparison'][compare_str]['vars'][var]
                                     name = compare_summary[preferred_stream]['name']
                                     units = compare_summary[preferred_stream]['units']
@@ -191,11 +200,11 @@ def main(f, ps, mc):
                         if 'pass' in str(at) and 'pass' in str(ut):
                             time_test = 'pass'
                         elif 'pass' in str(at) and 'fail' in str(ut):
-                            time_test = 'fail unique timestamp test'
+                            time_test = 'fail unique test'
                         elif 'fail' in str(at) and 'pass' in str(ut):
-                            time_test = 'fail ascending timestamp test'
+                            time_test = 'fail ascending test'
                         elif 'fail' in str(at) and 'fail' in str(ut):
-                            time_test = 'fail unique and ascending timestamp tests'
+                            time_test = 'fail unique and ascending tests'
 
                         # Location difference from first deployment of instrument
                         loc_diff = []
@@ -222,15 +231,17 @@ def main(f, ps, mc):
                         if snc > 0:
                             pvd_test['stats not calculated'] = snc
 
-                        pvd_test = group_percents(pvd_test, valid_list)
+                        pvd_test, dlst = group_percents(pvd_test, valid_list)
 
                         # Check if data are found in a "non-preferred" stream for any science variable
                         md_unique = np.unique(missing_data_list).tolist()
-                        md_options = ['no missing data', 'timestamp_seconds do not match', '<5% timestamp_seconds match']
+                        md_options = ['timestamp_seconds do not match', '<5% timestamp_seconds match']
                         if len(md_unique) == 0:
-                            fd_test = None
+                            fd_test = 'no other streams for comparison'
+                        elif len(md_unique) == 1 and md_unique[0] in 'no missing data':
+                            fd_test = 'pass'
                         elif len(md_unique) == 1 and md_unique[0] in md_options:
-                            fd_test = md_unique[0]
+                            fd_test = 'no comparison: timestamps do not match'
                         else:
                             n_missing_gaps = []
                             n_missing_days = []
@@ -252,15 +263,22 @@ def main(f, ps, mc):
                                                                                                       n_missing_days)
 
                         # Check that the difference between multiple methods for science variables is less than 0
-                        comparison_test = dict()
+                        comparison_details = dict()
                         if len(diff_gzero_list) > 0:
                             if np.unique(diff_gzero_list).tolist() == [None]:
+                                comparison_details = 'timestamp_seconds do not match between two methods'
                                 comparison_test = 'timestamp_seconds do not match between two methods'
                             else:
                                 compare_check = [100.00 - dgz for dgz in diff_gzero_list]
-                                comparison_test = group_percents(comparison_test, compare_check)
+                                comparison_details, ilst = group_percents(comparison_details, compare_check)
+                                if len(ilst) > 0:
+                                    vars_fail = [str(var_list[i]) for i in ilst]
+                                    comparison_test = 'fail: check {}'.format(vars_fail)
+                                else:
+                                    comparison_test = 'pass'
                         else:
-                            comparison_test = None
+                            comparison_details = 'no other streams for comparison'
+                            comparison_test = 'no other streams for comparison'
 
                         # Check the coordinates in the file
                         check_coords = list(set(['obs', 'time', 'pressure', 'lat', 'lon']) - set(coords))
@@ -268,14 +286,14 @@ def main(f, ps, mc):
                         if len(check_coords) > 0:
                             coord_test = 'missing coords: {}'.format(check_coords)
                         else:
-                            coord_test = 'all expected coords listed'
+                            coord_test = 'pass'
 
                         fsummary_rows.append([d, dwnl, m, s, other_methods, str(tdelta_start), str(tdelta_stop),
                                               tdelta_start.days, tdelta_stop_days, loc_diff, n_days_deployed, nt,
                                               nd,
                                               depth, mpress, press_diff, vpress, upress, opress, v_missing_f,
                                               v_missing_db, gaps, n_gaps, n_gaps_days, time_test, n_science_vars,
-                                              pvd_test, comparison_test, fd_test, coords, coord_test, fname])
+                                              pvd_test,comparison_details, comparison_test, fd_test, coords, coord_test, fname])
 
     fdf = pd.DataFrame(fsummary_rows, columns=fsummary_headers)
     fdf.to_csv('{}/{}_file_summary.csv'.format(os.path.dirname(f), refdes), index=False)
