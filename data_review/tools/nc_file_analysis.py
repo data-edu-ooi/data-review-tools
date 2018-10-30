@@ -40,16 +40,6 @@ def eliminate_common_variables(list):
     return list
 
 
-def gap_test(df):
-    gap_list = []
-    df['diff'] = df['time'].diff()
-    index_gap = df['diff'][df['diff'] > pd.Timedelta(days=1)].index.tolist()
-    for i in index_gap:
-        gap_list.append([pd.to_datetime(str(df['time'][i-1])).strftime('%Y-%m-%dT%H:%M:%S'),
-                         pd.to_datetime(str(df['time'][i])).strftime('%Y-%m-%dT%H:%M:%S')])
-    return gap_list
-
-
 def get_deployment_information(data, deployment):
     d_info = [x for x in data['instrument']['deployments'] if x['deployment_number'] == deployment]
     if d_info:
@@ -176,7 +166,7 @@ def main(sDir, url_list):
 
                                     # Get a list of data gaps >1 day
                                     time_df = pd.DataFrame(ds['time'].data, columns=['time'])
-                                    gap_list = gap_test(time_df)
+                                    gap_list = cf.timestamp_gap_test(time_df)
 
                                     # Check that the timestamps in the file are unique
                                     time = ds['time']

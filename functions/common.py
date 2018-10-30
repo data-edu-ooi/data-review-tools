@@ -237,6 +237,16 @@ def stream_word_check(method_stream_dict):
     return pd.DataFrame({'method': mm, 'stream_name': ss, 'stream_name_compare': ss_new})
 
 
+def timestamp_gap_test(df):
+    gap_list = []
+    df['diff'] = df['time'].diff()
+    index_gap = df['diff'][df['diff'] > pd.Timedelta(days=1)].index.tolist()
+    for i in index_gap:
+        gap_list.append([pd.to_datetime(str(df['time'][i-1])).strftime('%Y-%m-%dT%H:%M:%S'),
+                         pd.to_datetime(str(df['time'][i])).strftime('%Y-%m-%dT%H:%M:%S')])
+    return gap_list
+
+
 def variable_statistics(variable, stdev=None):
     """
     Calculate statistics for a variable of interest
