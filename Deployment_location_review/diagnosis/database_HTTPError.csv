@@ -1,0 +1,3 @@
+,url,message
+0,https://raw.githubusercontent.com/ooi-integration/asset-management/master/deployment/RS01SHDR_Deploy.csv,HTTPError
+1,https://raw.githubusercontent.com/ooi-integration/asset-management/master/deployment/RS05MDPL_Deploy.csv,HTTPError
