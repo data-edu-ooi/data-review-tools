@@ -31,6 +31,7 @@ import xarray as xr
 import pandas as pd
 import numpy as np
 import json
+from datetime import timedelta
 import functions.common as cf
 
 
@@ -100,24 +101,40 @@ def compare_data(df):
                                 merged = merged.sort_values('time').reset_index(drop=True)
                                 m_intersect = merged[merged[ds0_rename].notnull() & merged[ds1_rename].notnull()]
 
-                                if len(m_intersect) == 0:
+                                # If the number of data points for comparison is less than 1% of the smaller sample size
+                                # compare the timestamps by rounding to the nearest hour
+                                if len(m_intersect) == 0 or float(len(m_intersect))/float(min(n0, n1))*100 < 1.00:
                                     n_comparison = 0
                                     n_diff_g_zero = None
                                     min_diff = None
                                     max_diff = None
-                                    ds0_missing_dict = "timestamp_seconds do not match"
-                                    ds1_missing_dict = "timestamp_seconds do not match"
 
-                                # If the number of data points for comparison is less than 5% of the smaller sample size
-                                elif float(len(m_intersect))/float(min(n0, n1))*100 < 5.00:
-                                    n_comparison = 0
-                                    n_diff_g_zero = None
-                                    min_diff = None
-                                    max_diff = None
-                                    ds0_missing_dict = "<5% timestamp_seconds match"
-                                    ds1_missing_dict = "<5% timestamp_seconds match"
+                                    utime_df0 = unique_timestamps_hour(ds0)
+                                    utime_df0['ds0'] = 'ds0'
+                                    utime_df1 = unique_timestamps_hour(ds1)
+                                    utime_df1['ds1'] = 'ds1'
+                                    umerged = pd.merge(utime_df0, utime_df1, on='time', how='outer')
+                                    umerged = umerged.sort_values('time').reset_index(drop=True)
+
+                                    ds0_missing = umerged.loc[umerged['ds0'].isnull()]
+                                    if len(ds0_missing) > 0:
+                                        ds0_missing_dict = missing_data_times(ds0_missing, ds0_method)
+                                        ds0_missing_dict['n_hours_missing'] = ds0_missing_dict.pop('n_missing')
+                                        ds0_missing_dict['n_hours_missing_total'] = ds0_missing_dict.pop('n_missing_total')
+                                    else:
+                                        ds0_missing_dict = 'timestamps rounded to the hour: no missing data'
+
+                                    ds1_missing = umerged.loc[umerged['ds1'].isnull()]
+                                    if len(ds1_missing) > 0:
+                                        ds1_missing_dict = missing_data_times(ds1_missing, ds1_method)
+                                        ds1_missing_dict['n_hours_missing'] = ds1_missing_dict.pop('n_missing')
+                                        ds1_missing_dict['n_hours_missing_total'] = ds1_missing_dict.pop('n_missing_total')
+                                    else:
+                                        ds1_missing_dict = 'timestamps rounded to the hour: no missing data'
+
                                 else:
-                                    # Find where data are available in one dataset and missing in the other
+                                    # Find where data are available in one dataset and missing in the other if
+                                    # timestamps match exactly
                                     ds0_missing = merged.loc[merged[ds0_rename].isnull()]
                                     if len(ds0_missing) > 0:
                                         ds0_missing_dict = missing_data_times(ds0_missing, ds0_method)
@@ -214,13 +231,24 @@ def missing_data_times(df, method):
                 n_list.append(index_break[ii + 1] - nn + 1)
 
     n_total = sum(n_list)
+    days = pd.to_datetime(df['time']).map(lambda t: t.replace(second=0, microsecond=0, minute=0, hour=0, day=t.day))
+    n_days = len(np.unique(days))
 
     # don't print out each data gap for telemetered data, because it's usually way too much
     if method == 'telemetered':
         md_list = '{} data gaps'.format(len(md_list))
         n_list = '{} data gaps'.format(len(n_list))
 
-    return dict(missing_data_gaps=md_list, n_missing=n_list, n_missing_total=n_total)
+    return dict(missing_data_gaps=md_list, n_missing=n_list, n_missing_total=n_total, n_missing_days_total=n_days)
+
+
+def unique_timestamps_hour(ds):
+    # return dataframe of the unique timestamps rounded to the nearest hour
+    df = pd.DataFrame(ds['time'].data, columns=['time'])
+    df = df['time'].map(lambda t: t.replace(second=0, microsecond=0, minute=0, hour=t.hour) + timedelta(hours=t.minute // 30))
+    udf = pd.DataFrame(np.unique(df), columns=['time'])
+
+    return udf
 
 
 def var_units(variable):
@@ -228,6 +256,7 @@ def var_units(variable):
         y_units = variable.units
     except AttributeError:
         y_units = 'no_units'
+
     return y_units
 
 

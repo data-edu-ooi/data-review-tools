@@ -123,10 +123,10 @@ def main(f, ps, mc):
                                     min_abs_diff = compare_summary['min_abs_diff']
                                     max_abs_diff = compare_summary['max_abs_diff']
                                     n_diff_greater_zero = compare_summary['n_diff_greater_zero']
-                                    if missing_data in ['timestamp_seconds do not match', '<5% timestamp_seconds match']:
-                                        percent_diff_greater_zero = None
-                                    else:
+                                    if n_comparison > 0:
                                         percent_diff_greater_zero = round((float(n_diff_greater_zero)/float(n_comparison) * 100), 2)
+                                    else:
+                                        percent_diff_greater_zero = None
 
                                     missing_data_list.append(str(missing_data))
                                     diff_gzero_list.append(percent_diff_greater_zero)
@@ -235,10 +235,10 @@ def main(f, ps, mc):
 
                         # Check if data are found in a "non-preferred" stream for any science variable
                         md_unique = np.unique(missing_data_list).tolist()
-                        md_options = ['timestamp_seconds do not match', '<5% timestamp_seconds match']
+                        md_options = ['timestamp_seconds do not match']
                         if len(md_unique) == 0:
                             fd_test = 'no other streams for comparison'
-                        elif len(md_unique) == 1 and md_unique[0] in 'no missing data':
+                        elif len(md_unique) == 1 and 'no missing data' in md_unique[0]:
                             fd_test = 'pass'
                         elif len(md_unique) == 1 and md_unique[0] in md_options:
                             fd_test = 'no comparison: timestamps do not match'
@@ -246,28 +246,20 @@ def main(f, ps, mc):
                             n_missing_gaps = []
                             n_missing_days = []
                             for md in md_unique:
-                                md_missing_days = 0
                                 md = ast.literal_eval(md)
-                                for md_gap in md['missing_data_gaps']:
-                                    if len(md_gap) > 2:  # if there is only one date listed
-                                        md_add_days = 1
-                                    else:
-                                        md_add_days = (pd.to_datetime(md_gap[1]) - pd.to_datetime(md_gap[0])).days
-                                    md_missing_days = md_missing_days + md_add_days
                                 n_missing_gaps.append(len(md['missing_data_gaps']))
-                                n_missing_days.append(md_missing_days)
+                                n_missing_days.append(md['n_missing_days_total'])
                             n_missing_gaps = np.unique([np.amin(n_missing_gaps), np.amax(n_missing_gaps)]).tolist()
                             n_missing_days = np.unique([np.amin(n_missing_days), np.amax(n_missing_days)]).tolist()
 
-                            fd_test = 'fail: data found in another stream (gaps: {} days: {})'.format(n_missing_gaps,
-                                                                                                      n_missing_days)
+                            fd_test = 'fail: data found in another stream (gaps: {} days: {})'.format(n_missing_gaps, n_missing_days)
 
                         # Check that the difference between multiple methods for science variables is less than 0
                         comparison_details = dict()
                         if len(diff_gzero_list) > 0:
                             if np.unique(diff_gzero_list).tolist() == [None]:
-                                comparison_details = 'timestamp_seconds do not match between two methods'
-                                comparison_test = 'timestamp_seconds do not match between two methods'
+                                comparison_details = 'no comparison: timestamps do not match'
+                                comparison_test = 'no comparison: timestamps do not match'
                             else:
                                 compare_check = [100.00 - dgz for dgz in diff_gzero_list]
                                 comparison_details, ilst = group_percents(comparison_details, compare_check)
