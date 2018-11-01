@@ -168,6 +168,16 @@ def main(sDir, url_list):
                                     time_df = pd.DataFrame(ds['time'].data, columns=['time'])
                                     gap_list = cf.timestamp_gap_test(time_df)
 
+                                    # Calculate the sampling rate to the nearest second
+                                    time_df['diff'] = time_df['time'].diff().astype('timedelta64[s]')
+                                    rates_df = time_df.groupby(['diff']).agg(['count'])
+                                    n_diff_calc = len(time_df) - 1
+                                    rates = dict(n_unique_rates=len(rates_df), common_sampling_rates=dict())
+                                    for i, row in rates_df.iterrows():
+                                        percent = (float(row['time']['count']) / float(n_diff_calc))
+                                        if percent > 0.1:
+                                            rates['common_sampling_rates'].update({int(i): '{:.2%}'.format(percent)})
+
                                     # Check that the timestamps in the file are unique
                                     time = ds['time']
                                     len_time = time.__len__()
@@ -196,7 +206,6 @@ def main(sDir, url_list):
 
                                     # Count the number of days for which there is at least 1 timestamp
                                     n_days = len(np.unique(time.data.astype('datetime64[D]')))
-
 
                                     # Compare variables in file to variables in Data Review Database
                                     ds_variables = ds.data_vars.keys() + ds.coords.keys()
@@ -253,6 +262,7 @@ def main(sDir, url_list):
                                             filename] = OrderedDict(
                                             file_downloaded=pd.to_datetime(splitter[0]).strftime('%Y-%m-%dT%H:%M:%S'),
                                             file_coordinates=ds.coords.keys(),
+                                            sampling_rate=rates,
                                             data_start=data_start,
                                             data_stop=data_stop,
                                             time_gaps=gap_list,
