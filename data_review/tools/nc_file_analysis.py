@@ -279,10 +279,10 @@ def main(sDir, url_list):
                                             sci_var_stats=OrderedDict())
 
                                     # calculate statistics for science variables, excluding outliers +/- 5 SD
-                                    for v in sci_vars:
-                                        print v
+                                    for sv in sci_vars:
+                                        print sv
                                         try:
-                                            var = ds[v]
+                                            var = ds[sv]
                                             fv = str(var._FillValue)
                                             num_dims = len(var.dims)
                                             if num_dims > 1:
@@ -308,13 +308,20 @@ def main(sDir, url_list):
 
                                                 if len(var_nonan_nofv) > 1:
                                                     [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_nonan_nofv, 5)
-                                                else:
+                                                elif len(var_nonan_nofv) == 1:
                                                     num_outliers = 0
                                                     mean = round(var_nonan_nofv.data.tolist()[0], 4)
                                                     vmin = None
                                                     vmax = None
                                                     sd = None
                                                     n_stats = 1
+                                                else:
+                                                    num_outliers = None
+                                                    mean = None
+                                                    vmin = None
+                                                    vmax = None
+                                                    sd = None
+                                                    n_stats = 0
 
                                                 var_units = var.units
 
@@ -332,7 +339,7 @@ def main(sDir, url_list):
 
                                         data['deployments'][deployment]['method'][method]['stream'][data_stream][
                                             'file'][
-                                            filename]['sci_var_stats'][v] = dict(n_outliers=num_outliers,
+                                            filename]['sci_var_stats'][sv] = dict(n_outliers=num_outliers,
                                                                                  mean=mean,
                                                                                  min=vmin,
                                                                                  max=vmax,

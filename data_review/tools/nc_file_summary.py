@@ -243,6 +243,8 @@ def main(f, ps, mc):
                             fd_test = 'pass'
                         elif len(md_unique) == 1 and md_unique[0] in md_options:
                             fd_test = 'no comparison: timestamps do not match'
+                        elif len(md_unique) == 1 and md_unique[0] in 'No valid data to compare':
+                            fd_test = 'No valid data to compare'
                         else:
                             n_missing_gaps = []
                             n_missing_days = []
@@ -257,27 +259,41 @@ def main(f, ps, mc):
 
                         # Check that the difference between multiple methods for science variables is less than 0
                         comparison_details = dict()
-                        if len(diff_gzero_list) > 0:
-                            if np.unique(diff_gzero_list).tolist() == [None]:
-                                comparison_details = 'no comparison: timestamps do not match'
-                                comparison_test = 'no comparison: timestamps do not match'
-                            else:
-                                compare_check = [100.00 - dgz for dgz in diff_gzero_list]
-                                comparison_details, ilst = group_percents(comparison_details, compare_check)
-                                if len(ilst) > 0:
-                                    vars_fail = [str(var_list[i]) for i in ilst]
-                                    comparison_test = 'fail: check {}'.format(vars_fail)
-                                else:
-                                    comparison_test = 'pass'
+                        if fd_test == 'No valid data to compare':
+                            comparison_details = 'No valid data to compare'
+                            comparison_test = 'No valid data to compare'
                         else:
-                            comparison_details = 'no other streams for comparison'
-                            comparison_test = 'no other streams for comparison'
+                            if len(diff_gzero_list) > 0:
+                                if np.unique(diff_gzero_list).tolist() == [None]:
+                                    comparison_details = 'no comparison: timestamps do not match'
+                                    comparison_test = 'no comparison: timestamps do not match'
+                                else:
+                                    compare_check = [100.00 - dgz for dgz in diff_gzero_list]
+                                    comparison_details, ilst = group_percents(comparison_details, compare_check)
+                                    if len(ilst) > 0:
+                                        vars_fail = [str(var_list[i]) for i in ilst]
+                                        comparison_test = 'fail: check {}'.format(vars_fail)
+                                    else:
+                                        comparison_test = 'pass'
+                            else:
+                                comparison_details = 'no other streams for comparison'
+                                comparison_test = 'no other streams for comparison'
 
                         # Check the coordinates in the file
                         check_coords = list(set(['obs', 'time', 'pressure', 'lat', 'lon']) - set(coords))
 
                         if len(check_coords) > 0:
-                            coord_test = 'missing coords: {}'.format(check_coords)
+                            if 'pressure' in check_coords:
+                                if 'int_ctd_pressure' in coords:
+                                    check_coords.remove('pressure')
+                                    if len(check_coords) > 0:
+                                        coord_test = 'missing coords: {}'.format(check_coords)
+                                    else:
+                                        coord_test = 'pass'
+                                else:
+                                    coord_test = 'missing coords: {}'.format(check_coords)
+                            else:
+                                coord_test = 'missing coords: {}'.format(check_coords)
                         else:
                             coord_test = 'pass'
 

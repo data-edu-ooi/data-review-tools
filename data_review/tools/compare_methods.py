@@ -98,62 +98,71 @@ def compare_data(df):
 
                                 # Drop rows where both variables are NaNs, and make sure the timestamps are in order
                                 merged.dropna(subset=[[ds0_rename, ds1_rename]], how='all', inplace=True)
-                                merged = merged.sort_values('time').reset_index(drop=True)
-                                m_intersect = merged[merged[ds0_rename].notnull() & merged[ds1_rename].notnull()]
-
-                                # If the number of data points for comparison is less than 1% of the smaller sample size
-                                # compare the timestamps by rounding to the nearest hour
-                                if len(m_intersect) == 0 or float(len(m_intersect))/float(min(n0, n1))*100 < 1.00:
+                                if len(merged) == 0:
+                                    print 'No valid data to compare'
                                     n_comparison = 0
                                     n_diff_g_zero = None
                                     min_diff = None
                                     max_diff = None
-
-                                    utime_df0 = unique_timestamps_hour(ds0)
-                                    utime_df0['ds0'] = 'ds0'
-                                    utime_df1 = unique_timestamps_hour(ds1)
-                                    utime_df1['ds1'] = 'ds1'
-                                    umerged = pd.merge(utime_df0, utime_df1, on='time', how='outer')
-                                    umerged = umerged.sort_values('time').reset_index(drop=True)
-
-                                    ds0_missing = umerged.loc[umerged['ds0'].isnull()]
-                                    if len(ds0_missing) > 0:
-                                        ds0_missing_dict = missing_data_times(ds0_missing, ds0_method)
-                                        ds0_missing_dict['n_hours_missing'] = ds0_missing_dict.pop('n_missing')
-                                        ds0_missing_dict['n_hours_missing_total'] = ds0_missing_dict.pop('n_missing_total')
-                                    else:
-                                        ds0_missing_dict = 'timestamps rounded to the hour: no missing data'
-
-                                    ds1_missing = umerged.loc[umerged['ds1'].isnull()]
-                                    if len(ds1_missing) > 0:
-                                        ds1_missing_dict = missing_data_times(ds1_missing, ds1_method)
-                                        ds1_missing_dict['n_hours_missing'] = ds1_missing_dict.pop('n_missing')
-                                        ds1_missing_dict['n_hours_missing_total'] = ds1_missing_dict.pop('n_missing_total')
-                                    else:
-                                        ds1_missing_dict = 'timestamps rounded to the hour: no missing data'
-
+                                    ds0_missing_dict = 'No valid data to compare'
+                                    ds1_missing_dict = 'No valid data to compare'
                                 else:
-                                    # Find where data are available in one dataset and missing in the other if
-                                    # timestamps match exactly
-                                    ds0_missing = merged.loc[merged[ds0_rename].isnull()]
-                                    if len(ds0_missing) > 0:
-                                        ds0_missing_dict = missing_data_times(ds0_missing, ds0_method)
+                                    merged = merged.sort_values('time').reset_index(drop=True)
+                                    m_intersect = merged[merged[ds0_rename].notnull() & merged[ds1_rename].notnull()]
+
+                                    # If the number of data points for comparison is less than 1% of the smaller sample size
+                                    # compare the timestamps by rounding to the nearest hour
+                                    if len(m_intersect) == 0 or float(len(m_intersect))/float(min(n0, n1))*100 < 1.00:
+                                        n_comparison = 0
+                                        n_diff_g_zero = None
+                                        min_diff = None
+                                        max_diff = None
+
+                                        utime_df0 = unique_timestamps_hour(ds0)
+                                        utime_df0['ds0'] = 'ds0'
+                                        utime_df1 = unique_timestamps_hour(ds1)
+                                        utime_df1['ds1'] = 'ds1'
+                                        umerged = pd.merge(utime_df0, utime_df1, on='time', how='outer')
+                                        umerged = umerged.sort_values('time').reset_index(drop=True)
+
+                                        ds0_missing = umerged.loc[umerged['ds0'].isnull()]
+                                        if len(ds0_missing) > 0:
+                                            ds0_missing_dict = missing_data_times(ds0_missing, ds0_method)
+                                            ds0_missing_dict['n_hours_missing'] = ds0_missing_dict.pop('n_missing')
+                                            ds0_missing_dict['n_hours_missing_total'] = ds0_missing_dict.pop('n_missing_total')
+                                        else:
+                                            ds0_missing_dict = 'timestamps rounded to the hour: no missing data'
+
+                                        ds1_missing = umerged.loc[umerged['ds1'].isnull()]
+                                        if len(ds1_missing) > 0:
+                                            ds1_missing_dict = missing_data_times(ds1_missing, ds1_method)
+                                            ds1_missing_dict['n_hours_missing'] = ds1_missing_dict.pop('n_missing')
+                                            ds1_missing_dict['n_hours_missing_total'] = ds1_missing_dict.pop('n_missing_total')
+                                        else:
+                                            ds1_missing_dict = 'timestamps rounded to the hour: no missing data'
+
                                     else:
-                                        ds0_missing_dict = 'no missing data'
+                                        # Find where data are available in one dataset and missing in the other if
+                                        # timestamps match exactly
+                                        ds0_missing = merged.loc[merged[ds0_rename].isnull()]
+                                        if len(ds0_missing) > 0:
+                                            ds0_missing_dict = missing_data_times(ds0_missing, ds0_method)
+                                        else:
+                                            ds0_missing_dict = 'no missing data'
 
-                                    ds1_missing = merged.loc[merged[ds1_rename].isnull()]
-                                    if len(ds1_missing) > 0:
-                                        ds1_missing_dict = missing_data_times(ds1_missing, ds1_method)
-                                    else:
-                                        ds1_missing_dict = 'no missing data'
+                                        ds1_missing = merged.loc[merged[ds1_rename].isnull()]
+                                        if len(ds1_missing) > 0:
+                                            ds1_missing_dict = missing_data_times(ds1_missing, ds1_method)
+                                        else:
+                                            ds1_missing_dict = 'no missing data'
 
-                                    # Where the data intersect, calculate the difference between the methods
-                                    diff = m_intersect[ds0_rename] - m_intersect[ds1_rename]
-                                    n_diff_g_zero = sum(abs(diff) > 0.99999999999999999)
+                                        # Where the data intersect, calculate the difference between the methods
+                                        diff = m_intersect[ds0_rename] - m_intersect[ds1_rename]
+                                        n_diff_g_zero = sum(abs(diff) > 0.99999999999999999)
 
-                                    min_diff = round(min(abs(diff)), 10)
-                                    max_diff = round(max(abs(diff)), 10)
-                                    n_comparison = len(diff)
+                                        min_diff = round(min(abs(diff)), 10)
+                                        max_diff = round(max(abs(diff)), 10)
+                                        n_comparison = len(diff)
 
                                 summary['deployments'][d]['comparison'][compare]['vars'][str(long_name)] = dict(
                                     ds0=dict(name=name_ds0, units=ds0_units, n=n0, n_nan=n0_nan, missing=ds0_missing_dict),
