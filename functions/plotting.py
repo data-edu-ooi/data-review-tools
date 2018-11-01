@@ -201,12 +201,15 @@ def pressure_var(dataset, vars):
     pvariables = list(set(pressure_variables).intersection(vars))
     pvars = []
     for press_var in pvariables:
-        try:
-            units = dataset[press_var].units
-            if units == 'dbar':
-                pvars.append(str(press_var))
-        except AttributeError:
-            continue
+        if press_var == 'int_ctd_pressure':
+            pvars.append(str(press_var))
+        else:
+            try:
+                units = dataset[press_var].units
+                if units == 'dbar':
+                    pvars.append(str(press_var))
+            except AttributeError:
+                continue
 
     if len(pvars) > 1:
         print('More than 1 pressure variable found in the file')
