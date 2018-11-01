@@ -249,13 +249,17 @@ def main(f, ps, mc):
                             n_missing_gaps = []
                             n_missing_days = []
                             for md in md_unique:
-                                md = ast.literal_eval(md)
-                                n_missing_gaps.append(len(md['missing_data_gaps']))
-                                n_missing_days.append(md['n_missing_days_total'])
-                            n_missing_gaps = np.unique([np.amin(n_missing_gaps), np.amax(n_missing_gaps)]).tolist()
-                            n_missing_days = np.unique([np.amin(n_missing_days), np.amax(n_missing_days)]).tolist()
+                                if 'no missing data' not in md:
+                                    md = ast.literal_eval(md)
+                                    n_missing_gaps.append(len(md['missing_data_gaps']))
+                                    n_missing_days.append(md['n_missing_days_total'])
+                            if len(n_missing_gaps) == 0:
+                                fd_test = 'pass'
+                            else:
+                                n_missing_gaps = np.unique([np.amin(n_missing_gaps), np.amax(n_missing_gaps)]).tolist()
+                                n_missing_days = np.unique([np.amin(n_missing_days), np.amax(n_missing_days)]).tolist()
 
-                            fd_test = 'fail: data found in another stream (gaps: {} days: {})'.format(n_missing_gaps, n_missing_days)
+                                fd_test = 'fail: data found in another stream (gaps: {} days: {})'.format(n_missing_gaps, n_missing_days)
 
                         # Check that the difference between multiple methods for science variables is less than 0
                         comparison_details = dict()
@@ -268,7 +272,7 @@ def main(f, ps, mc):
                                     comparison_details = 'no comparison: timestamps do not match'
                                     comparison_test = 'no comparison: timestamps do not match'
                                 else:
-                                    compare_check = [100.00 - dgz for dgz in diff_gzero_list]
+                                    compare_check = [100.00 - dgz for dgz in diff_gzero_list if dgz is not None]
                                     comparison_details, ilst = group_percents(comparison_details, compare_check)
                                     if len(ilst) > 0:
                                         vars_fail = [str(var_list[i]) for i in ilst]
