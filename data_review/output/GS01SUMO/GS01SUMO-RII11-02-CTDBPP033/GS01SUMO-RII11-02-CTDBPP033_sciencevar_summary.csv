@@ -1,0 +1,6 @@
+deployment,preferred_method,stream,variable,units,fill_value,n_all,n_outliers,n_nans,n_fillvalues,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0002,recovered_inst,ctdbp_cdef_instrument_recovered,practical_salinity,1,-9999999.0,3448,2,0,0,3446,99.94,34.1867,34.0892,34.2654,0.0204
+deployment0002,recovered_inst,ctdbp_cdef_instrument_recovered,ctdbp_seawater_conductivity,S m-1,-9999999.0,3448,1,0,0,3447,99.97,3.3648,3.3191,3.4958,0.0263
+deployment0002,recovered_inst,ctdbp_cdef_instrument_recovered,ctdbp_seawater_temperature,ºC,-9999999.0,3448,1,0,0,3447,99.97,5.9374,5.47,7.4241,0.3008
+deployment0002,recovered_inst,ctdbp_cdef_instrument_recovered,ctdbp_seawater_pressure,dbar,-9999999.0,3448,5,0,0,3443,99.85,129.153,123.5573,134.2983,1.1907
+deployment0002,recovered_inst,ctdbp_cdef_instrument_recovered,density,kg m-3,-9999999.0,3448,28,0,0,3420,99.19,1027.5162,1027.2662,1027.5837,0.0435
