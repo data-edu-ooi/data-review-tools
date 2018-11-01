@@ -228,13 +228,26 @@ def main(sDir, url_list):
 
                                         else:
                                             if len(pressure) > 1:
-                                                [press_outliers, pressure_mean, _, _, _, _] = cf.variable_statistics(pressure, 3)
+                                                # reject NaNs
+                                                p_nonan = pressure[~np.isnan(pressure)]
+
+                                                # reject fill values
+                                                p_nonan_nofv = p_nonan[p_nonan != pressure._FillValue]
+
+                                                if len(p_nonan_nofv) > 0:
+                                                    [press_outliers, pressure_mean, _, _, _, _] = cf.variable_statistics(pressure, 3)
+                                                else:
+                                                    press_outliers = None
+                                                    pressure_mean = None
+
                                             else:  # if there is only 1 data point
                                                 press_outliers = 0
                                                 pressure_mean = round(ds[press].data.tolist()[0], 4)
 
                                         if not deploy_depth:
                                             pressure_diff = 'no deploy depth in AM'
+                                        elif not pressure_mean:
+                                            pressure_diff = 'No valid pressure values'
                                         else:
                                             pressure_diff = round(pressure_mean - deploy_depth, 4)
 
