@@ -162,7 +162,7 @@ def refdes_datareview_json(refdes):
 
 def reject_extreme_values(data):
     # Reject extreme values
-    return (data > -1e6) & (data < 1e6)
+    return (data > -1e7) & (data < 1e7)
 
 
 def reject_outliers(data, m=3):

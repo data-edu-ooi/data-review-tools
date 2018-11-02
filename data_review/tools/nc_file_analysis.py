@@ -235,7 +235,7 @@ def main(sDir, url_list):
                                                 p_nonan_nofv = p_nonan[p_nonan != pressure._FillValue]
 
                                                 if len(p_nonan_nofv) > 0:
-                                                    [press_outliers, pressure_mean, _, _, _, _] = cf.variable_statistics(pressure, 3)
+                                                    [press_outliers, pressure_mean, _, pressure_max, _, _] = cf.variable_statistics(pressure, 3)
                                                 else:
                                                     press_outliers = None
                                                     pressure_mean = None
@@ -249,7 +249,10 @@ def main(sDir, url_list):
                                         elif not pressure_mean:
                                             pressure_diff = 'No valid pressure values'
                                         else:
-                                            pressure_diff = round(pressure_mean - deploy_depth, 4)
+                                            if 'WFP' in refdes.split('-')[1]:
+                                                pressure_diff = round(pressure_max - deploy_depth, 4)
+                                            else:
+                                                pressure_diff = round(pressure_mean - deploy_depth, 4)
 
                                         try:
                                             pressure_units = pressure.units
@@ -263,6 +266,7 @@ def main(sDir, url_list):
                                         else:
                                             pressure_diff = 'no seawater pressure in file'
                                         pressure_mean = None
+                                        pressure_max = None
                                         press_outliers = None
                                         pressure_units = None
 
@@ -285,7 +289,7 @@ def main(sDir, url_list):
                                             ascending_timestamps=time_ascending,
                                             pressure_comparison=dict(pressure_mean=pressure_mean, units=pressure_units,
                                                                      num_outliers=press_outliers, diff=pressure_diff,
-                                                                     variable=press),
+                                                                     pressure_max=pressure_max, variable=press),
                                             vars_in_file=ds_variables,
                                             vars_not_in_file=[x for x in unmatch1 if 'time' not in x],
                                             vars_not_in_db=unmatch2,

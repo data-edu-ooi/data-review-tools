@@ -178,7 +178,9 @@ def get_ds_variable_info(dataset, variable_name, rename):
     ds_df.rename(columns={str(variable_name): rename}, inplace=True)
     n = len(ds_df[rename])
     n_nan = sum(ds_df[rename].isnull())
-    ds_df['time'] = ds_df['time'].map(lambda time: time.strftime('%Y-%m-%d %H:%M:%S'))
+
+    # round to the nearest second
+    ds_df['time'] = ds_df['time'].map(lambda t: t.replace(microsecond=0) + timedelta(seconds=(round(t.microsecond / 1000000.0))))
 
     return [ds_df, ds_units, n, n_nan]
 

@@ -69,9 +69,9 @@ def main(f, ps, mc):
     fsummary_headers = ['deployment', 'file_downloaded', 'preferred_method', 'stream', 'other_methods',
                         'time_delta_start', 'time_delta_end', 'start_days_missing', 'end_days_missing',
                         'location_diff_km', 'n_days_deployed', 'n_timestamps', 'n_days', 'deploy_depth', 'pressure_mean',
-                        'pressure_diff', 'pressure_var', 'pressure_units', 'num_pressure_outliers', 'sampling_rate_seconds',
-                        'missing_vars_file', 'missing_vars_db', 'file_time_gaps', 'gaps_num', 'gaps_num_days',
-                        'timestamp_test', 'n_science_vars', 'valid_data_test', 'variable_comparison_details',
+                        'pressure_max', 'pressure_diff', 'pressure_var', 'pressure_units', 'num_pressure_outliers',
+                        'sampling_rate_seconds', 'missing_vars_file', 'missing_vars_db', 'file_time_gaps', 'gaps_num',
+                        'gaps_num_days', 'timestamp_test', 'n_science_vars', 'valid_data_test', 'variable_comparison_details',
                         'variable_comparison_test', 'full_dataset_test', 'file_coordinates', 'coordinate_test', 'filename']
     vsummary_headers = ['deployment', 'preferred_method', 'stream', 'variable', 'units', 'fill_value',
                         'n_all', 'n_outliers', 'n_nans', 'n_fillvalues', 'n_stats', 'percent_valid_data', 'mean', 'min',
@@ -186,6 +186,7 @@ def main(f, ps, mc):
                         nd = fsummary['n_days']
                         vpress = fsummary['pressure_comparison']['variable']
                         mpress = fsummary['pressure_comparison']['pressure_mean']
+                        maxpress = fsummary['pressure_comparison']['pressure_max']
                         upress = fsummary['pressure_comparison']['units']
                         press_diff = fsummary['pressure_comparison']['diff']
                         opress = fsummary['pressure_comparison']['num_outliers']
@@ -292,7 +293,7 @@ def main(f, ps, mc):
 
                         if len(check_coords) > 0:
                             if 'pressure' in check_coords:
-                                if 'int_ctd_pressure' in coords:
+                                if len([j for j in coords if 'pressure' in j]) == 1:
                                     check_coords.remove('pressure')
                                     if len(check_coords) > 0:
                                         coord_test = 'missing coords: {}'.format(check_coords)
@@ -307,9 +308,10 @@ def main(f, ps, mc):
 
                         fsummary_rows.append([d, dwnl, m, s, other_methods, str(tdelta_start), str(tdelta_stop),
                                               tdelta_start.days, tdelta_stop_days, loc_diff, n_days_deployed, nt, nd,
-                                              depth, mpress, press_diff, vpress, upress, opress, sampling_rate, v_missing_f,
-                                              v_missing_db, gaps, n_gaps, n_gaps_days, time_test, n_science_vars,
-                                              pvd_test,comparison_details, comparison_test, fd_test, coords, coord_test, fname])
+                                              depth, mpress, maxpress, press_diff, vpress, upress, opress, sampling_rate,
+                                              v_missing_f, v_missing_db, gaps, n_gaps, n_gaps_days, time_test,
+                                              n_science_vars, pvd_test, comparison_details, comparison_test, fd_test,
+                                              coords, coord_test, fname])
 
     fdf = pd.DataFrame(fsummary_rows, columns=fsummary_headers)
     fdf.to_csv('{}/{}_file_summary.csv'.format(os.path.dirname(f), refdes), index=False)
