@@ -97,47 +97,51 @@ def main(f, ps, mc):
                     missing_data_list = []
                     diff_gzero_list = []
                     var_list = []
-                    try:
-                        for compare_str in mc['deployments'][d]['comparison'].keys():
-                            if str(ms) in str(compare_str):
-                                [ds0, ds1] = [compare_str.split(' ')[0], compare_str.split(' ')[1]]
-                                if ms == ds0:
-                                    preferred_stream = 'ds0'
-                                    preferred_stream_name = ds0
-                                    comparison_stream_name = ds1
-                                else:
-                                    preferred_stream = 'ds1'
-                                    preferred_stream_name = ds1
-                                    comparison_stream_name = ds0
-
-                                for var in mc['deployments'][d]['comparison'][compare_str]['vars'].keys():
-                                    var_list.append(var)
-                                    compare_summary = mc['deployments'][d]['comparison'][compare_str]['vars'][var]
-                                    name = compare_summary[preferred_stream]['name']
-                                    units = compare_summary[preferred_stream]['units']
-                                    unit_test = compare_summary['unit_test']
-                                    n = compare_summary[preferred_stream]['n']
-                                    n_nan = compare_summary[preferred_stream]['n_nan']
-                                    missing_data = compare_summary[preferred_stream]['missing']
-                                    n_comparison = compare_summary['n_comparison']
-                                    min_abs_diff = compare_summary['min_abs_diff']
-                                    max_abs_diff = compare_summary['max_abs_diff']
-                                    n_diff_greater_zero = compare_summary['n_diff_greater_zero']
-                                    if n_comparison > 0:
-                                        percent_diff_greater_zero = round((float(n_diff_greater_zero)/float(n_comparison) * 100), 2)
-                                    else:
-                                        percent_diff_greater_zero = None
-
-                                    missing_data_list.append(str(missing_data))
-                                    diff_gzero_list.append(percent_diff_greater_zero)
-
-                                    csummary_rows.append([d, str(preferred_stream_name), str(comparison_stream_name),
-                                                          var, name, units, unit_test, n, n_nan, missing_data,
-                                                          n_comparison, min_abs_diff, max_abs_diff,
-                                                          n_diff_greater_zero, percent_diff_greater_zero])
-                    except KeyError:
+                    if 'note' in mc.keys():
                         csummary_rows.append([d, ms, 'no other methods available for comparison', None, None, None,
                                               None, None, None, None, None, None, None, None, None])
+                    else:
+                        try:
+                            for compare_str in mc['deployments'][d]['comparison'].keys():
+                                if str(ms) in str(compare_str):
+                                    [ds0, ds1] = [compare_str.split(' ')[0], compare_str.split(' ')[1]]
+                                    if ms == ds0:
+                                        preferred_stream = 'ds0'
+                                        preferred_stream_name = ds0
+                                        comparison_stream_name = ds1
+                                    else:
+                                        preferred_stream = 'ds1'
+                                        preferred_stream_name = ds1
+                                        comparison_stream_name = ds0
+
+                                    for var in mc['deployments'][d]['comparison'][compare_str]['vars'].keys():
+                                        var_list.append(var)
+                                        compare_summary = mc['deployments'][d]['comparison'][compare_str]['vars'][var]
+                                        name = compare_summary[preferred_stream]['name']
+                                        units = compare_summary[preferred_stream]['units']
+                                        unit_test = compare_summary['unit_test']
+                                        n = compare_summary[preferred_stream]['n']
+                                        n_nan = compare_summary[preferred_stream]['n_nan']
+                                        missing_data = compare_summary[preferred_stream]['missing']
+                                        n_comparison = compare_summary['n_comparison']
+                                        min_abs_diff = compare_summary['min_abs_diff']
+                                        max_abs_diff = compare_summary['max_abs_diff']
+                                        n_diff_greater_zero = compare_summary['n_diff_greater_zero']
+                                        if n_comparison > 0:
+                                            percent_diff_greater_zero = round((float(n_diff_greater_zero)/float(n_comparison) * 100), 2)
+                                        else:
+                                            percent_diff_greater_zero = None
+
+                                        missing_data_list.append(str(missing_data))
+                                        diff_gzero_list.append(percent_diff_greater_zero)
+
+                                        csummary_rows.append([d, str(preferred_stream_name), str(comparison_stream_name),
+                                                              var, name, units, unit_test, n, n_nan, missing_data,
+                                                              n_comparison, min_abs_diff, max_abs_diff,
+                                                              n_diff_greater_zero, percent_diff_greater_zero])
+                        except KeyError:
+                            csummary_rows.append([d, ms, 'no other methods available for comparison', None, None, None,
+                                                  None, None, None, None, None, None, None, None, None])
 
                     for fname in ddata['method'][m]['stream'][s]['file'].keys():
                         fsummary = ddata['method'][m]['stream'][s]['file'][fname]

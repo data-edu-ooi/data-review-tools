@@ -286,12 +286,18 @@ def main(sDir, url_list):
     for r in rd_list:
         rdm_filtered = [k for k in rdm_list if r in k]
         dinfo = {}
+        save_dir = os.path.join(sDir, r.split('-')[0], r)
+        cf.create_dir(save_dir)
+        sfile = os.path.join(save_dir, '{}-method_comparison.json'.format(r))
         if len(rdm_filtered) == 1:
             print 'Only one delivery method provided - no comparison.'
+            dinfo['note'] = 'no comparison - only one delivery method provided'
+            with open(sfile, 'w') as outfile:
+                json.dump(dinfo, outfile)
+            json_file_list.append(str(sfile))
             continue
+
         elif len(rdm_filtered) > 1 & len(rdm_filtered) <= 3:
-            save_dir = os.path.join(sDir, r.split('-')[0], r)
-            cf.create_dir(save_dir)
             print '\nComparing data from different methods for: {}'.format(r)
             for i in range(len(rdm_filtered)):
                 urls = [x for x in url_list if rdm_filtered[i] in x]
@@ -313,7 +319,6 @@ def main(sDir, url_list):
             print 'More than 3 methods provided. Please provide fewer datasets for analysis.'
             continue
 
-        sfile = os.path.join(save_dir, '{}-method_comparison.json'.format(r))
         dinfo_df = pd.DataFrame(dinfo)
 
         umethods = []

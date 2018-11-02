@@ -30,5 +30,7 @@ for j in json_nc_analysis:
     if len(mc) == 1:
         print '{}: writing summary files'.format(refdes)
         nc_file_summary.main(j, ps, mc[0])
+    elif len(mc) == 0:
+        print 'No method comparison files provided.'
     else:
         print 'Too many method comparison files provided.'
