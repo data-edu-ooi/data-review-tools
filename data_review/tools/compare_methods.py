@@ -59,12 +59,27 @@ def compare_data(df):
                             if compare not in summary['deployments'][d]['comparison'].keys():
                                 summary['deployments'][d]['comparison'][compare] = dict(vars=dict())
 
-                            ds0 = xr.open_dataset(f0)
-                            ds0_sci_vars = cf.return_science_vars(ds0.stream)
-                            ds0_method = compare.split(' ')[0].split('-')[0]
-                            ds1 = xr.open_dataset(f1)
-                            ds1_sci_vars = cf.return_science_vars(ds1.stream)
-                            ds1_method = compare.split(' ')[1].split('-')[0]
+                            if len(f0) == 1:
+                                ds0 = xr.open_dataset(f0[0])
+                                ds0 = ds0.swap_dims({'obs': 'time'})
+                            else:
+                                ds0 = xr.open_mfdataset(f0)
+                                ds0 = ds0.swap_dims({'obs': 'time'})
+                                ds0 = ds0.chunk({'time': 100})
+                            splt0 = compare.split(' ')[0].split('-')
+                            ds0_sci_vars = cf.return_science_vars(splt0[1])
+                            ds0_method = splt0[0]
+
+                            if len(f1) == 1:
+                                ds1 = xr.open_dataset(f1[0])
+                                ds1 = ds1.swap_dims({'obs': 'time'})
+                            else:
+                                ds1 = xr.open_mfdataset(f1)
+                                ds1 = ds1.swap_dims({'obs': 'time'})
+                                ds1 = ds1.chunk({'time': 100})
+                            splt1 = compare.split(' ')[1].split('-')
+                            ds1_sci_vars = cf.return_science_vars(splt1[1])
+                            ds1_method = splt1[0]
 
                             # find where the variable long names are the same
                             ds0names = long_names(ds0, ds0_sci_vars)
@@ -306,17 +321,26 @@ def main(sDir, url_list):
                 for u in urls:
                     splitter = u.split('/')[-2].split('-')
                     catalog_rms = '-'.join((r, splitter[-2], splitter[-1]))
-                    datasets = cf.get_nc_urls([u])
-                    for dataset in datasets:
-                        fname, subsite, refdes, method, data_stream, deployment = cf.nc_attributes(dataset)
-                        file_rms = '-'.join((refdes, method, data_stream))
-                        file_ms = '-'.join((method, data_stream))
-                        if file_rms == catalog_rms:
-                            try:
-                                dinfo[file_ms]
-                            except KeyError:
-                                dinfo[file_ms] = {}
-                            dinfo[file_ms].update({deployment: dataset})
+                    udatasets = cf.get_nc_urls([u])
+                    deployments = [str(k.split('/')[-1][0:14]) for k in udatasets]
+                    udeploy = np.unique(deployments).tolist()
+                    for ud in udeploy:
+                        rdatasets = [s for s in udatasets if ud in s]
+                        datasets = []
+                        for dss in rdatasets:  # filter out collocated data files
+                            if catalog_rms in dss.split('/')[-1].split('_20')[0]:
+                                datasets.append(dss)
+                        file_ms_lst = []
+                        for dataset in datasets:
+                            splt = dataset.split('/')[-1].split('_20')[0].split('-')
+                            file_ms_lst.append('-'.join((splt[-2], splt[-1])))
+                        file_ms = np.unique(file_ms_lst).tolist()[0]
+                        try:
+                            dinfo[file_ms]
+                        except KeyError:
+                            dinfo[file_ms] = {}
+                        dinfo[file_ms].update({ud: datasets})
+
         else:
             print 'More than 3 methods provided. Please provide fewer datasets for analysis.'
             continue
