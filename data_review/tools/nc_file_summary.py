@@ -72,7 +72,8 @@ def main(f, ps, mc):
                         'pressure_max', 'pressure_diff', 'pressure_var', 'pressure_units', 'num_pressure_outliers',
                         'sampling_rate_seconds', 'missing_vars_file', 'missing_vars_db', 'file_time_gaps', 'gaps_num',
                         'gaps_num_days', 'timestamp_test', 'n_science_vars', 'valid_data_test', 'variable_comparison_details',
-                        'variable_comparison_test', 'full_dataset_test', 'file_coordinates', 'coordinate_test', 'filename']
+                        'variable_comparison_test', 'full_dataset_test', 'file_coordinates', 'coordinate_test', 'notes',
+                        'filename']
     vsummary_headers = ['deployment', 'preferred_method', 'stream', 'variable', 'units', 'fill_value',
                         'n_all', 'n_outliers', 'n_nans', 'n_fillvalues', 'n_stats', 'percent_valid_data', 'mean', 'min',
                         'max', 'stdev']
@@ -190,6 +191,7 @@ def main(f, ps, mc):
                         upress = fsummary['pressure_comparison']['units']
                         press_diff = fsummary['pressure_comparison']['diff']
                         opress = fsummary['pressure_comparison']['num_outliers']
+                        notes = fsummary['notes']
                         n_science_vars = len(valid_list)
 
                         tdelta_start = time_delta(start, dstart)
@@ -311,7 +313,7 @@ def main(f, ps, mc):
                                               depth, mpress, maxpress, press_diff, vpress, upress, opress, sampling_rate,
                                               v_missing_f, v_missing_db, gaps, n_gaps, n_gaps_days, time_test,
                                               n_science_vars, pvd_test, comparison_details, comparison_test, fd_test,
-                                              coords, coord_test, fname])
+                                              coords, coord_test, notes, fname])
 
     fdf = pd.DataFrame(fsummary_rows, columns=fsummary_headers)
     fdf.to_csv('{}/{}_file_summary.csv'.format(os.path.dirname(f), refdes), index=False)

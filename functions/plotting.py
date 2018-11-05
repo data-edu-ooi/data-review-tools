@@ -197,7 +197,7 @@ def pressure_var(dataset, vars):
                      'ctdbp_seawater_pressure', 'ctdmo_seawater_pressure', 'ctdbp_no_seawater_pressure',
                      'sci_water_pressure_dbar', 'pressure_depth', 'abs_seafloor_pressure', 'presf_tide_pressure',
                      'presf_wave_burst_pressure', 'pressure', 'velpt_pressure', 'ctd_dbar', 'vel3d_k_pressure',
-                     'seafloor_pressure']
+                     'seafloor_pressure', 'pressure_mbar']
     pvariables = list(set(pressure_variables).intersection(vars))
     pvars = []
     for press_var in pvariables:
@@ -206,7 +206,7 @@ def pressure_var(dataset, vars):
         else:
             try:
                 units = dataset[press_var].units
-                if units == 'dbar':
+                if units in ['dbar', '0.001 dbar']:
                     pvars.append(str(press_var))
             except AttributeError:
                 continue

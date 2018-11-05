@@ -104,6 +104,7 @@ def main(sDir, url_list):
                             if file_rms == catalog_rms:
                                 print 'Analyzing file'
 
+                                notes = []
                                 with xr.open_dataset(dataset, mask_and_scale=False) as ds:
                                     deploy = np.unique(ds['deployment'].data)[0]
 
@@ -244,20 +245,24 @@ def main(sDir, url_list):
                                                 press_outliers = 0
                                                 pressure_mean = round(ds[press].data.tolist()[0], 4)
 
+                                        try:
+                                            pressure_units = pressure.units
+                                        except AttributeError:
+                                            pressure_units = 'no units attribute for pressure'
+
                                         if not deploy_depth:
                                             pressure_diff = 'no deploy depth in AM'
                                         elif not pressure_mean:
                                             pressure_diff = 'No valid pressure values'
                                         else:
+                                            if pressure_units == '0.001 dbar':
+                                                pressure_max = pressure_max / 1000
+                                                pressure_mean = pressure_mean / 1000
+                                                notes.append('pressure converted from 0.001 dbar to dbar for pressure comparison')
                                             if 'WFP' in refdes.split('-')[1]:
                                                 pressure_diff = round(pressure_max - deploy_depth, 4)
                                             else:
                                                 pressure_diff = round(pressure_mean - deploy_depth, 4)
-
-                                        try:
-                                            pressure_units = pressure.units
-                                        except AttributeError:
-                                            pressure_units = 'no units attribute for pressure'
 
                                     except KeyError:
                                         press = 'no seawater pressure in file'
@@ -286,6 +291,7 @@ def main(sDir, url_list):
                                             unique_timestamps=time_test,
                                             n_timestamps=len_time,
                                             n_days=n_days,
+                                            notes=notes,
                                             ascending_timestamps=time_ascending,
                                             pressure_comparison=dict(pressure_mean=pressure_mean, units=pressure_units,
                                                                      num_outliers=press_outliers, diff=pressure_diff,
