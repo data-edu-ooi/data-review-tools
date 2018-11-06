@@ -112,7 +112,7 @@ def compare_data(df):
                                 merged = pd.merge(ds0_df, ds1_df, on='time', how='outer')
 
                                 # Drop rows where both variables are NaNs, and make sure the timestamps are in order
-                                merged.dropna(subset=[[ds0_rename, ds1_rename]], how='all', inplace=True)
+                                merged.dropna(subset=[ds0_rename, ds1_rename], how='all', inplace=True)
                                 if len(merged) == 0:
                                     print 'No valid data to compare'
                                     n_comparison = 0

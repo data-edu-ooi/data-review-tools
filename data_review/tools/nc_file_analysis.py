@@ -211,6 +211,8 @@ def main(sDir, url_list):
                         else:
                             ind_fail = {k: time_in[k] for k, v in enumerate(result) if v is False}
                             time_ascending = 'fail: {}'.format(ind_fail)
+                        # time_test = 'not_tested'
+                        # time_ascending = 'not_tested'
 
                         # Count the number of days for which there is at least 1 timestamp
                         n_days = len(np.unique(time.data.astype('datetime64[D]')))
