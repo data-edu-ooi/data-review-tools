@@ -95,7 +95,7 @@ def compare_data(df):
                                 index, long_name, name_ds0, name_ds1 = rr
                                 print long_name
 
-                                # Compare data from two data streams (cut timestamps to the nearest second).
+                                # Compare data from two data streams (round timestamps to the nearest second).
                                 ds0_rename = '_'.join((str(name_ds0), 'ds0'))
                                 [ds0_df, ds0_units, n0, n0_nan] = get_ds_variable_info(ds0, name_ds0, ds0_rename)
 
@@ -230,8 +230,11 @@ def merge_two_dicts(dict1, dict2):
 
 
 def missing_data_times(df, method):
+    # return a dictionary of time ranges, number of data points and number of days where data are missing (but available
+    # in a comparable dataset). skips gaps that are only 1 data point (or one hour if data are rounded to the hour).
     md_list = []
     n_list = []
+    mdays = []
     index_break = []
     ilist = df.index.tolist()
 
@@ -252,13 +255,16 @@ def missing_data_times(df, method):
 
         for ii, nn in enumerate(index_break):
             if ii % 2 == 0:  # check that the index is an even number
-                md_list.append([pd.to_datetime(str(df['time'][nn])).strftime('%Y-%m-%dT%H:%M:%S'),
-                                pd.to_datetime(str(df['time'][index_break[ii + 1]])).strftime('%Y-%m-%dT%H:%M:%S')])
-                n_list.append(index_break[ii + 1] - nn + 1)
+                if index_break[ii + 1] != nn:  # only list gaps that are more than 1 data point
+                    md_list.append([pd.to_datetime(str(df['time'][nn])).strftime('%Y-%m-%dT%H:%M:%S'),
+                                    pd.to_datetime(str(df['time'][index_break[ii + 1]])).strftime('%Y-%m-%dT%H:%M:%S')])
+                    n_list.append(index_break[ii + 1] - nn + 1)
+                    # create a list of timestamps for each gap to get the unique # of days missing from one dataset
+                    time_lst = [df['time'][t].date() for t in range(nn, index_break[ii + 1] + 1)]
+                    mdays.append(len(np.unique(time_lst)))
 
     n_total = sum(n_list)
-    days = pd.to_datetime(df['time']).map(lambda t: t.replace(second=0, microsecond=0, minute=0, hour=0, day=t.day))
-    n_days = len(np.unique(days))
+    n_days = sum(mdays)
 
     # don't print out each data gap for telemetered data, because it's usually way too much
     if method == 'telemetered':
