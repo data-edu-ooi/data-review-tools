@@ -256,11 +256,14 @@ def missing_data_times(df, method):
         for ii, nn in enumerate(index_break):
             if ii % 2 == 0:  # check that the index is an even number
                 if index_break[ii + 1] != nn:  # only list gaps that are more than 1 data point
+                    try:
+                        # create a list of timestamps for each gap to get the unique # of days missing from one dataset
+                        time_lst = [df['time'][t].date() for t in range(nn, index_break[ii + 1] + 1)]
+                    except KeyError:  # if the last data gap is only 1 point, skip
+                        continue
                     md_list.append([pd.to_datetime(str(df['time'][nn])).strftime('%Y-%m-%dT%H:%M:%S'),
                                     pd.to_datetime(str(df['time'][index_break[ii + 1]])).strftime('%Y-%m-%dT%H:%M:%S')])
                     n_list.append(index_break[ii + 1] - nn + 1)
-                    # create a list of timestamps for each gap to get the unique # of days missing from one dataset
-                    time_lst = [df['time'][t].date() for t in range(nn, index_break[ii + 1] + 1)]
                     mdays.append(len(np.unique(time_lst)))
 
     n_total = sum(n_list)
