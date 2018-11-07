@@ -101,6 +101,7 @@ def main(sDir, url_list):
                                 datasets.append(dss)
 
                         notes = []
+                        time_ascending = ''
                         if len(datasets) == 1:
                             ds = xr.open_dataset(datasets[0], mask_and_scale=False)
                             ds = ds.swap_dims({'obs': 'time'})
@@ -112,6 +113,8 @@ def main(sDir, url_list):
                             fname, subsite, refdes, method, data_stream, deployment = cf.nc_attributes(datasets[0])
                             fname = fname.split('_20')[0]
                             notes.append('multiple deployment .nc files')
+                            # when opening multiple datasets, don't check that the timestamps are in ascending order
+                            time_ascending = 'not_tested'
 
                         print '\nAnalyzing file: {}'.format(fname)
 
@@ -196,23 +199,22 @@ def main(sDir, url_list):
                             time_test = 'fail'
 
                         # Check that the timestamps in the file are in ascending order
-                        # convert time to number
-                        time_in = [dt.datetime.utcfromtimestamp(np.datetime64(x).astype('O')/1e9) for x in
-                                   ds['time'].values]
-                        time_data = nc.date2num(time_in, 'seconds since 1900-01-01')
+                        if time_ascending != 'not_tested':
+                            # convert time to number
+                            time_in = [dt.datetime.utcfromtimestamp(np.datetime64(x).astype('O')/1e9) for x in
+                                       ds['time'].values]
+                            time_data = nc.date2num(time_in, 'seconds since 1900-01-01')
 
-                        # Create a list of True or False by iterating through the array of time and checking
-                        # if every time stamp is increasing
-                        result = [(time_data[k + 1] - time_data[k]) > 0 for k in range(len(time_data) - 1)]
+                            # Create a list of True or False by iterating through the array of time and checking
+                            # if every time stamp is increasing
+                            result = [(time_data[k + 1] - time_data[k]) > 0 for k in range(len(time_data) - 1)]
 
-                        # Print outcome of the iteration with the list of indices when time is not increasing
-                        if result.count(True) == len(time) - 1:
-                            time_ascending = 'pass'
-                        else:
-                            ind_fail = {k: time_in[k] for k, v in enumerate(result) if v is False}
-                            time_ascending = 'fail: {}'.format(ind_fail)
-                        # time_test = 'not_tested'
-                        # time_ascending = 'not_tested'
+                            # Print outcome of the iteration with the list of indices when time is not increasing
+                            if result.count(True) == len(time) - 1:
+                                time_ascending = 'pass'
+                            else:
+                                ind_fail = {k: time_in[k] for k, v in enumerate(result) if v is False}
+                                time_ascending = 'fail: {}'.format(ind_fail)
 
                         # Count the number of days for which there is at least 1 timestamp
                         n_days = len(np.unique(time.data.astype('datetime64[D]')))
