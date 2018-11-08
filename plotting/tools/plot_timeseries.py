@@ -48,7 +48,7 @@ def main(sDir, f, start_time, end_time):
 
                 # Check if the array is all NaNs
                 if sum(np.isnan(y.data)) == len(y.data):
-                    print 'Array of all NaNs - kipping plot.'
+                    print 'Array of all NaNs - skipping plot.'
 
                 # Check if the array is all fill values
                 elif len(y[y != fv]) == 0:

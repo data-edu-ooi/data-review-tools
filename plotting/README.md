@@ -5,6 +5,8 @@ This toolbox contains tools to plot data.
 - [ctdmo_platform_timeseries.py](https://github.com/data-edu-ooi/data-review-tools/blob/master/plotting/ctdmo_platform_timeseries.py): Plot a timeseries of all CTDMO data from an entire platform. Outputs two plots of each science variable by deployment and delivery method: 1) plot all data, 2) plot data, omitting outliers beyond 5 standard deviations.
 
 ### Tools
+- [plot_compare_timeseries.py](https://github.com/data-edu-ooi/data-review-tools/blob/master/plotting/tools/plot_compare_timeseries.py): Creates two timeseries plots of telemetered and recovered science variables for a reference designator where the Long Names of the two variables are the same: 1) plot all data, 2) plot data, omitting outliers beyond 5 standard deviations. The user has the option of selecting a specific time range to plot.
+
 - [plot_profiles.py](https://github.com/data-edu-ooi/data-review-tools/blob/master/plotting/tools/plot_profiles.py): Creates two profile plots of raw and science variables for a mobile instrument (e.g. profilers and gliders) by deployment and delivery method: 1) plot all data, 2) plot data, omitting outliers beyond 5 standard deviations. The user has the option of selecting a specific time range to plot.
 
 - [plot_timeseries_all.py](https://github.com/data-edu-ooi/data-review-tools/blob/master/plotting/tools/plot_timeseries_all.py): Creates two timeseries plots of raw and science variables for a reference designator by deployment and delivery method: 1) plot all data, 2) plot data, omitting outliers beyond 5 standard deviations.

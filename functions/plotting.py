@@ -31,8 +31,8 @@ def plot_profiles(x, y, colors, stdev=None):
         y = y[ind]
         
         ind2 = cf.reject_outliers(x, stdev)
-        xD = x.data[ind2]
-        yD = y.data[ind2]
+        xD = x[ind2].data
+        yD = y[ind2].data
         outliers = str(len(x) - len(xD))
         leg_text = ('removed {} outliers (SD={})'.format(outliers, stdev),)
 
@@ -62,7 +62,7 @@ def plot_timeseries(x, y, stdev=None):
         x = x[ind]
 
         ind2 = cf.reject_outliers(y, stdev)
-        yD = y.data[ind2]
+        yD = y[ind2].data
         x = x[ind2]
         outliers = str(len(y) - len(yD))
         leg_text = ('removed {} outliers (SD={})'.format(outliers, stdev),)
@@ -81,6 +81,61 @@ def plot_timeseries(x, y, stdev=None):
     y_axis_disable_offset(ax)
     ax.legend(leg_text, loc='best', fontsize=6)
     return fig, ax
+
+
+def plot_timeseries_compare(t0, t1, var0, var1, m0, m1, long_name, stdev=None):
+    """
+    Create a timeseries plot containing two datasets
+    :param t0: data array of time for dataset 0
+    :param t1: data array of time for dataset 1
+    :param var0: .nc data array for plotting on the y-axis for dataset 0, including data values and variable attributes
+    :param var1: .nc data array for plotting on the y-axis for dataset 1, including data values and variable attributes
+    :param stdev: desired standard deviation to exclude from plotting
+    """
+    if stdev is None:
+        t0_data = t0.data
+        var0_data = var0.data
+        t1_data = t1.data
+        var1_data = var1.data
+        leg_text = ()
+    else:
+        ind0 = cf.reject_extreme_values(var0)
+        t0i = t0[ind0]
+        var0i = var0[ind0]
+
+        ind02 = cf.reject_outliers(var0i, stdev)
+        t0_data = t0i[ind02].data
+        var0_data = var0i[ind02].data
+        outliers0 = str(len(var0) - len(var0_data))
+        leg_text = ('{}: removed {} outliers (SD={})'.format(m0, outliers0, stdev),)
+
+        ind1 = cf.reject_extreme_values(var1)
+        t1i = t1[ind1]
+        var1i = var1[ind1]
+
+        ind12 = cf.reject_outliers(var1i, stdev)
+        t1_data = t1i[ind12].data
+        var1_data = var1i[ind12].data
+        outliers1 = str(len(var1) - len(var1_data))
+        leg_text += ('{}: removed {} outliers (SD={})'.format(m1, outliers1, stdev),)
+
+    try:
+        y_units = var0.units
+    except AttributeError:
+        y_units = 'no_units'
+
+    fig, ax = plt.subplots()
+    plt.grid()
+    plt.ylim([2000, 2500])
+
+    ax.plot(t0_data, var0_data, 'o', markerfacecolor='none', markeredgecolor='r', markersize=5, lw=.75)
+    ax.plot(t1_data, var1_data, 'x', markeredgecolor='b', markersize=5, lw=.75)
+    ax.set_ylabel((long_name + " (" + y_units + ")"), fontsize=9)
+    format_date_axis(ax, fig)
+    y_axis_disable_offset(ax)
+    ax.legend(leg_text, loc='best', fontsize=6)
+    return fig, ax
+
 
 def plot_timeseries_panel(ds, x, vars, colors, stdev=None):
     """
@@ -106,7 +161,7 @@ def plot_timeseries_panel(ds, x, vars, colors, stdev=None):
             x = x[ind]
 
             ind2 = cf.reject_outliers(y, stdev)
-            yD = y.data[ind2]
+            yD = y[ind2].data
             x = x[ind2]
             outliers = str(len(y) - len(yD))
             leg_text = ('{}: rm {} outliers'.format(y.name, outliers),)
@@ -149,8 +204,8 @@ def plot_xsection(subsite, x, y, z, stdev=None):
         
         ind2 = cf.reject_outliers(z, stdev)
         xD = x[ind2]
-        yD = y.data[ind2]
-        zD = z_data[ind2]
+        yD = y[ind2].data
+        zD = z[ind2].data
         outliers = str(len(z_data) - len(zD))
 
     try:
