@@ -91,6 +91,9 @@ def compare_data(df):
                             print '{}: {}'.format(d, compare)
                             print '----------------------'
 
+                            blank_dict = {'missing_data_gaps': [], 'n_missing': [], 'n_missing_days_total': 0,
+                                          'n_missing_total': 0}
+
                             for rr in mapping.itertuples():
                                 index, long_name, name_ds0, name_ds1 = rr
                                 print long_name
@@ -140,36 +143,59 @@ def compare_data(df):
                                         umerged = pd.merge(utime_df0, utime_df1, on='time', how='outer')
                                         umerged = umerged.sort_values('time').reset_index(drop=True)
 
-                                        ds0_missing = umerged.loc[umerged['ds0'].isnull()]
-                                        if len(ds0_missing) > 0:
-                                            ds0_missing_dict = missing_data_times(ds0_missing, ds0_method)
-                                            ds0_missing_dict['n_hours_missing'] = ds0_missing_dict.pop('n_missing')
-                                            ds0_missing_dict['n_hours_missing_total'] = ds0_missing_dict.pop('n_missing_total')
+                                        if 'telemetered' in ds0_method:
+                                            ds0_missing_dict = 'method not checked for missing data'
                                         else:
-                                            ds0_missing_dict = 'timestamps rounded to the hour: no missing data'
+                                            ds0_missing = umerged.loc[umerged['ds0'].isnull()]
+                                            if len(ds0_missing) > 0:
+                                                ds0_missing_dict = missing_data_times(ds0_missing)
+                                                if ds0_missing_dict != blank_dict:
+                                                    ds0_missing_dict['n_hours_missing'] = ds0_missing_dict.pop('n_missing')
+                                                    ds0_missing_dict['n_hours_missing_total'] = ds0_missing_dict.pop('n_missing_total')
+                                                else:
+                                                    ds0_missing_dict = 'timestamps rounded to the hour: no missing data'
+                                            else:
+                                                ds0_missing_dict = 'timestamps rounded to the hour: no missing data'
 
-                                        ds1_missing = umerged.loc[umerged['ds1'].isnull()]
-                                        if len(ds1_missing) > 0:
-                                            ds1_missing_dict = missing_data_times(ds1_missing, ds1_method)
-                                            ds1_missing_dict['n_hours_missing'] = ds1_missing_dict.pop('n_missing')
-                                            ds1_missing_dict['n_hours_missing_total'] = ds1_missing_dict.pop('n_missing_total')
+                                        if 'telemetered' in ds1_method:
+                                            ds1_missing_dict = 'method not checked for missing data'
                                         else:
-                                            ds1_missing_dict = 'timestamps rounded to the hour: no missing data'
+                                            ds1_missing = umerged.loc[umerged['ds1'].isnull()]
+                                            if len(ds1_missing) > 0:
+                                                ds1_missing_dict = missing_data_times(ds1_missing)
+                                                if ds1_missing_dict != blank_dict:
+                                                    ds1_missing_dict['n_hours_missing'] = ds1_missing_dict.pop('n_missing')
+                                                    ds1_missing_dict['n_hours_missing_total'] = ds1_missing_dict.pop('n_missing_total')
+                                                else:
+                                                    ds1_missing_dict = 'timestamps rounded to the hour: no missing data'
+                                            else:
+                                                ds1_missing_dict = 'timestamps rounded to the hour: no missing data'
 
                                     else:
                                         # Find where data are available in one dataset and missing in the other if
-                                        # timestamps match exactly
-                                        ds0_missing = merged.loc[merged[ds0_rename].isnull()]
-                                        if len(ds0_missing) > 0:
-                                            ds0_missing_dict = missing_data_times(ds0_missing, ds0_method)
+                                        # timestamps match exactly. Don't check for missing data in telemetered
+                                        # datasets.
+                                        if 'telemetered' in ds0_method:
+                                            ds0_missing_dict = 'method not checked for missing data'
                                         else:
-                                            ds0_missing_dict = 'no missing data'
+                                            ds0_missing = merged.loc[merged[ds0_rename].isnull()]
+                                            if len(ds0_missing) > 0:
+                                                ds0_missing_dict = missing_data_times(ds0_missing)
+                                                if ds0_missing_dict == blank_dict:
+                                                    ds0_missing_dict = 'no missing data'
+                                            else:
+                                                ds0_missing_dict = 'no missing data'
 
-                                        ds1_missing = merged.loc[merged[ds1_rename].isnull()]
-                                        if len(ds1_missing) > 0:
-                                            ds1_missing_dict = missing_data_times(ds1_missing, ds1_method)
+                                        if 'telemetered' in ds1_method:
+                                            ds1_missing_dict = 'method not checked for missing data'
                                         else:
-                                            ds1_missing_dict = 'no missing data'
+                                            ds1_missing = merged.loc[merged[ds1_rename].isnull()]
+                                            if len(ds1_missing) > 0:
+                                                ds1_missing_dict = missing_data_times(ds1_missing)
+                                                if ds1_missing_dict == blank_dict:
+                                                    ds1_missing_dict = 'no missing data'
+                                            else:
+                                                ds1_missing_dict = 'no missing data'
 
                                         # Where the data intersect, calculate the difference between the methods
                                         diff = m_intersect[ds0_rename] - m_intersect[ds1_rename]
@@ -229,7 +255,7 @@ def merge_two_dicts(dict1, dict2):
     return dict1
 
 
-def missing_data_times(df, method):
+def missing_data_times(df):
     # return a dictionary of time ranges, number of data points and number of days where data are missing (but available
     # in a comparable dataset). skips gaps that are only 1 data point (or one hour if data are rounded to the hour).
     md_list = []
@@ -268,11 +294,6 @@ def missing_data_times(df, method):
 
     n_total = sum(n_list)
     n_days = sum(mdays)
-
-    # don't print out each data gap for telemetered data, because it's usually way too much
-    if method == 'telemetered':
-        md_list = '{} data gaps'.format(len(md_list))
-        n_list = '{} data gaps'.format(len(n_list))
 
     return dict(missing_data_gaps=md_list, n_missing=n_list, n_missing_total=n_total, n_missing_days_total=n_days)
 
