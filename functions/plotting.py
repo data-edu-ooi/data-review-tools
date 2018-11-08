@@ -95,9 +95,10 @@ def plot_timeseries_compare(t0, t1, var0, var1, m0, m1, long_name, stdev=None):
     if stdev is None:
         t0_data = t0.data
         var0_data = var0.data
+        leg_text = ('{}'.format(m0),)
         t1_data = t1.data
         var1_data = var1.data
-        leg_text = ()
+        leg_text += ('{}'.format(m1),)
     else:
         ind0 = cf.reject_extreme_values(var0)
         t0i = t0[ind0]
@@ -126,7 +127,7 @@ def plot_timeseries_compare(t0, t1, var0, var1, m0, m1, long_name, stdev=None):
 
     fig, ax = plt.subplots()
     plt.grid()
-    plt.ylim([2000, 2500])
+    #plt.ylim([2000, 2500])
 
     ax.plot(t0_data, var0_data, 'o', markerfacecolor='none', markeredgecolor='r', markersize=5, lw=.75)
     ax.plot(t1_data, var1_data, 'x', markeredgecolor='b', markersize=5, lw=.75)
