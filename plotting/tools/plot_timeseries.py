@@ -21,7 +21,7 @@ def main(sDir, f, start_time, end_time):
     ff = pd.read_csv(os.path.join(sDir, f))
     datasets = cf.get_nc_urls(ff['outputUrl'].tolist())
     for i, d in enumerate(datasets):
-        print '\nDataset {} of {}: {}'.format(i + 1, len(datasets), d)
+        print('\nDataset {} of {}: {}'.format(i + 1, len(datasets), d))
         with xr.open_dataset(d, mask_and_scale=False) as ds:
             ds = ds.swap_dims({'obs': 'time'})
             raw_vars = cf.return_raw_vars(ds.data_vars.keys())
@@ -29,7 +29,7 @@ def main(sDir, f, start_time, end_time):
             if start_time is not None and end_time is not None:
                 ds = ds.sel(time=slice(start_time, end_time))
                 if len(ds['time'].data) == 0:
-                    print 'No data to plot for specified time range: ({} to {})'.format(start_time, end_time)
+                    print('No data to plot for specified time range: ({} to {})'.format(start_time, end_time))
                     continue
 
             fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(d)
@@ -42,17 +42,17 @@ def main(sDir, f, start_time, end_time):
             title = ' '.join((deployment, refdes, method))
 
             for var in raw_vars:
-                print var
+                print(var)
                 y = ds[var]
                 fv = y._FillValue
 
                 # Check if the array is all NaNs
                 if sum(np.isnan(y.data)) == len(y.data):
-                    print 'Array of all NaNs - skipping plot.'
+                    print('Array of all NaNs - skipping plot.')
 
                 # Check if the array is all fill values
                 elif len(y[y != fv]) == 0:
-                    print 'Array of all fill values - skipping plot.'
+                    print('Array of all fill values - skipping plot.')
 
                 else:
                     # Plot all data

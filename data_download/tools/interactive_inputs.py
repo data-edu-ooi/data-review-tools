@@ -6,7 +6,7 @@ Created  on Sep  2018
 @brief: provides interactive inputs for data download
 """
 
-import data_request_tools
+from . import data_request_tools
 
 
 def return_interactive_inputs():
@@ -18,10 +18,10 @@ def return_interactive_inputs():
     inst_list = qcdb['reference_designator'].str.split('-').str[3].str[0:5].unique().tolist()
     inst_list.sort()
 
-    print 'These arrays are listed in the QC Database:'
-    print array_list
+    print('These arrays are listed in the QC Database:')
+    print(array_list)
 
-    arrays = raw_input(
+    arrays = input(
         '\nPlease select arrays. Must be comma separated (if choosing multiple) or press enter to select all: ') or ''
     array = data_request_tools.format_inputs(arrays)
 
@@ -38,10 +38,10 @@ def return_interactive_inputs():
         subsite_list = qcdb['subsite'].unique().tolist()
         subsite_list.sort()
 
-    print 'These subsites are listed in the QC Database for the selected array(s):'
-    print subsite_list
+    print('These subsites are listed in the QC Database for the selected array(s):')
+    print(subsite_list)
 
-    subsites = raw_input(
+    subsites = input(
         '\nPlease select fully-qualified subsites. Must be comma separated (if choosing multiple) or press enter to select all: ') or ''
     subsite = data_request_tools.format_inputs(subsites)
 
@@ -58,10 +58,10 @@ def return_interactive_inputs():
         node_list = qcdb['node'].unique().tolist()
         node_list.sort()
 
-    print '\nThese nodes are listed in the QC Database for the selected subsite(s):'
-    print node_list
+    print('\nThese nodes are listed in the QC Database for the selected subsite(s):')
+    print(node_list)
 
-    nodes = raw_input(
+    nodes = input(
         '\nPlease select fully-qualified nodes. Must be comma separated (if choosing multiple) or press enter to select all: ') or ''
     node = data_request_tools.format_inputs(nodes)
 
@@ -79,17 +79,17 @@ def return_interactive_inputs():
         inst_list = set([i[3:8] for i in instruments])
         inst_list = sorted(inst_list)
 
-    print '\nThese instruments are listed in the QC Database for the selected array(s), subsite(s), and node(s):'
-    print inst_list
+    print('\nThese instruments are listed in the QC Database for the selected array(s), subsite(s), and node(s):')
+    print(inst_list)
 
-    insts = raw_input(
+    insts = input(
         '\nPlease select instruments (can be partial (e.g. CTD) or fully-qualified (e.g. 03-CTDBPF000)). Must be comma separated (if choosing multiple) or press enter to select all: ') or ''
     inst = data_request_tools.format_inputs(insts)
 
     if len(inst) == 0:
         inst = ''
 
-    delivery_meths = raw_input(
+    delivery_meths = input(
         '\nPlease select valid delivery methods [recovered, telemetered, streamed]. Must be comma separated (if choosing multiple) or press enter to select all: ') or ''
     delivery_methods = data_request_tools.format_inputs(delivery_meths)
 

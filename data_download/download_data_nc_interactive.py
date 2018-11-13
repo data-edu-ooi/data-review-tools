@@ -15,7 +15,7 @@ token: OOI API password
 
 import datetime as dt
 import functions.common as cf
-from tools import data_request_urls, send_data_requests_nc, data_request_tools, interactive_inputs
+from .tools import data_request_urls, send_data_requests_nc, interactive_inputs
 
 sDir = '/Users/lgarzio/Documents/OOI'
 username = 'username'
@@ -26,14 +26,14 @@ now = dt.datetime.now().strftime('%Y%m%dT%H%M')
 
 array, subsite, node, inst, delivery_methods = interactive_inputs.return_interactive_inputs()
 
-begin = raw_input('Please enter a start date for your data requests with format <2014-01-01T00:00:00> or press enter to request all available data: ') or ''
-end = raw_input('Please enter an end date for your data requests with format <2014-01-01T00:00:00> or press enter to request all available data: ') or ''
+begin = input('Please enter a start date for your data requests with format <2014-01-01T00:00:00> or press enter to request all available data: ') or ''
+end = input('Please enter an end date for your data requests with format <2014-01-01T00:00:00> or press enter to request all available data: ') or ''
 
 url_list = data_request_urls.main(sDir, array, subsite, node, inst, delivery_methods, begin, end, now)
 thredds_output_urls = send_data_requests_nc.main(sDir, url_list, username, token, now)
 
-print 'Seeing if the requests have fulfilled...'
+print('Seeing if the requests have fulfilled...')
 for i in range(len(thredds_output_urls)):
     url = thredds_output_urls[i]
-    print '\nDataset {} of {}: {}'.format((i + 1), len(thredds_output_urls), url)
+    print('\nDataset {} of {}: {}'.format((i + 1), len(thredds_output_urls), url))
     cf.check_request_status(url)

@@ -87,16 +87,16 @@ def compare_data(df):
                             ds1names = long_names(ds1, ds1_sci_vars)
                             ds1names.rename(columns={'name': 'name_ds1'}, inplace=True)
                             mapping = pd.merge(ds0names, ds1names, on='long_name', how='inner')
-                            print '----------------------'
-                            print '{}: {}'.format(d, compare)
-                            print '----------------------'
+                            print('----------------------')
+                            print('{}: {}'.format(d, compare))
+                            print('----------------------')
 
                             blank_dict = {'missing_data_gaps': [], 'n_missing': [], 'n_missing_days_total': 0,
                                           'n_missing_total': 0}
 
                             for rr in mapping.itertuples():
                                 index, long_name, name_ds0, name_ds1 = rr
-                                print long_name
+                                print(long_name)
 
                                 # Compare data from two data streams (round timestamps to the nearest second).
                                 ds0_rename = '_'.join((str(name_ds0), 'ds0'))
@@ -117,7 +117,7 @@ def compare_data(df):
                                 # Drop rows where both variables are NaNs, and make sure the timestamps are in order
                                 merged.dropna(subset=[ds0_rename, ds1_rename], how='all', inplace=True)
                                 if len(merged) == 0:
-                                    print 'No valid data to compare'
+                                    print('No valid data to compare')
                                     n_comparison = 0
                                     n_diff_g_zero = None
                                     min_diff = None
@@ -337,7 +337,7 @@ def main(sDir, url_list):
         cf.create_dir(save_dir)
         sfile = os.path.join(save_dir, '{}-method_comparison.json'.format(r))
         if len(rdm_filtered) == 1:
-            print 'Only one delivery method provided - no comparison.'
+            print('Only one delivery method provided - no comparison.')
             dinfo['note'] = 'no comparison - only one delivery method provided'
             with open(sfile, 'w') as outfile:
                 json.dump(dinfo, outfile)
@@ -345,7 +345,7 @@ def main(sDir, url_list):
             continue
 
         elif len(rdm_filtered) > 1 & len(rdm_filtered) <= 3:
-            print '\nComparing data from different methods for: {}'.format(r)
+            print('\nComparing data from different methods for: {}'.format(r))
             for i in range(len(rdm_filtered)):
                 urls = [x for x in url_list if rdm_filtered[i] in x]
                 for u in urls:
@@ -372,7 +372,7 @@ def main(sDir, url_list):
                         dinfo[file_ms].update({ud: datasets})
 
         else:
-            print 'More than 3 methods provided. Please provide fewer datasets for analysis.'
+            print('More than 3 methods provided. Please provide fewer datasets for analysis.')
             continue
 
         dinfo_df = pd.DataFrame(dinfo)
@@ -387,7 +387,7 @@ def main(sDir, url_list):
             mdict = dict()
             method_stream_df = cf.stream_word_check(dinfo)
             for cs in (np.unique(method_stream_df['stream_name_compare'])).tolist():
-                print 'Common stream_name: {}'.format(cs)
+                print('Common stream_name: {}'.format(cs))
                 method_stream_list = []
                 for row in method_stream_df.itertuples():
                     index, method, stream_name, stream_name_compare = row

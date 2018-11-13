@@ -25,7 +25,7 @@ import datetime as dt
 import os
 import pandas as pd
 import requests
-import data_request_tools
+from . import data_request_tools
 import functions.common as cf
 
 
@@ -54,9 +54,9 @@ def data_request_urls(df, begin, end):
                 if sys_beginTime < begin < sys_endTime:
                     beginTime = begin
                 else:
-                    print '{:s}-{:s}-{:s}: begin time entered ({:s}) is not within time ranges available in the system: ' \
-                          '{:s} to {:s}'.format(refdes, method, stream, begin, sys_beginTime, sys_endTime)
-                    print 'using system beginTime'
+                    print('{:s}-{:s}-{:s}: begin time entered ({:s}) is not within time ranges available in the system: ' \
+                          '{:s} to {:s}'.format(refdes, method, stream, begin, sys_beginTime, sys_endTime))
+                    print('using system beginTime')
                     beginTime = sys_beginTime
 
             if not end:
@@ -65,9 +65,9 @@ def data_request_urls(df, begin, end):
                 if end > beginTime:
                     endTime = end
                 else:
-                    print '{:s}-{:s}-{:s}: end time entered ({:s}) is before beginTime ' \
-                          '({:s})'.format(refdes, method, stream, end, sys_beginTime)
-                    print 'using system endTime'
+                    print('{:s}-{:s}-{:s}: end time entered ({:s}) is before beginTime ' \
+                          '({:s})'.format(refdes, method, stream, end, sys_beginTime))
+                    print('using system endTime')
                     endTime = sys_endTime
 
             url = '{:s}/{:s}{:s}/{:s}?beginDT={:s}&endDT={:s}{:s}'.format(base_url, inst_req, method, stream, beginTime, endTime, ap)
@@ -147,19 +147,19 @@ def main(sDir, array, subsite, node, sensor, delivery_methods, begin, end, now):
             dbf['in_gui_catalog'] = ''
             dbf['source'] = 'qcdb_only'
             dbf.to_csv(os.path.join(sDir, 'compare_qcdb_gui_catalog_{}.csv'.format(now)), index=False)
-            print '\nQC Database to GUI data catalog comparison complete: %s' %os.path.join(sDir, 'compare_qcdb_gui_catalog_{}.csv'.format(now))
+            print('\nQC Database to GUI data catalog comparison complete: %s' %os.path.join(sDir, 'compare_qcdb_gui_catalog_{}.csv'.format(now)))
             raise Exception('\nThe selected instruments are not listed in the GUI data catalog. No data requests to send.')
         else:
             merge_on = ['array_name', 'array_code', 'subsite', 'node', 'sensor', 'reference_designator', 'method', 'stream_name']
             compare = pd.merge(dbf, gui_df, on=merge_on, how='outer').sort_values(by=['reference_designator', 'method', 'stream_name'])
             compare_df = define_source(compare)
             compare_df.to_csv(os.path.join(sDir, 'compare_qcdb_gui_catalog_{}.csv'.format(now)), index=False)
-            print '\nQC Database to GUI data catalog comparison complete: %s' %os.path.join(sDir, 'compare_qcdb_gui_catalog_{}.csv'.format(now))
+            print('\nQC Database to GUI data catalog comparison complete: %s' %os.path.join(sDir, 'compare_qcdb_gui_catalog_{}.csv'.format(now)))
 
             url_list = data_request_urls(compare_df, begin, end)
             urls = pd.DataFrame(url_list)
             urls.to_csv(os.path.join(sDir, 'data_request_urls_{}.csv'.format(now)), index=False, header=False)
-            print '\nData request urls complete: %s' % os.path.join(sDir, 'data_request_urls_{}.csv'.format(now))
+            print('\nData request urls complete: %s' % os.path.join(sDir, 'data_request_urls_{}.csv'.format(now)))
 
             return url_list
 

@@ -20,7 +20,7 @@ def main(sDir, f):
     ff = pd.read_csv(os.path.join(sDir, f))
     datasets = cf.get_nc_urls(ff['outputUrl'].tolist())
     for d in datasets:
-        print d
+        print(d)
         fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(d)
         save_dir = os.path.join(sDir, subsite, refdes, deployment)
         cf.create_dir(save_dir)

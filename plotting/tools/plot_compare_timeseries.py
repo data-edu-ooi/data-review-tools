@@ -20,7 +20,7 @@ import functions.plotting as pf
 def compare_plot_datasets(df, r, start_time, end_time, sDir):
     names = df.columns
     for d, row in df.iterrows():
-        print d
+        print('\n{}'.format(d))
         for i, n in enumerate(names):
             ii = i + 1
             if ii > 1:
@@ -52,9 +52,9 @@ def compare_plot_datasets(df, r, start_time, end_time, sDir):
                                 ds0 = ds0.sel(time=slice(start_time, end_time))
 
                                 if len(ds0['time'].data) == 0:
-                                    print 'No {} data to plot for specified time range: ({} to {})'.format(ds0_method,
+                                    print('No {} data to plot for specified time range: ({} to {})'.format(ds0_method,
                                                                                                            start_time,
-                                                                                                           end_time)
+                                                                                                           end_time))
                                     continue
 
                             if len(f1) == 1:
@@ -71,9 +71,9 @@ def compare_plot_datasets(df, r, start_time, end_time, sDir):
                             if start_time is not None and end_time is not None:
                                 ds1 = ds1.sel(time=slice(start_time, end_time))
                                 if len(ds1['time'].data) == 0:
-                                    print 'No {} data to plot for specified time range: ({} to {})'.format(ds1_method,
+                                    print ('No {} data to plot for specified time range: ({} to {})'.format(ds1_method,
                                                                                                            start_time,
-                                                                                                           end_time)
+                                                                                                           end_time))
                                     continue
 
                             t0 = ds0['time']
@@ -85,9 +85,9 @@ def compare_plot_datasets(df, r, start_time, end_time, sDir):
                             ds1names = long_names(ds1, ds1_sci_vars)
                             ds1names.rename(columns={'name': 'name_ds1'}, inplace=True)
                             mapping = pd.merge(ds0names, ds1names, on='long_name', how='inner')
-                            print '----------------------'
-                            print '{}: {}'.format(d, compare)
-                            print '----------------------'
+                            print('----------------------')
+                            print('{}: {}'.format(d, compare))
+                            print('----------------------')
 
                             if start_time is not None and end_time is not None:
                                 stime = start_time.strftime('%Y-%m-%d')
@@ -100,7 +100,7 @@ def compare_plot_datasets(df, r, start_time, end_time, sDir):
 
                             for rr in mapping.itertuples():
                                 index, long_name, name_ds0, name_ds1 = rr
-                                print long_name
+                                print(long_name)
 
                                 ds0_var = ds0[name_ds0]
                                 ds1_var = ds1[name_ds1]
@@ -157,11 +157,11 @@ def main(sDir, url_list, start_time, end_time):
         rdm_filtered = [k for k in rdm_list if r in k]
         dinfo = {}
         if len(rdm_filtered) == 1:
-            print 'Only one delivery method provided - no comparison.'
+            print('Only one delivery method provided - no comparison.')
             continue
 
         elif len(rdm_filtered) > 1 & len(rdm_filtered) <= 3:
-            print '\nComparing data from different methods for: {}'.format(r)
+            print('\nComparing data from different methods for: {}'.format(r))
             for i in range(len(rdm_filtered)):
                 urls = [x for x in url_list if rdm_filtered[i] in x]
                 for u in urls:
@@ -188,7 +188,7 @@ def main(sDir, url_list, start_time, end_time):
                         dinfo[file_ms].update({ud: datasets})
 
         else:
-            print 'More than 3 methods provided. Please provide fewer datasets for analysis.'
+            print('More than 3 methods provided. Please provide fewer datasets for analysis.')
             continue
 
         dinfo_df = pd.DataFrame(dinfo)
@@ -202,7 +202,7 @@ def main(sDir, url_list, start_time, end_time):
         if len(np.unique(ustreams)) > len(np.unique(umethods)):  # if there is more than 1 stream per delivery method
             method_stream_df = cf.stream_word_check(dinfo)
             for cs in (np.unique(method_stream_df['stream_name_compare'])).tolist():
-                print 'Common stream_name: {}'.format(cs)
+                print('Common stream_name: {}'.format(cs))
                 method_stream_list = []
                 for row in method_stream_df.itertuples():
                     index, method, stream_name, stream_name_compare = row

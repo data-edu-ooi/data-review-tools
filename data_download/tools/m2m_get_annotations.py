@@ -17,7 +17,7 @@ import requests
 import os
 import csv
 from datetime import datetime
-import data_request_tools
+from . import data_request_tools
 import functions.common as cf
 
 
@@ -57,7 +57,7 @@ def write_all_annotations(username, token, f, session):
     # write annotations if no reference designator is specified
     anno_url = 'https://ooinet.oceanobservatories.org/api/m2m/12580/anno/'
     loop_ids = get_ids(username, token, session)
-    print 'Writing annotations'
+    print('Writing annotations')
 
     for x in loop_ids:
         url = anno_url + str(x)
@@ -81,7 +81,7 @@ def write_refdes_annotations(username, token, refdes_list, outfile, session):
     # write annotations if any reference designator is specified
     anno_url = 'https://ooinet.oceanobservatories.org/api/m2m/12580/anno/find'
     today_date = int(datetime.now().strftime("%s")) * 1000 # current date
-    print 'Writing annotations'
+    print ('Writing annotations')
 
     id_list = []
     for x in refdes_list:
@@ -134,7 +134,7 @@ def main(username, token, refdes, saveDir):
             refdes_list = []
             frefdes = data_request_tools.format_inputs(refdes)
             for i in frefdes:
-                print i
+                print(i)
                 if len(i) == 8:
                     url = sensor_inv + i
                     node_info = session.get(url, auth=(username, token))
@@ -160,8 +160,8 @@ def main(username, token, refdes, saveDir):
 
 
 if __name__ == '__main__':
-    username = 'token'
-    token = 'username'
+    username = 'username'
+    token = 'token'
     refdes = ''  # 'GS01SUMO, GS01SUMO-SBD11, GS01SUMO-SBD11-06-METBKA000'
     saveDir = '/Users/lgarzio/Documents/OOI/Annotations'
     main(username, token, refdes, saveDir)

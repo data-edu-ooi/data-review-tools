@@ -69,7 +69,7 @@ def main(sDir, url_list):
 
     json_file_list = []
     for r in rd_list:
-        print '\n{}'.format(r)
+        print('\n{}'.format(r))
         data = OrderedDict(deployments=OrderedDict())
         save_dir = os.path.join(sDir, r.split('-')[0], r)
         cf.create_dir(save_dir)
@@ -116,7 +116,7 @@ def main(sDir, url_list):
                             # when opening multiple datasets, don't check that the timestamps are in ascending order
                             time_ascending = 'not_tested'
 
-                        print '\nAnalyzing file: {}'.format(fname)
+                        print('\nAnalyzing file: {}'.format(fname))
 
                         # Get info from the data review database
                         dr_data = cf.refdes_datareview_json(refdes)
@@ -234,7 +234,7 @@ def main(sDir, url_list):
                             pressure = ds[press]
                             num_dims = len(pressure.dims)
                             if num_dims > 1:
-                                print 'variable has more than 1 dimension'
+                                print('variable has more than 1 dimension')
                                 press_outliers = 'not calculated yet: variable has more than 1 dimension'
                                 pressure_mean = np.nanmean(pressure.data)
 
@@ -314,13 +314,13 @@ def main(sDir, url_list):
 
                         # calculate statistics for science variables, excluding outliers +/- 5 SD
                         for sv in sci_vars:
-                            print sv
+                            print(sv)
                             try:
                                 var = ds[sv]
                                 fv = str(var._FillValue)
                                 num_dims = len(var.dims)
                                 if num_dims > 1:
-                                    print 'variable has more than 1 dimension'
+                                    print('variable has more than 1 dimension')
                                     num_outliers = None
                                     mean = None
                                     vmin = None

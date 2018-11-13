@@ -44,7 +44,7 @@ def load_json_file(f):
     if f.endswith('.json'):
         info = json.load(open(f, 'r'))
     else:
-        print 'Not a .json file'
+        print('Not a .json file')
     return info
 
 

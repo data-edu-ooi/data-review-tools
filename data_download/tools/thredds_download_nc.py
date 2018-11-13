@@ -12,8 +12,7 @@ thredds_urls: file or list containing THREDDS directories containing .nc files t
 
 
 from xml.dom import minidom
-import urllib2
-import urllib
+from urllib.request import urlopen, urlretrieve
 import pandas as pd
 import os
 import functions.common as cf
@@ -21,7 +20,7 @@ import functions.common as cf
 
 def get_elements(url, tag_name, attribute_name):
     """Get elements from an XML file"""
-    usock = urllib2.urlopen(url)
+    usock = urlopen(url)
     xmldoc = minidom.parse(usock)
     usock.close()
     tags = xmldoc.getElementsByTagName(tag_name)
@@ -42,13 +41,13 @@ def main(sDir, thredds_urls):
         thredds_list = thredds_file['outputUrl'].tolist()
 
     for t in thredds_list:
-        print t
+        print(t)
 
         # Check that the data request has been fulfilled
         cf.check_request_status(t)
 
         # Create local folders and download files
-        print 'Downloading files'
+        print('Downloading files')
         folder = t.split('/')[-2]
         subsite = folder.split('-')[1]
         refdes = '-'.join((subsite, folder.split('-')[2], folder.split('-')[3], folder.split('-')[4]))
@@ -66,7 +65,7 @@ def main(sDir, thredds_urls):
             count += 1
             file_url = '/'.join((server_url, 'thredds/fileServer', f))
             file_name = '/'.join((output_dir, file_url.split('/')[-1]))
-            urllib.urlretrieve(file_url, file_name)
+            urlretrieve(file_url, file_name)
 
 
 if __name__ == '__main__':

@@ -22,7 +22,7 @@ import pandas as pd
 import os
 import itertools
 import functions.common as cf
-from tools import data_request_urls_ooi1_0, send_data_requests_nc, data_request_tools, interactive_inputs
+from .tools import data_request_urls_ooi1_0, send_data_requests_nc, data_request_tools, interactive_inputs
 
 sDir = '/Users/lgarzio/Documents/OOI'
 f = ''  # optional i.e. 'data_download.csv'
@@ -63,8 +63,8 @@ else:
 
 thredds_output_urls = send_data_requests_nc.main(sDir, f_url_list, username, token, now)
 
-print 'Seeing if the requests have fulfilled...'
+print('\nSeeing if the requests have fulfilled...')
 for i in range(len(thredds_output_urls)):
     url = thredds_output_urls[i]
-    print '\nDataset {} of {}: {}'.format((i + 1), len(thredds_output_urls), url)
+    print('\nDataset {} of {}: {}'.format((i + 1), len(thredds_output_urls), url))
     cf.check_request_status(url)

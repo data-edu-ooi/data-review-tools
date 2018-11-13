@@ -25,27 +25,27 @@ import functions.common as cf
 def define_status_outputUrl(r):
     response = r.json()
     if r.status_code == 200:
-        print 'Data request sent'
+        print('Data request sent')
 
         try:
             status = response['status']
         except KeyError:
             status = 'Data available for request'
-        print status
+        print(status)
 
         try:
             outputUrl = response['outputURL']
         except KeyError:
             outputUrl = 'no_output_url'
     else:
-        print 'Data request failed'
+        print('Data request failed')
         outputUrl = 'no_output_url'
 
-        print 'Error: {} {}'.format(r.status_code, response['message'])
+        print('Error: {} {}'.format(r.status_code, response['message']))
 
         try:
             status = response['message']['status']
-            print status
+            print(status)
         except TypeError:
             status = 'Data request failed: no uFrame status provided'
 
@@ -59,7 +59,7 @@ def main(sDir, urls, username, token, now):
     else:
         url_file = pd.read_csv(os.path.join(sDir, urls), header=None)
         url_list = url_file[0].tolist()
-    cont = raw_input('\nThere are {} requests to send, are you sure you want to continue? y/<n>: '.format(len(url_list))) or 'n'
+    cont = input('\nThere are {} requests to send, are you sure you want to continue? y/<n>: '.format(len(url_list))) or 'n'
 
     if 'y' in cont:
         stime = time.time()
@@ -72,16 +72,16 @@ def main(sDir, urls, username, token, now):
         for i in range(len(url_list)):
             req = i+1
             url = url_list[i]
-            print '\nRequest url {} of {}: {}'.format(req, len(url_list), url)
+            print('\nRequest url {} of {}: {}'.format(req, len(url_list), url))
             session = requests.session()
             r = session.get(url, auth=(username, token))
 
             while r.status_code == 400:
-                print 'Data request failed'
-                print 'Status from uFrame: %s' %r.json()['message']['status']
-                print 'Trying request again in 1 minute'
+                print('Data request failed')
+                print('Status from uFrame: %s' % r.json()['message']['status'])
+                print('Trying request again in 1 minute')
                 time.sleep(60)
-                print 'Re-sending request: %s' % url
+                print('Re-sending request: %s' % url)
                 r = session.get(url, auth=(username, token))
 
             status, outputUrl = define_status_outputUrl(r)
@@ -102,15 +102,15 @@ def main(sDir, urls, username, token, now):
 
         etime = time.time() - stime
         if etime < 60:
-            print '\nTime elapsed sending data requests: %.2f seconds' % etime
+            print('\nTime elapsed sending data requests: %.2f seconds' % etime)
         else:
             mins = etime/60
-            print '\nTime elapsed sending data requests: %.2f minutes' % mins
+            print('\nTime elapsed sending data requests: %.2f minutes' % mins)
 
         return thredds_urls
 
     else:
-        print '\nCancelling data requests.'
+        print('\nCancelling data requests.')
 
 
 if __name__ == '__main__':

@@ -16,10 +16,10 @@ def check_request_status(thredds_url):
     session = requests.session()
     r = session.get(check_complete)
     while r.status_code != requests.codes.ok:
-        print 'Data request is still fulfilling. Trying again in 1 minute.'
+        print('Data request is still fulfilling. Trying again in 1 minute.')
         time.sleep(60)
         r = session.get(check_complete)
-    print 'Data request has fulfilled.'
+    print('Data request has fulfilled.')
 
 
 def create_dir(new_dir):

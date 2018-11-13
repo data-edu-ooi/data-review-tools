@@ -23,7 +23,7 @@ import datetime as dt
 import os
 import pandas as pd
 import requests
-import data_request_tools
+from . import data_request_tools
 import functions.common as cf
 
 
@@ -50,9 +50,9 @@ def data_request_urls(df, begin, end):
             if sys_beginTime < begin < sys_endTime:
                 beginTime = begin
             else:
-                print '{:s}-{:s}-{:s}: begin time entered ({:s}) is not within time ranges available in the system: ' \
-                      '{:s} to {:s}'.format(refdes, method, stream, begin, sys_beginTime, sys_endTime)
-                print 'using system beginTime'
+                print('{:s}-{:s}-{:s}: begin time entered ({:s}) is not within time ranges available in the system: ' \
+                      '{:s} to {:s}'.format(refdes, method, stream, begin, sys_beginTime, sys_endTime))
+                print('using system beginTime')
                 beginTime = sys_beginTime
 
         if not end:
@@ -61,9 +61,9 @@ def data_request_urls(df, begin, end):
             if end > beginTime:
                 endTime = end
             else:
-                print '{:s}-{:s}-{:s}: end time entered ({:s}) is before beginTime ' \
-                      '({:s})'.format(refdes, method, stream, end, sys_beginTime)
-                print 'using system endTime'
+                print('{:s}-{:s}-{:s}: end time entered ({:s}) is before beginTime ' \
+                      '({:s})'.format(refdes, method, stream, end, sys_beginTime))
+                print('using system endTime')
                 endTime = sys_endTime
 
         url = '{:s}/{:s}{:s}/{:s}?beginDT={:s}&endDT={:s}{:s}'.format(base_url, inst_req, method, stream, beginTime, endTime, ap)
