@@ -220,7 +220,8 @@ def main(sDir, url_list):
                         n_days = len(np.unique(time.data.astype('datetime64[D]')))
 
                         # Compare variables in file to variables in Data Review Database
-                        ds_variables = ds.data_vars.keys() + ds.coords.keys()
+                        ds_variables = list(ds.data_vars.keys()) + list(ds.coords.keys())
+                        #ds_variables = [k for k in ds]
                         ds_variables = eliminate_common_variables(ds_variables)
                         ds_variables = [x for x in ds_variables if 'qc' not in x]
                         [_, unmatch1] = compare_lists(stream_vars, ds_variables)

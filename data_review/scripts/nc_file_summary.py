@@ -159,7 +159,7 @@ def main(f, ps, mc):
                             stdev = vsummary['stdev']
                             n_stats = vsummary['n_stats']
 
-                            if type(n_stats) == unicode:
+                            if type(n_stats) == str:
                                 percent_valid_data = 'stats not calculated'
                             else:
                                 percent_valid_data = round((float(n_stats)/float(nt) * 100), 2)
@@ -302,13 +302,13 @@ def main(f, ps, mc):
                                 if len([j for j in coords if 'pressure' in j]) == 1:
                                     check_coords.remove('pressure')
                                     if len(check_coords) > 0:
-                                        coord_test = 'missing coords: {}'.format(check_coords)
+                                        coord_test = 'missing: {}'.format(check_coords)
                                     else:
                                         coord_test = 'pass'
                                 else:
-                                    coord_test = 'missing coords: {}'.format(check_coords)
+                                    coord_test = 'missing: {}'.format(check_coords)
                             else:
-                                coord_test = 'missing coords: {}'.format(check_coords)
+                                coord_test = 'missing: {}'.format(check_coords)
                         else:
                             coord_test = 'pass'
 
