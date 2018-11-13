@@ -105,7 +105,7 @@ def main(sDir, f):
 
     for dd in dms_list:
         for v in plt_vars:
-            print v
+            print(v)
             data = OrderedDict()
             for ds in datasets:
                 dms = deploy_method_stream(ds)

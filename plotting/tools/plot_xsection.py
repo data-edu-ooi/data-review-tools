@@ -21,20 +21,20 @@ def main(sDir, f, start_time, end_time):
     ff = pd.read_csv(os.path.join(sDir, f))
     url_list = ff['outputUrl'].tolist()
     for i, u in enumerate(url_list):
-        print '\nUrl {} of {}: {}'.format(i + 1, len(url_list), u)
+        print('\nUrl {} of {}: {}'.format(i + 1, len(url_list), u))
         main_sensor = u.split('/')[-2].split('-')[4]
         datasets = cf.get_nc_urls([u])
         datasets_sel = cf.filter_collocated_instruments(main_sensor, datasets)
 
         for ii, d in enumerate(datasets_sel):
-            print '\nDataset {} of {}: {}'.format(ii + 1, len(datasets_sel), d)
+            print('\nDataset {} of {}: {}'.format(ii + 1, len(datasets_sel), d))
             with xr.open_dataset(d, mask_and_scale=False) as ds:
                 ds = ds.swap_dims({'obs': 'time'})
 
                 if start_time is not None and end_time is not None:
                     ds = ds.sel(time=slice(start_time, end_time))
                     if len(ds['time'].data) == 0:
-                        print 'No data to plot for specified time range: ({} to {})'.format(start_time, end_time)
+                        print('No data to plot for specified time range: ({} to {})'.format(start_time, end_time))
                         continue
 
                 fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(d)
@@ -60,7 +60,7 @@ def main(sDir, f, start_time, end_time):
 
                 print('Plotting variables...')
                 for var in sci_vars:
-                    print var
+                    print(var)
                     z = ds[var]
 
                     # Plot all data

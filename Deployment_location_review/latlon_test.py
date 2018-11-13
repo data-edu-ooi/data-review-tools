@@ -16,7 +16,7 @@ The script's input items:
 
 import pandas as pd
 import requests
-import urllib2
+import urllib.error
 from geopy.distance import geodesic
 
 pd.set_option('mode.chained_assignment', None)
@@ -34,7 +34,7 @@ def get_url_content(url_address):
     # get content of a url in a json format
     r = requests.get(url_address)
     if r.status_code is not 200:
-        print r.reason
+        print(r.reason)
         print('Problem wi chatth', url_address)
     else:
         url_content = r.json()
@@ -71,7 +71,7 @@ def list_url(platforms):
         urls.append(url)
         try:
             asset_data = pd.read_csv(url)
-        except urllib2.HTTPError:
+        except urllib.error.HTTPError:
             print('No info in: ', url)
             omit_HTTPError.append((url.split('/')[-1]).split('_Deploy.csv')[0])
             nfi = pd.DataFrame({'url': [url], 'message': ['HTTPError']}, index=[count])
