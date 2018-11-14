@@ -22,7 +22,7 @@ import pandas as pd
 import os
 import itertools
 import functions.common as cf
-from .tools import data_request_urls_ooi1_0, send_data_requests_nc, data_request_tools, interactive_inputs
+import scripts
 
 sDir = '/Users/lgarzio/Documents/OOI'
 f = ''  # optional i.e. 'data_download.csv'
@@ -33,35 +33,35 @@ cf.create_dir(sDir)
 now = dt.datetime.now().strftime('%Y%m%dT%H%M')
 
 if not f:
-    array, subsite, node, inst, delivery_methods = interactive_inputs.return_interactive_inputs()
-    f_url_list = data_request_urls_ooi1_0.main(sDir, array, subsite, node, inst, delivery_methods, now)
+    array, subsite, node, inst, delivery_methods = scripts.interactive_inputs.return_interactive_inputs()
+    f_url_list = scripts.data_request_urls_ooi1_0.main(sDir, array, subsite, node, inst, delivery_methods, now)
 else:
     df = pd.read_csv(os.path.join(sDir, f))
     url_list = []
     for i, j in df.iterrows():
-        array = data_request_tools.check_str(j['array'])
-        array = data_request_tools.format_inputs(array)
+        array = scripts.data_request_tools.check_str(j['array'])
+        array = scripts.data_request_tools.format_inputs(array)
         refdes = j['reference_designator']
         if type(refdes) == str:
-            subsite = data_request_tools.format_inputs(refdes.split('-')[0])
-            node = data_request_tools.format_inputs(refdes.split('-')[1])
-            inst = data_request_tools.format_inputs('-'.join((refdes.split('-')[2], refdes.split('-')[3])))
+            subsite = scripts.data_request_tools.format_inputs(refdes.split('-')[0])
+            node = scripts.data_request_tools.format_inputs(refdes.split('-')[1])
+            inst = scripts.data_request_tools.format_inputs('-'.join((refdes.split('-')[2], refdes.split('-')[3])))
         else:
-            subsite = data_request_tools.check_str(j['subsite'])
-            subsite = data_request_tools.format_inputs(subsite)
-            node = data_request_tools.check_str(j['node'])
-            node = data_request_tools.format_inputs(node)
-            inst = data_request_tools.check_str(j['sensor'])
-            inst = data_request_tools.format_inputs(inst)
-        delivery_methods = data_request_tools.check_str(j['delivery_method'])
-        delivery_methods = data_request_tools.format_inputs(delivery_methods)
+            subsite = scripts.data_request_tools.check_str(j['subsite'])
+            subsite = scripts.data_request_tools.format_inputs(subsite)
+            node = scripts.data_request_tools.check_str(j['node'])
+            node = scripts.data_request_tools.format_inputs(node)
+            inst = scripts.data_request_tools.check_str(j['sensor'])
+            inst = scripts.data_request_tools.format_inputs(inst)
+        delivery_methods = scripts.data_request_tools.check_str(j['delivery_method'])
+        delivery_methods = scripts.data_request_tools.format_inputs(delivery_methods)
 
-        urls = data_request_urls_ooi1_0.main(sDir, array, subsite, node, inst, delivery_methods, now)
+        urls = scripts.data_request_urls_ooi1_0.main(sDir, array, subsite, node, inst, delivery_methods, now)
         url_list.append(urls)
 
     f_url_list = list(itertools.chain(*url_list))
 
-thredds_output_urls = send_data_requests_nc.main(sDir, f_url_list, username, token, now)
+thredds_output_urls = scripts.send_data_requests_nc.main(sDir, f_url_list, username, token, now)
 
 print('\nSeeing if the requests have fulfilled...')
 for i in range(len(thredds_output_urls)):
