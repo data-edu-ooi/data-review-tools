@@ -1,26 +1,26 @@
 deployment,preferred_method,stream,variable,units,fill_value,n_all,n_outliers,n_nans,n_fillvalues,n_stats,percent_valid_data,mean,min,max,stdev
-deployment0001,recovered_inst,ctdmo_ghqr_instrument_recovered,practical_salinity,1,-9999999.0,31493,2,0,0,31491,99.99,32.4096,31.5073,33.5913,0.0411
-deployment0001,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_conductivity,S m-1,-9999999.0,31493,2,0,0,31491,99.99,3.5778,3.1352,4.0528,0.2076
-deployment0001,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_temperature,ºC,-9999999.0,31493,0,0,0,31493,100.0,10.2329,4.9375,15.5362,2.3314
-deployment0001,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_pressure,dbar,-9999.0,31493,6,0,0,31487,99.98,15.2673,10.7795,21.1626,1.4159
 deployment0001,recovered_inst,ctdmo_ghqr_instrument_recovered,density,kg m-3,-9999999.0,31493,2,0,0,31491,99.99,1024.9377,1023.464,1026.207,0.4268
-deployment0002,telemetered,ctdmo_ghqr_sio_mule_instrument,practical_salinity,1,-9999999.0,914,2,0,0,912,99.78,32.336,32.2592,32.4075,0.0325
-deployment0002,telemetered,ctdmo_ghqr_sio_mule_instrument,ctdmo_seawater_conductivity,S m-1,-9999999.0,914,2,0,0,912,99.78,3.8416,3.5864,4.1083,0.1499
-deployment0002,telemetered,ctdmo_ghqr_sio_mule_instrument,ctdmo_seawater_temperature,ºC,-9999999.0,914,0,0,0,914,100.0,13.2644,10.4255,16.1889,1.6814
-deployment0002,telemetered,ctdmo_ghqr_sio_mule_instrument,ctdmo_seawater_pressure,dbar,-9999.0,914,2,0,0,912,99.78,11.6959,8.1491,17.298,1.0074
+deployment0001,recovered_inst,ctdmo_ghqr_instrument_recovered,practical_salinity,1,-9999999.0,31493,2,0,0,31491,99.99,32.4096,31.5073,33.5913,0.0411
+deployment0001,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_pressure,dbar,-9999.0,31493,6,0,0,31487,99.98,15.2673,10.7795,21.1626,1.4159
+deployment0001,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_temperature,ºC,-9999999.0,31493,0,0,0,31493,100.0,10.2329,4.9375,15.5362,2.3314
+deployment0001,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_conductivity,S m-1,-9999999.0,31493,2,0,0,31491,99.99,3.5778,3.1352,4.0528,0.2076
 deployment0002,telemetered,ctdmo_ghqr_sio_mule_instrument,density,kg m-3,-9999999.0,914,2,0,0,912,99.78,1024.322,1023.7139,1024.8945,0.3484
-deployment0003,recovered_inst,ctdmo_ghqr_instrument_recovered,practical_salinity,1,-9999999.0,37234,18,0,0,37216,99.95,32.5747,30.4397,33.8031,0.1045
-deployment0003,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_conductivity,S m-1,-9999999.0,37234,18,0,0,37216,99.95,3.482,3.1899,4.0352,0.2065
-deployment0003,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_temperature,ºC,-9999999.0,37234,0,0,0,37234,100.0,8.9599,5.8472,15.2991,2.3917
-deployment0003,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_pressure,dbar,-9999.0,37234,21,0,0,37213,99.94,32.5454,27.4722,39.2834,1.2134
+deployment0002,telemetered,ctdmo_ghqr_sio_mule_instrument,practical_salinity,1,-9999999.0,914,2,0,0,912,99.78,32.336,32.2592,32.4075,0.0325
+deployment0002,telemetered,ctdmo_ghqr_sio_mule_instrument,ctdmo_seawater_pressure,dbar,-9999.0,914,2,0,0,912,99.78,11.6959,8.1491,17.298,1.0074
+deployment0002,telemetered,ctdmo_ghqr_sio_mule_instrument,ctdmo_seawater_temperature,ºC,-9999999.0,914,0,0,0,914,100.0,13.2644,10.4255,16.1889,1.6814
+deployment0002,telemetered,ctdmo_ghqr_sio_mule_instrument,ctdmo_seawater_conductivity,S m-1,-9999999.0,914,2,0,0,912,99.78,3.8416,3.5864,4.1083,0.1499
 deployment0003,recovered_inst,ctdmo_ghqr_instrument_recovered,density,kg m-3,-9999999.0,37234,18,0,0,37216,99.95,1025.3486,1023.4499,1026.6853,0.4492
-deployment0004,recovered_inst,ctdmo_ghqr_instrument_recovered,practical_salinity,1,-9999999.0,36728,6,0,0,36722,99.98,32.675,31.4723,33.531,0.1029
-deployment0004,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_conductivity,S m-1,-9999999.0,36728,2,0,0,36726,99.99,3.3718,3.1846,4.0072,0.138
-deployment0004,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_temperature,ºC,-9999999.0,36728,0,0,0,36728,100.0,7.6029,5.4763,14.8641,1.6122
-deployment0004,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_pressure,dbar,-9999.0,36728,21,0,0,36707,99.94,41.9049,38.128,47.7296,1.0874
+deployment0003,recovered_inst,ctdmo_ghqr_instrument_recovered,practical_salinity,1,-9999999.0,37234,18,0,0,37216,99.95,32.5747,30.4397,33.8031,0.1045
+deployment0003,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_pressure,dbar,-9999.0,37234,21,0,0,37213,99.94,32.5454,27.4722,39.2834,1.2134
+deployment0003,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_temperature,ºC,-9999999.0,37234,0,0,0,37234,100.0,8.9599,5.8472,15.2991,2.3917
+deployment0003,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_conductivity,S m-1,-9999999.0,37234,18,0,0,37216,99.95,3.482,3.1899,4.0352,0.2065
 deployment0004,recovered_inst,ctdmo_ghqr_instrument_recovered,density,kg m-3,-9999999.0,36728,8,0,0,36720,99.98,1025.6875,1024.0182,1026.5413,0.2888
-deployment0005,recovered_inst,ctdmo_ghqr_instrument_recovered,practical_salinity,1,-9999999.0,35581,122,1,0,35458,99.65,32.4543,30.1713,33.98,0.1337
-deployment0005,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_conductivity,S m-1,-9999999.0,35581,123,0,0,35458,99.65,3.3482,3.1794,3.8529,0.1379
-deployment0005,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_temperature,ºC,-9999999.0,35581,37,0,0,35544,99.9,7.5866,5.5331,16.1015,1.6755
-deployment0005,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_pressure,dbar,-9999.0,35581,125,0,0,35456,99.65,40.2051,36.4316,50.7345,1.0166
+deployment0004,recovered_inst,ctdmo_ghqr_instrument_recovered,practical_salinity,1,-9999999.0,36728,6,0,0,36722,99.98,32.675,31.4723,33.531,0.1029
+deployment0004,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_pressure,dbar,-9999.0,36728,21,0,0,36707,99.94,41.9049,38.128,47.7296,1.0874
+deployment0004,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_temperature,ºC,-9999999.0,36728,0,0,0,36728,100.0,7.6029,5.4763,14.8641,1.6122
+deployment0004,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_conductivity,S m-1,-9999999.0,36728,2,0,0,36726,99.99,3.3718,3.1846,4.0072,0.138
 deployment0005,recovered_inst,ctdmo_ghqr_instrument_recovered,density,kg m-3,-9999999.0,35581,122,1,0,35458,99.65,1025.5103,1022.8618,1027.2086,0.3065
+deployment0005,recovered_inst,ctdmo_ghqr_instrument_recovered,practical_salinity,1,-9999999.0,35581,122,1,0,35458,99.65,32.4543,30.1713,33.98,0.1337
+deployment0005,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_pressure,dbar,-9999.0,35581,125,0,0,35456,99.65,40.2051,36.4316,50.7345,1.0166
+deployment0005,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_temperature,ºC,-9999999.0,35581,37,0,0,35544,99.9,7.5866,5.5331,16.1015,1.6755
+deployment0005,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_conductivity,S m-1,-9999999.0,35581,123,0,0,35458,99.65,3.3482,3.1794,3.8529,0.1379
