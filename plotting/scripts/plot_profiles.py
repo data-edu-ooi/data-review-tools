@@ -49,7 +49,7 @@ def main(sDir, f, start_time, end_time):
                 raw_vars = cf.return_raw_vars(vars)
                 raw_vars = [s for s in raw_vars if s not in [pressure]]  # remove pressure from sci_vars
 
-                save_dir = os.path.join(sDir, subsite, refdes, deployment)
+                save_dir = os.path.join(sDir, subsite, refdes, 'profile_plots', deployment)
                 cf.create_dir(save_dir)
 
                 t = ds['time'].data

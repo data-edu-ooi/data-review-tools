@@ -31,7 +31,7 @@ def main(sDir, f):
 
         # get global attributes from one file
         fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(datasets_sel[0])
-        save_dir = os.path.join(sDir, subsite, refdes, method)
+        save_dir = os.path.join(sDir, subsite, refdes, 'timeseries_plots_all', method)
         cf.create_dir(save_dir)
         sname = '-'.join((refdes, method, stream))
 
@@ -44,6 +44,7 @@ def main(sDir, f):
             title = ' '.join((refdes, method))
 
             for var in raw_vars:
+                print(var)
                 y = ds[var]
 
                 # Plot all data

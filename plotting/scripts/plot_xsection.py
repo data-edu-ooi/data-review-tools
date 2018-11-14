@@ -48,7 +48,7 @@ def main(sDir, f, start_time, end_time):
                 sci_vars = cf.return_science_vars(stream)
                 sci_vars = [s for s in sci_vars if s not in [pressure]]  # remove pressure from sci_vars
 
-                save_dir = os.path.join(sDir, subsite, refdes, deployment)
+                save_dir = os.path.join(sDir, subsite, refdes, 'xsection_plots', deployment)
                 cf.create_dir(save_dir)
 
                 t = ds['time'].data

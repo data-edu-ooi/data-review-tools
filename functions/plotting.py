@@ -26,13 +26,13 @@ def plot_profiles(x, y, colors, stdev=None):
         yD = y.data
         leg_text = ()
     else:
-        ind = cf.reject_extreme_values(x)
-        x = x[ind]
-        y = y[ind]
+        ind = cf.reject_extreme_values(x.data)
+        xdata = x[ind]
+        ydata = y[ind]
         
-        ind2 = cf.reject_outliers(x, stdev)
-        xD = x[ind2].data
-        yD = y[ind2].data
+        ind2 = cf.reject_outliers(xdata.data, stdev)
+        xD = xdata[ind2].data
+        yD = ydata[ind2].data
         outliers = str(len(x) - len(xD))
         leg_text = ('removed {} outliers (SD={})'.format(outliers, stdev),)
 
@@ -54,22 +54,23 @@ def plot_timeseries(x, y, stdev=None):
     :param stdev: desired standard deviation to exclude from plotting
     """
     if stdev is None:
+        xD = x
         yD = y.data
         leg_text = ()
     else:
-        ind = cf.reject_extreme_values(y)
-        y = y[ind]
-        x = x[ind]
+        ind = cf.reject_extreme_values(y.data)
+        ydata = y[ind]
+        xdata = x[ind]
 
-        ind2 = cf.reject_outliers(y, stdev)
-        yD = y[ind2].data
-        x = x[ind2]
+        ind2 = cf.reject_outliers(ydata.data, stdev)
+        yD = ydata[ind2].data
+        xD = xdata[ind2]
         outliers = str(len(y) - len(yD))
         leg_text = ('removed {} outliers (SD={})'.format(outliers, stdev),)
 
     fig, ax = plt.subplots()
     plt.grid()
-    plt.plot(x, yD, '.', markersize=2)
+    plt.plot(xD, yD, '.', markersize=2)
 
     try:
         y_units = y.units
@@ -100,22 +101,22 @@ def plot_timeseries_compare(t0, t1, var0, var1, m0, m1, long_name, stdev=None):
         var1_data = var1.data
         leg_text += ('{}'.format(m1),)
     else:
-        ind0 = cf.reject_extreme_values(var0)
+        ind0 = cf.reject_extreme_values(var0.data)
         t0i = t0[ind0]
         var0i = var0[ind0]
 
-        ind02 = cf.reject_outliers(var0i, stdev)
+        ind02 = cf.reject_outliers(var0i.data, stdev)
         t0_data = t0i[ind02].data
         var0_data = var0i[ind02].data
         var0_data[var0_data <= 0.0] = np.nan  # get rid of zeros and negative numbers
         outliers0 = str((len(var0) - len(var0_data)) + (len(t0_data) - np.count_nonzero(~np.isnan(var0_data))))
         leg_text = ('{}: removed {} outliers (SD={})'.format(m0, outliers0, stdev),)
 
-        ind1 = cf.reject_extreme_values(var1)
+        ind1 = cf.reject_extreme_values(var1.data)
         t1i = t1[ind1]
         var1i = var1[ind1]
 
-        ind12 = cf.reject_outliers(var1i, stdev)
+        ind12 = cf.reject_outliers(var1i.data, stdev)
         t1_data = t1i[ind12].data
         var1_data = var1i[ind12].data
         var1_data[var1_data <= 0.0] = np.nan  # get rid of zeros and negative numbers
@@ -159,13 +160,13 @@ def plot_timeseries_panel(ds, x, vars, colors, stdev=None):
             xD = x
             leg_text = ()
         else:
-            ind = cf.reject_extreme_values(y)
-            y = y[ind]
-            x = x[ind]
+            ind = cf.reject_extreme_values(y.data)
+            ydata = y[ind]
+            xdata = x[ind]
 
-            ind2 = cf.reject_outliers(y, stdev)
-            yD = y[ind2].data
-            x = x[ind2]
+            ind2 = cf.reject_outliers(ydata.data, stdev)
+            yD = ydata[ind2].data
+            xD = xdata[ind2]
             outliers = str(len(y) - len(yD))
             leg_text = ('{}: rm {} outliers'.format(y.name, outliers),)
 
@@ -200,15 +201,15 @@ def plot_xsection(subsite, x, y, z, stdev=None):
         yD = y.data
         zD = z_data
     else:
-        ind = cf.reject_extreme_values(z)
-        x = x[ind]
-        y = y[ind]
-        z_data = z_data[ind]
+        ind = cf.reject_extreme_values(z_data)
+        xdata = x[ind]
+        ydata = y[ind]
+        zdata = z_data[ind]
         
-        ind2 = cf.reject_outliers(z, stdev)
-        xD = x[ind2]
-        yD = y[ind2].data
-        zD = z[ind2].data
+        ind2 = cf.reject_outliers(zdata, stdev)
+        xD = xdata[ind2]
+        yD = ydata[ind2].data
+        zD = zdata[ind2]
         outliers = str(len(z_data) - len(zD))
 
     try:

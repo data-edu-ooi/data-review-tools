@@ -33,7 +33,7 @@ def main(sDir, f, start_time, end_time):
                     continue
 
             fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(d)
-            save_dir = os.path.join(sDir, subsite, refdes, deployment)
+            save_dir = os.path.join(sDir, subsite, refdes, 'timeseries_plots', deployment)
             cf.create_dir(save_dir)
 
             t = ds['time'].data

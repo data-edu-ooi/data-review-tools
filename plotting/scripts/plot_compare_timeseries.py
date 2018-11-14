@@ -93,13 +93,13 @@ def compare_plot_datasets(df, r, start_time, end_time, sDir):
                                 stime = start_time.strftime('%Y-%m-%d')
                                 etime = end_time.strftime('%Y-%m-%d')
                                 ext = '-'.join((ds0_method, ds1_method)) + '-' + stime + 'to' + etime
-                                save_dir = os.path.join(sDir, r.split('-')[0], r, ext)
+                                save_dir = os.path.join(sDir, r.split('-')[0], r, 'method_compare_plots', ext)
                             else:
-                                save_dir = os.path.join(sDir, r.split('-')[0], r, '-'.join((ds0_method, ds1_method)))
+                                save_dir = os.path.join(sDir, r.split('-')[0], r, 'method_compare_plots', '-'.join((ds0_method, ds1_method)))
                             cf.create_dir(save_dir)
 
                             for rr in mapping.itertuples():
-                                index, long_name, name_ds0, name_ds1 = rr
+                                index, name_ds0, long_name, name_ds1 = rr
                                 print(long_name)
 
                                 ds0_var = ds0[name_ds0]

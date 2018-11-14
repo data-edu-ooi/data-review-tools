@@ -40,7 +40,7 @@ def main(sDir, f, start_time, end_time):
                         continue
 
                 fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(d)
-                save_dir = os.path.join(sDir, subsite, refdes)
+                save_dir = os.path.join(sDir, subsite, refdes, 'timeseries_panel_plots')
                 cf.create_dir(save_dir)
 
                 sci_vars = cf.return_science_vars(stream)
