@@ -247,22 +247,23 @@ def timestamp_gap_test(df):
     return gap_list
 
 
-def variable_statistics(variable, stdev=None):
+def variable_statistics(var_data, stdev=None):
     """
     Calculate statistics for a variable of interest
     :param variable: array containing data
     :param stdev: desired standard deviation to exclude from analysis
     """
     if stdev is None:
-        varD = variable.data
+        varD = var_data
         num_outliers = 0
     else:
-        ind = reject_extreme_values(variable)
-        var = variable[ind]
+        ind = reject_extreme_values(var_data)
+        var = var_data[ind]
 
         ind2 = reject_outliers(var, stdev)
-        varD = var[ind2].data
-        num_outliers = len(variable) - len(varD)
+        varD = var[ind2]
+        varD = varD.astype('float64')  # force variables to be float64 (float32 is not JSON serializable)
+        num_outliers = len(var_data) - len(varD)
 
     mean = round(np.nanmean(varD), 4)
     min = round(np.nanmin(varD), 4)

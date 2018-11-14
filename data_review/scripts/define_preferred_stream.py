@@ -15,7 +15,7 @@ def main(f):
     sdict = dict()
     data = json.load(open(f, 'r'))
     refdes = data['refdes']
-    deployments = np.sort(data['deployments'].keys()).tolist()
+    deployments = np.sort(list(data['deployments'].keys()))
     method_list = ['streamed', 'recovered_inst', 'recovered_wfp', 'recovered_cspp', 'recovered_host', 'telemetered']
     for d in deployments:
         info = []

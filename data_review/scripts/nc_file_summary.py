@@ -58,7 +58,7 @@ def main(f, ps, mc):
     data = load_json_file(f)
     refdes = data['refdes']
     loc_compare = data['location_comparison']
-    deployments = np.sort(data['deployments'].keys()).tolist()
+    deployments = np.sort(list(data['deployments'].keys()))
 
     if type(ps) == str:
         ps = load_json_file(ps)
@@ -226,7 +226,7 @@ def main(f, ps, mc):
                             d1 = ''.join(('D', str(d[-1])))
                             for i in range(dindex):
                                 d0 = ''.join(('D', str(deployments[i][-1])))
-                                for k, value in loc_compare.iteritems():
+                                for k, value in loc_compare.items():
                                     kk = k.split('_')
                                     if all(elem in kk for elem in [d1, d0]):
                                         loc_diff.append(value)

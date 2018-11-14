@@ -11,11 +11,10 @@ f: file containing THREDDs urls with .nc files to analyze. The column containing
 
 import pandas as pd
 import scripts
-#from lori import nc_file_analysis, define_preferred_stream, compare_methods, nc_file_summary
 
-#sDir = '/Users/lgarzio/Documents/repo/OOI/data-edu-ooi/data-review-tools/data_review/output'
-f = '/Users/lgarzio/Documents/OOI/DataReviews/test3/GP03FLMA/data_request_summary_1.csv'
-sDir = '/Users/lgarzio/Documents/OOI/DataReviews/test3'
+sDir = '/Users/lgarzio/Documents/repo/OOI/data-edu-ooi/data-review-tools/data_review/output'
+f = '/Users/lgarzio/Documents/OOI/DataReviews/test3/GS01SUMO/data_request_summary_20181026T0933.csv'
+#sDir = '/Users/lgarzio/Documents/OOI/DataReviews/test3'
 #f = '/Users/lgarzio/Documents/OOI/DataReviews/test/data_request_summary_metbk.csv'
 
 ff = pd.read_csv(f)

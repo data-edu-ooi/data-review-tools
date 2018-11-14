@@ -95,7 +95,7 @@ def compare_data(df):
                                           'n_missing_total': 0}
 
                             for rr in mapping.itertuples():
-                                index, long_name, name_ds0, name_ds1 = rr
+                                index, name_ds0, long_name, name_ds1 = rr
                                 print(long_name)
 
                                 # Compare data from two data streams (round timestamps to the nearest second).

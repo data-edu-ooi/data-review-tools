@@ -248,7 +248,7 @@ def main(sDir, url_list):
                                     p_nonan_nofv = p_nonan[p_nonan != pressure._FillValue]
 
                                     if len(p_nonan_nofv) > 0:
-                                        [press_outliers, pressure_mean, _, pressure_max, _, _] = cf.variable_statistics(pressure, 3)
+                                        [press_outliers, pressure_mean, _, pressure_max, _, _] = cf.variable_statistics(p_nonan_nofv.data, 3)
                                     else:
                                         press_outliers = None
                                         pressure_mean = None
@@ -295,7 +295,7 @@ def main(sDir, url_list):
                             data['deployments'][deployment]['method'][method]['stream'][data_stream]['file'][
                                 fname] = OrderedDict(
                                 file_downloaded=pd.to_datetime(splitter[0]).strftime('%Y-%m-%dT%H:%M:%S'),
-                                file_coordinates=ds.coords.keys(),
+                                file_coordinates=list(ds.coords.keys()),
                                 sampling_rate=rates,
                                 data_start=data_start,
                                 data_stop=data_stop,
@@ -342,7 +342,7 @@ def main(sDir, url_list):
                                     n_fv = len(var) - n_nan - len(var_nonan_nofv)
 
                                     if len(var_nonan_nofv) > 1:
-                                        [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_nonan_nofv, 5)
+                                        [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_nonan_nofv.data, 5)
                                     elif len(var_nonan_nofv) == 1:
                                         num_outliers = 0
                                         mean = round(var_nonan_nofv.data.tolist()[0], 4)
