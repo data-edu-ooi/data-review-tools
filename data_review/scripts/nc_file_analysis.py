@@ -189,6 +189,14 @@ def main(sDir, url_list):
                             if percent > 0.1:
                                 rates['common_sampling_rates'].update({int(i): '{:.2%}'.format(percent)})
 
+                        if len(rates['common_sampling_rates']) == 1:
+                            if float(list(rates['common_sampling_rates'].values())[0].strip('%')) > 75.00:
+                                sampling_rt_sec = list(rates['common_sampling_rates'].keys())[0]
+                            else:
+                                sampling_rt_sec = 'no consistent sampling rate: {}'.format(rates['common_sampling_rates'])
+                        else:
+                            sampling_rt_sec = 'no consistent sampling rate: {}'.format(rates['common_sampling_rates'])
+
                         # Check that the timestamps in the file are unique
                         time = ds['time']
                         len_time = time.__len__()
@@ -236,7 +244,7 @@ def main(sDir, url_list):
                             num_dims = len(pressure.dims)
                             if num_dims > 1:
                                 print('variable has more than 1 dimension')
-                                press_outliers = 'not calculated yet: variable has more than 1 dimension'
+                                press_outliers = 'not calculated: variable has more than 1 dimension'
                                 pressure_mean = np.nanmean(pressure.data)
 
                             else:
@@ -263,9 +271,9 @@ def main(sDir, url_list):
                                 pressure_units = 'no units attribute for pressure'
 
                             if not deploy_depth:
-                                pressure_diff = 'no deploy depth in AM'
+                                pressure_diff = None
                             elif not pressure_mean:
-                                pressure_diff = 'No valid pressure values'
+                                pressure_diff = None
                             else:
                                 if pressure_units == '0.001 dbar':
                                     pressure_max = pressure_max / 1000
@@ -278,10 +286,7 @@ def main(sDir, url_list):
 
                         except KeyError:
                             press = 'no seawater pressure in file'
-                            if not deploy_depth:
-                                pressure_diff = 'no deploy depth in AM and no seawater pressure in file'
-                            else:
-                                pressure_diff = 'no seawater pressure in file'
+                            pressure_diff = None
                             pressure_mean = None
                             pressure_max = None
                             press_outliers = None
@@ -296,7 +301,8 @@ def main(sDir, url_list):
                                 fname] = OrderedDict(
                                 file_downloaded=pd.to_datetime(splitter[0]).strftime('%Y-%m-%dT%H:%M:%S'),
                                 file_coordinates=list(ds.coords.keys()),
-                                sampling_rate=rates,
+                                sampling_rate_seconds=sampling_rt_sec,
+                                sampling_rate_details=rates,
                                 data_start=data_start,
                                 data_stop=data_stop,
                                 time_gaps=gap_list,
