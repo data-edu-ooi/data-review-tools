@@ -14,6 +14,17 @@ Tools for automated analysis of OOI netCDF files downloaded from uFrame.
 
 - [define_preferred_stream.py](https://github.com/data-edu-ooi/data-review-tools/blob/master/data_review/scripts/define_preferred_stream.py): Define the delivery method and data stream(s) preferred for analysis. For uncabled instruments, recovered-instrument is preferred before recovered-host and telemetered.
 
+- [final_ds_stats.py](https://github.com/data-edu-ooi/data-review-tools/blob/master/data_review/scripts/final_ds_stats.py): Calculates final statistics for science variables for an entire OOI 1.0 dataset. Data outside of 3 standard deviations of the mean are excluded before the statistics are calculated for each variable:
+	- sample size (overall)
+	- count of outliers (+/- 3 SD)
+	- count of NaNs
+	- count of fill values
+	- sample size used for statistics
+	- average
+	- mininum
+	- maximum
+	- standard deviation
+
 - [nc_file_analysis.py](https://github.com/data-edu-ooi/data-review-tools/blob/master/data_review/scripts/nc_file_analysis.py): Automated analysis of .nc files from a THREDDs server. Summarizes data by deployment, delivery method, data stream, and science parameter and provides a .json output by reference designator. Analysis includes: 
 	- compare data start and end times to deployment start and end times
 	- compare deployment depth from asset managment to pressure data in file 
