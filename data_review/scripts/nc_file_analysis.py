@@ -189,12 +189,12 @@ def main(sDir, url_list):
                             if percent > 0.1:
                                 rates['common_sampling_rates'].update({int(i): '{:.2%}'.format(percent)})
 
-                        if len(rates['common_sampling_rates']) == 1:
-                            if float(list(rates['common_sampling_rates'].values())[0].strip('%')) > 75.00:
-                                sampling_rt_sec = list(rates['common_sampling_rates'].keys())[0]
-                            else:
-                                sampling_rt_sec = 'no consistent sampling rate: {}'.format(rates['common_sampling_rates'])
-                        else:
+                        sampling_rt_sec = None
+                        for k, v in rates['common_sampling_rates'].items():
+                            if float(v.strip('%')) > 50.00:
+                                sampling_rt_sec = k
+
+                        if not sampling_rt_sec:
                             sampling_rt_sec = 'no consistent sampling rate: {}'.format(rates['common_sampling_rates'])
 
                         # Check that the timestamps in the file are unique

@@ -280,7 +280,7 @@ def main(f, ps, mc):
                             comparison_test = 'No valid data to compare'
                         else:
                             if len(diff_gzero_list) > 0:
-                                if np.unique(diff_gzero_list).tolist() == [None]:
+                                if list(set(diff_gzero_list)) == [None]:
                                     comparison_details = 'no comparison: timestamps do not match'
                                     comparison_test = 'no comparison: timestamps do not match'
                                 else:

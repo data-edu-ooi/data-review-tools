@@ -301,7 +301,7 @@ def missing_data_times(df):
 def unique_timestamps_hour(ds):
     # return dataframe of the unique timestamps rounded to the nearest hour
     df = pd.DataFrame(ds['time'].data, columns=['time'])
-    df = df['time'].map(lambda t: t.replace(second=0, microsecond=0, minute=0, hour=t.hour) + timedelta(hours=t.minute // 30))
+    df = df['time'].map(lambda t: t.replace(second=0, microsecond=0, nanosecond=0, minute=0, hour=t.hour) + timedelta(hours=t.minute // 30))
     udf = pd.DataFrame(np.unique(df), columns=['time'])
 
     return udf
