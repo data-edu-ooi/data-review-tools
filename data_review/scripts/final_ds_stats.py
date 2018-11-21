@@ -16,10 +16,11 @@ import pandas as pd
 import re
 import numpy as np
 import json
+import ast
 import functions.common as cf
 
 
-def append_variable_data(ds, variable_dict, common_stream_name):
+def append_variable_data(ds, variable_dict, common_stream_name, exclude_times):
     ds_vars = eliminate_common_variables(list(ds.data_vars.keys()))
     vars_dict = variable_dict[common_stream_name]['vars']
     for var in ds_vars:
@@ -27,10 +28,19 @@ def append_variable_data(ds, variable_dict, common_stream_name):
             long_name = ds[var].long_name
             if long_name in list(vars_dict.keys()):
                 if ds[var].units == vars_dict[long_name]['db_units']:
-                    vars_dict[long_name]['t'] = np.append(vars_dict[long_name]['t'], ds['time'].data)
-                    vars_dict[long_name]['values'] = np.append(vars_dict[long_name]['values'], ds[var].data)
                     vars_dict[long_name]['fv'].append(ds[var]._FillValue)
                     vars_dict[long_name]['units'].append(ds[var].units)
+                    tD = ds['time'].data
+                    varD = ds[var].data
+                    if len(exclude_times) > 0:
+                        for et in exclude_times:
+                            tD, varD = exclude_time_ranges(tD, varD, et)
+                        vars_dict[long_name]['t'] = np.append(vars_dict[long_name]['t'], tD)
+                        vars_dict[long_name]['values'] = np.append(vars_dict[long_name]['values'], varD)
+                    else:
+                        vars_dict[long_name]['t'] = np.append(vars_dict[long_name]['t'], tD)
+                        vars_dict[long_name]['values'] = np.append(vars_dict[long_name]['values'], varD)
+
         except AttributeError:
             continue
 
@@ -44,6 +54,15 @@ def eliminate_common_variables(vlist):
     return varlist
 
 
+def exclude_time_ranges(time_data, variable_data, time_lst):
+    t0 = np.datetime64(time_lst[0])
+    t1 = np.datetime64(time_lst[1])
+    ind = np.where((time_data < t0) | (time_data > t1), True, False)
+    timedata = time_data[ind]
+    variabledata = variable_data[ind]
+    return timedata, variabledata
+
+
 def initialize_empty_arrays(dictionary, stream_name):
     for kk, vv in dictionary[stream_name]['vars'].items():
         dictionary[stream_name]['vars'][kk].update({'t': np.array([], dtype='datetime64[ns]'), 'values': np.array([]),
@@ -52,7 +71,7 @@ def initialize_empty_arrays(dictionary, stream_name):
 
 
 def main(sDir, url_list):
-    #eliminate_times = pd.read_csv('/Users/lgarzio/Documents/OOI/DataReviews/test4/eliminate_times.csv')
+    eliminate_times = pd.read_csv('/Users/lgarzio/Documents/OOI/DataReviews/test4/eliminate_times.csv')
     rd_list = []
     for uu in url_list:
         elements = uu.split('/')[-2].split('-')
@@ -63,6 +82,8 @@ def main(sDir, url_list):
     for r in rd_list:
         save_dir = os.path.join(sDir, r.split('-')[0], r)
         cf.create_dir(save_dir)
+
+        et = ast.literal_eval(eliminate_times.loc[eliminate_times['refdes'] == r]['times'][0])
 
         # get science variable long names from the Data Review Database
         stream_sci_vars = dict()
@@ -143,10 +164,10 @@ def main(sDir, url_list):
                                     # if the reference designator has 1 science data stream
                                     if strm == 'common_stream_placeholder':
                                         sci_vars_dict = append_variable_data(ds, sci_vars_dict,
-                                                                             'common_stream_placeholder')
+                                                                             'common_stream_placeholder', et)
                                     # if the reference designator has multiple science data streams
                                     elif fmethod_stream in sci_vars_dict[strm]['ms']:
-                                        sci_vars_dict = append_variable_data(ds, sci_vars_dict, strm)
+                                        sci_vars_dict = append_variable_data(ds, sci_vars_dict, strm, et)
 
         # analyze combined dataset
         print('\nAnalyzing combined dataset and writing summary file')
@@ -196,7 +217,7 @@ def main(sDir, url_list):
 
 
 if __name__ == '__main__':
-    pd.set_option('display.width', 320, "display.max_columns", 10)
+    pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
     sDir = '/Users/lgarzio/Documents/repo/OOI/data-edu-ooi/data-review-tools/data_review/output'
     url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/ooidatateam@gmail.com/20181026T123336-GP03FLMA-RIM01-02-CTDMOG040-recovered_inst-ctdmo_ghqr_instrument_recovered/catalog.html',
                 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/ooidatateam@gmail.com/20181026T123345-GP03FLMA-RIM01-02-CTDMOG040-recovered_host-ctdmo_ghqr_sio_mule_instrument/catalog.html',
