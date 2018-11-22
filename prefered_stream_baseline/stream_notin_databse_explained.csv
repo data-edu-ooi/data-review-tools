@@ -1,0 +1,20 @@
+refdes,methods,streams-uFrame,database,uFrame,comment,redmine,info,
+CE02SHBP-MJ01C-07-ZPLSCB101,streamed,"[u'zplsc_echogram_data', u'zplsc_metadata']",yes,yes,no science streams in database,,add to database,Ã
+CE04OSPS-PC01B-05-ZPLSCB102,streamed,[u'zplsc_metadata'],yes,yes,no science streams in database,,add to database,Ã
+CE04OSPS-PC01B-4C-PCO2WA105,streamed,"[u'pco2w_a_battery_voltage', u'pco2w_a_configuration', u'pco2w_a_regular_status', u'pco2w_a_sami_data_record', u'pco2w_a_sami_data_record_cal', u'pco2w_a_thermistor_voltage']", no,yes,no refdes in database,12240,Note: refdes changed to RS01SBPD-DP01A-03-FLCDRA102,Ã
+CE06ISSM-MFD37-07-ZPLSCC000,recovered_inst,[u'zplsc_echogram_data'],yes,yes,no science streams in database,,add to database,Ã
+CE07SHSM-MFD37-07-ZPLSCC000,recovered_inst,[u'zplsc_echogram_data'],yes,yes,no science streams in database,,add to database,Ã
+CE09OSSM-MFD37-07-ZPLSCC000,recovered_inst,[u'zplsc_echogram_data'],yes,yes,no science streams in database,,add to database,Ã
+GI03FLMA-RIM01-02-CTDMOG035,[u'bad_telemetered'],[], no,yes,method not valid,,Note: purge from system,Ã
+GI05MOAS-GL363-01-FLORDM000,telemetered,[u'flord_m_glider_instrument'], no,yes,no refdes in database,,not for review,Ã
+GI05MOAS-GL363-02-DOSTAM000,telemetered,[u'dosta_abcdjm_glider_instrument'], no,yes,no refdes in database,,not for review,Ã
+GI05MOAS-GL363-04-CTDGVM000,telemetered,[u'ctdgv_m_glider_instrument'], no,yes,no refdes in database,,not for review,Ã
+GI05MOAS-GL453-01-FLORDM000,telemetered,[u'flord_m_glider_instrument'], no,yes,no refdes in database,,not for review,Ã
+GI05MOAS-GL453-02-DOSTAM000,telemetered,[u'dosta_abcdjm_glider_instrument'], no,yes,no refdes in database,,not for review,Ã
+GI05MOAS-GL453-04-CTDGVM000,telemetered,[u'ctdgv_m_glider_instrument'], no,yes,no refdes in database,,not for review,Ã
+GP05MOAS-GL469-01-FLORDM000,telemetered,[u'flord_m_glider_instrument'], no,yes,no refdes in database,,not for review,Ã
+GP05MOAS-GL469-02-DOSTAM000,telemetered,[u'dosta_abcdjm_glider_instrument'], no,yes,no refdes in database,,not for review,Ã
+GP05MOAS-GL469-04-CTDGVM000,telemetered,[u'ctdgv_m_glider_instrument'], no,yes,no refdes in database,,not for review,Ã
+RS01SBPD-DP01A-03-FLCDRA104,recovered_inst,[u'dpc_flcdrtd_instrument_recovered'], no,yes,no refdes in database,12240,refdes changed to RS01SBPD-DP01A-03-FLCDRA102,Ã
+RS01SBPD-DP01A-03-FLNTUA104,recovered_inst,[u'dpc_flnturtd_instrument_recovered'], no,yes,no refdes in database,12240,refdes changed to RS01SBPD-DP01A-04-FLNTUA102,Ã
+RS03INT1-MJ03C-07-D1000A301,streamed,[u'd1000_sample'], no,yes,no refdes in database,,add to database,Ã
