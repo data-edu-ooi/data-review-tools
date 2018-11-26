@@ -57,6 +57,7 @@ def time_delta(t0, t1):
 def main(f, ps, mc):
     data = load_json_file(f)
     refdes = data['refdes']
+    node = refdes.split('-')[1]
     loc_compare = data['location_comparison']
     deployments = np.sort(list(data['deployments'].keys()))
 
@@ -296,7 +297,10 @@ def main(f, ps, mc):
                                 comparison_test = 'no other streams for comparison'
 
                         # Check the coordinates in the file
-                        check_coords = list(set(['obs', 'time', 'pressure', 'lat', 'lon']) - set(coords))
+                        if 'SBD' not in node:
+                            check_coords = list(set(['obs', 'time', 'pressure', 'lat', 'lon']) - set(coords))
+                        else:
+                            check_coords = list(set(['obs', 'time', 'lat', 'lon']) - set(coords))
 
                         if len(check_coords) > 0:
                             if 'pressure' in check_coords:
