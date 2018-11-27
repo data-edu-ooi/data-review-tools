@@ -262,7 +262,9 @@ def main(f, ps, mc):
                             n_missing_gaps = []
                             n_missing_days = []
                             for md in md_unique:
-                                if 'no missing data' not in md:
+                                if 'no missing data' or 'No valid data to compare' in md:
+                                    continue
+                                else:
                                     md = ast.literal_eval(md)
                                     n_missing_gaps.append(len(md['missing_data_gaps']))
                                     n_missing_days.append(md['n_missing_days_total'])
