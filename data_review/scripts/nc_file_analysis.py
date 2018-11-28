@@ -257,13 +257,20 @@ def main(sDir, url_list):
 
                                     if len(p_nonan_nofv) > 0:
                                         [press_outliers, pressure_mean, _, pressure_max, _, _] = cf.variable_statistics(p_nonan_nofv.data, 3)
+                                        pressure_mean = round(pressure_mean, 2)
+                                        pressure_max = round(pressure_max, 2)
                                     else:
                                         press_outliers = None
                                         pressure_mean = None
+                                        pressure_max = None
+                                        if len(pressure) > 0 and len(p_nonan) == 0:
+                                            notes.append('Pressure variable all NaNs')
+                                        elif len(pressure) > 0 and len(p_nonan) > 0 and len(p_nonan_nofv) == 0:
+                                            notes.append('Pressure variable all fill values')
 
                                 else:  # if there is only 1 data point
                                     press_outliers = 0
-                                    pressure_mean = round(ds[press].data.tolist()[0], 4)
+                                    pressure_mean = round(ds[press].data.tolist()[0], 2)
 
                             try:
                                 pressure_units = pressure.units
@@ -276,13 +283,13 @@ def main(sDir, url_list):
                                 pressure_diff = None
                             else:
                                 if pressure_units == '0.001 dbar':
-                                    pressure_max = pressure_max / 1000
-                                    pressure_mean = pressure_mean / 1000
-                                    notes.append('pressure converted from 0.001 dbar to dbar for pressure comparison')
+                                    pressure_max = round((pressure_max / 1000), 2)
+                                    pressure_mean = round((pressure_mean / 1000), 2)
+                                    notes.append('Pressure converted from 0.001 dbar to dbar for pressure comparison')
                                 if 'WFP' in refdes.split('-')[1]:
-                                    pressure_diff = round(pressure_max - deploy_depth, 4)
+                                    pressure_diff = round(pressure_max - deploy_depth, 2)
                                 else:
-                                    pressure_diff = round(pressure_mean - deploy_depth, 4)
+                                    pressure_diff = round(pressure_mean - deploy_depth, 2)
 
                         except KeyError:
                             press = 'no seawater pressure in file'
