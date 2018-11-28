@@ -1,0 +1,9 @@
+deployment,preferred_method,stream,variable,units,fill_value,n_all,n_outliers,n_nans,n_fillvalues,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_inst,phsen_abcdef_instrument,phsen_thermistor_temperature,V,-9999999.0,4054,0,0,0,4054,100.0,5.0252,3.3978,8.9117,1.3632
+deployment0001,recovered_inst,phsen_abcdef_instrument,phsen_abcdef_ph_seawater,1,-9999999.0,4054,25,0,0,4029,99.38,8.0807,7.163,9.0069,0.1658
+deployment0002,recovered_inst,phsen_abcdef_instrument,phsen_thermistor_temperature,V,-9999999.0,3976,0,0,0,3976,100.0,5.0902,3.2425,8.623,1.5466
+deployment0002,recovered_inst,phsen_abcdef_instrument,phsen_abcdef_ph_seawater,1,-9999999.0,3976,27,0,0,3949,99.32,8.0942,7.4229,8.6987,0.0755
+deployment0003,recovered_inst,phsen_abcdef_instrument,phsen_thermistor_temperature,V,-9999999.0,4723,0,0,0,4723,100.0,5.5469,3.3535,9.9133,1.724
+deployment0003,recovered_inst,phsen_abcdef_instrument,phsen_abcdef_ph_seawater,1,-9999999.0,4723,26,43,0,4654,98.54,8.093,7.7293,8.5116,0.0332
+deployment0004,recovered_inst,phsen_abcdef_instrument,phsen_thermistor_temperature,V,-9999999.0,3694,0,0,0,3694,100.0,4.8762,3.2647,8.7118,1.3762
+deployment0004,recovered_inst,phsen_abcdef_instrument,phsen_abcdef_ph_seawater,1,-9999999.0,3694,7,0,0,3687,99.81,7.9104,5.2483,10.5168,0.517

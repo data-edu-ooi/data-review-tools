@@ -1,0 +1,17 @@
+deployment,preferred_method,stream,variable,units,fill_value,n_all,n_outliers,n_nans,n_fillvalues,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_inst,velpt_ab_instrument_recovered,eastward_velocity,m s-1,-9999999.0,8111,0,0,0,8111,100.0,0.0045,-0.262,0.2941,0.0819
+deployment0001,recovered_inst,velpt_ab_instrument_recovered,northward_velocity,m s-1,-9999999.0,8111,0,0,0,8111,100.0,0.0103,-0.2191,0.2588,0.0793
+deployment0001,recovered_inst,velpt_ab_instrument_recovered,upward_velocity,m s-1,-9999999.0,8111,0,0,0,8111,100.0,0.0091,-0.058,0.089,0.0164
+deployment0001,recovered_inst,velpt_ab_instrument_recovered,pressure_mbar,0.001 dbar,-9999999,8111,68,0,0,8043,99.16,1851654.8941,1849356.0,1862444.0,1459.5116
+deployment0002,recovered_inst,velpt_ab_instrument_recovered,eastward_velocity,m s-1,-9999999.0,7950,0,0,0,7950,100.0,0.0158,-0.2909,0.3665,0.0912
+deployment0002,recovered_inst,velpt_ab_instrument_recovered,northward_velocity,m s-1,-9999999.0,7950,0,0,0,7950,100.0,0.0102,-0.3243,0.2695,0.0783
+deployment0002,recovered_inst,velpt_ab_instrument_recovered,upward_velocity,m s-1,-9999999.0,7950,0,0,0,7950,100.0,0.0035,-0.065,0.085,0.0183
+deployment0002,recovered_inst,velpt_ab_instrument_recovered,pressure_mbar,0.001 dbar,-9999999,7950,70,0,0,7880,99.12,1824474.9093,1821796.0,1838856.0,2245.6333
+deployment0003,recovered_inst,velpt_ab_instrument_recovered,eastward_velocity,m s-1,-9999999.0,9453,0,0,0,9453,100.0,0.0252,-0.321,0.3375,0.0883
+deployment0003,recovered_inst,velpt_ab_instrument_recovered,northward_velocity,m s-1,-9999999.0,9453,0,0,0,9453,100.0,0.0082,-0.2604,0.3279,0.0789
+deployment0003,recovered_inst,velpt_ab_instrument_recovered,upward_velocity,m s-1,-9999999.0,9453,1,0,0,9452,99.99,-0.0006,-0.075,0.086,0.0193
+deployment0003,recovered_inst,velpt_ab_instrument_recovered,pressure_mbar,0.001 dbar,-9999999,9453,11,0,0,9442,99.88,1852862.0999,1850632.0,1885001.0,2265.8643
+deployment0004,recovered_inst,velpt_ab_instrument_recovered,eastward_velocity,m s-1,-9999999.0,7396,0,0,0,7396,100.0,0.0187,-0.2674,0.2564,0.0802
+deployment0004,recovered_inst,velpt_ab_instrument_recovered,northward_velocity,m s-1,-9999999.0,7396,0,0,0,7396,100.0,-0.0043,-0.3098,0.2526,0.0864
+deployment0004,recovered_inst,velpt_ab_instrument_recovered,upward_velocity,m s-1,-9999999.0,7396,1,0,0,7395,99.99,0.0028,-0.065,0.073,0.0183
+deployment0004,recovered_inst,velpt_ab_instrument_recovered,pressure_mbar,0.001 dbar,-9999999,7396,58,0,0,7338,99.22,1838940.7542,1836500.0,1853723.0,2284.3782

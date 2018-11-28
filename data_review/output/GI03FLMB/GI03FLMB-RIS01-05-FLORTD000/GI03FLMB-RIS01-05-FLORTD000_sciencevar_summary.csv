@@ -1,0 +1,21 @@
+deployment,preferred_method,stream,variable,units,fill_value,n_all,n_outliers,n_nans,n_fillvalues,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_host,flort_sample,seawater_scattering_coefficient,m-1,-9999999.0,32443,1.0,0,52,32390,99.84,0.0006,0.0006,0.0007,0.0
+deployment0001,recovered_host,flort_sample,fluorometric_chlorophyll_a,µg L-1,-9999999.0,32443,171.0,0,0,32272,99.47,0.706,-0.1098,8.5522,0.9742
+deployment0001,recovered_host,flort_sample,fluorometric_cdom,ppb,-9999999.0,32443,24.0,0,0,32419,99.93,1.8844,-3.2508,8.2173,1.2683
+deployment0001,recovered_host,flort_sample,optical_backscatter,m-1,-9999999.0,32443,0.0,0,52,32391,99.84,0.0099,-0.0001,0.0467,0.018
+deployment0001,recovered_host,flort_sample,pressure_depth,dbar,-9999999.0,32443,,0,32443,0,0.0,,,,
+deployment0002,recovered_host,flort_sample,seawater_scattering_coefficient,m-1,-9999999.0,1124,6.0,0,27,1091,97.06,0.0006,0.0006,0.0006,0.0
+deployment0002,recovered_host,flort_sample,fluorometric_chlorophyll_a,µg L-1,-9999999.0,1124,19.0,0,0,1105,98.31,0.5464,0.1452,1.5004,0.1266
+deployment0002,recovered_host,flort_sample,fluorometric_cdom,ppb,-9999999.0,1124,1.0,0,0,1123,99.91,1.7276,1.359,2.0838,0.1119
+deployment0002,recovered_host,flort_sample,optical_backscatter,m-1,-9999999.0,1124,5.0,0,27,1092,97.15,0.0013,0.001,0.0018,0.0001
+deployment0002,recovered_host,flort_sample,pressure_depth,dbar,-9999999.0,1124,,0,1124,0,0.0,,,,
+deployment0003,recovered_host,flort_sample,seawater_scattering_coefficient,m-1,-9999999.0,10926,0.0,0,0,10926,100.0,0.0006,0.0006,0.0007,0.0
+deployment0003,recovered_host,flort_sample,fluorometric_chlorophyll_a,µg L-1,-9999999.0,10926,4.0,0,0,10922,99.96,1.1662,0.0,4.8685,0.8042
+deployment0003,recovered_host,flort_sample,fluorometric_cdom,ppb,-9999999.0,10926,8.0,0,0,10918,99.93,1.3479,0.733,2.0524,0.1413
+deployment0003,recovered_host,flort_sample,optical_backscatter,m-1,-9999999.0,10926,19.0,0,0,10907,99.83,0.0023,-0.0,0.0091,0.0013
+deployment0003,recovered_host,flort_sample,pressure_depth,dbar,-9999999.0,10926,,0,10926,0,0.0,,,,
+deployment0004,recovered_host,flort_sample,seawater_scattering_coefficient,m-1,-9999999.0,6052,0.0,0,0,6052,100.0,0.0006,0.0006,0.0007,0.0
+deployment0004,recovered_host,flort_sample,fluorometric_chlorophyll_a,µg L-1,-9999999.0,6052,0.0,0,0,6052,100.0,1.1825,0.216,3.54,0.5793
+deployment0004,recovered_host,flort_sample,fluorometric_cdom,ppb,-9999999.0,6052,2.0,0,0,6050,99.97,1.2449,0.5166,1.9803,0.1701
+deployment0004,recovered_host,flort_sample,optical_backscatter,m-1,-9999999.0,6052,18.0,0,0,6034,99.7,0.0012,0.0007,0.0031,0.0003
+deployment0004,recovered_host,flort_sample,pressure_depth,dbar,-9999999.0,6052,,0,6052,0,0.0,,,,
