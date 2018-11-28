@@ -262,7 +262,9 @@ def main(f, ps, mc):
                             n_missing_gaps = []
                             n_missing_days = []
                             for md in md_unique:
-                                if 'no missing data' or 'No valid data to compare' in md:
+                                if 'no missing data' in md:
+                                    continue
+                                elif 'No valid data to compare' in md:
                                     continue
                                 else:
                                     md = ast.literal_eval(md)
