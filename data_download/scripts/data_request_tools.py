@@ -92,7 +92,7 @@ def format_inputs(input_str):
     else:
         try:
             finput = ast.literal_eval(input_str)
-        except ValueError:
+        except (ValueError, SyntaxError):
             finput = input_str
         if type(finput) == list:
             formatted_input = finput
