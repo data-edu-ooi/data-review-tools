@@ -24,10 +24,10 @@ import itertools
 import functions.common as cf
 import scripts
 
-sDir = '/Users/lgarzio/Documents/OOI/DataReviews/GI05MOAS'
+sDir = '/Users/lgarzio/Documents/OOI'
 f = ''  # optional i.e. 'data_download.csv'
-username = 'OOIAPI-BJOX1E3EIP431N'
-token = 'MS122F2C06J1V7'
+username = 'username'
+token = 'token'
 
 cf.create_dir(sDir)
 now = dt.datetime.now().strftime('%Y%m%dT%H%M')
@@ -67,4 +67,5 @@ print('\nSeeing if the requests have fulfilled...')
 for i in range(len(thredds_output_urls)):
     url = thredds_output_urls[i]
     print('\nDataset {} of {}: {}'.format((i + 1), len(thredds_output_urls), url))
-    cf.check_request_status(url)
+    if 'no_output_url' not in url:
+        cf.check_request_status(url)
