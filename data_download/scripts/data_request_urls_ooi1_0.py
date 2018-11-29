@@ -34,7 +34,6 @@ def build_data_request_urls(df):
     url_list = []
     for i, j in df.iterrows():
         if j['stream_type'] == 'Science':
-
             refdes = j['reference_designator']
             rd = refdes.split('-')
             inst_req = '{:s}/{:s}/{:s}-{:s}/'.format(rd[0], rd[1], rd[2], rd[3])
@@ -42,7 +41,6 @@ def build_data_request_urls(df):
             stream = j['stream_name']
             beginTime = j['begin']
             endTime = j['end']
-
             url = '{:s}/{:s}{:s}/{:s}?beginDT={:s}&endDT={:s}{:s}'.format(base_url, inst_req, method, stream, beginTime, endTime, ap)
             url_list.append(url)
     return url_list
@@ -64,7 +62,8 @@ def main(sDir, array, subsite, node, inst, delivery_methods, now=dt.datetime.now
             output[i]['reference_designator'] = r
             output[i]['begin'] = data_request_tools.format_date(min(rlf_refdes['startDateTime']))
             output[i]['end'] = data_request_tools.format_date(max(rlf_refdes['stopDateTime']))
-            output[i]['deployments'] = map(int, rlf_refdes['deploymentNumber'].tolist())
+            dd = list(rlf_refdes['deploymentNumber'])
+            output[i]['deployments'] = [int(z) for z in dd]
 
     output_df = pd.DataFrame.from_dict(output, orient='index')
 
@@ -81,6 +80,7 @@ def main(sDir, array, subsite, node, inst, delivery_methods, now=dt.datetime.now
     db = data_request_tools.get_database()
     dbf = data_request_tools.filter_dataframe(db, array, subsite, node, inst, dmethods)
     merged = pd.merge(output_df, dbf, on='reference_designator', how='outer')
+    merged.dropna(axis=0, subset=['deployments'], inplace=True)  # drop instruments that aren't 1.0 datasets
 
     url_list = build_data_request_urls(merged)
 
