@@ -24,10 +24,10 @@ import itertools
 import functions.common as cf
 import scripts
 
-sDir = '/Users/lgarzio/Documents/OOI'
+sDir = '/Users/lgarzio/Documents/OOI/DataReviews/GI05MOAS'
 f = ''  # optional i.e. 'data_download.csv'
-username = 'username'
-token = 'token'
+username = 'OOIAPI-BJOX1E3EIP431N'
+token = 'MS122F2C06J1V7'
 
 cf.create_dir(sDir)
 now = dt.datetime.now().strftime('%Y%m%dT%H%M')
