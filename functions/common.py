@@ -171,7 +171,13 @@ def reject_outliers(data, m=3):
     :param data: numpy array containing data
     :param m: number of standard deviations from the mean. Default: 3
     """
-    return abs(data - np.nanmean(data)) < m * np.nanstd(data)
+    stdev = np.nanstd(data)
+    if stdev > 0.0:
+        ind = abs(data - np.nanmean(data)) < m * stdev
+    else:
+        ind = len(data) * [True]
+
+    return ind
 
 
 def return_stream_vars(stream):

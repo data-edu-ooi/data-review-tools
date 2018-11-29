@@ -106,7 +106,7 @@ def main(sDir, url_list):
                             ds = xr.open_dataset(datasets[0], mask_and_scale=False)
                             ds = ds.swap_dims({'obs': 'time'})
                             fname, subsite, refdes, method, data_stream, deployment = cf.nc_attributes(datasets[0])
-                        else:
+                        elif len(datasets) > 1:
                             ds = xr.open_mfdataset(datasets, mask_and_scale=False)
                             ds = ds.swap_dims({'obs': 'time'})
                             ds = ds.chunk({'time': 100})
@@ -115,6 +115,8 @@ def main(sDir, url_list):
                             notes.append('multiple deployment .nc files')
                             # when opening multiple datasets, don't check that the timestamps are in ascending order
                             time_ascending = 'not_tested'
+                        else:
+                            continue
 
                         print('\nAnalyzing file: {}'.format(fname))
 

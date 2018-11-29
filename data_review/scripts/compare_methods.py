@@ -352,16 +352,16 @@ def main(sDir, url_list):
                     splitter = u.split('/')[-2].split('-')
                     catalog_rms = '-'.join((r, splitter[-2], splitter[-1]))
                     udatasets = cf.get_nc_urls([u])
-                    deployments = [str(k.split('/')[-1][0:14]) for k in udatasets]
+                    idatasets = []
+                    for dss in udatasets:  # filter out collocated data files
+                        if catalog_rms in dss.split('/')[-1].split('_20')[0]:
+                            idatasets.append(dss)
+                    deployments = [str(k.split('/')[-1][0:14]) for k in idatasets]
                     udeploy = np.unique(deployments).tolist()
                     for ud in udeploy:
-                        rdatasets = [s for s in udatasets if ud in s]
-                        datasets = []
-                        for dss in rdatasets:  # filter out collocated data files
-                            if catalog_rms in dss.split('/')[-1].split('_20')[0]:
-                                datasets.append(dss)
+                        rdatasets = [s for s in idatasets if ud in s]
                         file_ms_lst = []
-                        for dataset in datasets:
+                        for dataset in rdatasets:
                             splt = dataset.split('/')[-1].split('_20')[0].split('-')
                             file_ms_lst.append('-'.join((splt[-2], splt[-1])))
                         file_ms = np.unique(file_ms_lst).tolist()[0]
@@ -369,7 +369,7 @@ def main(sDir, url_list):
                             dinfo[file_ms]
                         except KeyError:
                             dinfo[file_ms] = {}
-                        dinfo[file_ms].update({ud: datasets})
+                        dinfo[file_ms].update({ud: rdatasets})
 
         else:
             print('More than 3 methods provided. Please provide fewer datasets for analysis.')
