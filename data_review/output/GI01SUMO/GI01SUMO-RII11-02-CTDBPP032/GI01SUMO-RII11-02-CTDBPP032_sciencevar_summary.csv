@@ -1,0 +1,16 @@
+deployment,preferred_method,stream,variable,units,fill_value,n_all,n_outliers,n_nans,n_fillvalues,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0002,recovered_inst,ctdbp_cdef_instrument_recovered,density,kg m-3,-9999999.0,5851,5,0,0,5846,99.91,1028.0318,1027.6242,1028.379,0.0866
+deployment0002,recovered_inst,ctdbp_cdef_instrument_recovered,practical_salinity,1,-9999999.0,5851,3,0,0,5848,99.95,34.9503,34.8453,35.1054,0.0422
+deployment0002,recovered_inst,ctdbp_cdef_instrument_recovered,ctdbp_seawater_temperature,ºC,-9999999.0,5851,0,0,0,5851,100.0,4.7536,3.4669,7.937,0.8762
+deployment0002,recovered_inst,ctdbp_cdef_instrument_recovered,ctdbp_seawater_pressure,dbar,-9999999.0,5851,5,0,0,5846,99.91,79.7245,70.7135,84.3309,1.2113
+deployment0002,recovered_inst,ctdbp_cdef_instrument_recovered,ctdbp_seawater_conductivity,S m-1,-9999999.0,5851,0,0,0,5851,100.0,3.323,3.2014,3.6046,0.0816
+deployment0003,recovered_inst,ctdbp_cdef_instrument_recovered,density,kg m-3,-9999999.0,5053,0,0,0,5053,100.0,1028.0329,1027.8209,1028.1374,0.0521
+deployment0003,recovered_inst,ctdbp_cdef_instrument_recovered,practical_salinity,1,-9999999.0,5053,0,0,0,5053,100.0,34.9559,34.8299,35.0869,0.0439
+deployment0003,recovered_inst,ctdbp_cdef_instrument_recovered,ctdbp_seawater_temperature,ºC,-9999999.0,5053,0,0,0,5053,100.0,4.9127,3.6628,6.3409,0.5695
+deployment0003,recovered_inst,ctdbp_cdef_instrument_recovered,ctdbp_seawater_pressure,dbar,-9999999.0,5053,13,0,0,5040,99.74,82.5149,77.0833,86.3515,1.0372
+deployment0003,recovered_inst,ctdbp_cdef_instrument_recovered,ctdbp_seawater_conductivity,S m-1,-9999999.0,5053,0,0,0,5053,100.0,3.3378,3.2202,3.4733,0.054
+deployment0004,telemetered,ctdbp_p_dcl_instrument,conductivity,S m-1,-9999999.0,1616,0,0,0,1616,100.0,3.3631,3.2779,3.4498,0.0394
+deployment0004,telemetered,ctdbp_p_dcl_instrument,pressure,dbar,-9999999.0,1616,31,0,0,1585,98.08,80.0616,76.481,82.29,0.6528
+deployment0004,telemetered,ctdbp_p_dcl_instrument,density,kg m-3,-9999999.0,1616,25,0,0,1591,98.45,1027.9692,1027.6448,1028.0524,0.0359
+deployment0004,telemetered,ctdbp_p_dcl_instrument,temp,ºC,-9999999.0,1616,0,0,0,1616,100.0,5.2131,4.3142,6.1332,0.4081
+deployment0004,telemetered,ctdbp_p_dcl_instrument,practical_salinity,1,-9999999.0,1616,0,0,0,1616,100.0,34.9376,34.8516,35.0463,0.0308

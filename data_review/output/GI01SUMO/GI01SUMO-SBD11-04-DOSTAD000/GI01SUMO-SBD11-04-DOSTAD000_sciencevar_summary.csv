@@ -1,0 +1,13 @@
+deployment,preferred_method,stream,variable,units,fill_value,n_all,n_outliers,n_nans,n_fillvalues,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_host,dosta_abcdjm_dcl_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,574194,2,0,30819,543373,94.63,283.9137,274.2131,297.4539,2.7806
+deployment0001,recovered_host,dosta_abcdjm_dcl_instrument_recovered,estimated_oxygen_concentration,µmol L-1,-9999999.0,574194,0,0,0,574194,100.0,367.5177,352.811,386.444,4.1886
+deployment0001,recovered_host,dosta_abcdjm_dcl_instrument_recovered,dosta_abcdjm_cspp_tc_oxygen,µmol L-1,-9999999.0,574194,0,0,0,574194,100.0,367.5183,352.8124,386.4512,4.1886
+deployment0002,recovered_host,dosta_abcdjm_dcl_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,1388984,95,0,0,1388889,99.99,282.4036,275.3017,297.0748,3.0228
+deployment0002,recovered_host,dosta_abcdjm_dcl_instrument_recovered,estimated_oxygen_concentration,µmol L-1,-9999999.0,1388984,7,0,0,1388977,100.0,364.9932,354.372,387.492,4.5694
+deployment0002,recovered_host,dosta_abcdjm_dcl_instrument_recovered,dosta_abcdjm_cspp_tc_oxygen,µmol L-1,-9999999.0,1388984,7,0,0,1388977,100.0,364.9932,354.3736,387.4803,4.5695
+deployment0003,recovered_host,dosta_abcdjm_dcl_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,2496965,850,0,0,2496115,99.97,283.5803,260.109,350.1273,13.2441
+deployment0003,recovered_host,dosta_abcdjm_dcl_instrument_recovered,estimated_oxygen_concentration,µmol L-1,-9999999.0,2496965,427,0,0,2496538,99.98,365.9995,333.485,455.882,17.9404
+deployment0003,recovered_host,dosta_abcdjm_dcl_instrument_recovered,dosta_abcdjm_cspp_tc_oxygen,µmol L-1,-9999999.0,2496965,426,0,0,2496539,99.98,365.939,333.4194,455.8315,17.9375
+deployment0004,telemetered,dosta_abcdjm_dcl_instrument,dissolved_oxygen,µmol kg-1,-9999999.0,561402,0,0,0,561402,100.0,269.6344,262.6851,281.1655,3.4506
+deployment0004,telemetered,dosta_abcdjm_dcl_instrument,estimated_oxygen_concentration,µmol L-1,-9999999.0,561402,0,0,0,561402,100.0,364.9046,354.461,381.109,5.1131
+deployment0004,telemetered,dosta_abcdjm_dcl_instrument,dosta_abcdjm_cspp_tc_oxygen,µmol L-1,-9999999.0,561402,0,0,0,561402,100.0,346.3006,336.5501,361.4436,4.779
