@@ -3,7 +3,7 @@
 import requests
 import pandas as pd
 
-outdir = '/Users/leila/Documents/NSFEduSupport/test/'
+outdir = '/Users/leila/Documents/NSFEduSupport/test/stream/'
 methods_base = ['recovered_inst', 'recovered_host', 'recovered_cspp', 'recovered_wfp','telemetered']
 base_url = 'https://ooinet.oceanobservatories.org/api/m2m/12576/sensor/inv'
 not_4_review = ['ENG', 'MOPAK', 'HYD', 'OBSSP', 'OBSBB', 'CAM', 'FLOBN', 'RASFL', 'OSMOI', 'PPSDN', 'MASSP']
