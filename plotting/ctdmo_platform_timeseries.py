@@ -45,7 +45,7 @@ def plot_ctdmo(data_dict, var, stdev=None):
     sensor_list = []
     median_list = []
 
-    for i, (key, value) in enumerate(data_dict.iteritems()):
+    for i, (key, value) in enumerate(data_dict.items()):
         if len(data_dict) < 11:
             colors = colors10
         else:
