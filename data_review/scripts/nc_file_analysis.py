@@ -357,7 +357,7 @@ def main(sDir, url_list):
                                     n_fv = len(var) - n_nan - len(var_nonan_nofv)
 
                                     if len(var_nonan_nofv) > 1:
-                                        [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_nonan_nofv.data, 5)
+                                        [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_nonan_nofv.data, 3)
                                     elif len(var_nonan_nofv) == 1:
                                         num_outliers = 0
                                         mean = round(var_nonan_nofv.data.tolist()[0], 4)

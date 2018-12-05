@@ -16,25 +16,25 @@ import ast
 
 
 def group_percents(summary_dict, lst):
-    percent_grps = [99.00, [95.00, 99.00], [75.00, 95.00], [50.00, 75.00], [25.00, 50.00], 25.00]
+    percent_grps = [99, [95, 99], [75, 95], [50, 75], [25, 50], 25]
     for grp in percent_grps:
-        if grp == 99.00:
+        if grp == 99:
             x99 = []
             ilst = []
             for i, x in enumerate(lst):
-                if type(x) is not str and x > grp:
+                if type(x) is not str and x >= grp:
                     x99.append(x)
-                elif type(x) is not str and x <= grp:
+                elif type(x) is not str and x < grp:
                     ilst.append(i)
             #x99 = len([x for x in lst if (type(x) is not str and x > grp)])
             if len(x99) > 0:
                 summary_dict['99'] = len(x99)
-        elif grp == 25.00:
-            x0 = len([x for x in lst if x <= grp])
+        elif grp == 25:
+            x0 = len([x for x in lst if x < grp])
             if x0 > 0:
                 summary_dict['0'] = x0
         else:
-            xgrp = len([x for x in lst if grp[0] < x <= grp[1]])
+            xgrp = len([x for x in lst if grp[0] <= x < grp[1]])
             if xgrp > 0:
                 summary_dict[str(int(grp[0]))] = xgrp
     return summary_dict, ilst
@@ -242,6 +242,7 @@ def main(f, ps, mc):
                         # Check if any percent_valid_data values (for science variables) are < 95
                         pvd_test = dict()
                         snc = len([x for x in valid_list if x == 'stats not calculated'])
+                        valid_list = [round(v) for v in valid_list]
                         if snc > 0:
                             pvd_test['stats not calculated'] = snc
 
