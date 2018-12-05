@@ -71,9 +71,10 @@ def filter_collocated_instruments(main_sensor, datasets):
     return datasets_filtered
 
 
-def get_global_ranges(platform, node, sensor, variable, api_user=None, api_token=None):
+def get_global_ranges(refdes, variable, api_user=None, api_token=None):
     port = '12578'
-    base_url = '{}/qcparameters/inv/{}/{}/{}/'.format(port, platform, node, sensor)
+    spl = refdes.split('-')
+    base_url = '{}/qcparameters/inv/{}/{}/{}/'.format(port, spl[0], spl[1], '-'.join((spl[2], spl[3])))
     url = 'https://ooinet.oceanobservatories.org/api/m2m/{}'.format(base_url)
     if (api_user is None) or (api_token is None):
         r = requests.get(url, verify=False)
@@ -87,21 +88,21 @@ def get_global_ranges(platform, node, sensor, variable, api_user=None, api_token
             if not t1.empty:
                 t2 = t1[t1['qcParameterPK.qcId'] == 'dataqc_globalrangetest_minmax']
                 if not t2.empty:
-                    local_min = float(t2[t2['qcParameterPK.parameter'] == 'dat_min'].iloc[0]['value'])
-                    local_max = float(t2[t2['qcParameterPK.parameter'] == 'dat_max'].iloc[0]['value'])
+                    global_min = float(t2[t2['qcParameterPK.parameter'] == 'dat_min'].iloc[0]['value'])
+                    global_max = float(t2[t2['qcParameterPK.parameter'] == 'dat_max'].iloc[0]['value'])
                 else:
-                    local_min = None
-                    local_max = None
+                    global_min = None
+                    global_max = None
             else:
-                local_min = None
-                local_max = None
+                global_min = None
+                global_max = None
         else:
-            local_min = None
-            local_max = None
+            global_min = None
+            global_max = None
     else:
-        local_min = None
-        local_max = None
-    return [local_min, local_max]
+        global_min = None
+        global_max = None
+    return [global_min, global_max]
 
 
 def get_nc_urls(catalog_urls):
@@ -158,6 +159,11 @@ def refdes_datareview_json(refdes):
     ref_des_url += '.json'
     r = requests.get(ref_des_url).json()
     return r
+
+
+def reject_global_ranges(data, gmin, gmax):
+    # Reject data outside of global ranges
+    return (data >= gmin) & (data <= gmax)
 
 
 def reject_extreme_values(data):

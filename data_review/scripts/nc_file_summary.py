@@ -75,9 +75,9 @@ def main(f, ps, mc):
                         'file_time_gaps', 'gaps_num', 'gaps_num_days', 'timestamp_test', 'n_science_vars',
                         'valid_data_test', 'variable_comparison_details','variable_comparison_test',
                         'full_dataset_test', 'file_coordinates', 'coordinate_test', 'notes', 'filename']
-    vsummary_headers = ['deployment', 'preferred_method', 'stream', 'variable', 'units', 'fill_value',
-                        'n_all', 'n_outliers', 'n_nans', 'n_fillvalues', 'n_stats', 'percent_valid_data', 'mean', 'min',
-                        'max', 'stdev']
+    vsummary_headers = ['deployment', 'preferred_method', 'stream', 'variable', 'units', 'fill_value', 'global_ranges',
+                        'n_all', 'n_nans', 'n_fillvalues', 'n_grange', 'n_outliers', 'n_stats', 'percent_valid_data',
+                        'mean', 'min', 'max', 'stdev']
     csummary_headers = ['deployment', 'preferred_method_stream', 'comparison_method_stream', 'long_name',
                         'preferred_name', 'preferred_units', 'unit_comparison_test', 'preferred_n', 'preferred_n_nan',
                         'missing_data', 'n_comparison', 'min_abs_diff', 'max_abs_diff', 'n_diff_greater_zero',
@@ -168,10 +168,12 @@ def main(f, ps, mc):
                             n_nan = vsummary['n_nans']
                             n_fv = vsummary['n_fillvalues']
                             fv = vsummary['fill_value']
+                            gr = vsummary['global_ranges']
+                            n_gr = vsummary['n_grange']
 
                             valid_list.append(percent_valid_data)
 
-                            vsummary_rows.append([d, m, s, v, units, fv, nt, n_o, n_nan, n_fv, n_stats,
+                            vsummary_rows.append([d, m, s, v, units, fv, gr, nt, n_nan, n_fv, n_gr, n_o, n_stats,
                                                   percent_valid_data, mean, min, max, stdev])
 
                         # build file summary
