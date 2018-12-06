@@ -265,7 +265,7 @@ def main(sDir, url_list):
                                     else:
                                         p_nonan_nofv_gr = p_nonan_nofv
 
-                                    if len(p_nonan_nofv) > 0:
+                                    if len(p_nonan_nofv_gr) > 0:
                                         [press_outliers, pressure_mean, _, pressure_max, _, _] = cf.variable_statistics(p_nonan_nofv_gr, 3)
                                         pressure_mean = round(pressure_mean, 2)
                                         pressure_max = round(pressure_max, 2)
@@ -289,25 +289,28 @@ def main(sDir, url_list):
                             except AttributeError:
                                 pressure_units = 'no units attribute for pressure'
 
-                            if not deploy_depth:
+                            if (not deploy_depth) or (not pressure_mean):
                                 pressure_diff = None
-                            elif not pressure_mean:
-                                pressure_diff = None
+                                pressure_compare = None
                             else:
+                                node = refdes.split('-')[1]
                                 if pressure_units == '0.001 dbar':
                                     pressure_max = round((pressure_max / 1000), 2)
                                     pressure_mean = round((pressure_mean / 1000), 2)
                                     notes.append('Pressure converted from 0.001 dbar to dbar for pressure comparison')
-                                if 'WFP' in refdes.split('-')[1]:
-                                    pressure_diff = round(pressure_max - deploy_depth, 2)
+                                if ('WFP' in node) or ('MOAS' in node):
+                                    pressure_compare = round(pressure_max)
                                 else:
-                                    pressure_diff = round(pressure_mean - deploy_depth, 2)
+                                    pressure_compare = round(pressure_mean)
+                                pressure_diff = pressure_compare - deploy_depth
+
 
                         except KeyError:
                             press = 'no seawater pressure in file'
                             pressure_diff = None
                             pressure_mean = None
                             pressure_max = None
+                            pressure_compare = None
                             press_outliers = None
                             pressure_units = None
 
@@ -332,7 +335,8 @@ def main(sDir, url_list):
                                 ascending_timestamps=time_ascending,
                                 pressure_comparison=dict(pressure_mean=pressure_mean, units=pressure_units,
                                                          num_outliers=press_outliers, diff=pressure_diff,
-                                                         pressure_max=pressure_max, variable=press),
+                                                         pressure_max=pressure_max, variable=press,
+                                                         pressure_compare=pressure_compare),
                                 vars_in_file=ds_variables,
                                 vars_not_in_file=[x for x in unmatch1 if 'time' not in x],
                                 vars_not_in_db=unmatch2,
@@ -382,7 +386,7 @@ def main(sDir, url_list):
                                         [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_nonan_nofv_gr, 5)
                                     elif len(var_nonan_nofv_gr) == 1:
                                         num_outliers = 0
-                                        mean = round(list(var_nonan_nofv_gr)[0], 4)
+                                        mean = (round(list(var_nonan_nofv_gr)[0], 4)).astype('float64')
                                         vmin = None
                                         vmax = None
                                         sd = None
@@ -410,12 +414,12 @@ def main(sDir, url_list):
                                 fv = None
                                 n_grange = None
 
-                            data['deployments'][deployment]['method'][method]['stream'][data_stream][
-                                'file'][
+                            data['deployments'][deployment]['method'][method]['stream'][data_stream]['file'][
                                 fname]['sci_var_stats'][sv] = dict(n_outliers=num_outliers, mean=mean, min=vmin,
                                                                    max=vmax, stdev=sd, n_stats=n_stats, units=var_units,
                                                                    n_nans=n_nan, n_fillvalues=n_fv, fill_value=str(fv),
                                                                    global_ranges=[g_min, g_max], n_grange=n_grange)
+
 
         sfile = os.path.join(save_dir, '{}-file_analysis.json'.format(r))
         with open(sfile, 'w') as outfile:

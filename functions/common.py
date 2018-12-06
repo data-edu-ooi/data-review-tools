@@ -102,8 +102,7 @@ def get_global_ranges(refdes, variable, api_user=None, api_token=None):
             global_min = None
             global_max = None
     else:
-        global_min = None
-        global_max = None
+        raise Exception('System is not responding to request for global ranges. Try again later.')
     return [global_min, global_max]
 
 
