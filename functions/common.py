@@ -7,6 +7,8 @@ import itertools
 import time
 import xarray as xr
 import numpy as np
+from urllib.request import urlopen
+import json
 from geopy.distance import geodesic
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -102,7 +104,7 @@ def get_global_ranges(refdes, variable, api_user=None, api_token=None):
             global_min = None
             global_max = None
     else:
-        raise Exception('System is not responding to request for global ranges. Try again later.')
+        raise Exception('uFrame is not responding to request for global ranges. Try again later.')
     return [global_min, global_max]
 
 
@@ -133,6 +135,20 @@ def get_nc_urls(catalog_urls):
         datasets.append(dataset)
     datasets = list(itertools.chain(*datasets))
     return datasets
+
+
+def get_preferred_stream_info(refdes):
+    ps_link = 'https://raw.githubusercontent.com/data-edu-ooi/data-review-tools/master/data_review/output/{}/{}/{}-preferred_stream.json'.format(
+        refdes.split('-')[0], refdes, refdes)
+    pslnk = urlopen(ps_link)
+    psl = json.loads(pslnk.read())
+    ps_df = pd.DataFrame.from_dict(psl, orient='index')
+    ps_df = ps_df.reset_index()
+    ps_df.rename(columns={'index': 'deployment'}, inplace=True)
+    ps_df.sort_values(by=['deployment'], inplace=True)
+    n_streams = len(ps_df.columns) - 1
+
+    return ps_df, n_streams
 
 
 def nc_attributes(nc_file):

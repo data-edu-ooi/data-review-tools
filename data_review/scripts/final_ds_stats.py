@@ -126,14 +126,7 @@ def main(sDir, url_list):
                     print('Streams with common name: <{}> do not have common science variables'.format(csn))
 
         # get the preferred stream information
-        ps_link = 'https://raw.githubusercontent.com/data-edu-ooi/data-review-tools/master/data_review/output/{}/{}/{}-preferred_stream.json'.format(r.split('-')[0], r, r)
-        pslnk = urlopen(ps_link)
-        psl = json.loads(pslnk.read())
-        ps_df = pd.DataFrame.from_dict(psl, orient='index')
-        ps_df = ps_df.reset_index()
-        ps_df.rename(columns={'index': 'deployment'}, inplace=True)
-        ps_df.sort_values(by=['deployment'], inplace=True)
-        n_streams = len(ps_df.columns) - 1
+        ps_df, n_streams = cf.get_preferred_stream_info(r)
 
         # build dictionary of science data from the preferred dataset for each deployment
         for index, row in ps_df.iterrows():
