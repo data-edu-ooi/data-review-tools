@@ -299,9 +299,9 @@ def main(sDir, url_list):
                                     pressure_mean = round((pressure_mean / 1000), 2)
                                     notes.append('Pressure converted from 0.001 dbar to dbar for pressure comparison')
                                 if ('WFP' in node) or ('MOAS' in node):
-                                    pressure_compare = round(pressure_max)
+                                    pressure_compare = int(round(pressure_max))
                                 else:
-                                    pressure_compare = round(pressure_mean)
+                                    pressure_compare = int(round(pressure_mean))
                                 pressure_diff = pressure_compare - deploy_depth
 
 
