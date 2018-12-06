@@ -17,6 +17,7 @@ def notin_list(x, ix):
     return y
 
 def in_list(x, ix):
+    # keep listed entries with specific words.
     y = [el for el in x if any(ignore in el for ignore in ix)]
     return y
 

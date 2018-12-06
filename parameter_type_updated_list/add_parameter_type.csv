@@ -138,3 +138,9 @@ parameter_id,parameter_name,Type,add_parameter_type
 2626,thsph_temp_tch,Hydrothermal Vent Fluid Temperature,Science Data
 2627,thsph_temp_tcl,Hydrothermal Vent Fluid Temperature,Science Data
 431,resistivity_temp_degc,Hydrothermal Vent Fluid Temperature,Science Data
+7983,bin_depths,,Science Data
+7984,bin_depths,,Science Data
+1276,m_depth,,Science Data
+3463,sensor_temperature,,Science Data
+8044,sci_bb3slo_b470_units,,Science Data
+8050,sci_bb3slo_b660_units,,Science Data
