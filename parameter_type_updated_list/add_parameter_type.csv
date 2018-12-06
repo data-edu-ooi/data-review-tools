@@ -1,0 +1,140 @@
+parameter_id,parameter_name,Type,add_parameter_type
+551,turbulent_velocity_east,velocity,Science Data
+539,turbulent_velocity_east,velocity,Science Data
+552,turbulent_velocity_north,velocity,Science Data
+540,turbulent_velocity_north,velocity,Science Data
+553,turbulent_velocity_vertical,velocity,Science Data
+3249,seawater_pressure_mbar,Seawater Pressure,Science Data
+94,absolute_pressure,seafloor Pressure,Science Data
+742,seawater_temperature,Seawater Temperature,Science Data
+833,absolute_pressure_burst,seafloor Pressure,Science Data
+675,salinity,Practical Salinity,Science Data
+676,temperature,Seawater Temperature,Science Data
+440,temperature,Seawater Temperature,Science Data
+710,pressure,Seawater Pressure,Science Data
+714,water_velocity_east,velocity,Science Data
+715,water_velocity_north,velocity,Science Data
+716,water_velocity_up,velocity,Science Data
+717,error_velocity,velocity,Science Data
+2777,significant_wave_height,WaveHeight,Science Data
+2782,peak_wave_period,Wave Period,Science Data
+3040,peak_wave_direction,Wave Direction,Science Data
+3041,tp_sea,Wave Period,Science Data
+3042,dp_sea,direction,Science Data
+3043,hs_sea,Wave Height,Science Data
+3044,tp_swell,Wave Period,Science Data
+3045,dp_swell,Wave Direction,Science Data
+3046,hs_swell,Wave Height,Science Data
+3049,t_max,Wave Period,Science Data
+3051,t_1_3,Wave Period,Science Data
+3053,t_mean,Wave Period,Science Data
+3055,t_1_10,Wave Period,Science Data
+3056,d_mean,Wave Direction,Science Data
+3194,x_vel,velocity,Science Data
+3195,y_vel,velocity,Science Data
+3211,wave_hs1,WaveHeight,Science Data
+3212,wave_tp1,Wave Period,Science Data
+3213,wave_dp1,Wave Direction,Science Data
+3214,wave_hs2,WaveHeight,Science Data
+3215,wave_tp2,Wave Period,Science Data
+3216,wave_dp2,Wave Direction,Science Data
+3217,wave_dm,Wave Direction,Science Data
+3460,dissolved_oxygen,Dissolved Oxygen Concentration,Science Data
+3745,zplsc_c_temperature,Seawater Temperature,Science Data
+3746,zplsc_c_pressure,Seawater Pressure,Science Data
+24,total_volume_scattering_coefficient,Total Volume Scattering Coefficient,Science Data
+441,velocity_beam1,velocity,Science Data
+3811,velocity_beam1,velocity,Science Data
+442,velocity_beam2,velocity,Science Data
+3812,velocity_beam2,velocity,Science Data
+443,velocity_beam3,velocity,Science Data
+3813,velocity_beam3,velocity,Science Data
+941,estimated_oxygen_saturation,Dissolved Oxygen Saturation,Science Data
+942,optode_temperature,Seawater Temperature,Science Data
+562,speed_of_sound,Speed of Sound,Science Data
+670,speed_of_sound,Speed of Sound,Science Data
+2607,velpt_pressure,Seawater Pressure,Science Data
+2608,velocity_beam1_m_s,velocity,Science Data
+2609,velocity_beam2_m_s,velocity,Science Data
+2610,velocity_beam3_m_s,velocity,Science Data
+2320,nutnr_nitrogen_in_nitrate,Nitrate concentrations,Science Data
+2615,ctd_psu,Practical Salinity,Science Data
+2616,ctd_temp,Seawater Temperature,Science Data
+2617,ctd_dbar,Seawater Pressure,Science Data
+3814,velocity_beam4,velocity,Science Data
+1051,barometric_pressure,Air Pressure,Science Data
+1059,eastward_wind_velocity,velocity,Science Data
+1060,northward_wind_velocity,velocity,Science Data
+3070,met_current_direction,Surface Current Speed,Science Data
+3071,met_current_speed,velocity,Science Data
+3072,met_relwind_direction,Relative Wind Speed,Science Data
+3073,met_relwind_speed,velocity,Science Data
+3079,met_buoyfls,Sonic Buoyancy Flux,Science Data
+3080,met_buoyflx,Buoyancy Flux,Science Data
+994,measured_air_co2,CO2 Mole Fraction in Atmosphere,Science Data
+995,measured_water_co2,CO2 Mole Fraction in Surface Sea Water,Science Data
+2785,mean_direction,Wave Direction,Science Data
+2792,mean_direction_array,Wave Direction,Science Data
+2798,heave_offset_array,Buoy Displacement (WAVSS),Science Data
+2799,north_offset_array,Buoy Displacement (WAVSS),Science Data
+2800,east_offset_array,Buoy Displacement (WAVSS),Science Data
+2774,average_wave_height,Wave Height,Science Data
+2776,max_wave_height,Wave Height,Science Data
+2778,significant_period,Wave Period,Science Data
+2779,wave_height_10,WaveHeight,Science Data
+2780,wave_period_10,Wave Period,Science Data
+2781,mean_wave_period,Wave Period,Science Data
+2783,wave_period_tp5,Wave Period,Science Data
+2784,wave_height_hmo,WaveHeight,Science Data
+2786,mean_spread,Wave Direction,Science Data
+3293,wind_u_avg,velocity,Science Data
+3294,wind_v_avg,velocity,Science Data
+3295,wind_w_avg,velocity,Science Data
+3296,speed_of_sound_avg,velocity,Science Data
+3301,wind_u_max,velocity,Science Data
+3302,wind_v_max,velocity,Science Data
+3303,wind_w_max,velocity,Science Data
+3304,speed_of_sound_max,velocity,Science Data
+3305,wind_u_min,velocity,Science Data
+3306,wind_v_min,velocity,Science Data
+3307,wind_w_min,velocity,Science Data
+3308,speed_of_sound_min,velocity,Science Data
+3342,u_corr,velocity,Science Data
+3343,v_corr,velocity,Science Data
+3344,w_corr,velocity,Science Data
+3348,wind_speed,velocity,Science Data
+3471,fdchp_wind_x,velocity,Science Data
+3472,fdchp_wind_y,velocity,Science Data
+3473,fdchp_wind_z,velocity,Science Data
+3474,fdchp_speed_of_sound_sonic,velocity,Science Data
+3717,fdchp_a_windtur_north,velocity,Science Data
+3718,fdchp_a_windtur_up,velocity,Science Data
+3719,fdchp_a_windtur_west,velocity,Science Data
+2934,conductivity_millisiemens,conductivity,Science Data
+2248,vel3d_a_va,velocity,Science Data
+2249,vel3d_a_vb,velocity,Science Data
+2250,vel3d_a_vc,velocity,Science Data
+2251,vel3d_a_vd,velocity,Science Data
+1473,sci_bsipar_temp,Seawater Temperature,Science Data
+1479,sci_flbbcd_bb_units,Total Volume Scattering Coefficient,Science Data
+1518,sci_oxy4_saturation,Dissolved Oxygen Saturation,Science Data
+1520,sci_oxy4_temp,Seawater Temperature,Science Data
+1995,vel3d_k_pressure,Seawater Pressure,Science Data
+2808,water_direction,Direction,Science Data
+2809,water_velocity,Current Speed,Science Data
+3456,calculated_oxygen_concentration,Dissolved Oxygen Concentration,Science Data
+3457,calculated_oxygen_saturation,Dissolved Oxygen Saturation,Science Data
+3459,ctdav_n_auv_conductivity,Seawater Conductivity,Science Data
+3705,sci_suna_nitrate_mg,Nitrate concentrations,Science Data
+1537,sci_flbb_bb_units,Total Volume Scattering Coefficient,Science Data
+3815,velocity_beam5,velocity,Science Data
+2582,hpies_temperature,Seawater Temperature,Science Data
+3786,hpies_temperature,Seawater Temperature,Science Data
+2583,hpies_bliley_temperature,Seawater Temperature,Science Data
+2584,hpies_bliley_frequency,Bliley Oscillator Frequency,Science Data
+3784,hpies_bliley_temperature_L1,Seawater Temperature,Science Data
+541,turbulent_velocity_up,velocity,Science Data
+841,compass_direction,Compass Direction (BOTPT),Science Data
+2626,thsph_temp_tch,Hydrothermal Vent Fluid Temperature,Science Data
+2627,thsph_temp_tcl,Hydrothermal Vent Fluid Temperature,Science Data
+431,resistivity_temp_degc,Hydrothermal Vent Fluid Temperature,Science Data
