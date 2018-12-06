@@ -252,13 +252,21 @@ def main(sDir, url_list):
                             else:
                                 if len(pressure) > 1:
                                     # reject NaNs
-                                    p_nonan = pressure[~np.isnan(pressure)]
+                                    p_nonan = pressure.data[~np.isnan(pressure.data)]
 
                                     # reject fill values
                                     p_nonan_nofv = p_nonan[p_nonan != pressure._FillValue]
 
+                                    # reject data outside of global ranges
+                                    [pg_min, pg_max] = cf.get_global_ranges(r, press)
+                                    if pg_min is not None and pg_max is not None:
+                                        pgr_ind = cf.reject_global_ranges(p_nonan_nofv, pg_min, pg_max)
+                                        p_nonan_nofv_gr = p_nonan_nofv[pgr_ind]
+                                    else:
+                                        p_nonan_nofv_gr = p_nonan_nofv
+
                                     if len(p_nonan_nofv) > 0:
-                                        [press_outliers, pressure_mean, _, pressure_max, _, _] = cf.variable_statistics(p_nonan_nofv.data, 3)
+                                        [press_outliers, pressure_mean, _, pressure_max, _, _] = cf.variable_statistics(p_nonan_nofv_gr, 3)
                                         pressure_mean = round(pressure_mean, 2)
                                         pressure_max = round(pressure_max, 2)
                                     else:
@@ -269,6 +277,8 @@ def main(sDir, url_list):
                                             notes.append('Pressure variable all NaNs')
                                         elif len(pressure) > 0 and len(p_nonan) > 0 and len(p_nonan_nofv) == 0:
                                             notes.append('Pressure variable all fill values')
+                                        elif len(pressure) > 0 and len(p_nonan) > 0 and len(p_nonan_nofv) > 0 and len(p_nonan_nofv_gr) == 0:
+                                            notes.append('Pressure variable outside of global ranges')
 
                                 else:  # if there is only 1 data point
                                     press_outliers = 0
@@ -368,11 +378,11 @@ def main(sDir, url_list):
                                         n_grange = 'no global ranges'
                                         var_nonan_nofv_gr = var_nonan_nofv
 
-                                    if len(var_nonan_nofv) > 1:
+                                    if len(var_nonan_nofv_gr) > 1:
                                         [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_nonan_nofv_gr, 5)
-                                    elif len(var_nonan_nofv) == 1:
+                                    elif len(var_nonan_nofv_gr) == 1:
                                         num_outliers = 0
-                                        mean = round(var_nonan_nofv.data.tolist()[0], 4)
+                                        mean = round(list(var_nonan_nofv_gr)[0], 4)
                                         vmin = None
                                         vmax = None
                                         sd = None
@@ -398,6 +408,7 @@ def main(sDir, url_list):
                                 n_nan = None
                                 n_fv = None
                                 fv = None
+                                n_grange = None
 
                             data['deployments'][deployment]['method'][method]['stream'][data_stream][
                                 'file'][

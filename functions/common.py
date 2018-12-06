@@ -8,6 +8,8 @@ import time
 import xarray as xr
 import numpy as np
 from geopy.distance import geodesic
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 def check_request_status(thredds_url):
