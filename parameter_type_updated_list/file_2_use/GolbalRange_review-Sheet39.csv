@@ -1,0 +1,566 @@
+ParameterID_T,Type
+seawater_temperature,Seawater Temperature
+presf_tide_temperature,Seawater Temperature
+ctdbp_seawater_temperature,Seawater Temperature
+temp,Seawater Temperature
+zplsc_c_temperature,Seawater Temperature
+optode_temperature,Seawater Temperature
+temperature,Seawater Temperature
+ctd_temp,Seawater Temperature
+seawater_temperature,Seawater Temperature
+air_temperature,Air Temperature
+sea_surface_temperature,Seawater Temperature
+met_tempa2m,Air Temperature
+met_tempskn,Seawater Temperature
+fdchp_a_tmpatur,Air Temperature
+sci_bsipar_temp,Seawater Temperature
+sci_oxy4_temp,Seawater Temperature
+sci_water_temp,Seawater Temperature
+ctdpf_ckl_seawater_temperature,Seawater Temperature
+ctdmo_seawater_temperature,Seawater Temperature
+hpies_temperature,Seawater Temperature
+hpies_bliley_temperature,Seawater Temperature
+hpies_bliley_temperature_L1,Seawater Temperature
+hpies_temperature,Seawater Temperature
+temperature01,Hydrothermal Vent Fluid Temperature
+temperature1,Hydrothermal Vent Fluid Temperature
+thsph_temp_th,Hydrothermal Vent Fluid Temperature
+thsph_temp_tl,Hydrothermal Vent Fluid Temperature
+thsph_temp_tch,Hydrothermal Vent Fluid Temperature
+thsph_temp_tcl,Hydrothermal Vent Fluid Temperature
+resistivity_temp_degc,Hydrothermal Vent Fluid Temperature
+vent_fluid_temperaure,Hydrothermal Vent Fluid Temperature
+corrected_echo_intensity_beam1,Echo Intensity Beam
+corrected_echo_intensity_beam2,Echo Intensity Beam
+corrected_echo_intensity_beam3,Echo Intensity Beam
+corrected_echo_intensity_beam4,Echo Intensity Beam
+water_direction,Direction
+speed_of_sound,Speed of Sound
+avg_speed_of_sound,Speed of Sound
+botsflu_5minrate,Mean Seafloor Uplift Rate
+botsflu_10minrate,Mean Seafloor Uplift Rate
+botsflu_4wkrate,Mean Seafloor Uplift Rate
+botsflu_8wkrate,Mean Seafloor Uplift Rate
+seafloor_tilt_magnitude,Seafloor Tilt measurements
+seafloor_tilt_direction,Seafloor Tilt Direction
+botsflu_predtide,Calculated Tides at 15s
+pco2_co2flux,CO2 Flux from Ocean to Atmosphere
+measured_air_co2,CO2 Mole Fraction in Atmosphere
+measured_water_co2,CO2 Mole Fraction in Surface Sea Water
+pco2_seawater,pCO2 Seawater
+partial_pressure_co2_ssw,pCO2 Surface Water
+partial_pressure_co2_atm,pCO2 Atmosphere
+density,Seawater Density
+sci_seawater_density,Seawater Density
+dissolved_oxygen,Dissolved Oxygen Concentration
+dosta_ln_optode_oxygen,Dissolved Oxygen Concentration
+ctd_tc_oxygen,Dissolved Oxygen Concentration
+dosta_abcdjm_cspp_tc_oxygen,Dissolved Oxygen Concentration
+estimated_oxygen_concentration,Dissolved Oxygen Concentration
+estimated_oxygen_saturation,Dissolved Oxygen Saturation
+corrected_dissolved_oxygen,Dissolved Oxygen Concentration
+sci_oxy4_oxygen,Dissolved Oxygen Concentration
+sci_oxy4_saturation,Dissolved Oxygen Saturation
+sci_abs_oxygen,Dissolved Oxygen Concentration
+dofst_k_oxygen_l2,Dissolved Oxygen Concentration
+calculated_oxygen_concentration,Dissolved Oxygen Concentration
+calculated_oxygen_saturation,Dissolved Oxygen Saturation
+dissolved_oxygen,Dissolved Oxygen Concentration
+uncorrected_do,Dissolved Oxygen Concentration
+optical_backscatter,Optical Backscatter
+flntu_x_mmp_cds_bback_total,Optical Backscatter
+fluorometric_chlorophyll_a,Chlorophyll-a Concentration
+flntu_x_mmp_cds_fluorometric_chlorophyll_a,Chlorophyll-a Concentration
+sci_flbbcd_chlor_units,Chlorophyll-a Concentration
+sci_flbb_chlor_units,Chlorophyll-a Concentration
+fluorometric_cdom,CDOM Concentration
+flcdr_x_mmp_cds_fluorometric_cdom,CDOM Concentration
+sci_flbbcd_cdom_units,CDOM Concentration
+total_volume_scattering_coefficient,Total Volume Scattering Coefficient
+flntu_x_mmp_cds_total_volume_scattering_coefficient,Total Volume Scattering Coefficient
+sci_flbbcd_bb_units,Total Volume Scattering Coefficient
+sci_flbb_bb_units,Total Volume Scattering Coefficient
+seawater_scattering_coefficient,Total Scattering Coefficient of Pure Seawater
+trhph_thermistor_temp,Seawater Temperature
+hpies_average_temperature,Seawater Temperature
+hpies_travel_time1,Acoustic Travel Time
+hpies_travel_time1_L1,Acoustic Travel Time
+hpies_average_travel_time,Acoustic Travel Time
+hpies_bliley_frequency,Bliley Oscillator Frequency
+heave_offset_array,Buoy Displacement (WAVSS)
+north_offset_array,Buoy Displacement (WAVSS)
+east_offset_array,Buoy Displacement (WAVSS)
+wavss_a_magcor_buoymotion_x,Buoy Displacement (WAVSS)
+wavss_a_magcor_buoymotion_y,Buoy Displacement (WAVSS)
+compass_direction,Compass Direction (BOTPT)
+corrected_compass_direction,Compass Direction- Corrected (BOTPT)
+barometric_pressure,Air Pressure
+met_barpres,Air Pressure
+scaled_wave_burst_seafloor_pressure,Seafloor Pressure
+botsflu_meanpres,Seafloor Pressure
+pressure,Seawater Pressure
+relative_humidity,Relative Humidity
+met_spechum,Specific Humidity
+met_sphum2m,Specific Humidity
+precipitation,Precipitation
+met_current_direction,Surface Current Speed
+met_relwind_direction,Relative Wind Speed
+met_netlirr,Longwave Irradiance
+met_netlirr_minute,Longwave Irradiance
+met_netsirr,Shortwave Irradiance
+met_netsirr_hourly,Shortwave Irradiance
+longwave_irradiance,Longwave Irradiance
+shortwave_irradiance,Shortwave Irradiance
+met_rainrte,Rain Rate
+met_rainflx,Rain Heat Flux
+met_frshflx,Freshwater Heat Flux
+met_latnflx,Latent Heat Flux
+met_latnflx_minute,Latent Heat Flux
+met_heatflx,Net Heat Flux
+met_heatflx_minute,Net Heat Flux
+met_sensflx_minute,Sensible Heat Flux
+met_sensflx,Sensible Heat Flux
+met_buoyfls,Sonic Buoyancy Flux
+met_buoyflx,Buoyancy Flux
+met_mommflx,Momentum Flux
+beam_attenuation,Optical Beam Attenuation Coefficient
+optical_absorption,Optical Absorption Coefficient
+nutnr_nitrogen_in_nitrate,Nitrate concentrations
+sci_suna_nitrate_mg,Nitrate concentrations
+salinity_corrected_nitrate,Nitrate concentrations
+nitrate_concentration,Nitrate concentrations
+sci_suna_nitrate_um,Nitrate concentrations
+parad_j_par_counts_output,Photosynthetically Active Radiation
+par_counts_output,Photosynthetically Active Radiation
+sci_bsipar_par,Photosynthetically Active Radiation
+parad_m_par,Photosynthetically Active Radiation
+parad_k_par,Photosynthetically Active Radiation
+phsen_abcdef_ph_seawater,Seawater pH
+ph_seawater,Seawater pH
+thsph_ph,Vent Fluid pH
+thsph_ph_acl,Vent Fluid pH
+thsph_ph_noref,Vent Fluid pH
+thsph_ph_noref_acl,Vent Fluid pH
+practical_salinity,Practical Salinity
+salinity,Practical Salinity
+met_salsurf,Practical Salinity
+ctd_psu,Practical Salinity
+ctdav_n_auv_conductivity,Seawater Conductivity
+conductivity,Seawater Conductivity
+ctdbp_seawater_conductivity,Seawater Conductivity
+ctdbp_no_seawater_conductivity,Seawater Conductivity
+sea_surface_conductivity,Seawater Conductivity
+dpc_ctd_seawater_conductivity,Seawater Conductivity
+seawater_conductivity,Seawater Conductivity
+sci_water_cond,Seawater Conductivity
+ctdpf_ckl_seawater_conductivity,Seawater Conductivity
+ctdmo_seawater_conductivity,Seawater Conductivity
+spkir_abj_cspp_downwelling_vector,Downwelling Spectral Irradiance
+spkir_downwelling_vector,Downwelling Spectral Irradiance
+thsph_hydrogen,Hydrogen Concentration
+thsph_sulfide,Hydrogen Sulfide Concentration
+vent_fluid_chloride_conc,Chloride Concentration
+wave_dp1,Wave Direction
+wave_dp2,Wave Direction
+wave_dm,Wave Direction
+wavss_a_corrected_mean_wave_direction,Wave Direction
+wavss_a_corrected_directional_wave_direction,Wave Direction
+peak_wave_direction,Wave Direction
+mean_direction,Wave Direction
+mean_spread,Wave Direction
+mean_direction_array,Wave Direction
+wavss_a_corrected_mean_wave_direction,Wave Direction
+dp_swell,Wave Direction
+d_mean,Wave Direction
+hs_sea,Wave Height
+hs_swell,Wave Height
+average_wave_height,Wave Height
+max_wave_height,Wave Height
+significant_wave_height,WaveHeight
+wave_height_10,WaveHeight
+wave_height_hmo,WaveHeight
+wave_hs1,WaveHeight
+wave_hs2,WaveHeight
+peak_wave_period,Wave Period
+wave_period_10,Wave Period
+mean_wave_period,Wave Period
+wave_period_tp5,Wave Period
+peak_wave_period,Wave Period
+significant_period,Wave Period
+wave_tp1,Wave Period
+wave_tp2,Wave Period
+t_max,Wave Period
+t_1_3,Wave Period
+t_mean,Wave Period
+t_1_10,Wave Period
+tp_sea,Wave Period
+tp_swell,Wave Period
+vel3d_a_va,velocity
+vel3d_a_vb,velocity
+vel3d_a_vc,velocity
+vel3d_a_vd,velocity
+fdchp_wind_x,velocity
+fdchp_wind_y,velocity
+fdchp_wind_z,velocity
+estimated_upward_seawater_velocity,velocity
+upward_turbulent_velocity,velocity
+vel3d_c_eastward_turbulent_velocity,velocity
+vel3d_c_northward_turbulent_velocity,velocity
+fdchp_a_windtur_north,velocity
+fdchp_a_windtur_up,velocity
+fdchp_a_windtur_west,velocity
+water_velocity,Current Speed
+turbulent_velocity_up,velocity
+turbulent_velocity_east,velocity
+turbulent_velocity_north,velocity
+velocity_beam1,velocity
+velocity_beam2,velocity
+velocity_beam3,velocity
+velocity_beam4,velocity
+velocity_beam5,velocity
+average_depth,remove
+beam_conf,remove
+cal_press,remove
+commanded_volume,remove
+cumulative_volume,remove
+depth_offset,remove
+depth_offset,remove
+dofst_k_oxygen,remove
+flntu_x_mmp_cds_scat_seawater,remove
+heat_temp,remove
+hpies_compass_fwrite_attempted,remove
+hpies_data_valid,remove
+hpies_data_validity,remove
+hpies_hcno,remove
+hpies_hcno_last_cal,remove
+hpies_hcno_last_comp,remove
+hpies_ifok,remove
+hpies_irq2_count,remove
+hpies_last_pressure,remove
+hpies_last_temperature,remove
+hpies_last_temperature,remove
+hpies_mot_pwr_count,remove
+hpies_n_travel_times,remove
+hpies_secs,remove
+humidity,remove
+humidity_temperature,remove
+iris_temp,remove
+lily_temp,remove
+massp_inlet_temp_value,remove
+massp_nafion_core_temp,remove
+massp_nafion_elapsed_time,remove
+massp_temp_analyzer,remove
+massp_temp_ion,remove
+massp_temp_main_24v,remove
+massp_temp_main_control,remove
+massp_temp_main_rough,remove
+massp_temp_nafion,remove
+massp_temp_sec_24v,remove
+massp_temp_sec_rough,remove
+massp_turbo_bearing_temperature,remove
+massp_turbo_motor_temperature,remove
+met_stablty,remove
+nutnr_dac_nitrate_max,remove
+nutnr_dac_nitrate_min,remove
+nutnr_salinity_fit,remove
+nutnr_temp_comp,remove
+nutnr_temp_comp,remove
+par_val_v,remove
+press_spec,remove
+pressure_temp,remove
+ptemp_frequency,remove
+ref_temp_degc,remove
+rms_error,remove
+salinity,remove
+temp_spectrometer,remove
+thsph_temp_int,remove
+vel_max,remove
+vel_max_change,remove
+vel_min,remove
+rec_time_series,remove
+rec_dir_spec,remove
+press_spec,remove
+cal_press,remove
+dir_p2,remove
+stop_time,remove
+num_beams,remove
+beam_conf,remove
+pr_max_dev,remove
+surf_min,remove
+surf_max,remove
+surf_max_chng,remove
+depth_offset,remove
+average_depth,remove
+trhph_cycle_time_units,remove
+ref_temp_degc,remove
+resistivity_temp_degc,remove
+num_beams,remove
+dir_p2,remove
+reserved,remove
+press_spec,remove
+rec_dir_spec,remove
+rec_time_series,remove
+vel3d_l_date_time_array,remove
+date_time_array,remove
+met_stablty,remove
+turbulent_velocity_vertical,velocity
+turbulent_velocity_vertical,velocity
+turbulent_velocity_vertical,velocity
+vel3d_c_upward_turbulent_velocity,velocity
+vel3d_c_upward_turbulent_velocity,velocity
+vel3d_c_upward_turbulent_velocity,velocity
+water_velocity_east,velocity
+water_velocity_east,velocity
+water_velocity_east,velocity
+water_velocity_east,velocity
+water_velocity_east,velocity
+water_velocity_east,velocity
+water_velocity_east,velocity
+water_velocity_north,velocity
+water_velocity_north,velocity
+water_velocity_north,velocity
+water_velocity_north,velocity
+water_velocity_north,velocity
+water_velocity_north,velocity
+water_velocity_north,velocity
+water_velocity_up,velocity
+water_velocity_up,velocity
+water_velocity_up,velocity
+water_velocity_up,velocity
+water_velocity_up,velocity
+water_velocity_up,velocity
+water_velocity_up,velocity
+error_velocity,velocity
+error_velocity,velocity
+error_velocity,velocity
+error_velocity,velocity
+error_velocity,velocity
+error_velocity,velocity
+error_velocity,velocity
+error_velocity,velocity
+eastward_seawater_velocity,velocity
+eastward_seawater_velocity,velocity
+eastward_seawater_velocity,velocity
+eastward_seawater_velocity,velocity
+northward_seawater_velocity,velocity
+northward_seawater_velocity,velocity
+northward_seawater_velocity,velocity
+northward_seawater_velocity,velocity
+upward_seawater_velocity,velocity
+upward_seawater_velocity,velocity
+upward_seawater_velocity,velocity
+upward_seawater_velocity,velocity
+error_seawater_velocity,velocity
+error_seawater_velocity,velocity
+error_seawater_velocity,velocity
+error_seawater_velocity,velocity
+x_vel,velocity
+y_vel,velocity
+eastward_velocity,velocity
+eastward_velocity,velocity
+eastward_velocity,velocity
+northward_velocity,velocity
+northward_velocity,velocity
+northward_velocity,velocity
+upward_velocity,velocity
+upward_velocity,velocity
+upward_velocity,velocity
+velocity_beam1_m_s,velocity
+velocity_beam1_m_s,velocity
+velocity_beam2_m_s,velocity
+velocity_beam2_m_s,velocity
+velocity_beam3_m_s,velocity
+velocity_beam3_m_s,velocity
+velpt_j_eastward_velocity,velocity
+velpt_j_eastward_velocity,velocity
+velpt_j_northward_velocity,velocity
+velpt_j_northward_velocity,velocity
+velpt_j_upward_velocity,velocity
+velpt_j_upward_velocity,velocity
+eastward_wind_velocity,velocity
+eastward_wind_velocity,velocity
+northward_wind_velocity,velocity
+northward_wind_velocity,velocity
+met_current_speed,velocity
+met_current_speed,velocity
+met_relwind_speed,velocity
+met_relwind_speed,velocity
+met_wind10m,velocity
+wind_u_avg,velocity
+wind_u_avg,velocity
+wind_v_avg,velocity
+wind_v_avg,velocity
+wind_w_avg,velocity
+wind_w_avg,velocity
+speed_of_sound_avg,velocity
+speed_of_sound_avg,velocity
+wind_u_max,velocity
+wind_u_max,velocity
+wind_v_max,velocity
+wind_v_max,velocity
+wind_w_max,velocity
+wind_w_max,velocity
+speed_of_sound_max,velocity
+speed_of_sound_max,velocity
+wind_u_min,velocity
+wind_u_min,velocity
+wind_v_min,velocity
+wind_v_min,velocity
+wind_w_min,velocity
+wind_w_min,velocity
+speed_of_sound_min,velocity
+speed_of_sound_min,velocity
+u_corr,velocity
+u_corr,velocity
+v_corr,velocity
+v_corr,velocity
+w_corr,velocity
+w_corr,velocity
+wind_speed,velocity
+wind_speed,velocity
+fdchp_speed_of_sound_sonic,velocity
+vel3d_a_eastward_velocity,velocity
+vel3d_a_northward_velocity,velocity
+vel3d_a_upward_velocity_ascending,velocity
+vel3d_a_upward_velocity_descending,velocity
+velpt_d_eastward_velocity,velocity
+velpt_d_northward_velocity,velocity
+velpt_d_upward_velocity,velocity
+vel3d_k_eastward_velocity,velocity
+vel3d_k_eastward_velocity,velocity
+vel3d_k_northward_velocity,velocity
+vel3d_k_northward_velocity,velocity
+vel3d_k_upward_velocity,velocity
+vel3d_k_upward_velocity,velocity
+adcps_jln_upward_seawater_velocity2,velocity
+adcps_jln_upward_seawater_velocity2,velocity
+adcps_jln_eastward_seawater_velocity2,velocity
+adcps_jln_eastward_seawater_velocity2,velocity
+adcps_jln_northward_seawater_velocity2,velocity
+adcps_jln_northward_seawater_velocity2,velocity
+upward_earth_seawater_velocity,velocity
+upward_earth_seawater_velocity,velocity
+upward_earth_seawater_velocity,velocity
+earth_error_velocity,velocity
+earth_error_velocity,velocity
+earth_error_velocity,velocity
+adcps_pd12_eastward_seawater_velocity,velocity
+adcps_pd12_eastward_seawater_velocity,velocity
+adcps_pd12_northward_seawater_velocity,velocity
+adcps_pd12_northward_seawater_velocity,velocity
+vel3d_l_eastward_velocity,velocity
+vel3d_l_eastward_velocity,velocity
+vel3d_l_northward_velocity,velocity
+vel3d_l_northward_velocity,velocity
+vel3d_l_upward_velocity_ascending,velocity
+vel3d_l_upward_velocity_ascending,velocity
+vel3d_l_upward_velocity_descending,velocity
+vel3d_l_upward_velocity_descending,velocity
+eastward_turbulent_velocity,velocity
+northward_turbulent_velocity,velocity
+seawater_pressure_mbar,Seawater Pressure
+seawater_pressure_mbar,Seawater Pressure
+seawater_pressure_mbar,Seawater Pressure
+absolute_pressure,seafloor Pressure
+absolute_pressure,seafloor Pressure
+absolute_pressure,seafloor Pressure
+abs_seafloor_pressure,seafloor Pressure
+abs_seafloor_pressure,seafloor Pressure
+absolute_pressure_burst,seafloor Pressure
+absolute_pressure_burst,seafloor Pressure
+presf_tide_pressure,seafloor Pressure
+presf_wave_burst_pressure,seafloor Pressure
+dp_sea,direction
+absorbance_ratio_434,Optical Absorbance
+absorbance_ratio_434,Optical Absorbance
+absorbance_ratio_434,Optical Absorbance
+absorbance_ratio_434,Optical Absorbance
+absorbance_ratio_434,Optical Absorbance
+absorbance_ratio_434,Optical Absorbance
+absorbance_ratio_434,Optical Absorbance
+absorbance_ratio_620,Optical Absorbance
+absorbance_ratio_620,Optical Absorbance
+absorbance_ratio_620,Optical Absorbance
+absorbance_ratio_620,Optical Absorbance
+absorbance_ratio_620,Optical Absorbance
+absorbance_ratio_620,Optical Absorbance
+absorbance_ratio_620,Optical Absorbance
+ctdbp_seawater_pressure,Seawater Pressure
+zplsc_c_pressure,Seawater Pressure
+pressure_depth,Seawater Pressure
+pressure_depth,Seawater Pressure
+pressure_depth,Seawater Pressure
+pressure_depth,Seawater Pressure
+pressure_depth,Seawater Pressure
+pressure_depth,Seawater Pressure
+pressure_depth,Seawater Pressure
+pressure_depth,Seawater Pressure
+pressure_depth,Seawater Pressure
+pressure_depth,Seawater Pressure
+pressure_depth,Seawater Pressure
+pressure_depth,Seawater Pressure
+pressure_depth,Seawater Pressure
+pressure_depth,Seawater Pressure
+pressure_mbar,Seawater Pressure
+pressure_mbar,Seawater Pressure
+pressure_mbar,Seawater Pressure
+pressure_mbar,Seawater Pressure
+velpt_pressure,Seawater Pressure
+velpt_pressure,Seawater Pressure
+ctd_dbar,Seawater Pressure
+ctd_dbar,Seawater Pressure
+ctd_dbar,Seawater Pressure
+ctd_dbar,Seawater Pressure
+ctdbp_no_seawater_pressure,Seawater Pressure
+conductivity_millisiemens,conductivity
+seawater_pressure,Seawater Pressure
+seawater_pressure,Seawater Pressure
+sci_water_pressure,Seawater Pressure
+sci_water_pressure,Seawater Pressure
+sci_water_pressure_dbar,Seawater Pressure
+sci_water_pressure_dbar,Seawater Pressure
+vel3d_k_pressure,Seawater Pressure
+ctdpf_ckl_seawater_pressure,Seawater Pressure
+ctdpf_ckl_seawater_pressure,Seawater Pressure
+ctdmo_seawater_pressure,Seawater Pressure
+ctdmo_seawater_pressure,Seawater Pressure
+ctdmo_seawater_pressure,Seawater Pressure
+ctdmo_seawater_pressure,Seawater Pressure
+hpies_travel_time2,Acoustic Travel Time
+hpies_travel_time3,Acoustic Travel Time
+hpies_travel_time4,Acoustic Travel Time
+hpies_travel_time2_L1,Acoustic Travel Time
+hpies_travel_time3_L1,Acoustic Travel Time
+hpies_travel_time4_L1,Acoustic Travel Time
+seafloor_pressure,Seafloor Pressure
+temperature02,Seawater Temperature
+temperature03,Seawater Temperature
+temperature04,Seawater Temperature
+temperature05,Seawater Temperature
+temperature06,Seawater Temperature
+temperature07,Seawater Temperature
+temperature08,Seawater Temperature
+temperature09,Seawater Temperature
+temperature10,Seawater Temperature
+temperature11,Seawater Temperature
+temperature12,Seawater Temperature
+temperature13,Seawater Temperature
+temperature14,Seawater Temperature
+temperature15,Seawater Temperature
+temperature16,Seawater Temperature
+temperature17,Seawater Temperature
+temperature18,Seawater Temperature
+temperature19,Seawater Temperature
+temperature20,Seawater Temperature
+temperature21,Seawater Temperature
+temperature22,Seawater Temperature
+temperature23,Seawater Temperature
+temperature24,Seawater Temperature
+bottom_pressure,Seafloor Pressure
+botsflu_daydepth,Seafloor Pressure
+botsflu_meandepth,Seafloor Pressure
+temperature2,Vent Fluid Temperature
+temperature3,Vent Fluid Temperature
+vertical_velocity,velocity
+adcpa_n_auv_error_velocity,velocity
+average_current,velocity
