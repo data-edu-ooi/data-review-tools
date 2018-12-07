@@ -5,7 +5,8 @@ Created on Oct 2 2018
 @author: Lori Garzio
 @brief: This script is used create two timeseries plots of raw and science variables for a reference designator by
 deployment and delivery method: 1) plot all data, 2) plot data, omitting outliers beyond 5 standard deviations.
-The user has the option of selecting a specific time range to plot.
+The user has the option of selecting a specific time range to plot and only plotting data from the preferred
+method/stream.
 """
 
 import os
@@ -32,8 +33,6 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
         for u in url_list:
             splitter = u.split('/')[-2].split('-')
             rd_check = '-'.join((splitter[1], splitter[2], splitter[3], splitter[4]))
-
-            # complete the analysis by reference designator
             if rd_check == r:
                 udatasets = cf.get_nc_urls([u])
                 datasets.append(udatasets)
@@ -67,8 +66,9 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
 
                 fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(fd)
                 print('\nPlotting {} {}'.format(r, deployment))
+                array = subsite[0:2]
                 filename = '_'.join(fname.split('_')[:-1])
-                save_dir = os.path.join(sDir, subsite, refdes, 'timeseries_plots', deployment)
+                save_dir = os.path.join(sDir, array, subsite, refdes, 'timeseries_plots', deployment)
                 cf.create_dir(save_dir)
 
                 t = ds['time'].data
@@ -93,18 +93,18 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                         # Plot all data
                         fig, ax = pf.plot_timeseries(t, y, stdev=None)
                         ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-                        sfile = '_'.join((filename, y.name))
+                        sfile = '-'.join((filename, y.name))
                         pf.save_fig(save_dir, sfile)
 
                         # Plot data with outliers removed
                         fig, ax = pf.plot_timeseries(t, y, stdev=5)
                         ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-                        sfile = '_'.join((filename, y.name, 'rmoutliers'))
+                        sfile = '-'.join((filename, y.name)) + '_rmoutliers'
                         pf.save_fig(save_dir, sfile)
 
 
 if __name__ == '__main__':
-    sDir = '/Users/lgarzio/Documents/OOI/DataReviews/GP'
+    sDir = '/Users/lgarzio/Documents/OOI/DataReviews'
     url_list = [
         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181128T172034-GP03FLMA-RIM01-02-CTDMOG040-recovered_inst-ctdmo_ghqr_instrument_recovered/catalog.html',
         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181128T172050-GP03FLMA-RIM01-02-CTDMOG040-recovered_host-ctdmo_ghqr_sio_mule_instrument/catalog.html',

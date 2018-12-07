@@ -7,6 +7,15 @@ import numpy as np
 import functions.common as cf
 
 
+def get_units(variable):
+    try:
+        var_units = variable.units
+    except AttributeError:
+        var_units = 'no_units'
+
+    return var_units
+
+
 def format_date_axis(axis, figure):
     df = mdates.DateFormatter('%Y-%m-%d')
     axis.xaxis.set_major_formatter(df)
@@ -36,12 +45,47 @@ def plot_profiles(x, y, colors, stdev=None):
         outliers = str(len(x) - len(xD))
         leg_text = ('removed {} outliers (SD={})'.format(outliers, stdev),)
 
+    x_units = get_units(x)
+    y_units = get_units(y)
     fig, ax = plt.subplots()
     plt.grid()
     ax.scatter(xD, yD, c=colors, s=2, edgecolor='None')
     ax.invert_yaxis()
-    ax.set_xlabel((x.name + " (" + x.units + ")"), fontsize=9)
-    ax.set_ylabel((y.name + " (" + y.units + ")"), fontsize=9)
+    ax.set_xlabel((x.name + " (" + x_units + ")"), fontsize=9)
+    ax.set_ylabel((y.name + " (" + y_units + ")"), fontsize=9)
+    ax.legend(leg_text, loc='best', fontsize=6)
+    return fig, ax
+
+
+def plot_timeseries_all(x, y, y_name, y_units, stdev=None):
+    """
+    Create a simple timeseries plot
+    :param x: array containing data for x-axis (e.g. time)
+    :param y: array containing data for y-axis
+    :param stdev: desired standard deviation to exclude from plotting
+    """
+    if stdev is None:
+        xD = x
+        yD = y
+        leg_text = ()
+    else:
+        ind = cf.reject_extreme_values(y)
+        ydata = y[ind]
+        xdata = x[ind]
+
+        ind2 = cf.reject_outliers(ydata, stdev)
+        yD = ydata[ind2]
+        xD = xdata[ind2]
+        outliers = str(len(y) - len(yD))
+        leg_text = ('removed {} outliers (SD={})'.format(outliers, stdev),)
+
+    fig, ax = plt.subplots()
+    plt.grid()
+    plt.plot(xD, yD, '.', markersize=2)
+
+    ax.set_ylabel((y_name + " (" + y_units + ")"), fontsize=9)
+    format_date_axis(ax, fig)
+    y_axis_disable_offset(ax)
     ax.legend(leg_text, loc='best', fontsize=6)
     return fig, ax
 
@@ -72,10 +116,7 @@ def plot_timeseries(x, y, stdev=None):
     plt.grid()
     plt.plot(xD, yD, '.', markersize=2)
 
-    try:
-        y_units = y.units
-    except AttributeError:
-        y_units = 'no_units'
+    y_units = get_units(y)
 
     ax.set_ylabel((y.name + " (" + y_units + ")"), fontsize=9)
     format_date_axis(ax, fig)
@@ -123,17 +164,15 @@ def plot_timeseries_compare(t0, t1, var0, var1, m0, m1, long_name, stdev=None):
         outliers1 = str((len(var1) - len(var1_data)) + (len(t1_data) - np.count_nonzero(~np.isnan(var1_data))))
         leg_text += ('{}: removed {} outliers (SD={})'.format(m1, outliers1, stdev),)
 
-    try:
-        y_units = var0.units
-    except AttributeError:
-        y_units = 'no_units'
+    y_units = get_units(var0)
 
     fig, ax = plt.subplots()
     plt.grid()
     #plt.ylim([2000, 2500])
 
     ax.plot(t0_data, var0_data, 'o', markerfacecolor='none', markeredgecolor='r', markersize=5, lw=.75)
-    ax.plot(t1_data, var1_data, 'x', markeredgecolor='b', markersize=5, lw=.75)
+    #ax.plot(t1_data, var1_data, 'x', markeredgecolor='b', markersize=5, lw=.75)
+    ax.plot(t1_data, var1_data, '.', markeredgecolor='b', markersize=2)
     ax.set_ylabel((long_name + " (" + y_units + ")"), fontsize=9)
     format_date_axis(ax, fig)
     y_axis_disable_offset(ax)
@@ -168,11 +207,12 @@ def plot_timeseries_panel(ds, x, vars, colors, stdev=None):
             yD = ydata[ind2].data
             xD = xdata[ind2]
             outliers = str(len(y) - len(yD))
-            leg_text = ('{}: rm {} outliers'.format(y.name, outliers),)
+            leg_text = ('{}: rm {} outliers'.format(vars[i], outliers),)
 
+        y_units = get_units(y)
         c = colors[i]
         ax[i].plot(xD, yD, '.', markersize=2, color=c)
-        ax[i].set_ylabel(('(' + y.units + ')'), fontsize=5)
+        ax[i].set_ylabel(('(' + y_units + ')'), fontsize=5)
         ax[i].tick_params(axis='y', labelsize=6)
         ax[i].legend(leg_text, loc='best', fontsize=4)
         y_axis_disable_offset(ax[i])
@@ -228,11 +268,13 @@ def plot_xsection(subsite, x, y, z, stdev=None):
     ax.invert_yaxis()
 
     # add colorbar
-    bar = fig.colorbar(xc, ax=ax, label=(z.name + " (" + z.units + ")"))
+    z_units = get_units(z)
+    bar = fig.colorbar(xc, ax=ax, label=(z.name + " (" + z_units + ")"))
     bar
     bar.formatter.set_useOffset(False)
 
-    ax.set_ylabel((y.name + " (" + y.units + ")"), fontsize=9)
+    y_units = get_units(y)
+    ax.set_ylabel((y.name + " (" + y_units + ")"), fontsize=9)
     format_date_axis(ax, fig)
 
     if zeros is None and type(outliers) is str:
