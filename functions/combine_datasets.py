@@ -1,14 +1,7 @@
 #! /usr/bin/env python
-import os
-import pandas as pd
-import requests
-import re
 import itertools
-import time
 import xarray as xr
 import numpy as np
-from urllib.request import urlopen
-import json
 import functions.common as cf
 
 
