@@ -1,0 +1,8 @@
+geopy==1.17.0
+matplotlib==2.2.3
+netCDF4==1.4.2
+numpy==1.15.1
+pandas==0.23.4
+requests==2.19.1
+urllib3==1.23
+xarray==0.10.9
