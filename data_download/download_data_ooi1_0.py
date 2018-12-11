@@ -10,7 +10,7 @@ M2M interface.
 @usage:
 sDir: directory where outputs are saved, and where f is located
 f: optional csv file containing data to download, columns: array, subsite, node, sensor, delivery_method,
-reference_designator (entires in all columns are optional). If this file is not provided, the script will prompt
+reference_designator (entries in all columns are optional). If this file is not provided, the script will prompt
 the user for inputs
 username: OOI API username
 token: OOI API password
@@ -67,4 +67,5 @@ print('\nSeeing if the requests have fulfilled...')
 for i in range(len(thredds_output_urls)):
     url = thredds_output_urls[i]
     print('\nDataset {} of {}: {}'.format((i + 1), len(thredds_output_urls), url))
-    cf.check_request_status(url)
+    if 'no_output_url' not in url:
+        cf.check_request_status(url)

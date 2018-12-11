@@ -7,7 +7,11 @@ import itertools
 import time
 import xarray as xr
 import numpy as np
+from urllib.request import urlopen
+import json
 from geopy.distance import geodesic
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 def check_request_status(thredds_url):
@@ -71,9 +75,10 @@ def filter_collocated_instruments(main_sensor, datasets):
     return datasets_filtered
 
 
-def get_global_ranges(platform, node, sensor, variable, api_user=None, api_token=None):
+def get_global_ranges(refdes, variable, api_user=None, api_token=None):
     port = '12578'
-    base_url = '{}/qcparameters/inv/{}/{}/{}/'.format(port, platform, node, sensor)
+    spl = refdes.split('-')
+    base_url = '{}/qcparameters/inv/{}/{}/{}/'.format(port, spl[0], spl[1], '-'.join((spl[2], spl[3])))
     url = 'https://ooinet.oceanobservatories.org/api/m2m/{}'.format(base_url)
     if (api_user is None) or (api_token is None):
         r = requests.get(url, verify=False)
@@ -87,21 +92,20 @@ def get_global_ranges(platform, node, sensor, variable, api_user=None, api_token
             if not t1.empty:
                 t2 = t1[t1['qcParameterPK.qcId'] == 'dataqc_globalrangetest_minmax']
                 if not t2.empty:
-                    local_min = float(t2[t2['qcParameterPK.parameter'] == 'dat_min'].iloc[0]['value'])
-                    local_max = float(t2[t2['qcParameterPK.parameter'] == 'dat_max'].iloc[0]['value'])
+                    global_min = float(t2[t2['qcParameterPK.parameter'] == 'dat_min'].iloc[0]['value'])
+                    global_max = float(t2[t2['qcParameterPK.parameter'] == 'dat_max'].iloc[0]['value'])
                 else:
-                    local_min = None
-                    local_max = None
+                    global_min = None
+                    global_max = None
             else:
-                local_min = None
-                local_max = None
+                global_min = None
+                global_max = None
         else:
-            local_min = None
-            local_max = None
+            global_min = None
+            global_max = None
     else:
-        local_min = None
-        local_max = None
-    return [local_min, local_max]
+        raise Exception('uFrame is not responding to request for global ranges. Try again later.')
+    return [global_min, global_max]
 
 
 def get_nc_urls(catalog_urls):
@@ -133,6 +137,20 @@ def get_nc_urls(catalog_urls):
     return datasets
 
 
+def get_preferred_stream_info(refdes):
+    ps_link = 'https://raw.githubusercontent.com/data-edu-ooi/data-review-tools/master/data_review/output/{}/{}/{}-preferred_stream.json'.format(
+        refdes.split('-')[0], refdes, refdes)
+    pslnk = urlopen(ps_link)
+    psl = json.loads(pslnk.read())
+    ps_df = pd.DataFrame.from_dict(psl, orient='index')
+    ps_df = ps_df.reset_index()
+    ps_df.rename(columns={'index': 'deployment'}, inplace=True)
+    ps_df.sort_values(by=['deployment'], inplace=True)
+    n_streams = len(ps_df.columns) - 1
+
+    return ps_df, n_streams
+
+
 def nc_attributes(nc_file):
     """
     Return global information from a netCDF file
@@ -160,6 +178,11 @@ def refdes_datareview_json(refdes):
     return r
 
 
+def reject_global_ranges(data, gmin, gmax):
+    # Reject data outside of global ranges
+    return (data >= gmin) & (data <= gmax)
+
+
 def reject_extreme_values(data):
     # Reject extreme values
     return (data > -1e7) & (data < 1e7)
@@ -171,7 +194,13 @@ def reject_outliers(data, m=3):
     :param data: numpy array containing data
     :param m: number of standard deviations from the mean. Default: 3
     """
-    return abs(data - np.nanmean(data)) < m * np.nanstd(data)
+    stdev = np.nanstd(data)
+    if stdev > 0.0:
+        ind = abs(data - np.nanmean(data)) < m * stdev
+    else:
+        ind = len(data) * [True]
+
+    return ind
 
 
 def return_stream_vars(stream):

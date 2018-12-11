@@ -106,7 +106,7 @@ def main(sDir, url_list):
                             ds = xr.open_dataset(datasets[0], mask_and_scale=False)
                             ds = ds.swap_dims({'obs': 'time'})
                             fname, subsite, refdes, method, data_stream, deployment = cf.nc_attributes(datasets[0])
-                        else:
+                        elif len(datasets) > 1:
                             ds = xr.open_mfdataset(datasets, mask_and_scale=False)
                             ds = ds.swap_dims({'obs': 'time'})
                             ds = ds.chunk({'time': 100})
@@ -115,6 +115,8 @@ def main(sDir, url_list):
                             notes.append('multiple deployment .nc files')
                             # when opening multiple datasets, don't check that the timestamps are in ascending order
                             time_ascending = 'not_tested'
+                        else:
+                            continue
 
                         print('\nAnalyzing file: {}'.format(fname))
 
@@ -250,45 +252,65 @@ def main(sDir, url_list):
                             else:
                                 if len(pressure) > 1:
                                     # reject NaNs
-                                    p_nonan = pressure[~np.isnan(pressure)]
+                                    p_nonan = pressure.data[~np.isnan(pressure.data)]
 
                                     # reject fill values
                                     p_nonan_nofv = p_nonan[p_nonan != pressure._FillValue]
 
-                                    if len(p_nonan_nofv) > 0:
-                                        [press_outliers, pressure_mean, _, pressure_max, _, _] = cf.variable_statistics(p_nonan_nofv.data, 3)
+                                    # reject data outside of global ranges
+                                    [pg_min, pg_max] = cf.get_global_ranges(r, press)
+                                    if pg_min is not None and pg_max is not None:
+                                        pgr_ind = cf.reject_global_ranges(p_nonan_nofv, pg_min, pg_max)
+                                        p_nonan_nofv_gr = p_nonan_nofv[pgr_ind]
+                                    else:
+                                        p_nonan_nofv_gr = p_nonan_nofv
+
+                                    if len(p_nonan_nofv_gr) > 0:
+                                        [press_outliers, pressure_mean, _, pressure_max, _, _] = cf.variable_statistics(p_nonan_nofv_gr, 3)
+                                        pressure_mean = round(pressure_mean, 2)
+                                        pressure_max = round(pressure_max, 2)
                                     else:
                                         press_outliers = None
                                         pressure_mean = None
+                                        pressure_max = None
+                                        if len(pressure) > 0 and len(p_nonan) == 0:
+                                            notes.append('Pressure variable all NaNs')
+                                        elif len(pressure) > 0 and len(p_nonan) > 0 and len(p_nonan_nofv) == 0:
+                                            notes.append('Pressure variable all fill values')
+                                        elif len(pressure) > 0 and len(p_nonan) > 0 and len(p_nonan_nofv) > 0 and len(p_nonan_nofv_gr) == 0:
+                                            notes.append('Pressure variable outside of global ranges')
 
                                 else:  # if there is only 1 data point
                                     press_outliers = 0
-                                    pressure_mean = round(ds[press].data.tolist()[0], 4)
+                                    pressure_mean = round(ds[press].data.tolist()[0], 2)
 
                             try:
                                 pressure_units = pressure.units
                             except AttributeError:
                                 pressure_units = 'no units attribute for pressure'
 
-                            if not deploy_depth:
+                            if (not deploy_depth) or (not pressure_mean):
                                 pressure_diff = None
-                            elif not pressure_mean:
-                                pressure_diff = None
+                                pressure_compare = None
                             else:
+                                node = refdes.split('-')[1]
                                 if pressure_units == '0.001 dbar':
-                                    pressure_max = pressure_max / 1000
-                                    pressure_mean = pressure_mean / 1000
-                                    notes.append('pressure converted from 0.001 dbar to dbar for pressure comparison')
-                                if 'WFP' in refdes.split('-')[1]:
-                                    pressure_diff = round(pressure_max - deploy_depth, 4)
+                                    pressure_max = round((pressure_max / 1000), 2)
+                                    pressure_mean = round((pressure_mean / 1000), 2)
+                                    notes.append('Pressure converted from 0.001 dbar to dbar for pressure comparison')
+                                if ('WFP' in node) or ('MOAS' in node):
+                                    pressure_compare = int(round(pressure_max))
                                 else:
-                                    pressure_diff = round(pressure_mean - deploy_depth, 4)
+                                    pressure_compare = int(round(pressure_mean))
+                                pressure_diff = pressure_compare - deploy_depth
+
 
                         except KeyError:
                             press = 'no seawater pressure in file'
                             pressure_diff = None
                             pressure_mean = None
                             pressure_max = None
+                            pressure_compare = None
                             press_outliers = None
                             pressure_units = None
 
@@ -313,7 +335,8 @@ def main(sDir, url_list):
                                 ascending_timestamps=time_ascending,
                                 pressure_comparison=dict(pressure_mean=pressure_mean, units=pressure_units,
                                                          num_outliers=press_outliers, diff=pressure_diff,
-                                                         pressure_max=pressure_max, variable=press),
+                                                         pressure_max=pressure_max, variable=press,
+                                                         pressure_compare=pressure_compare),
                                 vars_in_file=ds_variables,
                                 vars_not_in_file=[x for x in unmatch1 if 'time' not in x],
                                 vars_not_in_db=unmatch2,
@@ -324,8 +347,8 @@ def main(sDir, url_list):
                             print(sv)
                             try:
                                 var = ds[sv]
-                                fv = str(var._FillValue)
                                 num_dims = len(var.dims)
+
                                 if num_dims > 1:
                                     print('variable has more than 1 dimension')
                                     num_outliers = None
@@ -337,21 +360,33 @@ def main(sDir, url_list):
                                     var_units = var.units
                                     n_nan = None
                                     n_fv = None
+                                    n_grange = None
                                     fv = None
                                 else:
                                     # reject NaNs
-                                    var_nonan = var[~np.isnan(var)]
+                                    var_nonan = var.data[~np.isnan(var.data)]
                                     n_nan = len(var) - len(var_nonan)
 
                                     # reject fill values
-                                    var_nonan_nofv = var_nonan[var_nonan != var._FillValue]
+                                    fv = var._FillValue
+                                    var_nonan_nofv = var_nonan[var_nonan != fv]
                                     n_fv = len(var) - n_nan - len(var_nonan_nofv)
 
-                                    if len(var_nonan_nofv) > 1:
-                                        [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_nonan_nofv.data, 5)
-                                    elif len(var_nonan_nofv) == 1:
+                                    # reject data outside of global ranges
+                                    [g_min, g_max] = cf.get_global_ranges(r, sv)
+                                    if g_min is not None and g_max is not None:
+                                        gr_ind = cf.reject_global_ranges(var_nonan_nofv, g_min, g_max)
+                                        var_nonan_nofv_gr = var_nonan_nofv[gr_ind]
+                                        n_grange = len(var) - n_nan - n_fv - len(var_nonan_nofv_gr)
+                                    else:
+                                        n_grange = 'no global ranges'
+                                        var_nonan_nofv_gr = var_nonan_nofv
+
+                                    if len(var_nonan_nofv_gr) > 1:
+                                        [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_nonan_nofv_gr, 5)
+                                    elif len(var_nonan_nofv_gr) == 1:
                                         num_outliers = 0
-                                        mean = round(var_nonan_nofv.data.tolist()[0], 4)
+                                        mean = (round(list(var_nonan_nofv_gr)[0], 4)).astype('float64')
                                         vmin = None
                                         vmax = None
                                         sd = None
@@ -377,12 +412,14 @@ def main(sDir, url_list):
                                 n_nan = None
                                 n_fv = None
                                 fv = None
+                                n_grange = None
 
-                            data['deployments'][deployment]['method'][method]['stream'][data_stream][
-                                'file'][
+                            data['deployments'][deployment]['method'][method]['stream'][data_stream]['file'][
                                 fname]['sci_var_stats'][sv] = dict(n_outliers=num_outliers, mean=mean, min=vmin,
                                                                    max=vmax, stdev=sd, n_stats=n_stats, units=var_units,
-                                                                   n_nans=n_nan, n_fillvalues=n_fv, fill_value=fv)
+                                                                   n_nans=n_nan, n_fillvalues=n_fv, fill_value=str(fv),
+                                                                   global_ranges=[g_min, g_max], n_grange=n_grange)
+
 
         sfile = os.path.join(save_dir, '{}-file_analysis.json'.format(r))
         with open(sfile, 'w') as outfile:

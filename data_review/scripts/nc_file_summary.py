@@ -16,25 +16,25 @@ import ast
 
 
 def group_percents(summary_dict, lst):
-    percent_grps = [99.00, [95.00, 99.00], [75.00, 95.00], [50.00, 75.00], [25.00, 50.00], 25.00]
+    percent_grps = [99, [95, 99], [75, 95], [50, 75], [25, 50], 25]
     for grp in percent_grps:
-        if grp == 99.00:
+        if grp == 99:
             x99 = []
             ilst = []
             for i, x in enumerate(lst):
-                if type(x) is not str and x > grp:
+                if type(x) is not str and x >= grp:
                     x99.append(x)
-                elif type(x) is not str and x <= grp:
+                elif type(x) is not str and x < grp:
                     ilst.append(i)
             #x99 = len([x for x in lst if (type(x) is not str and x > grp)])
             if len(x99) > 0:
                 summary_dict['99'] = len(x99)
-        elif grp == 25.00:
-            x0 = len([x for x in lst if x <= grp])
+        elif grp == 25:
+            x0 = len([x for x in lst if x < grp])
             if x0 > 0:
                 summary_dict['0'] = x0
         else:
-            xgrp = len([x for x in lst if grp[0] < x <= grp[1]])
+            xgrp = len([x for x in lst if grp[0] <= x < grp[1]])
             if xgrp > 0:
                 summary_dict[str(int(grp[0]))] = xgrp
     return summary_dict, ilst
@@ -57,6 +57,7 @@ def time_delta(t0, t1):
 def main(f, ps, mc):
     data = load_json_file(f)
     refdes = data['refdes']
+    node = refdes.split('-')[1]
     loc_compare = data['location_comparison']
     deployments = np.sort(list(data['deployments'].keys()))
 
@@ -69,14 +70,14 @@ def main(f, ps, mc):
     fsummary_headers = ['deployment', 'file_downloaded', 'preferred_method', 'stream', 'other_methods',
                         'time_delta_start', 'time_delta_end', 'start_days_missing', 'end_days_missing',
                         'location_diff_km', 'n_days_deployed', 'n_timestamps', 'n_days', 'deploy_depth', 'pressure_mean',
-                        'pressure_max', 'pressure_diff', 'pressure_var', 'pressure_units', 'num_pressure_outliers',
-                        'sampling_rate_seconds', 'sampling_rate_details', 'missing_vars_file', 'missing_vars_db',
-                        'file_time_gaps', 'gaps_num', 'gaps_num_days', 'timestamp_test', 'n_science_vars',
-                        'valid_data_test', 'variable_comparison_details','variable_comparison_test',
+                        'pressure_max', 'pressure_compare', 'pressure_diff', 'pressure_var', 'pressure_units',
+                        'num_pressure_outliers', 'sampling_rate_seconds', 'sampling_rate_details', 'missing_vars_file',
+                        'missing_vars_db', 'file_time_gaps', 'gaps_num', 'gaps_num_days', 'timestamp_test',
+                        'n_science_vars', 'valid_data_test', 'variable_comparison_details','variable_comparison_test',
                         'full_dataset_test', 'file_coordinates', 'coordinate_test', 'notes', 'filename']
-    vsummary_headers = ['deployment', 'preferred_method', 'stream', 'variable', 'units', 'fill_value',
-                        'n_all', 'n_outliers', 'n_nans', 'n_fillvalues', 'n_stats', 'percent_valid_data', 'mean', 'min',
-                        'max', 'stdev']
+    vsummary_headers = ['deployment', 'preferred_method', 'stream', 'variable', 'units', 'fill_value', 'global_ranges',
+                        'n_all', 'n_nans', 'n_fillvalues', 'n_grange', 'n_outliers', 'n_stats', 'percent_valid_data',
+                        'mean', 'min', 'max', 'stdev']
     csummary_headers = ['deployment', 'preferred_method_stream', 'comparison_method_stream', 'long_name',
                         'preferred_name', 'preferred_units', 'unit_comparison_test', 'preferred_n', 'preferred_n_nan',
                         'missing_data', 'n_comparison', 'min_abs_diff', 'max_abs_diff', 'n_diff_greater_zero',
@@ -167,10 +168,12 @@ def main(f, ps, mc):
                             n_nan = vsummary['n_nans']
                             n_fv = vsummary['n_fillvalues']
                             fv = vsummary['fill_value']
+                            gr = vsummary['global_ranges']
+                            n_gr = vsummary['n_grange']
 
                             valid_list.append(percent_valid_data)
 
-                            vsummary_rows.append([d, m, s, v, units, fv, nt, n_o, n_nan, n_fv, n_stats,
+                            vsummary_rows.append([d, m, s, v, units, fv, gr, nt, n_nan, n_fv, n_gr, n_o, n_stats,
                                                   percent_valid_data, mean, min, max, stdev])
 
                         # build file summary
@@ -191,6 +194,7 @@ def main(f, ps, mc):
                         maxpress = fsummary['pressure_comparison']['pressure_max']
                         upress = fsummary['pressure_comparison']['units']
                         press_diff = fsummary['pressure_comparison']['diff']
+                        press_compare = fsummary['pressure_comparison']['pressure_compare']
                         opress = fsummary['pressure_comparison']['num_outliers']
                         notes = fsummary['notes']
                         n_science_vars = len(valid_list)
@@ -241,6 +245,7 @@ def main(f, ps, mc):
                         # Check if any percent_valid_data values (for science variables) are < 95
                         pvd_test = dict()
                         snc = len([x for x in valid_list if x == 'stats not calculated'])
+                        valid_list = [round(v) for v in valid_list]
                         if snc > 0:
                             pvd_test['stats not calculated'] = snc
 
@@ -261,7 +266,11 @@ def main(f, ps, mc):
                             n_missing_gaps = []
                             n_missing_days = []
                             for md in md_unique:
-                                if 'no missing data' not in md:
+                                if 'no missing data' in md:
+                                    continue
+                                elif 'No valid data to compare' in md:
+                                    continue
+                                else:
                                     md = ast.literal_eval(md)
                                     n_missing_gaps.append(len(md['missing_data_gaps']))
                                     n_missing_days.append(md['n_missing_days_total'])
@@ -296,7 +305,10 @@ def main(f, ps, mc):
                                 comparison_test = 'no other streams for comparison'
 
                         # Check the coordinates in the file
-                        check_coords = list(set(['obs', 'time', 'pressure', 'lat', 'lon']) - set(coords))
+                        if 'SBD' not in node:
+                            check_coords = list(set(['obs', 'time', 'pressure', 'lat', 'lon']) - set(coords))
+                        else:
+                            check_coords = list(set(['obs', 'time', 'lat', 'lon']) - set(coords))
 
                         if len(check_coords) > 0:
                             if 'pressure' in check_coords:
@@ -315,7 +327,7 @@ def main(f, ps, mc):
 
                         fsummary_rows.append([d, dwnl, m, s, other_methods, str(tdelta_start), str(tdelta_stop),
                                               tdelta_start.days, tdelta_stop_days, loc_diff, n_days_deployed, nt, nd,
-                                              depth, mpress, maxpress, press_diff, vpress, upress, opress,
+                                              depth, mpress, maxpress, press_compare, press_diff, vpress, upress, opress,
                                               sampling_rate_seconds, sampling_rate_details, v_missing_f, v_missing_db,
                                               gaps, n_gaps, n_gaps_days, time_test, n_science_vars, pvd_test,
                                               comparison_details, comparison_test, fd_test, coords, coord_test, notes,

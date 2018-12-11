@@ -1,0 +1,4 @@
+deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
+deployment0002,recovered_host-flord_g_ctdbp_p_dcl_instrument_recovered,telemetered-flord_g_ctdbp_p_dcl_instrument,Chlorophyll-a Concentration,fluorometric_chlorophyll_a,µg L-1,pass,5248.0,0.0,no missing data,5248.0,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-flord_g_ctdbp_p_dcl_instrument_recovered,telemetered-flord_g_ctdbp_p_dcl_instrument,Chlorophyll-a Concentration,fluorometric_chlorophyll_a,µg L-1,pass,4812.0,0.0,no missing data,4812.0,0.0,0.0,0.0,0.0
+deployment0004,telemetered-flord_g_ctdbp_p_dcl_instrument,no other methods available for comparison,,,,,,,,,,,,

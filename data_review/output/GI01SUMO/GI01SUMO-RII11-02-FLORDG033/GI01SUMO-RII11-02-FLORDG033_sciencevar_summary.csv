@@ -1,0 +1,4 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0002,recovered_host,flord_g_ctdbp_p_dcl_instrument_recovered,fluorometric_chlorophyll_a,µg L-1,-9999999.0,"[0.0, 50.0]",5248,0,0,16,72,5160,98.32,0.1196,0.0246,4.1388,0.128
+deployment0003,recovered_host,flord_g_ctdbp_p_dcl_instrument_recovered,fluorometric_chlorophyll_a,µg L-1,-9999999.0,"[0.0, 50.0]",4812,0,0,2,81,4729,98.28,0.1615,0.0144,5.7102,0.5325
+deployment0004,telemetered,flord_g_ctdbp_p_dcl_instrument,fluorometric_chlorophyll_a,µg L-1,-9999999.0,"[0.0, 50.0]",1613,0,0,0,7,1606,99.57,0.1147,0.084,0.2082,0.016

@@ -9,6 +9,7 @@ Modified on Sep 7 2018
 import itertools
 import pandas as pd
 import datetime as dt
+import ast
 
 
 def check_str(x):
@@ -86,13 +87,22 @@ def format_date(date_text):
 
 
 def format_inputs(input_str):
-    if len(input_str) == 0:
+    if input_str == '':
         formatted_input = []
-    elif ',' in input_str:
-        input_str = input_str.replace(" ", "")  # remove any whitespace
-        formatted_input = input_str.split(',')
     else:
-        formatted_input = [input_str]
+        try:
+            finput = ast.literal_eval(input_str)
+        except (ValueError, SyntaxError):
+            finput = input_str
+        if type(finput) == list:
+            formatted_input = finput
+        elif type(finput) == tuple:
+            formatted_input = list(finput)
+        elif ',' in finput:
+            finput = finput.replace(" ", "")  # remove any whitespace
+            formatted_input = finput.split(',')
+        else:
+            formatted_input = [finput]
 
     return formatted_input
 
