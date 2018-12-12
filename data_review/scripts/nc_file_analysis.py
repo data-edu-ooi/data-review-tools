@@ -298,7 +298,7 @@ def main(sDir, url_list):
                                     pressure_max = round((pressure_max / 1000), 2)
                                     pressure_mean = round((pressure_mean / 1000), 2)
                                     notes.append('Pressure converted from 0.001 dbar to dbar for pressure comparison')
-                                if ('WFP' in node) or ('MOAS' in node):
+                                if ('WFP' in node) or ('MOAS' in subsite):
                                     pressure_compare = int(round(pressure_max))
                                 else:
                                     pressure_compare = int(round(pressure_mean))
