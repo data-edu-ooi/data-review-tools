@@ -1,0 +1,21 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_eastward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",2903274,0,0,0,5,2903269,100.0,-0.0027,-0.1225,0.1185,0.0244
+deployment0001,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_northward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",2903274,0,0,0,4,2903270,100.0,-0.0047,-0.1244,0.1184,0.0275
+deployment0001,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_upward_velocity_ascending,m s-1,-9999999.0,"[-1.0, 1.0]",2903274,0,0,0,2,2903272,100.0,-0.0515,-0.659,0.2186,0.1355
+deployment0001,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_upward_velocity_descending,m s-1,-9999999.0,"[-1.0, 1.0]",2903274,0,0,0,1,2903273,100.0,0.0396,-0.2713,0.4434,0.1466
+deployment0002,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_eastward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",3461651,0,0,0,8,3461643,100.0,0.0011,-0.111,0.1115,0.0224
+deployment0002,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_northward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",3461651,0,0,0,10,3461641,100.0,-0.0019,-0.1153,0.1179,0.0253
+deployment0002,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_upward_velocity_ascending,m s-1,-9999999.0,"[-1.0, 1.0]",3461651,0,0,1,0,3461650,100.0,-0.0517,-0.2887,0.4123,0.1281
+deployment0002,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_upward_velocity_descending,m s-1,-9999999.0,"[-1.0, 1.0]",3461651,0,0,1,0,3461650,100.0,0.0243,-0.4105,0.4071,0.1308
+deployment0003,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_eastward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",3551836,0,0,0,122,3551714,100.0,-0.0248,-1.0272,0.881,0.2007
+deployment0003,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_northward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",3551836,0,0,0,499,3551337,99.99,0.0336,-1.1071,1.1738,0.2279
+deployment0003,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_upward_velocity_ascending,m s-1,-9999999.0,"[-1.0, 1.0]",3551836,0,0,85,39,3551712,100.0,0.1011,-0.582,0.9695,0.1741
+deployment0003,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_upward_velocity_descending,m s-1,-9999999.0,"[-1.0, 1.0]",3551836,0,0,424,0,3551412,99.99,-0.1613,-0.9994,0.2493,0.1772
+deployment0004,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_eastward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",3405079,0,0,0,22,3405057,100.0,-0.0005,-0.0958,0.0982,0.0198
+deployment0004,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_northward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",3405079,0,0,0,10,3405069,100.0,-0.0028,-0.0909,0.095,0.0197
+deployment0004,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_upward_velocity_ascending,m s-1,-9999999.0,"[-1.0, 1.0]",3405079,0,0,0,0,3405079,100.0,-0.0583,-0.4435,0.2397,0.1417
+deployment0004,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_upward_velocity_descending,m s-1,-9999999.0,"[-1.0, 1.0]",3405079,0,0,0,0,3405079,100.0,0.1,-0.4043,0.325,0.1415
+deployment0005,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_eastward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",3256088,45,0,352,9308,3246383,99.7,-0.018,-1.3582,1.3234,0.248
+deployment0005,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_northward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",3256088,45,0,207,7542,3248294,99.76,0.014,-1.411,1.4395,0.2696
+deployment0005,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_upward_velocity_ascending,m s-1,-9999999.0,"[-1.0, 1.0]",3256088,45,0,15956,132,3239955,99.5,0.1187,-0.9467,1.0,0.2131
+deployment0005,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_upward_velocity_descending,m s-1,-9999999.0,"[-1.0, 1.0]",3256088,45,0,18818,427,3236798,99.41,-0.1685,-1.0,0.8961,0.2125
