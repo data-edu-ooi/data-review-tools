@@ -123,7 +123,7 @@ def main(sDir, url_list):
                     pf.save_fig(save_dir, sname)
 
                     # Plot data with outliers removed
-                    fig, ax = pf.plot_timeseries_all(x_nonan_nofv, y_nonan_nofv, sv, sv_units, stdev=3)
+                    fig, ax = pf.plot_timeseries_all(x_nonan_nofv, y_nonan_nofv, sv, sv_units, stdev=5)
                     ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
                                  fontsize=8)
                     for etimes in end_times:
