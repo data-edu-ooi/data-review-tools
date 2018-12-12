@@ -31,17 +31,17 @@ def plot_profiles(x, y, colors, stdev=None):
     :param stdev: desired standard deviation to exclude from plotting
     """
     if stdev is None:
-        xD = x.data
-        yD = y.data
+        xD = x.values
+        yD = y.values
         leg_text = ()
     else:
-        ind = cf.reject_extreme_values(x.data)
+        ind = cf.reject_extreme_values(x.values)
         xdata = x[ind]
         ydata = y[ind]
         
-        ind2 = cf.reject_outliers(xdata.data, stdev)
-        xD = xdata[ind2].data
-        yD = ydata[ind2].data
+        ind2 = cf.reject_outliers(xdata.values, stdev)
+        xD = xdata[ind2].values
+        yD = ydata[ind2].values
         outliers = str(len(x) - len(xD))
         leg_text = ('removed {} outliers (SD={})'.format(outliers, stdev),)
 
@@ -99,15 +99,15 @@ def plot_timeseries(x, y, stdev=None):
     """
     if stdev is None:
         xD = x
-        yD = y.data
+        yD = y.values
         leg_text = ()
     else:
-        ind = cf.reject_extreme_values(y.data)
+        ind = cf.reject_extreme_values(y.values)
         ydata = y[ind]
         xdata = x[ind]
 
-        ind2 = cf.reject_outliers(ydata.data, stdev)
-        yD = ydata[ind2].data
+        ind2 = cf.reject_outliers(ydata.values, stdev)
+        yD = ydata[ind2].values
         xD = xdata[ind2]
         outliers = str(len(y) - len(yD))
         leg_text = ('removed {} outliers (SD={})'.format(outliers, stdev),)
@@ -135,31 +135,31 @@ def plot_timeseries_compare(t0, t1, var0, var1, m0, m1, long_name, stdev=None):
     :param stdev: desired standard deviation to exclude from plotting
     """
     if stdev is None:
-        t0_data = t0.data
-        var0_data = var0.data
+        t0_data = t0.values
+        var0_data = var0.values
         leg_text = ('{}'.format(m0),)
-        t1_data = t1.data
-        var1_data = var1.data
+        t1_data = t1.values
+        var1_data = var1.values
         leg_text += ('{}'.format(m1),)
     else:
-        ind0 = cf.reject_extreme_values(var0.data)
+        ind0 = cf.reject_extreme_values(var0.values)
         t0i = t0[ind0]
         var0i = var0[ind0]
 
-        ind02 = cf.reject_outliers(var0i.data, stdev)
-        t0_data = t0i[ind02].data
-        var0_data = var0i[ind02].data
+        ind02 = cf.reject_outliers(var0i.values, stdev)
+        t0_data = t0i[ind02].values
+        var0_data = var0i[ind02].values
         var0_data[var0_data <= 0.0] = np.nan  # get rid of zeros and negative numbers
         outliers0 = str((len(var0) - len(var0_data)) + (len(t0_data) - np.count_nonzero(~np.isnan(var0_data))))
         leg_text = ('{}: removed {} outliers (SD={})'.format(m0, outliers0, stdev),)
 
-        ind1 = cf.reject_extreme_values(var1.data)
+        ind1 = cf.reject_extreme_values(var1.values)
         t1i = t1[ind1]
         var1i = var1[ind1]
 
-        ind12 = cf.reject_outliers(var1i.data, stdev)
-        t1_data = t1i[ind12].data
-        var1_data = var1i[ind12].data
+        ind12 = cf.reject_outliers(var1i.values, stdev)
+        t1_data = t1i[ind12].values
+        var1_data = var1i[ind12].values
         var1_data[var1_data <= 0.0] = np.nan  # get rid of zeros and negative numbers
         outliers1 = str((len(var1) - len(var1_data)) + (len(t1_data) - np.count_nonzero(~np.isnan(var1_data))))
         leg_text += ('{}: removed {} outliers (SD={})'.format(m1, outliers1, stdev),)
@@ -195,16 +195,16 @@ def plot_timeseries_panel(ds, x, vars, colors, stdev=None):
         y = ds[vars[i]]
 
         if stdev is None:
-            yD = y.data
+            yD = y.values
             xD = x
             leg_text = ()
         else:
-            ind = cf.reject_extreme_values(y.data)
+            ind = cf.reject_extreme_values(y.values)
             ydata = y[ind]
             xdata = x[ind]
 
-            ind2 = cf.reject_outliers(ydata.data, stdev)
-            yD = ydata[ind2].data
+            ind2 = cf.reject_outliers(ydata.values, stdev)
+            yD = ydata[ind2].values
             xD = xdata[ind2]
             outliers = str(len(y) - len(yD))
             leg_text = ('{}: rm {} outliers'.format(vars[i], outliers),)
@@ -230,7 +230,7 @@ def plot_xsection(subsite, x, y, z, stdev=None):
     :param z: .nc data array containing data for plotting variable of interest (e.g. density)
     :param stdev: desired standard deviation to exclude from plotting
     """
-    z_data = z.data
+    z_data = z.values
     # when plotting gliders, remove zeros (glider fill values) and negative numbers
     if 'MOAS' in subsite:
         z_data[z_data <= 0.0] = np.nan
@@ -238,7 +238,7 @@ def plot_xsection(subsite, x, y, z, stdev=None):
 
     if stdev is None:
         xD = x
-        yD = y.data
+        yD = y.values
         zD = z_data
     else:
         ind = cf.reject_extreme_values(z_data)
@@ -248,7 +248,7 @@ def plot_xsection(subsite, x, y, z, stdev=None):
         
         ind2 = cf.reject_outliers(zdata, stdev)
         xD = xdata[ind2]
-        yD = ydata[ind2].data
+        yD = ydata[ind2].values
         zD = zdata[ind2]
         outliers = str(len(z_data) - len(zD))
 

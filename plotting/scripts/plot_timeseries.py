@@ -60,7 +60,7 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
 
                 if start_time is not None and end_time is not None:
                     ds = ds.sel(time=slice(start_time, end_time))
-                    if len(ds['time'].data) == 0:
+                    if len(ds['time'].values) == 0:
                         print('No data to plot for specified time range: ({} to {})'.format(start_time, end_time))
                         continue
 
@@ -71,7 +71,7 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                 save_dir = os.path.join(sDir, array, subsite, refdes, 'timeseries_plots', deployment)
                 cf.create_dir(save_dir)
 
-                t = ds['time'].data
+                t = ds['time'].values
                 t0 = pd.to_datetime(t.min()).strftime('%Y-%m-%dT%H:%M:%S')
                 t1 = pd.to_datetime(t.max()).strftime('%Y-%m-%dT%H:%M:%S')
                 title = ' '.join((deployment, refdes, method))
@@ -82,7 +82,7 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                     fv = y._FillValue
 
                     # Check if the array is all NaNs
-                    if sum(np.isnan(y.data)) == len(y.data):
+                    if sum(np.isnan(y.values)) == len(y.values):
                         print('Array of all NaNs - skipping plot.')
 
                     # Check if the array is all fill values

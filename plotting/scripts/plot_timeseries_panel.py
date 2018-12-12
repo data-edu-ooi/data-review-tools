@@ -63,7 +63,7 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
 
                 if start_time is not None and end_time is not None:
                     ds = ds.sel(time=slice(start_time, end_time))
-                    if len(ds['time'].data) == 0:
+                    if len(ds['time'].values) == 0:
                         print('No data to plot for specified time range: ({} to {})'.format(start_time, end_time))
                         continue
 
@@ -78,7 +78,7 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
 
                 colors = cm.jet(np.linspace(0, 1, len(sci_vars)))
 
-                t = ds['time'].data
+                t = ds['time'].values
                 t0 = pd.to_datetime(t.min()).strftime('%Y-%m-%dT%H:%M:%S')
                 t1 = pd.to_datetime(t.max()).strftime('%Y-%m-%dT%H:%M:%S')
                 title = ' '.join((deployment, refdes, method))

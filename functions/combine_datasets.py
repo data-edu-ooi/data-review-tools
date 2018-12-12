@@ -39,8 +39,8 @@ def append_variable_data(ds, variable_dict, common_stream_name, exclude_times):
                         vars_dict[long_name]['fv'].append(ds[var]._FillValue)
                     if ds[var].units not in vars_dict[long_name]['units']:
                         vars_dict[long_name]['units'].append(ds[var].units)
-                    tD = ds['time'].data
-                    varD = ds[var].data
+                    tD = ds['time'].values
+                    varD = ds[var].values
                     if len(exclude_times) > 0:
                         for et in exclude_times:
                             tD, varD = exclude_time_ranges(tD, varD, et)

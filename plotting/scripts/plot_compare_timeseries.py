@@ -51,7 +51,7 @@ def compare_plot_datasets(df, r, start_time, end_time, sDir):
                             if start_time is not None and end_time is not None:
                                 ds0 = ds0.sel(time=slice(start_time, end_time))
 
-                                if len(ds0['time'].data) == 0:
+                                if len(ds0['time'].values) == 0:
                                     print('No {} data to plot for specified time range: ({} to {})'.format(ds0_method,
                                                                                                            start_time,
                                                                                                            end_time))
@@ -70,7 +70,7 @@ def compare_plot_datasets(df, r, start_time, end_time, sDir):
 
                             if start_time is not None and end_time is not None:
                                 ds1 = ds1.sel(time=slice(start_time, end_time))
-                                if len(ds1['time'].data) == 0:
+                                if len(ds1['time'].values) == 0:
                                     print ('No {} data to plot for specified time range: ({} to {})'.format(ds1_method,
                                                                                                            start_time,
                                                                                                            end_time))

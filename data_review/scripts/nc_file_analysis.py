@@ -151,8 +151,8 @@ def main(sDir, url_list):
                             data['refdes'] = refdes
 
                         deployments = data['deployments'].keys()
-                        data_start = pd.to_datetime(min(ds['time'].data)).strftime('%Y-%m-%dT%H:%M:%S')
-                        data_stop = pd.to_datetime(max(ds['time'].data)).strftime('%Y-%m-%dT%H:%M:%S')
+                        data_start = pd.to_datetime(min(ds['time'].values)).strftime('%Y-%m-%dT%H:%M:%S')
+                        data_stop = pd.to_datetime(max(ds['time'].values)).strftime('%Y-%m-%dT%H:%M:%S')
 
                         # Add deployment and info to dictionary and initialize delivery method sub-dictionary
                         if deployment not in deployments:
@@ -178,7 +178,7 @@ def main(sDir, url_list):
                                 data_stream] = OrderedDict(file=OrderedDict())
 
                         # Get a list of data gaps >1 day
-                        time_df = pd.DataFrame(ds['time'].data, columns=['time'])
+                        time_df = pd.DataFrame(ds['time'].values, columns=['time'])
                         gap_list = cf.timestamp_gap_test(time_df)
 
                         # Calculate the sampling rate to the nearest second
@@ -227,7 +227,7 @@ def main(sDir, url_list):
                                 time_ascending = 'fail: {}'.format(ind_fail)
 
                         # Count the number of days for which there is at least 1 timestamp
-                        n_days = len(np.unique(time.data.astype('datetime64[D]')))
+                        n_days = len(np.unique(time.values.astype('datetime64[D]')))
 
                         # Compare variables in file to variables in Data Review Database
                         ds_variables = list(ds.data_vars.keys()) + list(ds.coords.keys())
@@ -247,12 +247,12 @@ def main(sDir, url_list):
                             if num_dims > 1:
                                 print('variable has more than 1 dimension')
                                 press_outliers = 'not calculated: variable has more than 1 dimension'
-                                pressure_mean = np.nanmean(pressure.data)
+                                pressure_mean = np.nanmean(pressure.values)
 
                             else:
                                 if len(pressure) > 1:
                                     # reject NaNs
-                                    p_nonan = pressure.data[~np.isnan(pressure.data)]
+                                    p_nonan = pressure.values[~np.isnan(pressure.values)]
 
                                     # reject fill values
                                     p_nonan_nofv = p_nonan[p_nonan != pressure._FillValue]
@@ -282,7 +282,7 @@ def main(sDir, url_list):
 
                                 else:  # if there is only 1 data point
                                     press_outliers = 0
-                                    pressure_mean = round(ds[press].data.tolist()[0], 2)
+                                    pressure_mean = round(ds[press].values.tolist()[0], 2)
 
                             try:
                                 pressure_units = pressure.units
@@ -364,7 +364,7 @@ def main(sDir, url_list):
                                     fv = None
                                 else:
                                     # reject NaNs
-                                    var_nonan = var.data[~np.isnan(var.data)]
+                                    var_nonan = var.values[~np.isnan(var.values)]
                                     n_nan = len(var) - len(var_nonan)
 
                                     # reject fill values

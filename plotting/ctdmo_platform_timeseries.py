@@ -113,9 +113,9 @@ def main(sDir, f):
                     f = xr.open_dataset(ds)
                     f = f.swap_dims({'obs': 'time'})
                     refdes = '-'.join((f.subsite, f.node, f.sensor))
-                    yD = f[v].data
+                    yD = f[v].values
                     data[refdes] = {}
-                    data[refdes]['time'] = f['time'].data
+                    data[refdes]['time'] = f['time'].values
                     data[refdes]['yD'] = yD
                     data[refdes]['yunits'] = f[v].units
                     data[refdes]['median'] = np.median(yD)

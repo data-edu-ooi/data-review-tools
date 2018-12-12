@@ -214,7 +214,7 @@ def compare_data(df):
 
 
 def get_ds_variable_info(dataset, variable_name, rename):
-    ds_df = pd.DataFrame({'time': dataset['time'].data, variable_name: dataset[variable_name].data})
+    ds_df = pd.DataFrame({'time': dataset['time'].values, variable_name: dataset[variable_name].values})
     ds_units = var_units(dataset[variable_name])
     ds_df.rename(columns={str(variable_name): rename}, inplace=True)
     n = len(ds_df[rename])
@@ -300,7 +300,7 @@ def missing_data_times(df):
 
 def unique_timestamps_hour(ds):
     # return dataframe of the unique timestamps rounded to the nearest hour
-    df = pd.DataFrame(ds['time'].data, columns=['time'])
+    df = pd.DataFrame(ds['time'].values, columns=['time'])
     df = df['time'].map(lambda t: t.replace(second=0, microsecond=0, nanosecond=0, minute=0, hour=t.hour) + timedelta(hours=t.minute // 30))
     udf = pd.DataFrame(np.unique(df), columns=['time'])
 
