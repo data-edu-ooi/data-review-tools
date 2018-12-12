@@ -1,0 +1,9 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_inst,phsen_abcdef_instrument,phsen_thermistor_temperature,V,-9999999.0,"[None, None]",5002,0,0,no global ranges,0,5002,100.0,4.4513,3.4865,6.0761,0.5307
+deployment0001,recovered_inst,phsen_abcdef_instrument,phsen_abcdef_ph_seawater,1,-9999999.0,"[7.3, 8.5]",5002,1,0,65,13,4923,98.42,8.0257,7.4579,8.484,0.1107
+deployment0002,recovered_inst,phsen_abcdef_instrument,phsen_thermistor_temperature,V,-9999999.0,"[None, None]",4386,0,0,no global ranges,0,4386,100.0,4.7966,3.6418,6.6955,0.6552
+deployment0002,recovered_inst,phsen_abcdef_instrument,phsen_abcdef_ph_seawater,1,-9999999.0,"[7.3, 8.5]",4386,2,0,617,0,3767,85.89,8.0399,7.3036,8.4996,0.2583
+deployment0003,recovered_inst,phsen_abcdef_instrument,phsen_thermistor_temperature,V,-9999999.0,"[None, None]",5283,0,0,no global ranges,0,5283,100.0,4.6508,3.5309,6.1646,0.4867
+deployment0003,recovered_inst,phsen_abcdef_instrument,phsen_abcdef_ph_seawater,1,-9999999.0,"[7.3, 8.5]",5283,0,0,0,4,5279,99.92,8.0524,8.0045,8.0969,0.0115
+deployment0004,telemetered,phsen_abcdef_imodem_instrument,phsen_thermistor_temperature,V,-9999999.0,"[None, None]",1619,0,0,no global ranges,0,1619,100.0,4.8646,4.1071,5.8108,0.403
+deployment0004,telemetered,phsen_abcdef_imodem_instrument,phsen_abcdef_ph_seawater,1,-9999999.0,"[7.3, 8.5]",1619,0,0,15,5,1599,98.76,7.9653,7.4826,8.4521,0.0937
