@@ -97,7 +97,7 @@ def main(sDir, url_list):
                     if len(rdatasets) > 0:
                         datasets = []
                         for dss in rdatasets:  # filter out collocated data files
-                            if catalog_rms in dss.split('/')[-1].split('_20')[0]:
+                            if catalog_rms == dss.split('/')[-1].split('_20')[0][15:]:
                                 datasets.append(dss)
 
                         notes = []

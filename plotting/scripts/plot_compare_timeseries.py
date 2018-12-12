@@ -174,7 +174,7 @@ def main(sDir, url_list, start_time, end_time):
                         rdatasets = [s for s in udatasets if ud in s]
                         datasets = []
                         for dss in rdatasets:  # filter out collocated data files
-                            if catalog_rms in dss.split('/')[-1].split('_20')[0]:
+                            if catalog_rms == dss.split('/')[-1].split('_20')[0][15:]:
                                 datasets.append(dss)
                         file_ms_lst = []
                         for dataset in datasets:

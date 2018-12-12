@@ -354,7 +354,7 @@ def main(sDir, url_list):
                     udatasets = cf.get_nc_urls([u])
                     idatasets = []
                     for dss in udatasets:  # filter out collocated data files
-                        if catalog_rms in dss.split('/')[-1].split('_20')[0]:
+                        if catalog_rms == dss.split('/')[-1].split('_20')[0][15:]:
                             idatasets.append(dss)
                     deployments = [str(k.split('/')[-1][0:14]) for k in idatasets]
                     udeploy = np.unique(deployments).tolist()
