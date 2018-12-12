@@ -1,0 +1,11 @@
+deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
+deployment0001,recovered_wfp-flord_l_wfp_instrument_recovered,telemetered-flord_l_wfp_instrument,Total Scattering Coefficient of Pure Seawater,seawater_scattering_coefficient,m-1,pass,400419.0,0.0,no missing data,2345.0,3e-10,1.16691e-05,0.0,0.0
+deployment0001,recovered_wfp-flord_l_wfp_instrument_recovered,telemetered-flord_l_wfp_instrument,Chlorophyll-a Concentration,fluorometric_chlorophyll_a,µg L-1,pass,400419.0,0.0,no missing data,2345.0,0.0,0.0,0.0,0.0
+deployment0001,recovered_wfp-flord_l_wfp_instrument_recovered,telemetered-flord_l_wfp_instrument,Optical Backscatter,optical_backscatter,m-1,pass,400419.0,0.0,no missing data,2345.0,0.0,1.7061e-06,0.0,0.0
+deployment0002,recovered_wfp-flord_l_wfp_instrument_recovered,no other methods available for comparison,,,,,,,,,,,,
+deployment0003,recovered_wfp-flord_l_wfp_instrument_recovered,telemetered-flord_l_wfp_instrument,Total Scattering Coefficient of Pure Seawater,seawater_scattering_coefficient,m-1,pass,419252.0,0.0,no missing data,751.0,4e-10,2.1577e-06,0.0,0.0
+deployment0003,recovered_wfp-flord_l_wfp_instrument_recovered,telemetered-flord_l_wfp_instrument,Chlorophyll-a Concentration,fluorometric_chlorophyll_a,µg L-1,pass,419252.0,0.0,no missing data,751.0,0.0,0.0,0.0,0.0
+deployment0003,recovered_wfp-flord_l_wfp_instrument_recovered,telemetered-flord_l_wfp_instrument,Optical Backscatter,optical_backscatter,m-1,pass,419252.0,0.0,no missing data,751.0,1e-10,3.155e-07,0.0,0.0
+deployment0004,recovered_wfp-flord_l_wfp_instrument_recovered,telemetered-flord_l_wfp_instrument,Total Scattering Coefficient of Pure Seawater,seawater_scattering_coefficient,m-1,pass,357397.0,0.0,no missing data,394.0,1e-10,2.3337e-06,0.0,0.0
+deployment0004,recovered_wfp-flord_l_wfp_instrument_recovered,telemetered-flord_l_wfp_instrument,Chlorophyll-a Concentration,fluorometric_chlorophyll_a,µg L-1,pass,357397.0,0.0,no missing data,394.0,0.0,0.0,0.0,0.0
+deployment0004,recovered_wfp-flord_l_wfp_instrument_recovered,telemetered-flord_l_wfp_instrument,Optical Backscatter,optical_backscatter,m-1,pass,357397.0,0.0,no missing data,394.0,0.0,3.412e-07,0.0,0.0
