@@ -15,7 +15,7 @@ import pandas as pd
 import scripts
 
 sDir = '/Users/lgarzio/Documents/OOI/DataReviews'
-f = '/Users/lgarzio/Documents/OOI/DataReviews/GP/GP03FLMA/data_request_summary.csv'
+f = '/Users/lgarzio/Documents/OOI/DataReviews/GI/GI03FLMA/data_request_summary_run1.csv'
 start_time = None  # dt.datetime(2015, 4, 20, 0, 0, 0)  # optional, set to None if plotting all data
 end_time = None  # dt.datetime(2017, 5, 20, 0, 0, 0)  # optional, set to None if plotting all data
 preferred_only = 'yes'  # options: 'yes', 'no'
@@ -27,3 +27,4 @@ url_list = [u for u in url_list if u not in 'no_output_url']
 scripts.plot_timeseries.main(sDir, url_list, start_time, end_time, preferred_only)
 scripts.plot_timeseries_panel.main(sDir, url_list, start_time, end_time, preferred_only)
 scripts.plot_timeseries_all.main(sDir, url_list)
+scripts.plot_compare_timeseries.main(sDir, url_list, start_time, end_time)
