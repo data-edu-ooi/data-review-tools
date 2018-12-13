@@ -1,0 +1,26 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_inst,ctdmo_ghqr_instrument_recovered,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",31557,0,0,0,2,31555,99.99,1029.4024,1029.3538,1029.5198,0.0165
+deployment0001,recovered_inst,ctdmo_ghqr_instrument_recovered,practical_salinity,1,-9999999.0,"[0.0, 42.0]",31557,0,0,0,1,31556,100.0,34.0896,34.0316,34.1685,0.0176
+deployment0001,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_pressure,dbar,-9999.0,"[0.0, 6000.0]",31557,0,0,0,3,31554,99.99,496.622,492.3088,502.7621,1.4007
+deployment0001,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_temperature,ºC,-9999999.0,"[-2.0, 40.0]",31557,0,0,0,1,31556,100.0,3.7906,3.6506,3.9696,0.0636
+deployment0001,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_conductivity,S m-1,-9999999.0,"[0.0, 6.0]",31557,0,0,0,1,31556,100.0,3.1827,3.1696,3.1978,0.0062
+deployment0002,telemetered,ctdmo_ghqr_sio_mule_instrument,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",845,0,0,0,1,844,99.88,1029.4015,1029.3681,1029.4382,0.0106
+deployment0002,telemetered,ctdmo_ghqr_sio_mule_instrument,practical_salinity,1,-9999999.0,"[0.0, 42.0]",845,0,0,0,0,845,100.0,34.1007,34.0695,34.155,0.0112
+deployment0002,telemetered,ctdmo_ghqr_sio_mule_instrument,ctdmo_seawater_pressure,dbar,-9999.0,"[0.0, 6000.0]",845,0,0,0,1,844,99.88,492.6063,489.0628,495.9555,1.0753
+deployment0002,telemetered,ctdmo_ghqr_sio_mule_instrument,ctdmo_seawater_temperature,ºC,-9999999.0,"[-2.0, 40.0]",845,0,0,0,0,845,100.0,3.7102,3.607,3.8012,0.0243
+deployment0002,telemetered,ctdmo_ghqr_sio_mule_instrument,ctdmo_seawater_conductivity,S m-1,-9999999.0,"[0.0, 6.0]",845,0,0,0,0,845,100.0,3.1765,3.1713,3.1829,0.0023
+deployment0003,recovered_inst,ctdmo_ghqr_instrument_recovered,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",37525,0,0,0,7,37518,99.98,1029.4978,1029.4471,1029.6159,0.0121
+deployment0003,recovered_inst,ctdmo_ghqr_instrument_recovered,practical_salinity,1,-9999999.0,"[0.0, 42.0]",37525,0,0,0,6,37519,99.98,34.099,34.0546,34.1641,0.0102
+deployment0003,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_pressure,dbar,-9999.0,"[0.0, 6000.0]",37525,0,0,0,7,37518,99.98,515.0047,511.1424,533.2333,1.1926
+deployment0003,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_temperature,ºC,-9999999.0,"[-2.0, 40.0]",37525,0,0,0,6,37519,99.98,3.766,3.5826,3.9137,0.05
+deployment0003,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_conductivity,S m-1,-9999999.0,"[0.0, 6.0]",37525,0,0,0,6,37519,99.98,3.1822,3.1735,3.1937,0.0045
+deployment0004,recovered_inst,ctdmo_ghqr_instrument_recovered,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",36256,0,0,0,3,36253,99.99,1029.4696,1029.4048,1029.5668,0.0195
+deployment0004,recovered_inst,ctdmo_ghqr_instrument_recovered,practical_salinity,1,-9999999.0,"[0.0, 42.0]",36256,0,0,0,2,36254,99.99,34.0994,34.0516,34.1398,0.0135
+deployment0004,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_pressure,dbar,-9999.0,"[0.0, 6000.0]",36256,0,0,0,3,36253,99.99,513.1368,509.8906,527.6094,1.0959
+deployment0004,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_temperature,ºC,-9999999.0,"[-2.0, 40.0]",36256,0,0,0,1,36255,100.0,3.9411,3.7535,4.1357,0.0613
+deployment0004,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_conductivity,S m-1,-9999999.0,"[0.0, 6.0]",36256,0,0,0,1,36255,100.0,3.1975,3.1862,3.2105,0.0046
+deployment0005,recovered_inst,ctdmo_ghqr_instrument_recovered,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",36073,0,0,0,2,36071,99.99,1029.5173,1029.4302,1029.5652,0.0114
+deployment0005,recovered_inst,ctdmo_ghqr_instrument_recovered,practical_salinity,1,-9999999.0,"[0.0, 42.0]",36073,0,0,0,1,36072,100.0,34.1171,34.0691,34.1614,0.0116
+deployment0005,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_pressure,dbar,-9999.0,"[0.0, 6000.0]",36073,0,0,0,2,36071,99.99,518.9692,506.4888,531.4431,0.939
+deployment0005,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_temperature,ºC,-9999999.0,"[-2.0, 40.0]",36073,0,0,0,1,36072,100.0,3.8826,3.7486,4.0119,0.0439
+deployment0005,recovered_inst,ctdmo_ghqr_instrument_recovered,ctdmo_seawater_conductivity,S m-1,-9999999.0,"[0.0, 6.0]",36073,0,0,0,1,36072,100.0,3.1941,3.1822,3.2037,0.0037
