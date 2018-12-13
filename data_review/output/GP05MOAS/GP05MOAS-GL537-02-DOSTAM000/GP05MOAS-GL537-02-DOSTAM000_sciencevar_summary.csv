@@ -1,0 +1,3 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_oxygen,µmol L-1,nan,"[0.0, 400.0]",2614100,0,0,0,0,2614100,100.0,97.4107,0.0,314.324,86.7759
+deployment0001,recovered_host,dosta_abcdjm_glider_recovered,sci_abs_oxygen,µmol kg-1,nan,"[0.0, 400.0]",2614100,0,0,0,0,2614100,100.0,76.6548,0.0,292.3409,68.4958
