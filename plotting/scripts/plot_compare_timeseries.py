@@ -89,13 +89,15 @@ def compare_plot_datasets(df, r, start_time, end_time, sDir):
                             print('{}: {}'.format(d, compare))
                             print('----------------------')
 
+                            subsite = r.split('-')[0]
+                            array = subsite[0:2]
                             if start_time is not None and end_time is not None:
                                 stime = start_time.strftime('%Y-%m-%d')
                                 etime = end_time.strftime('%Y-%m-%d')
                                 ext = '-'.join((ds0_method, ds1_method)) + '-' + stime + 'to' + etime
-                                save_dir = os.path.join(sDir, r.split('-')[0], r, 'method_compare_plots', ext)
+                                save_dir = os.path.join(sDir, array, subsite, r, 'method_compare_plots', ext)
                             else:
-                                save_dir = os.path.join(sDir, r.split('-')[0], r, 'method_compare_plots', '-'.join((ds0_method, ds1_method)))
+                                save_dir = os.path.join(sDir, array, subsite, r, 'method_compare_plots', '-'.join((ds0_method, ds1_method)))
                             cf.create_dir(save_dir)
 
                             for rr in mapping.itertuples():
