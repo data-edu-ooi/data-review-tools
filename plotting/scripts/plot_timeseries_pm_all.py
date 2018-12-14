@@ -6,7 +6,7 @@ Created on Oct 2 2018
 @brief: This script is used create two timeseries plots of raw and science variables for all deployments of a reference
 designator using the preferred stream for each deployment (plots may contain data from different delivery methods if
 data from the 'preferred' delivery method isn't available for a deployment: 1) plot all data, 2) plot data, omitting
-outliers beyond 3 standard deviations.
+outliers beyond 5 standard deviations.
 """
 
 import os
@@ -85,7 +85,7 @@ def main(sDir, url_list):
 
         subsite = r.split('-')[0]
         array = subsite[0:2]
-        save_dir = os.path.join(sDir, array, subsite, r, 'timeseries_plots_all')
+        save_dir = os.path.join(sDir, array, subsite, r, 'timeseries_plots_preferred_all')
         cf.create_dir(save_dir)
 
         print('\nPlotting data')
