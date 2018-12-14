@@ -27,4 +27,5 @@ url_list = [u for u in url_list if u not in 'no_output_url']
 scripts.plot_timeseries.main(sDir, url_list, start_time, end_time, preferred_only)
 scripts.plot_timeseries_panel.main(sDir, url_list, start_time, end_time, preferred_only)
 scripts.plot_timeseries_pm_all.main(sDir, url_list)
+scripts.plot_timeseries_all.main(sDir, url_list)
 scripts.plot_compare_timeseries.main(sDir, url_list, start_time, end_time)
