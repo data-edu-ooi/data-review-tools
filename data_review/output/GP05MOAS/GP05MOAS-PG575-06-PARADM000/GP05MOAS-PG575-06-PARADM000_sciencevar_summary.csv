@@ -1,3 +1,4 @@
 deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
 deployment0001,recovered_host,parad_m_glider_recovered,sci_bsipar_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",42540,0,0,42450,0,90,0.21,0.0,0.0,0.0,0.0
+deployment0001,recovered_host,parad_m_glider_recovered,sci_bsipar_temp,ºC,nan,"[-2.0, 40.0]",42540,0,0,0,90,42450,99.79,9.5075,6.93,13.16,1.7976
 deployment0001,recovered_host,parad_m_glider_recovered,parad_m_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",42540,0,0,42450,0,90,0.21,0.0,0.0,0.0,0.0

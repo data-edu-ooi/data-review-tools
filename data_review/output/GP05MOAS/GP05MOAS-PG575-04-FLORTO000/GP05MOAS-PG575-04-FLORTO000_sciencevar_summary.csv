@@ -1,6 +1,8 @@
 deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
 deployment0001,recovered_host,flort_o_glider_data,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",39766,0,0,no global ranges,90.0,39676,99.77,0.0006,0.0006,0.0006,0.0
 deployment0001,recovered_host,flort_o_glider_data,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",39766,0,0,90,147.0,39529,99.4,0.0014,0.0006,0.0071,0.0009
+deployment0001,recovered_host,flort_o_glider_data,sci_bb3slo_b470_units,m-1 sr-1,nan,"[None, None]",39766,39766,0,no global ranges,,0,0.0,,,,
 deployment0001,recovered_host,flort_o_glider_data,flort_o_bback_b470_total,m-1,nan,"[None, None]",39766,39766,0,no global ranges,,0,0.0,,,,
 deployment0001,recovered_host,flort_o_glider_data,flort_o_bback_b532_total,m-1,nan,"[None, None]",39766,39766,0,no global ranges,,0,0.0,,,,
+deployment0001,recovered_host,flort_o_glider_data,sci_bb3slo_b660_units,m-1 sr-1,nan,"[None, None]",39766,39766,0,no global ranges,,0,0.0,,,,
 deployment0001,recovered_host,flort_o_glider_data,flort_o_bback_b660_total,m-1,nan,"[None, None]",39766,39766,0,no global ranges,,0,0.0,,,,

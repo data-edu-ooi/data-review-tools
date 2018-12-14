@@ -1,3 +1,4 @@
 deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
 deployment0001,recovered_host-dosta_abcdjm_glider_recovered,telemetered-dosta_abcdjm_glider_instrument,DO,sci_oxy4_oxygen,µmol L-1,pass,2614100,0,no missing data,47994,0.0,82.7770004272,9,0.02
+deployment0001,recovered_host-dosta_abcdjm_glider_recovered,telemetered-dosta_abcdjm_glider_instrument,Dissolved Oxygen Saturation,sci_oxy4_saturation,percent,pass,2614100,0,no missing data,47994,0.0,25.8559989929,4,0.01
 deployment0001,recovered_host-dosta_abcdjm_glider_recovered,telemetered-dosta_abcdjm_glider_instrument,DO - Pressure Sal Corrected,sci_abs_oxygen,µmol kg-1,pass,2614100,0,no missing data,47994,0.0,65.6980546634,7,0.01
