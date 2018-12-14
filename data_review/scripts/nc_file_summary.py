@@ -94,56 +94,61 @@ def main(f, ps, mc):
         for m in ddata['method'].keys():
             for s in ddata['method'][m]['stream'].keys():
                 ms = '-'.join((m, s))
+                comparison_check = []
+                summary_written = []
                 if ms in ps[d]:
                     # build the summary of comparison of science variables among delivery methods
                     missing_data_list = []
                     diff_gzero_list = []
                     var_list = []
-                    if 'note' in mc.keys():
+                    try:
+                        for compare_str in mc['deployments'][d]['comparison'].keys():
+                            if str(ms) in str(compare_str):
+                                comparison_check.append(str(compare_str))
+                                [ds0, ds1] = [compare_str.split(' ')[0], compare_str.split(' ')[1]]
+                                if ms == ds0:
+                                    preferred_stream = 'ds0'
+                                    preferred_stream_name = ds0
+                                    comparison_stream_name = ds1
+                                else:
+                                    preferred_stream = 'ds1'
+                                    preferred_stream_name = ds1
+                                    comparison_stream_name = ds0
+
+                                for var in mc['deployments'][d]['comparison'][compare_str]['vars'].keys():
+                                    var_list.append(var)
+                                    compare_summary = mc['deployments'][d]['comparison'][compare_str]['vars'][var]
+                                    name = compare_summary[preferred_stream]['name']
+                                    units = compare_summary[preferred_stream]['units']
+                                    unit_test = compare_summary['unit_test']
+                                    n = compare_summary[preferred_stream]['n']
+                                    n_nan = compare_summary[preferred_stream]['n_nan']
+                                    missing_data = compare_summary[preferred_stream]['missing']
+                                    n_comparison = compare_summary['n_comparison']
+                                    min_abs_diff = compare_summary['min_abs_diff']
+                                    max_abs_diff = compare_summary['max_abs_diff']
+                                    n_diff_greater_zero = compare_summary['n_diff_greater_zero']
+                                    if n_comparison > 0:
+                                        percent_diff_greater_zero = round((float(n_diff_greater_zero)/float(n_comparison) * 100), 2)
+                                    else:
+                                        percent_diff_greater_zero = None
+
+                                    missing_data_list.append(str(missing_data))
+                                    diff_gzero_list.append(percent_diff_greater_zero)
+
+                                    csummary_rows.append([d, str(preferred_stream_name), str(comparison_stream_name),
+                                                          var, name, units, unit_test, n, n_nan, missing_data,
+                                                          n_comparison, min_abs_diff, max_abs_diff,
+                                                          n_diff_greater_zero, percent_diff_greater_zero])
+                                    summary_written.append('yes')
+                    except KeyError:
                         csummary_rows.append([d, ms, 'no other methods available for comparison', None, None, None,
                                               None, None, None, None, None, None, None, None, None])
-                    else:
-                        try:
-                            for compare_str in mc['deployments'][d]['comparison'].keys():
-                                if str(ms) in str(compare_str):
-                                    [ds0, ds1] = [compare_str.split(' ')[0], compare_str.split(' ')[1]]
-                                    if ms == ds0:
-                                        preferred_stream = 'ds0'
-                                        preferred_stream_name = ds0
-                                        comparison_stream_name = ds1
-                                    else:
-                                        preferred_stream = 'ds1'
-                                        preferred_stream_name = ds1
-                                        comparison_stream_name = ds0
+                        summary_written.append('yes')
 
-                                    for var in mc['deployments'][d]['comparison'][compare_str]['vars'].keys():
-                                        var_list.append(var)
-                                        compare_summary = mc['deployments'][d]['comparison'][compare_str]['vars'][var]
-                                        name = compare_summary[preferred_stream]['name']
-                                        units = compare_summary[preferred_stream]['units']
-                                        unit_test = compare_summary['unit_test']
-                                        n = compare_summary[preferred_stream]['n']
-                                        n_nan = compare_summary[preferred_stream]['n_nan']
-                                        missing_data = compare_summary[preferred_stream]['missing']
-                                        n_comparison = compare_summary['n_comparison']
-                                        min_abs_diff = compare_summary['min_abs_diff']
-                                        max_abs_diff = compare_summary['max_abs_diff']
-                                        n_diff_greater_zero = compare_summary['n_diff_greater_zero']
-                                        if n_comparison > 0:
-                                            percent_diff_greater_zero = round((float(n_diff_greater_zero)/float(n_comparison) * 100), 2)
-                                        else:
-                                            percent_diff_greater_zero = None
-
-                                        missing_data_list.append(str(missing_data))
-                                        diff_gzero_list.append(percent_diff_greater_zero)
-
-                                        csummary_rows.append([d, str(preferred_stream_name), str(comparison_stream_name),
-                                                              var, name, units, unit_test, n, n_nan, missing_data,
-                                                              n_comparison, min_abs_diff, max_abs_diff,
-                                                              n_diff_greater_zero, percent_diff_greater_zero])
-                        except KeyError:
-                            csummary_rows.append([d, ms, 'no other methods available for comparison', None, None, None,
-                                                  None, None, None, None, None, None, None, None, None])
+                    if len(comparison_check) == 0 and len(summary_written) == 0:
+                        csummary_rows.append([d, ms, 'no other methods available for comparison', None, None, None,
+                                              None, None, None, None, None, None, None, None, None])
 
                     for fname in ddata['method'][m]['stream'][s]['file'].keys():
                         fsummary = ddata['method'][m]['stream'][s]['file'][fname]
@@ -177,7 +182,10 @@ def main(f, ps, mc):
                                                   percent_valid_data, mean, min, max, stdev])
 
                         # build file summary
-                        other_methods = [str(x) for x in ddata['method'].keys() if x not in [m]]
+                        if len(comparison_check) == 0:
+                            other_methods = []
+                        else:
+                            other_methods = [str(x) for x in ddata['method'].keys() if x not in [m]]
                         dwnl = fsummary['file_downloaded']
                         coords = fsummary['file_coordinates']
                         sampling_rate_seconds = fsummary['sampling_rate_seconds']
@@ -245,11 +253,12 @@ def main(f, ps, mc):
                         # Check if any percent_valid_data values (for science variables) are < 95
                         pvd_test = dict()
                         snc = len([x for x in valid_list if x == 'stats not calculated'])
-                        valid_list = [round(v) for v in valid_list]
+
                         if snc > 0:
                             pvd_test['stats not calculated'] = snc
-
-                        pvd_test, dlst = group_percents(pvd_test, valid_list)
+                        else:
+                            valid_list = [round(v) for v in valid_list]
+                            pvd_test, dlst = group_percents(pvd_test, valid_list)
 
                         # Check if data are found in a "non-preferred" stream for any science variable
                         md_unique = np.unique(missing_data_list).tolist()
@@ -347,5 +356,9 @@ if __name__ == '__main__':
     f = '/Users/lgarzio/Documents/repo/OOI/data-edu-ooi/data-review-tools/data_review/output/GP03FLMA/GP03FLMA-RIM01-02-CTDMOG040/GP03FLMA-RIM01-02-CTDMOG040-file_analysis.json'
     ps = '/Users/lgarzio/Documents/repo/OOI/data-edu-ooi/data-review-tools/data_review/output/GP03FLMA/GP03FLMA-RIM01-02-CTDMOG040/GP03FLMA-RIM01-02-CTDMOG040-preferred_stream.json'
     mc = '/Users/lgarzio/Documents/repo/OOI/data-edu-ooi/data-review-tools/data_review/output/GP03FLMA/GP03FLMA-RIM01-02-CTDMOG040/GP03FLMA-RIM01-02-CTDMOG040-method_comparison.json'
+
+    f = '/Users/lgarzio/Documents/repo/OOI/data-edu-ooi/data-review-tools/data_review/output/GI03FLMA/GI03FLMA-RI000-00-CTDMOH000/GI03FLMA-RI000-00-CTDMOH000-file_analysis.json'
+    ps = '/Users/lgarzio/Documents/repo/OOI/data-edu-ooi/data-review-tools/data_review/output/GI03FLMA/GI03FLMA-RI000-00-CTDMOH000/GI03FLMA-RI000-00-CTDMOH000-preferred_stream.json'
+    mc = '/Users/lgarzio/Documents/repo/OOI/data-edu-ooi/data-review-tools/data_review/output/GI03FLMA/GI03FLMA-RI000-00-CTDMOH000/GI03FLMA-RI000-00-CTDMOH000-method_comparison.json'
 
     main(f, ps, mc)

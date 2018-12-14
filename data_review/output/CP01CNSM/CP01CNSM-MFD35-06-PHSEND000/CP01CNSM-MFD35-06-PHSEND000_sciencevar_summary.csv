@@ -1,0 +1,13 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_inst,phsen_abcdef_instrument,phsen_thermistor_temperature,V,-9999999.0,"[None, None]",1243,0,0,no global ranges,0,1243,100.0,13.6445,12.4486,14.3824,0.4196
+deployment0001,recovered_inst,phsen_abcdef_instrument,phsen_abcdef_ph_seawater,1,-9999999.0,"[7.3, 8.5]",1243,1,0,86,0,1156,93.0,7.891,7.304,8.4862,0.2347
+deployment0002,telemetered,phsen_abcdef_dcl_instrument,phsen_thermistor_temperature,V,-9999999.0,"[None, None]",26,0,0,no global ranges,0,26,100.0,13.7424,13.6056,13.9021,0.0844
+deployment0002,telemetered,phsen_abcdef_dcl_instrument,phsen_abcdef_ph_seawater,1,-9999999.0,"[7.3, 8.5]",26,0,0,0,0,26,100.0,7.9728,7.9694,7.9757,0.0015
+deployment0003,recovered_inst,phsen_abcdef_instrument,phsen_thermistor_temperature,V,-9999999.0,"[None, None]",4058,0,0,no global ranges,0,4058,100.0,13.019,11.5697,14.8416,0.7441
+deployment0003,recovered_inst,phsen_abcdef_instrument,phsen_abcdef_ph_seawater,1,-9999999.0,"[7.3, 8.5]",4058,1818,0,1278,0,962,23.71,7.7827,7.3011,8.4793,0.2787
+deployment0005,recovered_inst,phsen_abcdef_instrument,phsen_thermistor_temperature,V,-9999999.0,"[None, None]",3668,0,0,no global ranges,0,3668,100.0,13.0495,12.0199,13.7423,0.3553
+deployment0005,recovered_inst,phsen_abcdef_instrument,phsen_abcdef_ph_seawater,1,-9999999.0,"[7.3, 8.5]",3668,0,672,0,0,2996,81.68,7.9817,7.9218,8.1008,0.0247
+deployment0007,recovered_host,phsen_abcdef_dcl_instrument_recovered,phsen_thermistor_temperature,V,-9999999.0,"[None, None]",2017,0,0,no global ranges,0,2017,100.0,12.3306,11.3451,12.8106,0.253
+deployment0007,recovered_host,phsen_abcdef_dcl_instrument_recovered,phsen_abcdef_ph_seawater,1,-9999999.0,"[7.3, 8.5]",2017,0,360,0,6,1651,81.85,7.9992,7.9325,8.045,0.0136
+deployment0008,recovered_inst,phsen_abcdef_instrument,phsen_thermistor_temperature,V,-9999999.0,"[None, None]",3626,0,0,no global ranges,0,3626,100.0,13.1301,10.3374,14.7726,0.8878
+deployment0008,recovered_inst,phsen_abcdef_instrument,phsen_abcdef_ph_seawater,1,-9999999.0,"[7.3, 8.5]",3626,0,0,0,0,3626,100.0,7.9882,7.8302,8.162,0.0366

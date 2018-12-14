@@ -1,11 +1,16 @@
 deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
 deployment0001,recovered_wfp,dosta_ln_wfp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",263035,0,0,0,0,263035,100.0,31.1724,0.0,74.317,13.0853
 deployment0001,recovered_wfp,dosta_ln_wfp_instrument_recovered,estimated_oxygen_concentration,µmol L-1,-9999999.0,"[0.0, 400.0]",263035,0,0,0,0,263035,100.0,38.5828,0.0,94.709,15.7914
+deployment0001,recovered_wfp,dosta_ln_wfp_instrument_recovered,optode_temperature,ºC,-9999999.0,"[-2.0, 40.0]",263035,0,0,0,0,263035,100.0,2.5515,0.0,4.075,0.5827
 deployment0002,recovered_wfp,dosta_ln_wfp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",319837,0,0,0,1013,318824,99.68,33.6105,0.0,127.8269,17.9055
 deployment0002,recovered_wfp,dosta_ln_wfp_instrument_recovered,estimated_oxygen_concentration,µmol L-1,-9999999.0,"[0.0, 400.0]",319837,0,0,0,1167,318670,99.64,41.9312,0.0,161.2,22.4623
+deployment0002,recovered_wfp,dosta_ln_wfp_instrument_recovered,optode_temperature,ºC,-9999999.0,"[-2.0, 40.0]",319837,0,0,0,0,319837,100.0,2.7847,0.0,4.733,0.6779
 deployment0003,recovered_wfp,dosta_ln_wfp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",370830,0,0,1,63,370766,99.98,36.1461,0.0,136.0322,19.931
 deployment0003,recovered_wfp,dosta_ln_wfp_instrument_recovered,estimated_oxygen_concentration,µmol L-1,-9999999.0,"[0.0, 400.0]",370830,0,0,1,112,370717,99.97,45.2013,0.0,172.202,25.3032
+deployment0003,recovered_wfp,dosta_ln_wfp_instrument_recovered,optode_temperature,ºC,-9999999.0,"[-2.0, 40.0]",370830,0,0,0,0,370830,100.0,2.8518,0.0,5.097,0.7542
 deployment0004,recovered_wfp,dosta_ln_wfp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",251496,0,185787,0,0,65709,26.13,62.2728,0.0,186.3241,53.5596
 deployment0004,recovered_wfp,dosta_ln_wfp_instrument_recovered,estimated_oxygen_concentration,µmol L-1,-9999999.0,"[0.0, 400.0]",251496,0,0,0,0,251496,100.0,91.9407,0.0,232.796,68.3908
+deployment0004,recovered_wfp,dosta_ln_wfp_instrument_recovered,optode_temperature,ºC,-9999999.0,"[-2.0, 40.0]",251496,0,0,0,0,251496,100.0,3.4925,0.0,5.759,1.2726
 deployment0005,recovered_wfp,dosta_ln_wfp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",362830,0,0,0,0,362830,100.0,39.9396,0.0,177.1833,29.3891
 deployment0005,recovered_wfp,dosta_ln_wfp_instrument_recovered,estimated_oxygen_concentration,µmol L-1,-9999999.0,"[0.0, 400.0]",362830,0,0,0,0,362830,100.0,50.0471,0.0,226.178,37.2673
+deployment0005,recovered_wfp,dosta_ln_wfp_instrument_recovered,optode_temperature,ºC,-9999999.0,"[-2.0, 40.0]",362830,0,0,0,0,362830,100.0,2.8448,0.0,5.813,0.839

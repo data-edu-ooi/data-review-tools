@@ -1,0 +1,19 @@
+deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
+deployment0001,recovered_inst-phsen_abcdef_instrument,telemetered-phsen_abcdef_dcl_instrument,Thermistor Temperature at End of Measurement,phsen_thermistor_temperature,V,pass,1243.0,0.0,no missing data,1213.0,0.0,0.0,0.0,0.0
+deployment0001,recovered_inst-phsen_abcdef_instrument,telemetered-phsen_abcdef_dcl_instrument,pH,phsen_abcdef_ph_seawater,1,pass,1243.0,1.0,no missing data,1212.0,0.0,4.192e-06,0.0,0.0
+deployment0002,telemetered-phsen_abcdef_dcl_instrument,no other methods available for comparison,,,,,,,,,,,,
+deployment0002,telemetered-phsen_abcdef_dcl_instrument,no other methods available for comparison,,,,,,,,,,,,
+deployment0003,recovered_inst-phsen_abcdef_instrument,recovered_host-phsen_abcdef_dcl_instrument_recovered,Thermistor Temperature at End of Measurement,phsen_thermistor_temperature,V,pass,4058.0,0.0,no missing data,321.0,0.0,0.0,0.0,0.0
+deployment0003,recovered_inst-phsen_abcdef_instrument,recovered_host-phsen_abcdef_dcl_instrument_recovered,pH,phsen_abcdef_ph_seawater,1,pass,4058.0,1818.0,no missing data,321.0,3e-10,3.769e-07,0.0,0.0
+deployment0003,recovered_inst-phsen_abcdef_instrument,telemetered-phsen_abcdef_dcl_instrument,Thermistor Temperature at End of Measurement,phsen_thermistor_temperature,V,pass,4058.0,0.0,no missing data,318.0,0.0,0.0,0.0,0.0
+deployment0003,recovered_inst-phsen_abcdef_instrument,telemetered-phsen_abcdef_dcl_instrument,pH,phsen_abcdef_ph_seawater,1,pass,4058.0,1818.0,no missing data,318.0,3e-10,3.769e-07,0.0,0.0
+deployment0005,recovered_inst-phsen_abcdef_instrument,recovered_host-phsen_abcdef_dcl_instrument_recovered,Thermistor Temperature at End of Measurement,phsen_thermistor_temperature,V,pass,3668.0,0.0,no missing data,130.0,0.0,0.0,0.0,0.0
+deployment0005,recovered_inst-phsen_abcdef_instrument,recovered_host-phsen_abcdef_dcl_instrument_recovered,pH,phsen_abcdef_ph_seawater,1,pass,3668.0,672.0,no missing data,130.0,1.5e-09,3.2104e-06,0.0,0.0
+deployment0005,recovered_inst-phsen_abcdef_instrument,telemetered-phsen_abcdef_dcl_instrument,Thermistor Temperature at End of Measurement,phsen_thermistor_temperature,V,pass,3668.0,0.0,no missing data,130.0,0.0,0.0,0.0,0.0
+deployment0005,recovered_inst-phsen_abcdef_instrument,telemetered-phsen_abcdef_dcl_instrument,pH,phsen_abcdef_ph_seawater,1,pass,3668.0,672.0,no missing data,130.0,1.5e-09,3.2104e-06,0.0,0.0
+deployment0007,recovered_host-phsen_abcdef_dcl_instrument_recovered,telemetered-phsen_abcdef_dcl_instrument,Thermistor Temperature at End of Measurement,phsen_thermistor_temperature,V,pass,2017.0,0.0,no missing data,2017.0,0.0,0.0,0.0,0.0
+deployment0007,recovered_host-phsen_abcdef_dcl_instrument_recovered,telemetered-phsen_abcdef_dcl_instrument,pH,phsen_abcdef_ph_seawater,1,pass,2017.0,360.0,no missing data,1557.0,0.0,0.0,0.0,0.0
+deployment0008,recovered_inst-phsen_abcdef_instrument,recovered_host-phsen_abcdef_dcl_instrument_recovered,Thermistor Temperature at End of Measurement,phsen_thermistor_temperature,V,pass,3626.0,0.0,no missing data,1190.0,0.0,0.0,0.0,0.0
+deployment0008,recovered_inst-phsen_abcdef_instrument,recovered_host-phsen_abcdef_dcl_instrument_recovered,pH,phsen_abcdef_ph_seawater,1,pass,3626.0,0.0,no missing data,1190.0,2e-10,1.7492e-06,0.0,0.0
+deployment0008,recovered_inst-phsen_abcdef_instrument,telemetered-phsen_abcdef_dcl_instrument,Thermistor Temperature at End of Measurement,phsen_thermistor_temperature,V,pass,3626.0,0.0,no missing data,1197.0,0.0,0.0,0.0,0.0
+deployment0008,recovered_inst-phsen_abcdef_instrument,telemetered-phsen_abcdef_dcl_instrument,pH,phsen_abcdef_ph_seawater,1,pass,3626.0,0.0,no missing data,1197.0,2e-10,6.50519e-05,0.0,0.0

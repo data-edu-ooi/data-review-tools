@@ -1,6 +1,8 @@
 deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
 deployment0002,telemetered,flort_o_glider_data,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",79226,1444,0,no global ranges,1964.0,75818,95.7,0.0006,0.0006,0.0007,0.0
 deployment0002,telemetered,flort_o_glider_data,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",79226,0,79226,0,,0,0.0,,,,
+deployment0002,telemetered,flort_o_glider_data,sci_bb3slo_b470_units,m-1 sr-1,nan,"[None, None]",79226,79226,0,no global ranges,,0,0.0,,,,
 deployment0002,telemetered,flort_o_glider_data,flort_o_bback_b470_total,m-1,nan,"[None, None]",79226,79226,0,no global ranges,,0,0.0,,,,
 deployment0002,telemetered,flort_o_glider_data,flort_o_bback_b532_total,m-1,nan,"[None, None]",79226,79226,0,no global ranges,,0,0.0,,,,
+deployment0002,telemetered,flort_o_glider_data,sci_bb3slo_b660_units,m-1 sr-1,nan,"[None, None]",79226,79226,0,no global ranges,,0,0.0,,,,
 deployment0002,telemetered,flort_o_glider_data,flort_o_bback_b660_total,m-1,nan,"[None, None]",79226,79226,0,no global ranges,,0,0.0,,,,

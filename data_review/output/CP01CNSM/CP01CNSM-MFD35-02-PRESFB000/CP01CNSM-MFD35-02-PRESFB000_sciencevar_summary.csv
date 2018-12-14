@@ -1,0 +1,21 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,telemetered,presf_abc_dcl_tide_measurement,abs_seafloor_pressure,dbar,-9999999.0,"[0.0, 6000.0]",1237,0.0,0.0,0.0,0.0,1237,100.0,143.9057,143.2258,144.7496,0.3397
+deployment0001,telemetered,presf_abc_dcl_wave_burst,scaled_wave_burst_seafloor_pressure,dbar,None,"[0.0, 6000.0]",1236,,,,,variable has more than 1 dimension,stats not calculated,,,,
+deployment0002,recovered_inst,presf_abc_tide_measurement_recovered,presf_tide_pressure,dbar,-9999999.0,"[0.0, 6000.0]",50,0.0,0.0,0.0,0.0,50,100.0,138.9357,10.3095,145.0962,26.3871
+deployment0002,recovered_inst,presf_abc_tide_measurement_recovered,presf_tide_temperature,ºC,-9999999.0,"[-2.0, 40.0]",50,0.0,0.0,0.0,1.0,49,98.0,14.0901,13.799,15.046,0.2606
+deployment0002,recovered_inst,presf_abc_wave_burst_recovered,presf_wave_burst_pressure,dbar,None,"[-2.0, 40.0]",8,,,,,variable has more than 1 dimension,stats not calculated,,,,
+deployment0003,recovered_inst,presf_abc_tide_measurement_recovered,presf_tide_pressure,dbar,-9999999.0,"[0.0, 6000.0]",4058,0.0,0.0,0.0,1.0,4057,99.98,143.5237,142.8029,144.2783,0.3327
+deployment0003,recovered_inst,presf_abc_tide_measurement_recovered,presf_tide_temperature,ºC,-9999999.0,"[-2.0, 40.0]",4058,0.0,0.0,0.0,0.0,4058,100.0,13.1862,11.744,16.67,0.7459
+deployment0003,recovered_inst,presf_abc_wave_burst_recovered,presf_wave_burst_pressure,dbar,None,"[-2.0, 40.0]",676,,,,,variable has more than 1 dimension,stats not calculated,,,,
+deployment0005,recovered_inst,presf_abc_tide_measurement_recovered,presf_tide_pressure,dbar,-9999999.0,"[0.0, 6000.0]",3678,0.0,0.0,0.0,0.0,3678,100.0,143.6074,142.8809,144.581,0.3688
+deployment0005,recovered_inst,presf_abc_tide_measurement_recovered,presf_tide_temperature,ºC,-9999999.0,"[-2.0, 40.0]",3678,0.0,0.0,0.0,0.0,3678,100.0,13.1235,12.106,13.8,0.3546
+deployment0005,recovered_inst,presf_abc_wave_burst_recovered,presf_wave_burst_pressure,dbar,None,"[-2.0, 40.0]",613,,,,,variable has more than 1 dimension,stats not calculated,,,,
+deployment0006,recovered_inst,presf_abc_tide_measurement_recovered,presf_tide_pressure,dbar,-9999999.0,"[0.0, 6000.0]",5734,0.0,0.0,0.0,1.0,5733,99.98,144.7354,143.9991,145.5903,0.3392
+deployment0006,recovered_inst,presf_abc_tide_measurement_recovered,presf_tide_temperature,ºC,-9999999.0,"[-2.0, 40.0]",5734,0.0,0.0,0.0,0.0,5734,100.0,13.3855,8.563,16.258,1.3463
+deployment0006,recovered_inst,presf_abc_wave_burst_recovered,presf_wave_burst_pressure,dbar,None,"[-2.0, 40.0]",956,,,,,variable has more than 1 dimension,stats not calculated,,,,
+deployment0007,recovered_inst,presf_abc_tide_measurement_recovered,presf_tide_pressure,dbar,-9999999.0,"[0.0, 6000.0]",3486,0.0,0.0,0.0,1.0,3485,99.97,143.688,143.005,144.4704,0.3291
+deployment0007,recovered_inst,presf_abc_tide_measurement_recovered,presf_tide_temperature,ºC,-9999999.0,"[-2.0, 40.0]",3486,0.0,0.0,0.0,1.0,3485,99.97,12.5502,11.367,14.303,0.4409
+deployment0007,recovered_inst,presf_abc_wave_burst_recovered,presf_wave_burst_pressure,dbar,None,"[-2.0, 40.0]",581,,,,,variable has more than 1 dimension,stats not calculated,,,,
+deployment0008,recovered_inst,presf_abc_tide_measurement_recovered,presf_tide_pressure,dbar,-9999999.0,"[0.0, 6000.0]",3629,0.0,0.0,0.0,1.0,3628,99.97,144.869,144.1349,145.7177,0.3397
+deployment0008,recovered_inst,presf_abc_tide_measurement_recovered,presf_tide_temperature,ºC,-9999999.0,"[-2.0, 40.0]",3629,0.0,0.0,0.0,0.0,3629,100.0,13.3014,10.455,14.934,0.8854
+deployment0008,recovered_inst,presf_abc_wave_burst_recovered,presf_wave_burst_pressure,dbar,None,"[-2.0, 40.0]",605,,,,,variable has more than 1 dimension,stats not calculated,,,,

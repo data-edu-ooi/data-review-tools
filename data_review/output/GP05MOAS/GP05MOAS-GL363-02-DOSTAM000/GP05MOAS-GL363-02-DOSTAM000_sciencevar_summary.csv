@@ -1,5 +1,9 @@
 deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
 deployment0001,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_oxygen,µmol L-1,nan,"[0.0, 400.0]",2666814,0,0,0,0,2666814,100.0,76.4612,0.0,305.288,87.2535
+deployment0001,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_saturation,percent,nan,"[0.0, 110.0]",2666814,0,0,0,0,2666814,100.0,24.6338,0.0,107.477,29.3117
+deployment0001,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_temp,1,nan,"[None, None]",2666814,0,0,no global ranges,18502,2648312,99.31,4.1442,0.0,13.102,1.5528
 deployment0001,recovered_host,dosta_abcdjm_glider_recovered,sci_abs_oxygen,µmol kg-1,nan,"[0.0, 400.0]",2666814,0,0,4,0,2666810,100.0,60.2495,0.0,268.1661,68.8762
 deployment0002,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_oxygen,µmol L-1,nan,"[0.0, 400.0]",98720,0,0,0,0,98720,100.0,101.0015,0.0,322.766,103.9372
+deployment0002,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_saturation,percent,nan,"[0.0, 110.0]",98720,0,0,1027,0,97693,98.96,32.3698,0.0,110.0,35.2412
+deployment0002,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_temp,1,nan,"[None, None]",98720,0,0,no global ranges,0,98720,100.0,4.7037,0.0,11.197,2.0532
 deployment0002,recovered_host,dosta_abcdjm_glider_recovered,sci_abs_oxygen,µmol kg-1,nan,"[0.0, 400.0]",98720,0,0,0,0,98720,100.0,79.5784,0.0,254.7745,82.0848
