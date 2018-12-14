@@ -92,47 +92,51 @@ def main(sDir, url_list):
         for m, n in sci_vars_dict.items():
             for sv, vinfo in n['vars'].items():
                 print(sv)
-                sv_units = vinfo['units'][0]
-                t0 = pd.to_datetime(min(vinfo['t'])).strftime('%Y-%m-%dT%H:%M:%S')
-                t1 = pd.to_datetime(max(vinfo['t'])).strftime('%Y-%m-%dT%H:%M:%S')
-                x = vinfo['t']
-                y = vinfo['values']
+                if len(vinfo['t']) < 1:
+                    print('no variable data to plot')
+                else:
+                    sv_units = vinfo['units'][0]
+                    t0 = pd.to_datetime(min(vinfo['t'])).strftime('%Y-%m-%dT%H:%M:%S')
+                    t1 = pd.to_datetime(max(vinfo['t'])).strftime('%Y-%m-%dT%H:%M:%S')
+                    x = vinfo['t']
+                    y = vinfo['values']
 
-                # reject NaNs
-                nan_ind = ~np.isnan(y)
-                x_nonan = x[nan_ind]
-                y_nonan = y[nan_ind]
+                    # reject NaNs
+                    nan_ind = ~np.isnan(y)
+                    x_nonan = x[nan_ind]
+                    y_nonan = y[nan_ind]
 
-                # reject fill values
-                fv_ind = y_nonan != vinfo['fv'][0]
-                x_nonan_nofv = x_nonan[fv_ind]
-                y_nonan_nofv = y_nonan[fv_ind]
+                    # reject fill values
+                    fv_ind = y_nonan != vinfo['fv'][0]
+                    x_nonan_nofv = x_nonan[fv_ind]
+                    y_nonan_nofv = y_nonan[fv_ind]
 
-                if len(y_nonan_nofv) > 0:
-                    if m == 'common_stream_placeholder':
-                        sname = '-'.join((r, sv))
-                    else:
-                        sname = '-'.join((r, m, sv))
+                    if len(y_nonan_nofv) > 0:
+                        if m == 'common_stream_placeholder':
+                            sname = '-'.join((r, sv))
+                        else:
+                            sname = '-'.join((r, m, sv))
 
-                    # Plot all data
-                    fig, ax = pf.plot_timeseries_all(x_nonan_nofv, y_nonan_nofv, sv, sv_units, stdev=None)
-                    ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
-                                 fontsize=8)
-                    for etimes in end_times:
-                        ax.axvline(x=etimes,  color='k', linestyle='--', linewidth=.6)
-                    pf.save_fig(save_dir, sname)
+                        # Plot all data
+                        fig, ax = pf.plot_timeseries_all(x_nonan_nofv, y_nonan_nofv, sv, sv_units, stdev=None)
+                        ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
+                                     fontsize=8)
+                        for etimes in end_times:
+                            ax.axvline(x=etimes,  color='k', linestyle='--', linewidth=.6)
+                        pf.save_fig(save_dir, sname)
 
-                    # Plot data with outliers removed
-                    fig, ax = pf.plot_timeseries_all(x_nonan_nofv, y_nonan_nofv, sv, sv_units, stdev=5)
-                    ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
-                                 fontsize=8)
-                    for etimes in end_times:
-                        ax.axvline(x=etimes,  color='k', linestyle='--', linewidth=.6)
-                    sfile = '_'.join((sname, 'rmoutliers'))
-                    pf.save_fig(save_dir, sfile)
+                        # Plot data with outliers removed
+                        fig, ax = pf.plot_timeseries_all(x_nonan_nofv, y_nonan_nofv, sv, sv_units, stdev=5)
+                        ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
+                                     fontsize=8)
+                        for etimes in end_times:
+                            ax.axvline(x=etimes,  color='k', linestyle='--', linewidth=.6)
+                        sfile = '_'.join((sname, 'rmoutliers'))
+                        pf.save_fig(save_dir, sfile)
 
 
 if __name__ == '__main__':
+    pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
     sDir = '/Users/lgarzio/Documents/OOI/DataReviews'
     url_list = [
         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181128T172034-GP03FLMA-RIM01-02-CTDMOG040-recovered_inst-ctdmo_ghqr_instrument_recovered/catalog.html',

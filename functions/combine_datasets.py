@@ -1,7 +1,7 @@
 #! /usr/bin/env python
-import itertools
 import xarray as xr
 import numpy as np
+import pandas as pd
 import functions.common as cf
 
 
@@ -55,6 +55,25 @@ def append_variable_data(ds, variable_dict, common_stream_name, exclude_times):
     return variable_dict
 
 
+def common_long_names(science_variable_dictionary):
+    # return dictionary of common variables
+    vals_df = pd.DataFrame(science_variable_dictionary)
+    vals_df_nafree = vals_df.dropna()
+    vals_df_onlyna = vals_df[~vals_df.index.isin(vals_df_nafree.index)]
+    if len(list(vals_df_onlyna.index)) > 0:
+        print('\nWARNING: variable names that are not common among methods: {}'.format(list(vals_df_onlyna.index)))
+
+    var_dict = dict()
+    for ii, vv in vals_df_nafree.iterrows():
+        units = []
+        for x in range(len(vv)):
+            units.append(vv[x]['db_units'])
+        if len(np.unique(units)) == 1:
+            var_dict.update({ii: vv[0]})
+
+    return var_dict
+
+
 def exclude_time_ranges(time_data, variable_data, time_lst):
     t0 = np.datetime64(time_lst[0])
     t1 = np.datetime64(time_lst[1])
@@ -88,13 +107,21 @@ def sci_var_long_names(refdes):
 
 def sci_var_long_names_check(stream_sci_vars_dict):
     # check if the science variable long names are the same for each stream
-    groups = itertools.groupby(stream_sci_vars_dict.values())
-    next(groups, None)
-    if next(groups, None) is None:  # the reference designator has one science data stream
-        sci_vars_dict = dict(common_stream_placeholder=dict(vars=list(stream_sci_vars_dict.values())[0],
+    methods = []
+    streams = []
+    for k in list(stream_sci_vars_dict.keys()):
+        methods.append(k.split('-')[0])
+        streams.append(k.split('-')[1])
+
+    # if the reference designator has one science data stream
+    if len(np.unique(methods)) > len(np.unique(streams)):
+        var_dict = common_long_names(stream_sci_vars_dict)
+        sci_vars_dict = dict(common_stream_placeholder=dict(vars=var_dict,
                                                             ms=list(stream_sci_vars_dict.keys())))
         sci_vars_dict = initialize_empty_arrays(sci_vars_dict, 'common_stream_placeholder')
-    else:  # the reference designator has multiple science data streams
+
+    # if the reference designator has multiple science data streams
+    else:
         method_stream_df = cf.stream_word_check(stream_sci_vars_dict)
         method_stream_df['method_stream'] = method_stream_df['method'] + '-' + method_stream_df['stream_name']
         common_stream_names = np.unique(method_stream_df['stream_name_compare'].tolist()).tolist()
@@ -107,11 +134,8 @@ def sci_var_long_names_check(stream_sci_vars_dict):
                 if k in ss:
                     check.update({k: v})
 
-            groups = itertools.groupby(check.values())
-            next(groups, None)
-            if next(groups, None) is None:
-                sci_vars_dict.update({csn: dict(vars=list(check.values())[0], ms=ss)})
-                sci_vars_dict = initialize_empty_arrays(sci_vars_dict, csn)
-            else:
-                print('Streams with common name: <{}> do not have common science variables'.format(csn))
+            var_dict = common_long_names(check)
+            sci_vars_dict.update({csn: dict(vars=var_dict, ms=ss)})
+            sci_vars_dict = initialize_empty_arrays(sci_vars_dict, csn)
+
     return sci_vars_dict
