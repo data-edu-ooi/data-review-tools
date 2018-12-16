@@ -1,0 +1,10 @@
+deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
+deployment0001,recovered_wfp-parad_k__stc_imodem_instrument_recovered,telemetered-parad_k__stc_imodem_instrument,Photosynthetically Active Radiation,parad_k_par,µmol photons m-2 s-1,pass,170603.0,0.0,no missing data,94213.0,0.0,0.0,0.0,0.0
+deployment0002,telemetered-parad_k__stc_imodem_instrument,no other methods available for comparison,,,,,,,,,,,,
+deployment0003,recovered_wfp-parad_k__stc_imodem_instrument_recovered,telemetered-parad_k__stc_imodem_instrument,Photosynthetically Active Radiation,parad_k_par,µmol photons m-2 s-1,pass,130105.0,0.0,no missing data,130093.0,0.0,0.0,0.0,0.0
+deployment0004,recovered_wfp-parad_k__stc_imodem_instrument_recovered,telemetered-parad_k__stc_imodem_instrument,Photosynthetically Active Radiation,parad_k_par,µmol photons m-2 s-1,pass,459601.0,0.0,no missing data,459420.0,0.0,0.0,0.0,0.0
+deployment0005,telemetered-parad_k__stc_imodem_instrument,no other methods available for comparison,,,,,,,,,,,,
+deployment0006,recovered_wfp-parad_k__stc_imodem_instrument_recovered,telemetered-parad_k__stc_imodem_instrument,Photosynthetically Active Radiation,parad_k_par,µmol photons m-2 s-1,pass,96323.0,0.0,no missing data,96323.0,0.0,0.0,0.0,0.0
+deployment0007,recovered_wfp-parad_k__stc_imodem_instrument_recovered,telemetered-parad_k__stc_imodem_instrument,Photosynthetically Active Radiation,parad_k_par,µmol photons m-2 s-1,pass,237975.0,0.0,no missing data,112115.0,0.0,0.0,0.0,0.0
+deployment0008,recovered_wfp-parad_k__stc_imodem_instrument_recovered,telemetered-parad_k__stc_imodem_instrument,Photosynthetically Active Radiation,parad_k_par,µmol photons m-2 s-1,pass,128503.0,0.0,no missing data,128435.0,0.0,0.0,0.0,0.0
+deployment0009,recovered_wfp-parad_k__stc_imodem_instrument_recovered,telemetered-parad_k__stc_imodem_instrument,Photosynthetically Active Radiation,parad_k_par,µmol photons m-2 s-1,pass,118541.0,0.0,no missing data,118541.0,0.0,0.0,0.0,0.0
