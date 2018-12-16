@@ -1,5 +1,8 @@
 deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,telemetered,presf_abc_dcl_tide_measurement,absolute_pressure,psi,-9999999.0,"[0.0, 8800.0]",1237,0.0,0.0,0.0,0.0,1237,100.0,208.7176,207.7315,209.9415,0.4928
+deployment0001,telemetered,presf_abc_dcl_tide_measurement,seawater_temperature,ºC,-9999999.0,"[-2.0, 40.0]",1237,0.0,0.0,0.0,0.0,1237,100.0,13.6731,12.4728,14.4117,0.4202
 deployment0001,telemetered,presf_abc_dcl_tide_measurement,abs_seafloor_pressure,dbar,-9999999.0,"[0.0, 6000.0]",1237,0.0,0.0,0.0,0.0,1237,100.0,143.9057,143.2258,144.7496,0.3397
+deployment0001,telemetered,presf_abc_dcl_wave_burst,absolute_pressure_burst,psi,None,"[0.0, 6000.0]",1236,,,,,variable has more than 1 dimension,stats not calculated,,,,
 deployment0001,telemetered,presf_abc_dcl_wave_burst,scaled_wave_burst_seafloor_pressure,dbar,None,"[0.0, 6000.0]",1236,,,,,variable has more than 1 dimension,stats not calculated,,,,
 deployment0002,recovered_inst,presf_abc_tide_measurement_recovered,presf_tide_pressure,dbar,-9999999.0,"[0.0, 6000.0]",50,0.0,0.0,0.0,0.0,50,100.0,138.9357,10.3095,145.0962,26.3871
 deployment0002,recovered_inst,presf_abc_tide_measurement_recovered,presf_tide_temperature,ºC,-9999999.0,"[-2.0, 40.0]",50,0.0,0.0,0.0,1.0,49,98.0,14.0901,13.799,15.046,0.2606
