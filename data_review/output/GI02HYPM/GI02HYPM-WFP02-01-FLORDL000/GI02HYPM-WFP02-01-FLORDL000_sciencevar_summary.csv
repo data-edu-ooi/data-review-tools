@@ -1,13 +1,17 @@
 deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
 deployment0001,recovered_wfp,flord_l_wfp_instrument_recovered,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",400419,0,0,no global ranges,0,400419,100.0,0.0007,0.0006,0.0007,0.0
 deployment0001,recovered_wfp,flord_l_wfp_instrument_recovered,fluorometric_chlorophyll_a,µg L-1,-9999999.0,"[0.0, 50.0]",400419,0,0,5,1037,399377,99.74,0.0332,0.0,0.2482,0.0253
+deployment0001,recovered_wfp,flord_l_wfp_instrument_recovered,total_volume_scattering_coefficient,m-1 sr-1,-9999999.0,"[0.0, 0.0079]",400419,0,0,3,252,400164,99.94,0.0001,0.0001,0.0007,0.0
 deployment0001,recovered_wfp,flord_l_wfp_instrument_recovered,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",400419,0,0,3,252,400164,99.94,0.0006,0.0005,0.0049,0.0001
 deployment0002,recovered_wfp,flord_l_wfp_instrument_recovered,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",371188,0,0,no global ranges,0,371188,100.0,0.0007,0.0006,0.0007,0.0
 deployment0002,recovered_wfp,flord_l_wfp_instrument_recovered,fluorometric_chlorophyll_a,µg L-1,-9999999.0,"[0.0, 50.0]",371188,0,0,9,595,370584,99.84,0.0433,0.0146,1.1242,0.0271
+deployment0002,recovered_wfp,flord_l_wfp_instrument_recovered,total_volume_scattering_coefficient,m-1 sr-1,-9999999.0,"[0.0, 0.0079]",371188,0,0,620,532,370036,99.69,0.0001,0.0001,0.0007,0.0
 deployment0002,recovered_wfp,flord_l_wfp_instrument_recovered,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",371188,0,0,0,837,370351,99.77,0.0007,0.0005,0.0127,0.0003
 deployment0003,recovered_wfp,flord_l_wfp_instrument_recovered,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",419252,0,0,no global ranges,21,419231,99.99,0.0007,0.0006,0.0007,0.0
 deployment0003,recovered_wfp,flord_l_wfp_instrument_recovered,fluorometric_chlorophyll_a,µg L-1,-9999999.0,"[0.0, 50.0]",419252,0,0,3,1419,417830,99.66,0.0526,0.0272,1.2172,0.0372
+deployment0003,recovered_wfp,flord_l_wfp_instrument_recovered,total_volume_scattering_coefficient,m-1 sr-1,-9999999.0,"[0.0, 0.0079]",419252,0,0,5,2966,416281,99.29,0.0001,0.0001,0.0026,0.0001
 deployment0003,recovered_wfp,flord_l_wfp_instrument_recovered,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",419252,0,0,5,2966,416281,99.29,0.0007,0.0005,0.0177,0.0004
 deployment0004,recovered_wfp,flord_l_wfp_instrument_recovered,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",357397,0,0,no global ranges,0,357397,100.0,0.0007,0.0006,0.0007,0.0
 deployment0004,recovered_wfp,flord_l_wfp_instrument_recovered,fluorometric_chlorophyll_a,µg L-1,-9999999.0,"[0.0, 50.0]",357397,0,0,7,2570,354820,99.28,0.0442,0.0142,0.7455,0.05
+deployment0004,recovered_wfp,flord_l_wfp_instrument_recovered,total_volume_scattering_coefficient,m-1 sr-1,-9999999.0,"[0.0, 0.0079]",357397,0,0,4,7064,350329,98.02,0.0002,0.0,0.0067,0.0007
 deployment0004,recovered_wfp,flord_l_wfp_instrument_recovered,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",357397,0,0,5,7064,350328,98.02,0.0015,0.0006,0.0459,0.0049
