@@ -1,0 +1,5 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_wfp,vel3d_k_wfp_instrument,vel3d_k_pressure,dbar,0,"[None, None]",1959426,0,0,no global ranges,0,1959426,100.0,47965.3994,23498.0,71230.0,17380.7009
+deployment0001,recovered_wfp,vel3d_k_wfp_instrument,vel3d_k_eastward_velocity,m s-1,-9999999.0,"[None, None]",1959426,0,0,no global ranges,7909,1951517,99.6,-0.0289,-1.7618,1.7038,0.1793
+deployment0001,recovered_wfp,vel3d_k_wfp_instrument,vel3d_k_northward_velocity,m s-1,-9999999.0,"[None, None]",1959426,0,0,no global ranges,7414,1952012,99.62,0.0583,-1.5519,1.6665,0.1749
+deployment0001,recovered_wfp,vel3d_k_wfp_instrument,vel3d_k_upward_velocity,m s-1,-9999999.0,"[None, None]",1959426,0,0,no global ranges,9164,1950262,99.53,0.0149,-1.9676,1.9966,0.3012

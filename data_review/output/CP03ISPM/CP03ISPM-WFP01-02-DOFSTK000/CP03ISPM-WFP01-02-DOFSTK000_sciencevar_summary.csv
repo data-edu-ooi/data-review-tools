@@ -1,0 +1,2 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_wfp,dofst_k_wfp_instrument_recovered,dofst_k_oxygen_l2,µmol kg-1,-9999999.0,"[None, None]",1005405,0,0,no global ranges,0,1005405,100.0,267.176,140.471,316.1631,27.0964

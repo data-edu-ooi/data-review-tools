@@ -283,6 +283,7 @@ def main(sDir, url_list):
                                 else:  # if there is only 1 data point
                                     press_outliers = 0
                                     pressure_mean = round(ds[press].values.tolist()[0], 2)
+                                    pressure_max = round(ds[press].values.tolist()[0], 2)
 
                             try:
                                 pressure_units = pressure.units

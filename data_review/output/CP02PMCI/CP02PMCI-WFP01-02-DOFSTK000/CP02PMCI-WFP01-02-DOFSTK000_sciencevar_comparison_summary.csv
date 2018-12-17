@@ -1,0 +1,10 @@
+deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
+deployment0001,recovered_wfp-dofst_k_wfp_instrument_recovered,telemetered-dofst_k_wfp_instrument,DO - Pressure Temp Sal Corrected (CTD),dofst_k_oxygen_l2,µmol kg-1,pass,1527107.0,0.0,no missing data,839788.0,0.0,0.0,0.0,0.0
+deployment0002,telemetered-dofst_k_wfp_instrument,no other methods available for comparison,,,,,,,,,,,,
+deployment0003,recovered_wfp-dofst_k_wfp_instrument_recovered,telemetered-dofst_k_wfp_instrument,DO - Pressure Temp Sal Corrected (CTD),dofst_k_oxygen_l2,µmol kg-1,pass,1393753.0,0.0,no missing data,1393030.0,0.0,0.0,0.0,0.0
+deployment0004,recovered_wfp-dofst_k_wfp_instrument_recovered,telemetered-dofst_k_wfp_instrument,DO - Pressure Temp Sal Corrected (CTD),dofst_k_oxygen_l2,µmol kg-1,pass,3154148.0,0.0,no missing data,3153006.0,0.0,0.0,0.0,0.0
+deployment0005,telemetered-dofst_k_wfp_instrument,no other methods available for comparison,,,,,,,,,,,,
+deployment0006,recovered_wfp-dofst_k_wfp_instrument_recovered,telemetered-dofst_k_wfp_instrument,DO - Pressure Temp Sal Corrected (CTD),dofst_k_oxygen_l2,µmol kg-1,pass,830327.0,0.0,no missing data,830327.0,0.0,0.0,0.0,0.0
+deployment0007,recovered_wfp-dofst_k_wfp_instrument_recovered,telemetered-dofst_k_wfp_instrument,DO - Pressure Temp Sal Corrected (CTD),dofst_k_oxygen_l2,µmol kg-1,pass,2272336.0,0.0,no missing data,1037801.0,0.0,0.0,0.0,0.0
+deployment0008,recovered_wfp-dofst_k_wfp_instrument_recovered,telemetered-dofst_k_wfp_instrument,DO - Pressure Temp Sal Corrected (CTD),dofst_k_oxygen_l2,µmol kg-1,pass,1141694.0,0.0,no missing data,1141122.0,0.0,0.0,0.0,0.0
+deployment0009,recovered_wfp-dofst_k_wfp_instrument_recovered,telemetered-dofst_k_wfp_instrument,DO - Pressure Temp Sal Corrected (CTD),dofst_k_oxygen_l2,µmol kg-1,pass,1321582.0,0.0,no missing data,1321042.0,0.0,0.0,0.0,0.0

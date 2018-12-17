@@ -1,8 +1,11 @@
 deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
 deployment0001,recovered_wfp-dosta_ln_wfp_instrument_recovered,telemetered-dosta_ln_wfp_instrument,DO - Pressure Temp Sal Corrected,dissolved_oxygen,µmol kg-1,pass,400419.0,0.0,no missing data,2345.0,0.0,17.8811519071,221.0,9.42
 deployment0001,recovered_wfp-dosta_ln_wfp_instrument_recovered,telemetered-dosta_ln_wfp_instrument,DO,estimated_oxygen_concentration,µmol L-1,pass,400419.0,0.0,no missing data,2345.0,0.0,0.0,0.0,0.0
+deployment0001,recovered_wfp-dosta_ln_wfp_instrument_recovered,telemetered-dosta_ln_wfp_instrument,Optode Temperature,optode_temperature,ºC,pass,400419.0,0.0,no missing data,2345.0,0.0,0.0,0.0,0.0
 deployment0002,recovered_wfp-dosta_ln_wfp_instrument_recovered,no other methods available for comparison,,,,,,,,,,,,
 deployment0003,recovered_wfp-dosta_ln_wfp_instrument_recovered,telemetered-dosta_ln_wfp_instrument,DO - Pressure Temp Sal Corrected,dissolved_oxygen,µmol kg-1,pass,419252.0,0.0,no missing data,751.0,0.0,1.5339123458,107.0,14.25
 deployment0003,recovered_wfp-dosta_ln_wfp_instrument_recovered,telemetered-dosta_ln_wfp_instrument,DO,estimated_oxygen_concentration,µmol L-1,pass,419252.0,0.0,no missing data,751.0,0.0,0.0,0.0,0.0
+deployment0003,recovered_wfp-dosta_ln_wfp_instrument_recovered,telemetered-dosta_ln_wfp_instrument,Optode Temperature,optode_temperature,ºC,pass,419252.0,0.0,no missing data,751.0,0.0,0.0,0.0,0.0
 deployment0004,recovered_wfp-dosta_ln_wfp_instrument_recovered,telemetered-dosta_ln_wfp_instrument,DO - Pressure Temp Sal Corrected,dissolved_oxygen,µmol kg-1,pass,357397.0,0.0,no missing data,394.0,0.0,1.372329295,66.0,16.75
 deployment0004,recovered_wfp-dosta_ln_wfp_instrument_recovered,telemetered-dosta_ln_wfp_instrument,DO,estimated_oxygen_concentration,µmol L-1,pass,357397.0,0.0,no missing data,394.0,0.0,0.0,0.0,0.0
+deployment0004,recovered_wfp-dosta_ln_wfp_instrument_recovered,telemetered-dosta_ln_wfp_instrument,Optode Temperature,optode_temperature,ºC,pass,357397.0,0.0,no missing data,394.0,0.0,0.0,0.0,0.0
