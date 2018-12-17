@@ -27,8 +27,9 @@ def format_dates(dd):
 mdates = []
 for root, dirs, files in os.walk(sDir):
     for f in files:
-        md = f.split('_')[-1].split('.')[0]
-        mdates.append(dt.datetime.strptime(md, '%Y%m%dT%H%M'))
+        if f.endswith('.csv'):
+            md = f.split('_')[-1].split('.')[0]
+            mdates.append(dt.datetime.strptime(md, '%Y%m%dT%H%M'))
 
 mdate = max(mdates)
 
@@ -47,4 +48,4 @@ for i, row in df.iterrows():
 
 sfile = 'OOI_datareview_report_{}.csv'.format(dt.datetime.utcnow().strftime('%Y%m%dT%H%M'))
 
-df.to_csv(os.path.join(sDir, sfile), index=False)
+df.to_csv(os.path.join(sDir, sfile))
