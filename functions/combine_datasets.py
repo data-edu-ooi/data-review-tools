@@ -10,20 +10,23 @@ def append_science_data(preferred_stream_df, n_streams, refdes, dataset_list, sc
     for index, row in preferred_stream_df.iterrows():
         for ii in range(n_streams):
             rms = '-'.join((refdes, row[ii]))
-            print('{} {}'.format(row['deployment'], rms))
+            drms = '_'.join((row['deployment'], rms))
+            print(drms)
 
             for d in dataset_list:
-                ds = xr.open_dataset(d, mask_and_scale=False)
-                fmethod_stream = '-'.join((ds.collection_method, ds.stream))
+                ds_drms = d.split('/')[-1].split('_20')[0]
+                if ds_drms == drms:
+                    ds = xr.open_dataset(d, mask_and_scale=False)
+                    fmethod_stream = '-'.join((ds.collection_method, ds.stream))
 
-                for strm, b in sci_vars_dict.items():
-                    # if the reference designator has 1 science data stream
-                    if strm == 'common_stream_placeholder':
-                        sci_vars_dict = append_variable_data(ds, sci_vars_dict,
-                                                             'common_stream_placeholder', et)
-                    # if the reference designator has multiple science data streams
-                    elif fmethod_stream in sci_vars_dict[strm]['ms']:
-                        sci_vars_dict = append_variable_data(ds, sci_vars_dict, strm, et)
+                    for strm, b in sci_vars_dict.items():
+                        # if the reference designator has 1 science data stream
+                        if strm == 'common_stream_placeholder':
+                            sci_vars_dict = append_variable_data(ds, sci_vars_dict,
+                                                                 'common_stream_placeholder', et)
+                        # if the reference designator has multiple science data streams
+                        elif fmethod_stream in sci_vars_dict[strm]['ms']:
+                            sci_vars_dict = append_variable_data(ds, sci_vars_dict, strm, et)
     return sci_vars_dict
 
 
