@@ -317,9 +317,7 @@ def pressure_var(dataset, vars):
 
     if len(pvars) > 1:
         print('More than 1 pressure variable found in the file')
-    elif len(pvars) == 0:
-        print('No pressure variable found in the file')
-    else:
+    elif len(pvars) == 1:
         pvar = str(pvars[0])
         return pvar
 
