@@ -1,0 +1,6 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,density,kg m-3,-9999999.0,"[None, None]",1601717,0,0,no global ranges,0,1601717,100.0,1026.4839,1024.9202,1027.5174,0.5891
+deployment0001,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,practical_salinity,1,-9999999.0,"[None, None]",1601717,0,0,no global ranges,0,1601717,100.0,34.5504,32.8421,35.8961,0.789
+deployment0001,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,ctdpf_ckl_seawater_pressure,dbar,-9999.0,"[None, None]",1601717,0,0,no global ranges,0,1601717,100.0,66.3525,23.94,115.66,34.7189
+deployment0001,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,ctdpf_ckl_seawater_temperature,ºC,-9999999.0,"[None, None]",1601717,0,0,no global ranges,0,1601717,100.0,12.0624,6.2134,19.8506,2.9214
+deployment0001,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,ctdpf_ckl_seawater_conductivity,S m-1,-9999999.0,"[None, None]",1601717,0,0,no global ranges,0,1601717,100.0,3.9695,3.2784,4.8292,0.3385
