@@ -93,9 +93,9 @@ def main(sDir, url_list):
         save_dir = os.path.join(sDir, array, subsite)
         cf.create_dir(save_dir)
 
-        headers = ['common_stream_name', 'preferred_methods_streams', 'long_name', 'units', 't0', 't1', 'fill_value',
-                   'global_ranges', 'n_all', 'n_nans', 'n_fillvalues', 'n_grange', 'define_stdev', 'n_outliers',
-                   'n_stats', 'mean', 'min', 'max', 'stdev']
+        headers = ['common_stream_name', 'preferred_methods_streams', 'deployments', 'long_name', 'units', 't0', 't1',
+                   'fill_value', 'global_ranges', 'n_all', 'n_nans', 'n_fillvalues', 'n_grange', 'define_stdev',
+                   'n_outliers', 'n_stats', 'mean', 'min', 'max', 'stdev']
         rows = []
         for m, n in sci_vars_dict.items():
             print(m)
@@ -156,8 +156,9 @@ def main(sDir, url_list):
                     sd = None
                     n_stats = None
 
-                rows.append([m, list(np.unique(pms)), sv, lunits, t0, t1, lst_fill_value, [g_min, g_max], n_all, n_nan,
-                             n_fv, n_grange, sd_calc, num_outliers, n_stats, mean, vmin, vmax, sd])
+                rows.append([m, list(np.unique(pms)), vinfo['deployments'], sv, lunits, t0, t1, lst_fill_value,
+                             [g_min, g_max], n_all, n_nan, n_fv, n_grange, sd_calc, num_outliers, n_stats, mean, vmin,
+                             vmax, sd])
 
         fsum = pd.DataFrame(rows, columns=headers)
         fsum.to_csv('{}/{}_final_stats.csv'.format(save_dir, r), index=False)
