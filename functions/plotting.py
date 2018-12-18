@@ -72,13 +72,18 @@ def plot_timeseries_all(x, y, y_name, y_units, stdev=None):
         yD = y
         leg_text = ()
     else:
-        ind = cf.reject_extreme_values(y)
-        ydata = y[ind]
-        xdata = x[ind]
+        # ind = cf.reject_extreme_values(y)
+        # ydata = y[ind]
+        # xdata = x[ind]
 
-        ind2 = cf.reject_outliers(ydata, stdev)
-        yD = ydata[ind2]
-        xD = xdata[ind2]
+        # ind2 = cf.reject_outliers(ydata, stdev)
+        # yD = ydata[ind2]
+        # xD = xdata[ind2]
+
+        ind2 = cf.reject_outliers(y, stdev)
+        yD = y[ind2]
+        xD = x[ind2]
+
         outliers = str(len(y) - len(yD))
         leg_text = ('removed {} outliers (SD={})'.format(outliers, stdev),)
 
@@ -221,6 +226,7 @@ def plot_timeseries_panel(ds, x, vars, colors, stdev=None):
         y_axis_disable_offset(ax[i])
         if i == len(vars) - 1:  # if the last variable has been plotted
             format_date_axis(ax[i], fig)
+
     return fig, ax
 
 
