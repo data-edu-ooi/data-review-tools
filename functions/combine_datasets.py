@@ -28,6 +28,7 @@ def append_science_data(preferred_stream_df, n_streams, refdes, dataset_list, sc
 
 
 def append_variable_data(ds, variable_dict, common_stream_name, exclude_times):
+    deploy = list(np.unique(ds.deployment.values))[0]
     ds_vars = cf.return_raw_vars(list(ds.data_vars.keys()))
     vars_dict = variable_dict[common_stream_name]['vars']
     for var in ds_vars:
@@ -44,11 +45,14 @@ def append_variable_data(ds, variable_dict, common_stream_name, exclude_times):
                     if len(exclude_times) > 0:
                         for et in exclude_times:
                             tD, varD = exclude_time_ranges(tD, varD, et)
-                        vars_dict[long_name]['t'] = np.append(vars_dict[long_name]['t'], tD)
-                        vars_dict[long_name]['values'] = np.append(vars_dict[long_name]['values'], varD)
+                        if len(tD) > 0:
+                            vars_dict[long_name]['t'] = np.append(vars_dict[long_name]['t'], tD)
+                            vars_dict[long_name]['values'] = np.append(vars_dict[long_name]['values'], varD)
+                            vars_dict[long_name]['deployments'].append(int(deploy))
                     else:
                         vars_dict[long_name]['t'] = np.append(vars_dict[long_name]['t'], tD)
                         vars_dict[long_name]['values'] = np.append(vars_dict[long_name]['values'], varD)
+                        vars_dict[long_name]['deployments'].append(int(deploy))
 
         except AttributeError:
             continue
@@ -86,7 +90,7 @@ def exclude_time_ranges(time_data, variable_data, time_lst):
 def initialize_empty_arrays(dictionary, stream_name):
     for kk, vv in dictionary[stream_name]['vars'].items():
         dictionary[stream_name]['vars'][kk].update({'t': np.array([], dtype='datetime64[ns]'), 'values': np.array([]),
-                                                    'fv': [], 'units': []})
+                                                    'fv': [], 'units': [], 'deployments': []})
     return dictionary
 
 
