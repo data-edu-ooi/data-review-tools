@@ -1,0 +1,10 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_wfp,parad_k__stc_imodem_instrument_recovered,parad_k_par,µmol photons m-2 s-1,-9999999.0,"[0.0, 2500.0]",20546,0,0,3242,99,17205,83.74,167.0356,1.3157,2402.2236,411.1419
+deployment0002,recovered_wfp,parad_k__stc_imodem_instrument_recovered,parad_k_par,µmol photons m-2 s-1,-9999999.0,"[0.0, 2500.0]",399268,0,0,397922,1,1345,0.34,6.4348,0.1083,38.4421,6.4806
+deployment0003,recovered_wfp,parad_k__stc_imodem_instrument_recovered,parad_k_par,µmol photons m-2 s-1,-9999999.0,"[0.0, 2500.0]",364245,0,0,357251,40,6954,1.91,20.0676,0.0349,159.049,24.911
+deployment0004,recovered_wfp,parad_k__stc_imodem_instrument_recovered,parad_k_par,µmol photons m-2 s-1,-9999999.0,"[0.0, 2500.0]",468341,0,0,464992,12,3337,0.71,10.2445,0.1421,72.4179,11.5419
+deployment0005,recovered_wfp,parad_k__stc_imodem_instrument_recovered,parad_k_par,µmol photons m-2 s-1,-9999999.0,"[0.0, 2500.0]",245083,0,0,181014,521,63548,25.93,1.3102,0.1951,30.3234,3.1237
+deployment0006,telemetered,parad_k__stc_imodem_instrument,parad_k_par,µmol photons m-2 s-1,-9999999.0,"[0.0, 2500.0]",49114,0,0,13297,234,35583,72.45,0.7923,0.2036,22.6027,1.6338
+deployment0007,recovered_wfp,parad_k__stc_imodem_instrument_recovered,parad_k_par,µmol photons m-2 s-1,-9999999.0,"[0.0, 2500.0]",350230,0,0,253045,747,96438,27.54,0.8894,0.2147,17.7668,1.7069
+deployment0008,recovered_wfp,parad_k__stc_imodem_instrument_recovered,parad_k_par,µmol photons m-2 s-1,-9999999.0,"[0.0, 2500.0]",522425,0,0,72335,2424,447666,85.69,1.2284,0.1665,8.1808,0.9051
+deployment0009,recovered_wfp,parad_k__stc_imodem_instrument_recovered,parad_k_par,µmol photons m-2 s-1,-9999999.0,"[0.0, 2500.0]",539536,0,0,321713,1632,216191,40.07,1.0743,0.1733,16.8614,1.5347

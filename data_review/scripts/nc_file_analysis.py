@@ -238,7 +238,9 @@ def main(sDir, url_list):
                         [_, unmatch2] = compare_lists(ds_variables, stream_vars)
 
                         # Check deployment pressure from asset management against pressure variable in file
-                        press = pf.pressure_var(ds, ds_variables)
+                        press = pf.pressure_var(ds, list(ds.coords.keys()))
+                        if press is None:
+                            press = pf.pressure_var(ds, list(ds.data_vars.keys()))
 
                         # calculate mean pressure from data, excluding outliers +/- 3 SD
                         try:

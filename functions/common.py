@@ -216,7 +216,7 @@ def return_stream_vars(stream):
 
 def return_raw_vars(ds_variables):
     # return a list of raw variables (eliminating engineering, qc, and timestamps)
-    misc_vars = ['quality', 'string', 'timestamp', 'deployment', 'provenance', 'qc', 'time', 'mission', 'obs',
+    misc_vars = ['quality', 'string', 'timestamp', 'deployment', 'provenance', 'qc', 'time', 'mission', 'obs', 'id',
                  'serial_number', 'volt', 'ref', 'sig', 'amp', 'rph', 'calphase', 'phase', 'therm', 'description']
     reg_ex = re.compile('|'.join(misc_vars))
     raw_vars = [s for s in ds_variables if not reg_ex.search(s)]
@@ -283,7 +283,7 @@ def variable_statistics(var_data, stdev=None):
     """
     if stdev is None:
         varD = var_data
-        num_outliers = 0
+        num_outliers = None
     else:
         ind = reject_extreme_values(var_data)
         var = var_data[ind]
