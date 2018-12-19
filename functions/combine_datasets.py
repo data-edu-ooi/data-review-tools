@@ -106,7 +106,7 @@ def sci_var_long_names(refdes):
         sci_vars = dict()
         for y in x['stream']['parameters']:
             if y['data_product_type'] == 'Science Data':
-                sci_vars.update({y['display_name']: dict(db_units=y['unit'])})
+                sci_vars.update({y['display_name']: dict(db_units=y['unit'], var_name=y['name'])})
         if len(sci_vars) > 0:
             stream_sci_vars_dict.update({dr_ms: sci_vars})
     return stream_sci_vars_dict
