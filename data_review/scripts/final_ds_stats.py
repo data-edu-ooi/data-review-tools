@@ -125,16 +125,7 @@ def main(sDir, url_list):
                 n_fv = n_all - n_nan - len(data_nonan_nofv)
 
                 # reject data outside of global ranges
-                ds0 = xr.open_dataset(fdatasets[0])
-                for vv in list(ds0.data_vars.keys()):
-                    try:
-                        vv_ln = ds0[vv].long_name
-                        vv_units = ds0[vv].units
-                        if vv_ln == sv and vv_units[0]:
-                            [g_min, g_max] = cf.get_global_ranges(r, vv)
-                            break
-                    except AttributeError:
-                        continue
+                [g_min, g_max] = cf.get_global_ranges(r, vinfo['var_name'])
 
                 if g_min is not None and g_max is not None:
                     gr_ind = cf.reject_global_ranges(data_nonan_nofv, g_min, g_max)
