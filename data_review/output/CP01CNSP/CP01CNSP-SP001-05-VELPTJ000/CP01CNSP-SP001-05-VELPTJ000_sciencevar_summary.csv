@@ -1,0 +1,11 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0004,recovered_cspp,velpt_j_cspp_instrument_recovered,temperature,ºC,-9999999.0,"[-2.0, 40.0]",29973,0,0,0,0,29973,100.0,16.3924,11.6,24.71,2.7421
+deployment0004,recovered_cspp,velpt_j_cspp_instrument_recovered,speed_of_sound,m s-1,-9999999.0,"[1380.0, 1580.0]",29973,0,0,0,0,29973,100.0,1510.6334,1495.3,1533.6,8.2951
+deployment0004,recovered_cspp,velpt_j_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",29973,0,0,0,0,29973,100.0,40.682,0.629,99.48,27.7237
+deployment0004,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_pressure,dbar,-9999999.0,"[0.0, 6000.0]",29973,0,0,0,0,29973,100.0,41.0399,0.171,99.833,27.8906
+deployment0004,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam1_m_s,m s-1,-9999999.0,"[-3.0, 3.0]",29973,0,0,0,37,29936,99.88,0.1066,-0.349,0.565,0.0909
+deployment0004,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam2_m_s,m s-1,-9999999.0,"[-3.0, 3.0]",29973,0,0,0,48,29925,99.84,-0.0324,-0.361,0.29,0.0637
+deployment0004,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam3_m_s,m s-1,-9999999.0,"[-1.0, 1.0]",29973,0,0,0,4,29969,99.99,-0.249,-0.575,0.236,0.1011
+deployment0004,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_eastward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",29973,0,0,0,33,29940,99.89,0.0001,-0.0004,0.0006,0.0001
+deployment0004,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_northward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",29973,0,0,0,58,29915,99.81,-0.0,-0.0003,0.0003,0.0001
+deployment0004,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_upward_velocity,m s-1,-9999999.0,"[-1.0, 1.0]",29973,0,0,0,4,29969,99.99,-0.0002,-0.0006,0.0002,0.0001

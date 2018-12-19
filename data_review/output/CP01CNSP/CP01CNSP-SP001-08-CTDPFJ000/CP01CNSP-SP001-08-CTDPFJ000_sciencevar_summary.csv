@@ -1,0 +1,6 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0004,recovered_cspp,ctdpf_j_cspp_instrument_recovered,conductivity,S m-1,-9999999.0,"[0.0, 6.0]",467937,0,0,0,0,467937,100.0,4.8567,3.3959,5.7052,0.525
+deployment0004,recovered_cspp,ctdpf_j_cspp_instrument_recovered,pressure,dbar,-9999999.0,"[0.0, 6000.0]",467937,0,0,0,0,467937,100.0,39.5437,0.492,99.573,27.0391
+deployment0004,recovered_cspp,ctdpf_j_cspp_instrument_recovered,salinity,1,-9999999.0,"[0.0, 42.0]",467937,0,0,0,0,467937,100.0,35.3864,33.1193,37.596,0.805
+deployment0004,recovered_cspp,ctdpf_j_cspp_instrument_recovered,temperature,ºC,-9999999.0,"[-2.0, 40.0]",467937,0,0,0,0,467937,100.0,20.0763,7.1168,27.3734,5.0665
+deployment0004,recovered_cspp,ctdpf_j_cspp_instrument_recovered,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",467937,0,0,0,0,467937,100.0,1025.1053,1021.6697,1028.8527,1.5408

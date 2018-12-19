@@ -1,0 +1,11 @@
+deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
+deployment0004,recovered_cspp-velpt_j_cspp_instrument_recovered,telemetered-velpt_j_cspp_instrument,Seawater Temperature,temperature,ºC,pass,29973,0,no missing data,1645,0.0,0.0,0,0.0
+deployment0004,recovered_cspp-velpt_j_cspp_instrument_recovered,telemetered-velpt_j_cspp_instrument,Speed of Sound,speed_of_sound,m s-1,pass,29973,0,no missing data,1645,0.0,0.0,0,0.0
+deployment0004,recovered_cspp-velpt_j_cspp_instrument_recovered,telemetered-velpt_j_cspp_instrument,Seawater Pressure,pressure_depth,dbar,pass,29973,0,no missing data,1645,0.0,0.2130012512,0,0.0
+deployment0004,recovered_cspp-velpt_j_cspp_instrument_recovered,telemetered-velpt_j_cspp_instrument,VELPT Pressure,velpt_pressure,dbar,pass,29973,0,no missing data,1645,0.0,0.1660003662,0,0.0
+deployment0004,recovered_cspp-velpt_j_cspp_instrument_recovered,telemetered-velpt_j_cspp_instrument,Velocity Beam1 or X or East Coordinates,velocity_beam1_m_s,m s-1,pass,29973,0,no missing data,1645,0.0,0.0810000002,0,0.0
+deployment0004,recovered_cspp-velpt_j_cspp_instrument_recovered,telemetered-velpt_j_cspp_instrument,Velocity Beam2 or Y or North Coordinates,velocity_beam2_m_s,m s-1,pass,29973,0,no missing data,1645,0.0,0.0309999995,0,0.0
+deployment0004,recovered_cspp-velpt_j_cspp_instrument_recovered,telemetered-velpt_j_cspp_instrument,Velocity Beam3 or Z or Up Coordinates,velocity_beam3_m_s,m s-1,pass,29973,0,no missing data,1645,0.0,0.1299999952,0,0.0
+deployment0004,recovered_cspp-velpt_j_cspp_instrument_recovered,telemetered-velpt_j_cspp_instrument,Eastward Mean Point Seawater Velocity,velpt_j_eastward_velocity,m s-1,pass,29973,0,no missing data,1645,0.0,8.34296e-05,0,0.0
+deployment0004,recovered_cspp-velpt_j_cspp_instrument_recovered,telemetered-velpt_j_cspp_instrument,Northward Mean Point Seawater Velocity,velpt_j_northward_velocity,m s-1,pass,29973,0,no missing data,1645,0.0,2.73279e-05,0,0.0
+deployment0004,recovered_cspp-velpt_j_cspp_instrument_recovered,telemetered-velpt_j_cspp_instrument,Upward Mean Point Seawater Velocity,velpt_j_upward_velocity,m s-1,pass,29973,0,no missing data,1645,0.0,0.00013,0,0.0
