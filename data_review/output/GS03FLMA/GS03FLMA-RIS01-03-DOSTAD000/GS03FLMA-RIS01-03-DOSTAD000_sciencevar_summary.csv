@@ -1,0 +1,16 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_host,dosta_abcdjm_sio_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",24696,0,24696,0,,0,0.0,,,,
+deployment0001,recovered_host,dosta_abcdjm_sio_instrument_recovered,estimated_oxygen_concentration,µmol L-1,-9999999.0,"[0.0, 400.0]",24696,0,0,750,0.0,23946,96.96,359.9858,340.39,399.976,11.2163
+deployment0001,recovered_host,dosta_abcdjm_sio_instrument_recovered,estimated_oxygen_saturation,percent,-9999999.0,"[0.0, 110.0]",24696,0,0,136,134.0,24426,98.91,93.2907,86.531,106.145,2.3242
+deployment0001,recovered_host,dosta_abcdjm_sio_instrument_recovered,optode_temperature,ºC,-9999999.0,"[-2.0, 40.0]",24696,0,0,0,0.0,24696,100.0,6.2062,5.258,8.139,0.8574
+deployment0001,recovered_host,dosta_abcdjm_sio_instrument_recovered,dosta_abcdjm_cspp_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",24696,0,0,750,0.0,23946,96.96,359.9858,340.3786,399.9778,11.2163
+deployment0002,recovered_host,dosta_abcdjm_sio_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",34040,0,0,713,0.0,33327,97.91,301.3251,264.102,399.9622,21.5738
+deployment0002,recovered_host,dosta_abcdjm_sio_instrument_recovered,estimated_oxygen_concentration,µmol L-1,-9999999.0,"[0.0, 400.0]",34040,0,0,6350,0.0,27690,81.35,375.432,338.487,399.999,8.4898
+deployment0002,recovered_host,dosta_abcdjm_sio_instrument_recovered,estimated_oxygen_saturation,percent,-9999999.0,"[0.0, 110.0]",34040,0,0,4435,0.0,29605,86.97,99.7233,88.271,109.999,2.5617
+deployment0002,recovered_host,dosta_abcdjm_sio_instrument_recovered,optode_temperature,ºC,-9999999.0,"[-2.0, 40.0]",34040,0,0,0,0.0,34040,100.0,6.9754,5.845,8.769,0.7838
+deployment0002,recovered_host,dosta_abcdjm_sio_instrument_recovered,dosta_abcdjm_cspp_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",34040,0,0,6352,0.0,27688,81.34,375.432,338.4944,399.9879,8.4875
+deployment0003,recovered_host,dosta_abcdjm_sio_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",6657,0,4335,0,1.0,2321,34.87,277.3558,272.7501,279.7388,1.131
+deployment0003,recovered_host,dosta_abcdjm_sio_instrument_recovered,estimated_oxygen_concentration,µmol L-1,-9999999.0,"[0.0, 400.0]",6657,0,0,0,1.0,6656,99.98,357.0703,349.785,364.385,2.2876
+deployment0003,recovered_host,dosta_abcdjm_sio_instrument_recovered,estimated_oxygen_saturation,percent,-9999999.0,"[0.0, 110.0]",6657,0,0,0,0.0,6657,100.0,95.6853,91.082,97.824,1.2367
+deployment0003,recovered_host,dosta_abcdjm_sio_instrument_recovered,optode_temperature,ºC,-9999999.0,"[-2.0, 40.0]",6657,0,0,0,0.0,6657,100.0,7.6435,6.204,8.325,0.4153
+deployment0003,recovered_host,dosta_abcdjm_sio_instrument_recovered,dosta_abcdjm_cspp_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",6657,0,0,0,1.0,6656,99.98,357.0696,349.7897,364.3839,2.2874
