@@ -48,4 +48,4 @@ for i, row in df.iterrows():
 
 sfile = 'OOI_datareview_report_{}.csv'.format(dt.datetime.utcnow().strftime('%Y%m%dT%H%M'))
 
-df.to_csv(os.path.join(sDir, sfile))
+df.to_csv(os.path.join(sDir, sfile), index=False)
