@@ -187,8 +187,8 @@ def main(sDir, plotting_sDir, url_list):
                     note = 'restricted stats calculation to data points where pressure is within defined ranges' \
                            ' (average of all pressure data +/- 1 SD)'
                     rows.append([m, list(np.unique(pms)), deployments, sv, lunits, t0, t1, fv_lst, [g_min, g_max],
-                                 n_all, [ipress_min, ipress_max], n_excluded, n_nan, n_fv, n_grange, n_stats, mean,
-                                 vmin, vmax, sd, note])
+                                 n_all, [round(ipress_min, 2), round(ipress_max, 2)], n_excluded, n_nan, n_fv, n_grange,
+                                 n_stats, mean, vmin, vmax, sd, note])
 
                     # plot CTDMO data used for stats
                     psave_dir = os.path.join(plotting_sDir, array, subsite, r, 'timeseries_plots_stats')
