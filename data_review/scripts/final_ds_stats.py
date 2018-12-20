@@ -12,9 +12,9 @@ import os
 import itertools
 import pandas as pd
 import numpy as np
-import xarray as xr
 import datetime as dt
 import functions.common as cf
+import functions.plotting as pf
 import functions.combine_datasets as cd
 
 
@@ -24,7 +24,30 @@ def format_dates(dd):
     return fd2
 
 
-def main(sDir, url_list):
+def get_deployment_information(data, deployment):
+    d_info = [x for x in data['instrument']['deployments'] if x['deployment_number'] == deployment]
+    if d_info:
+        return d_info[0]
+    else:
+        return None
+
+
+def index_dataset(refdes, var_name, var_data, fv):
+    n_nan = np.sum(np.isnan(var_data))
+    n_fv = np.sum(var_data == fv)
+
+    [g_min, g_max] = cf.get_global_ranges(refdes, var_name)
+    if g_min is not None and g_max is not None:
+        dataind = (~np.isnan(var_data)) & (var_data != fv) & (var_data >= g_min) & (var_data <= g_max)
+        n_grange = np.sum((var_data < g_min) & (var_data > g_max))
+    else:
+        dataind = (~np.isnan(var_data)) & (var_data == fv)
+        n_grange = 'no global ranges'
+
+    return [dataind, g_min, g_max, n_nan, n_fv, n_grange]
+
+
+def main(sDir, plotting_sDir, url_list):
     dr = pd.read_csv('https://datareview.marine.rutgers.edu/notes/export')
     drn = dr.loc[dr.type == 'exclusion']
     rd_list = []
@@ -93,63 +116,145 @@ def main(sDir, url_list):
         save_dir = os.path.join(sDir, array, subsite)
         cf.create_dir(save_dir)
 
-        headers = ['common_stream_name', 'preferred_methods_streams', 'deployments', 'long_name', 'units', 't0', 't1',
-                   'fill_value', 'global_ranges', 'n_all', 'n_nans', 'n_fillvalues', 'n_grange', 'define_stdev',
-                   'n_outliers', 'n_stats', 'mean', 'min', 'max', 'stdev']
-        rows = []
         for m, n in sci_vars_dict.items():
             print(m)
             if m == 'common_stream_placeholder':
                 m = 'science_data_stream'
-            for sv, vinfo in n['vars'].items():
-                print(sv)
-                lst_fill_value = np.unique(vinfo['fv']).tolist()
-                if len(lst_fill_value) == 1:
-                    fill_value = lst_fill_value[0]
-                else:
-                    print('No unique fill value for {}'.format(sv))
 
-                lunits = np.unique(vinfo['units']).tolist()
+            if 'CTDMO' in r:
+                headers = ['common_stream_name', 'preferred_methods_streams', 'deployments', 'long_name', 'units', 't0',
+                           't1', 'fill_value', 'global_ranges', 'n_all', 'press_min_max', 'n_excluded_forpress',
+                           'n_nans', 'n_fillvalues', 'n_grange', 'n_stats', 'mean', 'min', 'max', 'stdev', 'note']
+                rows = []
 
-                t0 = pd.to_datetime(min(vinfo['t'])).strftime('%Y-%m-%dT%H:%M:%S')
-                t1 = pd.to_datetime(max(vinfo['t'])).strftime('%Y-%m-%dT%H:%M:%S')
-                data = vinfo['values']
-                n_all = len(data)
+                # index the pressure variable to filter and calculate stats on the rest of the variables
+                sv_press = 'Seawater Pressure'
+                vinfo_press = n['vars'][sv_press]
 
-                # reject NaNs
-                data_nonan = data[~np.isnan(data)]
-                n_nan = n_all - len(data_nonan)
+                # first, index where data are nans, fill values, and outside of global ranges
+                fv_press = list(np.unique(vinfo_press['fv']))[0]
+                pdata = vinfo_press['values']
 
-                # reject fill values
-                data_nonan_nofv = data_nonan[data_nonan != fill_value]
-                n_fv = n_all - n_nan - len(data_nonan_nofv)
+                [pind, __, __, __, __, __] = index_dataset(r, vinfo_press['var_name'], pdata, fv_press)
 
-                # reject data outside of global ranges
-                [g_min, g_max] = cf.get_global_ranges(r, vinfo['var_name'])
+                pdata_filtered = pdata[pind]
+                [__, pmean, __, __, psd, __] = cf.variable_statistics(pdata_filtered, None)
 
-                if g_min is not None and g_max is not None:
-                    gr_ind = cf.reject_global_ranges(data_nonan_nofv, g_min, g_max)
-                    data_nonan_nofv_gr = data_nonan_nofv[gr_ind]
-                    n_grange = n_all - n_nan - n_fv - len(data_nonan_nofv_gr)
-                else:
-                    n_grange = 'no global ranges'
-                    data_nonan_nofv_gr = data_nonan_nofv
+                # index of pressure = average of all 'valid' pressure data +/- 1 SD
+                ipress_min = pmean - psd
+                ipress_max = pmean + psd
+                ind_press = (pdata >= ipress_min) & (pdata <= ipress_max)
 
-                if len(data_nonan_nofv_gr) > 1:
-                    sd_calc = None  # number of standard deviations for outlier calculation. options: int or None
-                    [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(data_nonan_nofv_gr, sd_calc)
-                else:
-                    sd_calc = None
-                    num_outliers = None
-                    mean = None
-                    vmin = None
-                    vmax = None
-                    sd = None
-                    n_stats = None
+                # calculate stats for all variables
+                for sv, vinfo in n['vars'].items():
+                    print(sv)
+                    fv_lst = np.unique(vinfo['fv']).tolist()
+                    if len(fv_lst) == 1:
+                        fill_value = fv_lst[0]
+                    else:
+                        print('No unique fill value for {}'.format(sv))
 
-                rows.append([m, list(np.unique(pms)), vinfo['deployments'], sv, lunits, t0, t1, lst_fill_value,
-                             [g_min, g_max], n_all, n_nan, n_fv, n_grange, sd_calc, num_outliers, n_stats, mean, vmin,
-                             vmax, sd])
+                    lunits = np.unique(vinfo['units']).tolist()
+                    n_all = len(vinfo['t'])
+
+                    # filter data based on pressure index
+                    t_filtered = vinfo['t'][ind_press]
+                    data_filtered = vinfo['values'][ind_press]
+                    deploy_filtered = vinfo['deployments'][ind_press]
+
+                    n_excluded = n_all - len(t_filtered)
+
+                    [dataind, g_min, g_max, n_nan, n_fv, n_grange] = index_dataset(r, vinfo['var_name'], data_filtered, fill_value)
+
+                    t_final = t_filtered[dataind]
+                    data_final = data_filtered[dataind]
+                    deploy_final = deploy_filtered[dataind]
+
+                    t0 = pd.to_datetime(min(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
+                    t1 = pd.to_datetime(max(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
+                    deploy = list(np.unique(deploy_final))
+                    deployments = [int(dd) for dd in deploy]
+
+                    if len(data_final) > 1:
+                        [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(data_final, None)
+                    else:
+                        mean = None
+                        vmin = None
+                        vmax = None
+                        sd = None
+                        n_stats = None
+
+                    note = 'restricted stats calculation to data points where pressure is within defined ranges' \
+                           ' (average of all pressure data +/- 1 SD)'
+                    rows.append([m, list(np.unique(pms)), deployments, sv, lunits, t0, t1, fv_lst, [g_min, g_max],
+                                 n_all, [ipress_min, ipress_max], n_excluded, n_nan, n_fv, n_grange, n_stats, mean,
+                                 vmin, vmax, sd, note])
+
+                    # plot CTDMO data used for stats
+                    psave_dir = os.path.join(plotting_sDir, array, subsite, r, 'timeseries_plots_stats')
+                    cf.create_dir(psave_dir)
+
+                    dr_data = cf.refdes_datareview_json(r)
+                    deployments = []
+                    end_times = []
+                    for index, row in ps_df.iterrows():
+                        deploy = row['deployment']
+                        deploy_info = get_deployment_information(dr_data, int(deploy[-4:]))
+                        deployments.append(int(deploy[-4:]))
+                        end_times.append(pd.to_datetime(deploy_info['stop_date']))
+
+                    sname = '-'.join((r, sv))
+                    fig, ax = pf.plot_timeseries_all(t_final, data_final, sv, lunits[0], stdev=None)
+                    ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
+                                 fontsize=8)
+                    for etimes in end_times:
+                        ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
+                    pf.save_fig(psave_dir, sname)
+
+            else:
+                headers = ['common_stream_name', 'preferred_methods_streams', 'deployments', 'long_name', 'units', 't0',
+                           't1', 'fill_value', 'global_ranges', 'n_all', 'n_nans', 'n_fillvalues', 'n_grange',
+                           'define_stdev', 'n_outliers', 'n_stats', 'mean', 'min', 'max', 'stdev']
+                rows = []
+                for sv, vinfo in n['vars'].items():
+                    print(sv)
+
+                    fv_lst = np.unique(vinfo['fv']).tolist()
+                    if len(fv_lst) == 1:
+                        fill_value = fv_lst[0]
+                    else:
+                        print('No unique fill value for {}'.format(sv))
+
+                    lunits = np.unique(vinfo['units']).tolist()
+
+                    t = vinfo['t']
+                    data = vinfo['values']
+                    n_all = len(t)
+
+                    [dataind, g_min, g_max, n_nan, n_fv, n_grange] = index_dataset(r, vinfo['var_name'], data, fill_value)
+
+                    t_final = t[dataind]
+                    t0 = pd.to_datetime(min(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
+                    t1 = pd.to_datetime(max(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
+                    data_final = data[dataind]
+                    deploy_final = vinfo['deployments'][dataind]
+                    deploy = list(np.unique(deploy_final))
+                    deployments = [int(dd) for dd in deploy]
+
+                    if len(data_final) > 1:
+                        sd_calc = None  # number of standard deviations for outlier calculation. options: int or None
+                        [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(data_final, sd_calc)
+                    else:
+                        sd_calc = None
+                        num_outliers = None
+                        mean = None
+                        vmin = None
+                        vmax = None
+                        sd = None
+                        n_stats = None
+
+                    rows.append([m, list(np.unique(pms)), deployments, sv, lunits, t0, t1, fv_lst, [g_min, g_max],
+                                 n_all, n_nan, n_fv, n_grange, sd_calc, num_outliers, n_stats, mean, vmin, vmax, sd])
 
         fsum = pd.DataFrame(rows, columns=headers)
         fsum.to_csv('{}/{}_final_stats.csv'.format(save_dir, r), index=False)
@@ -158,8 +263,10 @@ def main(sDir, url_list):
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
     sDir = '/Users/lgarzio/Documents/repo/OOI/data-edu-ooi/data-review-tools/data_review/final_stats'
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181127T022407-GI03FLMA-RIM01-02-CTDMOG040-recovered_inst-ctdmo_ghqr_instrument_recovered/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181127T022421-GI03FLMA-RIM01-02-CTDMOG040-recovered_host-ctdmo_ghqr_sio_mule_instrument/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181127T022434-GI03FLMA-RIM01-02-CTDMOG040-telemetered-ctdmo_ghqr_sio_mule_instrument/catalog.html']
+    plotting_sDir = '/Users/lgarzio/Documents/OOI/DataReviews'
+    url_list = [
+        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181127T022407-GI03FLMA-RIM01-02-CTDMOG040-recovered_inst-ctdmo_ghqr_instrument_recovered/catalog.html',
+        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181127T022421-GI03FLMA-RIM01-02-CTDMOG040-recovered_host-ctdmo_ghqr_sio_mule_instrument/catalog.html',
+        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181127T022434-GI03FLMA-RIM01-02-CTDMOG040-telemetered-ctdmo_ghqr_sio_mule_instrument/catalog.html']
 
-    main(sDir, url_list)
+    main(sDir, plotting_sDir, url_list)
