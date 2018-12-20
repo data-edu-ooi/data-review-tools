@@ -12,10 +12,11 @@ import pandas as pd
 import scripts
 
 sDir = '/Users/lgarzio/Documents/repo/OOI/data-edu-ooi/data-review-tools/data_review/final_stats'
+plotting_sDir = '/Users/lgarzio/Documents/OOI/DataReviews'
 f = '/Users/lgarzio/Documents/OOI/DataReviews/GI/GI03FLMA/data_request_summary_run1.csv'
 
 ff = pd.read_csv(f)
 url_list = ff['outputUrl'].tolist()
 url_list = [u for u in url_list if u not in 'no_output_url']
 
-scripts.final_ds_stats.main(sDir, url_list)
+scripts.final_ds_stats.main(sDir, plotting_sDir, url_list)
