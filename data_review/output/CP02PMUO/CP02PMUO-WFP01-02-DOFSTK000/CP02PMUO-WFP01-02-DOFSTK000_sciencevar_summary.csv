@@ -1,0 +1,10 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_wfp,dofst_k_wfp_instrument_recovered,dofst_k_oxygen_l2,µmol kg-1,-9999999.0,"[0.0, 400.0]",11085,0,0,4,0,11081,99.96,175.0317,136.5757,240.1009,22.7147
+deployment0003,recovered_wfp,dofst_k_wfp_instrument_recovered,dofst_k_oxygen_l2,µmol kg-1,-9999999.0,"[0.0, 400.0]",2072181,0,0,0,0,2072181,100.0,177.0943,95.4085,306.4553,35.2697
+deployment0004,recovered_wfp,dofst_k_wfp_instrument_recovered,dofst_k_oxygen_l2,µmol kg-1,-9999999.0,"[0.0, 400.0]",1256515,0,0,0,0,1256515,100.0,123.8946,77.5893,205.667,25.5213
+deployment0005,recovered_wfp,dofst_k_wfp_instrument_recovered,dofst_k_oxygen_l2,µmol kg-1,-9999999.0,"[0.0, 400.0]",1554132,0,0,0,0,1554132,100.0,162.3446,92.4229,288.3008,28.4047
+deployment0006,telemetered,dofst_k_wfp_instrument,dofst_k_oxygen_l2,µmol kg-1,-9999999.0,"[0.0, 400.0]",19770,0,0,0,0,19770,100.0,164.4939,131.2183,222.7964,27.5837
+deployment0007,recovered_wfp,dofst_k_wfp_instrument_recovered,dofst_k_oxygen_l2,µmol kg-1,-9999999.0,"[0.0, 400.0]",1210771,0,0,0,0,1210771,100.0,182.7796,89.4941,289.3363,41.023
+deployment0008,recovered_wfp,dofst_k_wfp_instrument_recovered,dofst_k_oxygen_l2,µmol kg-1,-9999999.0,"[0.0, 400.0]",3083564,0,0,0,0,3083564,100.0,235.0499,94.9738,298.4604,30.2989
+deployment0009,recovered_wfp,dofst_k_wfp_instrument_recovered,dofst_k_oxygen_l2,µmol kg-1,-9999999.0,"[0.0, 400.0]",1678225,0,0,0,0,1678225,100.0,166.4906,95.7972,299.2067,30.9673
+deployment0010,recovered_wfp,dofst_k_wfp_instrument_recovered,dofst_k_oxygen_l2,µmol kg-1,-9999999.0,"[0.0, 400.0]",949243,0,0,0,0,949243,100.0,193.8815,83.922,285.8387,51.1812
