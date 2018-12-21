@@ -47,7 +47,7 @@ def index_dataset(refdes, var_name, var_data, fv):
     return [dataind, g_min, g_max, n_nan, n_fv, n_grange]
 
 
-def main(sDir, plotting_sDir, url_list):
+def main(sDir, plotting_sDir, url_list, sd_calc):
     dr = pd.read_csv('https://datareview.marine.rutgers.edu/notes/export')
     drn = dr.loc[dr.type == 'exclusion']
     rd_list = []
@@ -124,7 +124,8 @@ def main(sDir, plotting_sDir, url_list):
             if 'CTDMO' in r:
                 headers = ['common_stream_name', 'preferred_methods_streams', 'deployments', 'long_name', 'units', 't0',
                            't1', 'fill_value', 'global_ranges', 'n_all', 'press_min_max', 'n_excluded_forpress',
-                           'n_nans', 'n_fillvalues', 'n_grange', 'n_stats', 'mean', 'min', 'max', 'stdev', 'note']
+                           'n_nans', 'n_fillvalues', 'n_grange', 'define_stdev', 'n_outliers', 'n_stats', 'mean', 'min',
+                           'max', 'stdev', 'note']
                 rows = []
 
                 # index the pressure variable to filter and calculate stats on the rest of the variables
@@ -176,7 +177,7 @@ def main(sDir, plotting_sDir, url_list):
                     deployments = [int(dd) for dd in deploy]
 
                     if len(data_final) > 1:
-                        [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(data_final, None)
+                        [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(data_final, sd_calc)
                     else:
                         mean = None
                         vmin = None
@@ -188,7 +189,7 @@ def main(sDir, plotting_sDir, url_list):
                            ' (average of all pressure data +/- 1 SD)'
                     rows.append([m, list(np.unique(pms)), deployments, sv, lunits, t0, t1, fv_lst, [g_min, g_max],
                                  n_all, [round(ipress_min, 2), round(ipress_max, 2)], n_excluded, n_nan, n_fv, n_grange,
-                                 n_stats, mean, vmin, vmax, sd, note])
+                                 sd_calc, num_outliers, n_stats, mean, vmin, vmax, sd, note])
 
                     # plot CTDMO data used for stats
                     psave_dir = os.path.join(plotting_sDir, array, subsite, r, 'timeseries_plots_stats')
@@ -210,6 +211,15 @@ def main(sDir, plotting_sDir, url_list):
                     for etimes in end_times:
                         ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
                     pf.save_fig(psave_dir, sname)
+
+                    if sd_calc:
+                        sname = '-'.join((r, sv, 'rmoutliers'))
+                        fig, ax = pf.plot_timeseries_all(t_final, data_final, sv, lunits[0], stdev=sd_calc)
+                        ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
+                                     fontsize=8)
+                        for etimes in end_times:
+                            ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
+                        pf.save_fig(psave_dir, sname)
 
             else:
                 headers = ['common_stream_name', 'preferred_methods_streams', 'deployments', 'long_name', 'units', 't0',
@@ -242,7 +252,6 @@ def main(sDir, plotting_sDir, url_list):
                     deployments = [int(dd) for dd in deploy]
 
                     if len(data_final) > 1:
-                        sd_calc = None  # number of standard deviations for outlier calculation. options: int or None
                         [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(data_final, sd_calc)
                     else:
                         sd_calc = None
@@ -264,9 +273,10 @@ if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
     sDir = '/Users/lgarzio/Documents/repo/OOI/data-edu-ooi/data-review-tools/data_review/final_stats'
     plotting_sDir = '/Users/lgarzio/Documents/OOI/DataReviews'
+    sd_calc = None  # number of standard deviations for outlier calculation. options: int or None
     url_list = [
         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181127T022407-GI03FLMA-RIM01-02-CTDMOG040-recovered_inst-ctdmo_ghqr_instrument_recovered/catalog.html',
         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181127T022421-GI03FLMA-RIM01-02-CTDMOG040-recovered_host-ctdmo_ghqr_sio_mule_instrument/catalog.html',
         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181127T022434-GI03FLMA-RIM01-02-CTDMOG040-telemetered-ctdmo_ghqr_sio_mule_instrument/catalog.html']
 
-    main(sDir, plotting_sDir, url_list)
+    main(sDir, plotting_sDir, url_list, sd_calc)
