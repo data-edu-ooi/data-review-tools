@@ -1,0 +1,7 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0003,telemetered,dosta_abcdjm_cspp_instrument,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",1626,0,0,0,0,1626,100.0,206.8332,138.2593,294.4377,33.7909
+deployment0003,telemetered,dosta_abcdjm_cspp_instrument,estimated_oxygen_concentration,µmol L-1,-9999999.0,"[0.0, 400.0]",1626,0,0,0,0,1626,100.0,261.1896,176.616,371.956,41.2552
+deployment0003,telemetered,dosta_abcdjm_cspp_instrument,estimated_oxygen_saturation,percent,-9999999.0,"[0.0, 110.0]",1626,0,0,73,0,1553,95.51,83.488,52.481,109.959,17.4781
+deployment0003,telemetered,dosta_abcdjm_cspp_instrument,optode_temperature,ºC,-9999999.0,"[-2.0, 40.0]",1626,0,0,0,0,1626,100.0,15.6858,9.621,24.681,4.6201
+deployment0003,telemetered,dosta_abcdjm_cspp_instrument,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",1626,0,0,0,0,1626,100.0,40.0618,0.964,80.56,24.8837
+deployment0003,telemetered,dosta_abcdjm_cspp_instrument,dosta_abcdjm_cspp_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",1626,0,0,0,0,1626,100.0,261.1886,176.617,371.9604,41.2548

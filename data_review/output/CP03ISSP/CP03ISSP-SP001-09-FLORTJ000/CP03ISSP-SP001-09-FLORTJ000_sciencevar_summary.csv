@@ -1,0 +1,7 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0003,telemetered,flort_dj_cspp_instrument,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",1014,0,0,no global ranges,0,1014,100.0,0.0006,0.0006,0.0006,0.0
+deployment0003,telemetered,flort_dj_cspp_instrument,fluorometric_chlorophyll_a,µg L-1,-9999999.0,"[0.0, 50.0]",1014,0,0,0,7,1007,99.31,0.5125,0.0726,3.8962,0.5867
+deployment0003,telemetered,flort_dj_cspp_instrument,fluorometric_cdom,ppb,-9999999.0,"[0.0, 375.0]",1014,0,0,0,0,1014,100.0,2.3518,0.903,3.7023,0.5599
+deployment0003,telemetered,flort_dj_cspp_instrument,total_volume_scattering_coefficient,m-1 sr-1,-9999999.0,"[0.0, 0.0079]",1014,0,0,1,4,1009,99.51,0.0004,0.0001,0.0025,0.0003
+deployment0003,telemetered,flort_dj_cspp_instrument,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",1014,0,0,0,3,1011,99.7,0.0027,0.001,0.0196,0.0023
+deployment0003,telemetered,flort_dj_cspp_instrument,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",1014,0,0,0,0,1014,100.0,35.008,0.982,80.438,22.3813
