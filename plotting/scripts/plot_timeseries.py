@@ -56,7 +56,8 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
         for fd in fdatasets:
             with xr.open_dataset(fd, mask_and_scale=False) as ds:
                 ds = ds.swap_dims({'obs': 'time'})
-                raw_vars = cf.return_raw_vars(ds.data_vars.keys())
+                ds_vars = list(ds.data_vars.keys()) + [x for x in ds.coords.keys() if 'pressure' in x]  # get pressure variable from coordinates
+                raw_vars = cf.return_raw_vars(ds_vars)
 
                 if start_time is not None and end_time is not None:
                     ds = ds.sel(time=slice(start_time, end_time))
