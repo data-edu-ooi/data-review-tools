@@ -1,0 +1,8 @@
+deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
+deployment0001,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,no other methods available for comparison,,,,,,,,,,,,
+deployment0002,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Density,density,kg m-3,pass,3618066.0,0.0,no missing data,65.0,0.0,0.6708745266,0.0,0.0
+deployment0002,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Practical Salinity,practical_salinity,1,pass,3618066.0,0.0,no missing data,65.0,0.0,0.0061477806,0.0,0.0
+deployment0002,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Pressure,ctdpf_ckl_seawater_pressure,dbar,pass,3618066.0,0.0,no missing data,65.0,0.0,145.0,45.0,69.23
+deployment0002,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Temperature,ctdpf_ckl_seawater_temperature,ºC,pass,3618066.0,0.0,no missing data,65.0,0.0,0.136,0.0,0.0
+deployment0002,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Conductivity,ctdpf_ckl_seawater_conductivity,S m-1,pass,3618066.0,0.0,no missing data,65.0,0.0,0.00598,0.0,0.0
+deployment0003,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,no other methods available for comparison,,,,,,,,,,,,

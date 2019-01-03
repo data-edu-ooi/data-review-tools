@@ -1,0 +1,6 @@
+deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
+deployment0001,recovered_wfp-dosta_ln_wfp_instrument_recovered,no other methods available for comparison,,,,,,,,,,,,
+deployment0002,recovered_wfp-dosta_ln_wfp_instrument_recovered,telemetered-dosta_ln_wfp_instrument,DO - Pressure Temp Sal Corrected,dissolved_oxygen,µmol kg-1,pass,350076.0,0.0,no missing data,360.0,0.0,8.1621349242,39.0,10.83
+deployment0002,recovered_wfp-dosta_ln_wfp_instrument_recovered,telemetered-dosta_ln_wfp_instrument,DO,estimated_oxygen_concentration,µmol L-1,pass,350076.0,0.0,no missing data,360.0,0.0,0.0,0.0,0.0
+deployment0002,recovered_wfp-dosta_ln_wfp_instrument_recovered,telemetered-dosta_ln_wfp_instrument,Optode Temperature,optode_temperature,ºC,pass,350076.0,0.0,no missing data,360.0,0.0,0.0,0.0,0.0
+deployment0003,recovered_wfp-dosta_ln_wfp_instrument_recovered,no other methods available for comparison,,,,,,,,,,,,
