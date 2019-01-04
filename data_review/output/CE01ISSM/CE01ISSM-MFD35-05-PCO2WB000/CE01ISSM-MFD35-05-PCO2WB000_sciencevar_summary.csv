@@ -1,0 +1,21 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_host,pco2w_abc_dcl_instrument_blank_recovered,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",2,0,0,0,0.0,2,100.0,10.863,10.8294,10.8966,0.0336
+deployment0001,recovered_host,pco2w_abc_dcl_instrument_recovered,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",187,0,0,0,0.0,187,100.0,11.086,8.9117,12.7201,0.818
+deployment0001,recovered_host,pco2w_abc_dcl_instrument_recovered,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",187,0,47,0,0.0,140,74.87,326.7048,279.2384,349.123,16.0322
+deployment0002,telemetered,pco2w_abc_dcl_instrument,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",3,0,0,0,0.0,3,100.0,10.0547,9.7796,10.3374,0.2278
+deployment0002,telemetered,pco2w_abc_dcl_instrument,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",3,0,3,0,,0,0.0,,,,
+deployment0003,recovered_host,pco2w_abc_dcl_instrument_blank_recovered,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",35,0,0,0,0.0,35,100.0,9.1868,7.2266,13.6512,1.7145
+deployment0003,recovered_host,pco2w_abc_dcl_instrument_recovered,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",2971,0,0,0,0.0,2971,100.0,9.112,7.1159,14.1992,1.5418
+deployment0003,recovered_host,pco2w_abc_dcl_instrument_recovered,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",2971,0,0,0,0.0,2971,100.0,241.3449,159.3416,352.8314,41.8
+deployment0006,recovered_host,pco2w_abc_dcl_instrument_blank_recovered,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",8,0,0,0,0.0,8,100.0,12.3866,10.4491,13.2416,0.9733
+deployment0006,recovered_host,pco2w_abc_dcl_instrument_recovered,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",693,0,0,0,0.0,693,100.0,12.3254,8.4898,13.7195,1.1104
+deployment0006,recovered_host,pco2w_abc_dcl_instrument_recovered,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",693,0,0,0,0.0,693,100.0,297.3086,241.248,325.9962,14.2505
+deployment0007,recovered_host,pco2w_abc_dcl_instrument_blank_recovered,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",3,0,0,0,0.0,3,100.0,11.1955,11.0535,11.3002,0.1041
+deployment0007,recovered_host,pco2w_abc_dcl_instrument_recovered,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",539,0,0,0,0.0,539,100.0,10.8652,8.6896,12.4938,0.5887
+deployment0007,recovered_host,pco2w_abc_dcl_instrument_recovered,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",539,0,259,0,1.0,279,51.76,283.5704,213.67,304.5685,12.7727
+deployment0008,recovered_host,pco2w_abc_dcl_instrument_blank_recovered,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",139,0,0,0,0.0,139,100.0,10.6594,8.8673,11.8397,0.6997
+deployment0008,recovered_host,pco2w_abc_dcl_instrument_recovered,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",3946,0,0,0,0.0,3946,100.0,10.6452,8.8229,12.1777,0.699
+deployment0008,recovered_host,pco2w_abc_dcl_instrument_recovered,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",3946,0,0,0,0.0,3946,100.0,296.9662,271.5194,322.5141,7.0175
+deployment0009,recovered_host,pco2w_abc_dcl_instrument_blank_recovered,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",35,0,0,0,0.0,35,100.0,8.8081,7.5144,13.0827,1.2809
+deployment0009,recovered_host,pco2w_abc_dcl_instrument_recovered,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",2130,0,0,0,0.0,2130,100.0,8.9123,7.293,13.469,1.0254
+deployment0009,recovered_host,pco2w_abc_dcl_instrument_recovered,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",2130,0,0,0,0.0,2130,100.0,243.4589,228.7432,303.1913,13.4312
