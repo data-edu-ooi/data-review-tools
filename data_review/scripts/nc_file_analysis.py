@@ -246,46 +246,45 @@ def main(sDir, url_list):
                         try:
                             pressure = ds[press]
                             num_dims = len(pressure.dims)
-                            if num_dims > 1:
-                                print('variable has more than 1 dimension')
-                                press_outliers = 'not calculated: variable has more than 1 dimension'
-                                pressure_mean = np.nanmean(pressure.values)
+                            if len(pressure) > 1:
+                                # reject NaNs
+                                p_nonan = pressure.values[~np.isnan(pressure.values)]
 
-                            else:
-                                if len(pressure) > 1:
-                                    # reject NaNs
-                                    p_nonan = pressure.values[~np.isnan(pressure.values)]
+                                # reject fill values
+                                p_nonan_nofv = p_nonan[p_nonan != pressure._FillValue]
 
-                                    # reject fill values
-                                    p_nonan_nofv = p_nonan[p_nonan != pressure._FillValue]
+                                # reject data outside of global ranges
+                                [pg_min, pg_max] = cf.get_global_ranges(r, press)
+                                if pg_min is not None and pg_max is not None:
+                                    pgr_ind = cf.reject_global_ranges(p_nonan_nofv, pg_min, pg_max)
+                                    p_nonan_nofv_gr = p_nonan_nofv[pgr_ind]
+                                else:
+                                    p_nonan_nofv_gr = p_nonan_nofv
 
-                                    # reject data outside of global ranges
-                                    [pg_min, pg_max] = cf.get_global_ranges(r, press)
-                                    if pg_min is not None and pg_max is not None:
-                                        pgr_ind = cf.reject_global_ranges(p_nonan_nofv, pg_min, pg_max)
-                                        p_nonan_nofv_gr = p_nonan_nofv[pgr_ind]
-                                    else:
-                                        p_nonan_nofv_gr = p_nonan_nofv
+                                if (len(p_nonan_nofv_gr) > 0) and (num_dims == 1):
+                                    [press_outliers, pressure_mean, _, pressure_max, _, _] = cf.variable_statistics(p_nonan_nofv_gr, 3)
+                                    pressure_mean = round(pressure_mean, 2)
+                                    pressure_max = round(pressure_max, 2)
+                                elif (len(p_nonan_nofv_gr) > 0) and (num_dims > 1):
+                                    print('variable has more than 1 dimension')
+                                    press_outliers = 'not calculated: variable has more than 1 dimension'
+                                    pressure_mean = round(np.nanmean(p_nonan_nofv_gr), 2)
+                                    pressure_max = round(np.nanmax(p_nonan_nofv_gr), 2)
+                                else:
+                                    press_outliers = None
+                                    pressure_mean = None
+                                    pressure_max = None
+                                    if len(pressure) > 0 and len(p_nonan) == 0:
+                                        notes.append('Pressure variable all NaNs')
+                                    elif len(pressure) > 0 and len(p_nonan) > 0 and len(p_nonan_nofv) == 0:
+                                        notes.append('Pressure variable all fill values')
+                                    elif len(pressure) > 0 and len(p_nonan) > 0 and len(p_nonan_nofv) > 0 and len(p_nonan_nofv_gr) == 0:
+                                        notes.append('Pressure variable outside of global ranges')
 
-                                    if len(p_nonan_nofv_gr) > 0:
-                                        [press_outliers, pressure_mean, _, pressure_max, _, _] = cf.variable_statistics(p_nonan_nofv_gr, 3)
-                                        pressure_mean = round(pressure_mean, 2)
-                                        pressure_max = round(pressure_max, 2)
-                                    else:
-                                        press_outliers = None
-                                        pressure_mean = None
-                                        pressure_max = None
-                                        if len(pressure) > 0 and len(p_nonan) == 0:
-                                            notes.append('Pressure variable all NaNs')
-                                        elif len(pressure) > 0 and len(p_nonan) > 0 and len(p_nonan_nofv) == 0:
-                                            notes.append('Pressure variable all fill values')
-                                        elif len(pressure) > 0 and len(p_nonan) > 0 and len(p_nonan_nofv) > 0 and len(p_nonan_nofv_gr) == 0:
-                                            notes.append('Pressure variable outside of global ranges')
-
-                                else:  # if there is only 1 data point
-                                    press_outliers = 0
-                                    pressure_mean = round(ds[press].values.tolist()[0], 2)
-                                    pressure_max = round(ds[press].values.tolist()[0], 2)
+                            else:  # if there is only 1 data point
+                                press_outliers = 0
+                                pressure_mean = round(ds[press].values.tolist()[0], 2)
+                                pressure_max = round(ds[press].values.tolist()[0], 2)
 
                             try:
                                 pressure_units = pressure.units
