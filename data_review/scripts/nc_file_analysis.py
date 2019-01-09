@@ -58,7 +58,7 @@ def insert_into_dict(d, key, value):
 
 def main(sDir, url_list):
     reviewlist = pd.read_csv(
-        'https://raw.githubusercontent.com/data-edu-ooi/data-review-tools/master/review_list/data_review_list.csv')
+        'https://raw.githubusercontent.com/ooi-data-lab/data-review-tools/master/review_list/data_review_list.csv')
 
     rd_list = []
     for uu in url_list:

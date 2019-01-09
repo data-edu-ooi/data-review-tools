@@ -4,7 +4,7 @@ Created  on Sep 7 2018
 
 @author: Lori Garzio
 @brief: This script imports tools to use the data_review_list
-(https://github.com/data-edu-ooi/data-review-tools/tree/master/review_list) to download OOI 1.0 datasets via the OOI
+(https://github.com/ooi-data-lab/data-review-tools/tree/master/review_list) to download OOI 1.0 datasets via the OOI
 M2M interface.
 
 @usage:
