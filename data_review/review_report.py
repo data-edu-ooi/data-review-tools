@@ -12,7 +12,7 @@ import datetime as dt
 import os
 pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
 
-sDir = '/Users/lgarzio/Documents/repo/OOI/data-edu-ooi/data-review-tools/data_review/review_reports'
+sDir = '/Users/lgarzio/Documents/repo/OOI/ooi-data-lab/data-review-tools/data_review/review_reports'
 
 
 def format_dates(dd):

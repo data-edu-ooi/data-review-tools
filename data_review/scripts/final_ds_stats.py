@@ -271,7 +271,7 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
 
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
-    sDir = '/Users/lgarzio/Documents/repo/OOI/data-edu-ooi/data-review-tools/data_review/final_stats'
+    sDir = '/Users/lgarzio/Documents/repo/OOI/ooi-data-lab/data-review-tools/data_review/final_stats'
     plotting_sDir = '/Users/lgarzio/Documents/OOI/DataReviews'
     sd_calc = None  # number of standard deviations for outlier calculation. options: int or None
     url_list = [

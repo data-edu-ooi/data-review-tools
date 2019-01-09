@@ -47,5 +47,5 @@ def main(f):
 
 
 if __name__ == '__main__':
-    f = '/Users/lgarzio/Documents/repo/OOI/data-edu-ooi/data-review-tools/data_review/output/GP03FLMA/GP03FLMA-RIM01-02-CTDMOG040/GP03FLMA-RIM01-02-CTDMOG040-file_analysis.json'
+    f = '/Users/lgarzio/Documents/repo/OOI/ooi-data-lab/data-review-tools/data_review/output/GP03FLMA/GP03FLMA-RIM01-02-CTDMOG040/GP03FLMA-RIM01-02-CTDMOG040-file_analysis.json'
     main(f)
