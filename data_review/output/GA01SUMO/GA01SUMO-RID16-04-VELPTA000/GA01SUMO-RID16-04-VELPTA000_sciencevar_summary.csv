@@ -1,0 +1,15 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0002,recovered_host,velpt_ab_dcl_instrument_recovered,velocity_beam1,mm s-1,-9999,"[-3000.0, 3000.0]",34021,0,0,0,0,34021,100.0,9.2009,-1516.0,1745.0,368.2493
+deployment0002,recovered_host,velpt_ab_dcl_instrument_recovered,velocity_beam2,mm s-1,-9999,"[-3000.0, 3000.0]",34021,0,0,0,0,34021,100.0,80.8825,-1432.0,1440.0,339.3069
+deployment0002,recovered_host,velpt_ab_dcl_instrument_recovered,velocity_beam3,mm s-1,-9999,"[-1000.0, 1000.0]",34021,0,0,863,0,33158,97.46,19.2919,-1000.0,1000.0,387.3039
+deployment0002,recovered_host,velpt_ab_dcl_instrument_recovered,eastward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",34021,0,0,0,0,34021,100.0,-0.0106,-1.7262,1.7477,0.3662
+deployment0002,recovered_host,velpt_ab_dcl_instrument_recovered,northward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",34021,0,0,0,0,34021,100.0,0.0807,-1.4896,1.4078,0.3415
+deployment0002,recovered_host,velpt_ab_dcl_instrument_recovered,upward_velocity,m s-1,-9999999.0,"[-1.0, 1.0]",34021,0,0,863,0,33158,97.46,0.0193,-1.0,1.0,0.3873
+deployment0002,recovered_host,velpt_ab_dcl_instrument_recovered,pressure_mbar,0.001 dbar,-9999999,"[0.0, 1100000.0]",34021,0,0,0,15,34006,99.96,13139.7403,10797.0,15108.0,471.2203
+deployment0003,recovered_host,velpt_ab_dcl_instrument_recovered,velocity_beam1,mm s-1,-9999,"[-3000.0, 3000.0]",13602,0,0,0,1,13601,99.99,-80.1361,-800.0,491.0,157.1474
+deployment0003,recovered_host,velpt_ab_dcl_instrument_recovered,velocity_beam2,mm s-1,-9999,"[-3000.0, 3000.0]",13602,0,0,0,0,13602,100.0,71.5673,-441.0,684.0,157.2801
+deployment0003,recovered_host,velpt_ab_dcl_instrument_recovered,velocity_beam3,mm s-1,-9999,"[-1000.0, 1000.0]",13602,0,0,0,139,13463,98.98,-25.1133,-361.0,119.0,43.9401
+deployment0003,recovered_host,velpt_ab_dcl_instrument_recovered,eastward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",13602,0,0,0,1,13601,99.99,-0.0951,-0.8373,0.4836,0.1631
+deployment0003,recovered_host,velpt_ab_dcl_instrument_recovered,northward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",13602,0,0,0,0,13602,100.0,0.0499,-0.4499,0.6907,0.1511
+deployment0003,recovered_host,velpt_ab_dcl_instrument_recovered,upward_velocity,m s-1,-9999999.0,"[-1.0, 1.0]",13602,0,0,0,139,13463,98.98,-0.0251,-0.361,0.119,0.0439
+deployment0003,recovered_host,velpt_ab_dcl_instrument_recovered,pressure_mbar,0.001 dbar,-9999999,"[0.0, 1100000.0]",13602,0,0,0,0,13602,100.0,13560.682,13078.0,13827.0,140.3197
