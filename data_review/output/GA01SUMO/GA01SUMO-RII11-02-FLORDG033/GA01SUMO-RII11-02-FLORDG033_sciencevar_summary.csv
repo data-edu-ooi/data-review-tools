@@ -1,0 +1,5 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0002,recovered_host,flord_g_ctdbp_p_dcl_instrument_recovered,fluorometric_chlorophyll_a,µg L-1,-9999999.0,"[0.0, 50.0]",3022,0,0,0,16,3006,99.47,0.0618,0.0108,0.237,0.032
+deployment0002,recovered_host,flord_g_ctdbp_p_dcl_instrument_recovered,total_volume_scattering_coefficient,m-1 sr-1,-9999999.0,"[0.0, 0.0079]",3022,0,0,0,9,3013,99.7,0.0005,0.0004,0.0006,0.0
+deployment0003,recovered_host,flord_g_ctdbp_p_dcl_instrument_recovered,fluorometric_chlorophyll_a,µg L-1,-9999999.0,"[0.0, 50.0]",4457,0,0,3,26,4428,99.35,0.0501,0.0084,0.1848,0.023
+deployment0003,recovered_host,flord_g_ctdbp_p_dcl_instrument_recovered,total_volume_scattering_coefficient,m-1 sr-1,-9999999.0,"[0.0, 0.0079]",4457,0,0,3,30,4424,99.26,0.0004,0.0003,0.0016,0.0001
