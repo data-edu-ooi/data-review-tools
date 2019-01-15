@@ -1,0 +1,79 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_host,metbk_a_dcl_instrument_recovered,barometric_pressure,mbar,-9999999.0,"[800.0, 1100.0]",335301,0,0,0,0.0,335301,100.0,1001.5371,950.2,1033.42,14.9225
+deployment0001,recovered_host,metbk_a_dcl_instrument_recovered,relative_humidity,%,-9999999.0,"[0.0, 100.0]",335301,0,0,1,0.0,335300,100.0,82.7901,40.263,99.935,10.6685
+deployment0001,recovered_host,metbk_a_dcl_instrument_recovered,air_temperature,ºC,-9999999.0,"[-50.0, 50.0]",335301,0,0,0,2.0,335299,100.0,5.1803,-3.679,10.036,1.775
+deployment0001,recovered_host,metbk_a_dcl_instrument_recovered,longwave_irradiance,W m-2,-9999999.0,"[200.0, 500.0]",335301,0,0,0,0.0,335301,100.0,311.9634,201.5,368.9,31.2884
+deployment0001,recovered_host,metbk_a_dcl_instrument_recovered,precipitation,mm,-9999999.0,"[0.0, 50.0]",335301,0,0,32396,0.0,302905,90.34,25.7754,2.43,49.99,14.478
+deployment0001,recovered_host,metbk_a_dcl_instrument_recovered,sea_surface_temperature,ºC,-9999999.0,"[-2.0, 40.0]",335301,0,0,14,0.0,335287,100.0,6.263,5.185,8.285,0.9038
+deployment0001,recovered_host,metbk_a_dcl_instrument_recovered,sea_surface_conductivity,S m-1,-9999999.0,"[0.0, 6.0]",335301,0,0,0,14.0,335287,100.0,3.3862,3.2145,3.5637,0.0789
+deployment0001,recovered_host,metbk_a_dcl_instrument_recovered,shortwave_irradiance,W m-2,-9999999.0,"[0.0, 1000.0]",335301,0,0,710,0.0,334591,99.79,113.1064,1.4,999.8,183.8208
+deployment0001,recovered_host,metbk_a_dcl_instrument_recovered,eastward_wind_velocity,m s-1,-9999999.0,"[-33.0, 33.0]",335301,0,0,0,0.0,335301,100.0,4.7548,-21.88,22.53,6.2051
+deployment0001,recovered_host,metbk_a_dcl_instrument_recovered,northward_wind_velocity,m s-1,-9999999.0,"[-33.0, 33.0]",335301,0,0,0,0.0,335301,100.0,2.5187,-19.55,22.36,6.2779
+deployment0001,recovered_host,metbk_a_dcl_instrument_recovered,met_barpres,Pa,-9999999.0,"[87000.0, 108330.0]",335301,0,0,0,0.0,335301,100.0,100153.7095,95020.0,103342.0078,1492.2524
+deployment0001,recovered_host,metbk_a_dcl_instrument_recovered,met_windavg_mag_corr_east,m s-1,-9999999.0,"[None, None]",335301,0,0,no global ranges,0.0,335301,100.0,5.3763,-16.7579,21.9087,5.7705
+deployment0001,recovered_host,metbk_a_dcl_instrument_recovered,met_windavg_mag_corr_north,m s-1,-9999999.0,"[None, None]",335301,0,0,no global ranges,0.0,335301,100.0,0.2163,-19.6354,22.8727,6.6797
+deployment0001,recovered_host,metbk_a_dcl_instrument_recovered,met_current_direction,degrees,-9999999.0,"[0.0, 360.0]",335301,0,120915,0,0.0,214386,63.94,165.3595,0.0003,359.9986,127.5779
+deployment0001,recovered_host,metbk_a_dcl_instrument_recovered,met_current_speed,m s-1,-9999999.0,"[-3.0, 3.0]",335301,0,120915,0,0.0,214386,63.94,0.357,0.0003,2.8922,0.6602
+deployment0001,recovered_host,metbk_a_dcl_instrument_recovered,met_relwind_direction,degrees,-9999999.0,"[0.0, 360.0]",335301,0,120915,0,0.0,214386,63.94,132.9278,0.0007,359.9991,87.3911
+deployment0001,recovered_host,metbk_a_dcl_instrument_recovered,met_relwind_speed,m s-1,-9999999.0,"[-33.0, 33.0]",335301,0,120915,0,0.0,214386,63.94,9.3741,0.0137,23.5596,3.7375
+deployment0001,recovered_host,metbk_a_dcl_instrument_recovered,met_netsirr,W m-2,-9999999.0,"[0.0, 500.0]",335301,0,0,18371,0.0,316930,94.52,76.1071,1.323,499.9995,114.4029
+deployment0001,recovered_host,metbk_a_dcl_instrument_recovered,met_salsurf,1,-9999999.0,"[0.0, 42.0]",335301,0,0,0,14.0,335287,100.0,34.1607,33.2023,34.2148,0.0317
+deployment0001,recovered_host,metbk_a_dcl_instrument_recovered,met_spechum,g kg-1,-9999999.0,"[0.0, 47.0]",335301,0,0,0,0.0,335301,100.0,4.6417,1.6562,7.5874,0.9983
+deployment0001,recovered_host,metbk_a_dcl_instrument_recovered,met_heatflx_minute,W m-2,-9999999.0,"[None, None]",335301,3965,120915,no global ranges,98.0,210323,62.73,12.6686,-872.2206,885.7078,175.8958
+deployment0001,recovered_host,metbk_a_dcl_instrument_recovered,met_latnflx_minute,W m-2,-9999999.0,"[None, None]",335301,3965,120915,no global ranges,6.0,210415,62.75,46.8929,-65.4327,262.8261,43.4914
+deployment0001,recovered_host,metbk_a_dcl_instrument_recovered,met_netlirr_minute,W m-2,-9999999.0,"[None, None]",335301,3965,120915,no global ranges,0.0,210421,62.76,33.4027,-15.1935,134.5493,30.0889
+deployment0001,recovered_host,metbk_a_dcl_instrument_recovered,met_sensflx_minute,W m-2,-9999999.0,"[None, None]",335301,3965,120915,no global ranges,570.0,209851,62.59,16.3013,-68.5958,157.7641,26.945
+deployment0001,recovered_host,metbk_hourly,met_rainrte,mm hr-1,-9999999.0,"[0.0, 50.0]",5976,0,0,0,47.0,5929,99.21,0.0165,0.0,0.5284,0.0538
+deployment0001,recovered_host,metbk_hourly,met_buoyfls,W m-2,-9999999.0,"[None, None]",5976,419,2949,no global ranges,3.0,2605,43.59,19.9252,-61.2074,169.6777,29.923
+deployment0001,recovered_host,metbk_hourly,met_buoyflx,W m-2,-9999999.0,"[None, None]",5976,419,2949,no global ranges,3.0,2605,43.59,20.4622,-61.7993,171.9016,30.3516
+deployment0001,recovered_host,metbk_hourly,met_frshflx,mm hr-1,-9999999.0,"[None, None]",5976,419,2949,no global ranges,15.0,2593,43.39,0.0471,-0.651,0.3164,0.1005
+deployment0001,recovered_host,metbk_hourly,met_heatflx,W m-2,-9999999.0,"[None, None]",5976,419,2949,no global ranges,0.0,2608,43.64,-3.1987,-813.0343,452.6206,172.6722
+deployment0001,recovered_host,metbk_hourly,met_latnflx,W m-2,-9999999.0,"[None, None]",5976,419,2949,no global ranges,0.0,2608,43.64,47.9932,-55.8116,218.6915,43.6247
+deployment0001,recovered_host,metbk_hourly,met_mommflx,N m-2,-9999999.0,"[None, None]",5976,419,2949,no global ranges,1.0,2607,43.62,0.2368,0.0005,1.2519,0.219
+deployment0001,recovered_host,metbk_hourly,met_netlirr,W m-2,-9999999.0,"[200.0, 500.0]",5976,419,2949,2608,,0,0.0,,,,
+deployment0001,recovered_host,metbk_hourly,met_rainflx,W m-2,-9999999.0,"[None, None]",5976,419,2949,no global ranges,25.0,2583,43.22,0.0323,-1.0702,1.2197,0.138
+deployment0001,recovered_host,metbk_hourly,met_sensflx,W m-2,-9999999.0,"[None, None]",5976,419,2949,no global ranges,3.0,2605,43.59,17.1865,-58.1891,158.3355,27.7664
+deployment0001,recovered_host,metbk_hourly,met_sphum2m,g kg-1,-9999999.0,"[0.0, 47.0]",5976,419,2949,0,0.0,2608,43.64,4.9304,2.1809,7.4326,0.9872
+deployment0001,recovered_host,metbk_hourly,met_tempa2m,ºC,-9999999.0,"[-50.0, 50.0]",5976,419,2949,0,0.0,2608,43.64,5.7285,-2.4241,9.7353,1.806
+deployment0001,recovered_host,metbk_hourly,met_tempskn,ºC,-9999999.0,"[-2.0, 40.0]",5976,419,2949,0,0.0,2608,43.64,6.7563,4.9948,8.1526,0.8822
+deployment0001,recovered_host,metbk_hourly,met_wind10m,m s-1,-9999999.0,"[-33.0, 33.0]",5976,419,2949,0,0.0,2608,43.64,10.1008,0.4215,21.6796,3.8357
+deployment0001,recovered_host,metbk_hourly,met_netsirr_hourly,W m-2,-9999999.0,"[None, None]",5976,0,0,no global ranges,1.0,5975,99.98,103.491,2.2034,924.6368,164.3306
+deployment0002,recovered_host,metbk_a_dcl_instrument_recovered,barometric_pressure,mbar,-9999999.0,"[800.0, 1100.0]",522126,0,0,0,0.0,522126,100.0,1001.2099,954.41,1035.01,13.8557
+deployment0002,recovered_host,metbk_a_dcl_instrument_recovered,relative_humidity,%,-9999999.0,"[0.0, 100.0]",522126,0,0,0,0.0,522126,100.0,84.8946,48.322,98.558,9.7381
+deployment0002,recovered_host,metbk_a_dcl_instrument_recovered,air_temperature,ºC,-9999999.0,"[-50.0, 50.0]",522126,0,0,0,0.0,522126,100.0,6.3319,-0.509,10.1,1.5204
+deployment0002,recovered_host,metbk_a_dcl_instrument_recovered,longwave_irradiance,W m-2,-9999999.0,"[200.0, 500.0]",522126,0,0,0,0.0,522126,100.0,325.2238,228.3,374.2,31.0992
+deployment0002,recovered_host,metbk_a_dcl_instrument_recovered,precipitation,mm,-9999999.0,"[0.0, 50.0]",522126,0,0,3576,0.0,518550,99.32,27.1303,1.23,50.0,13.5757
+deployment0002,recovered_host,metbk_a_dcl_instrument_recovered,sea_surface_temperature,ºC,-9999999.0,"[-2.0, 40.0]",522126,0,0,0,0.0,522126,100.0,6.9626,5.926,9.492,0.7876
+deployment0002,recovered_host,metbk_a_dcl_instrument_recovered,sea_surface_conductivity,S m-1,-9999999.0,"[0.0, 6.0]",522126,0,0,0,2.0,522124,100.0,3.4435,3.1815,3.6815,0.0718
+deployment0002,recovered_host,metbk_a_dcl_instrument_recovered,shortwave_irradiance,W m-2,-9999999.0,"[0.0, 1000.0]",522126,0,0,51992,0.0,470134,90.04,114.5062,0.0,999.9,191.8505
+deployment0002,recovered_host,metbk_a_dcl_instrument_recovered,eastward_wind_velocity,m s-1,-9999999.0,"[-33.0, 33.0]",522126,0,0,0,0.0,522126,100.0,5.5695,-18.09,24.56,5.6345
+deployment0002,recovered_host,metbk_a_dcl_instrument_recovered,northward_wind_velocity,m s-1,-9999999.0,"[-33.0, 33.0]",522126,0,0,0,0.0,522126,100.0,-0.2153,-22.84,21.7,6.4545
+deployment0002,recovered_host,metbk_a_dcl_instrument_recovered,met_barpres,Pa,-9999999.0,"[87000.0, 108330.0]",522126,0,0,0,0.0,522126,100.0,100120.9853,95441.0,103501.0,1385.5741
+deployment0002,recovered_host,metbk_a_dcl_instrument_recovered,met_windavg_mag_corr_east,m s-1,-9999999.0,"[None, None]",522126,0,0,no global ranges,0.0,522126,100.0,4.9346,-21.1995,24.8893,5.7526
+deployment0002,recovered_host,metbk_a_dcl_instrument_recovered,met_windavg_mag_corr_north,m s-1,-9999999.0,"[None, None]",522126,0,0,no global ranges,0.0,522126,100.0,-2.5917,-22.9575,18.5082,6.3493
+deployment0002,recovered_host,metbk_a_dcl_instrument_recovered,met_current_direction,degrees,-9999999.0,"[0.0, 360.0]",522126,0,0,0,0.0,522126,100.0,121.2327,0.0001,359.9996,111.9623
+deployment0002,recovered_host,metbk_a_dcl_instrument_recovered,met_current_speed,m s-1,-9999999.0,"[-3.0, 3.0]",522126,0,0,0,0.0,522126,100.0,0.4897,0.0009,1.3113,0.2213
+deployment0002,recovered_host,metbk_a_dcl_instrument_recovered,met_relwind_direction,degrees,-9999999.0,"[0.0, 360.0]",522126,0,0,0,0.0,522126,100.0,134.7459,0.0085,359.9998,70.9404
+deployment0002,recovered_host,metbk_a_dcl_instrument_recovered,met_relwind_speed,m s-1,-9999999.0,"[-33.0, 33.0]",522126,0,0,0,0.0,522126,100.0,9.5087,0.0263,25.0652,3.553
+deployment0002,recovered_host,metbk_a_dcl_instrument_recovered,met_netsirr,W m-2,-9999999.0,"[0.0, 500.0]",522126,0,0,79071,0.0,443055,84.86,73.7678,0.0,499.9995,115.6674
+deployment0002,recovered_host,metbk_a_dcl_instrument_recovered,met_salsurf,1,-9999999.0,"[0.0, 42.0]",522126,0,0,0,1416.0,520710,99.73,34.1021,33.75,34.3861,0.0317
+deployment0002,recovered_host,metbk_a_dcl_instrument_recovered,met_spechum,g kg-1,-9999999.0,"[0.0, 47.0]",522126,0,0,0,0.0,522126,100.0,5.134,2.254,7.5899,0.9371
+deployment0002,recovered_host,metbk_a_dcl_instrument_recovered,met_heatflx_minute,W m-2,-9999999.0,"[None, None]",522126,5216,0,no global ranges,136.0,516774,98.97,-31.2574,-962.8261,870.194,185.6068
+deployment0002,recovered_host,metbk_a_dcl_instrument_recovered,met_latnflx_minute,W m-2,-9999999.0,"[None, None]",522126,5216,0,no global ranges,160.0,516750,98.97,36.513,-49.4054,217.8913,36.1086
+deployment0002,recovered_host,metbk_a_dcl_instrument_recovered,met_netlirr_minute,W m-2,-9999999.0,"[None, None]",522126,5216,0,no global ranges,0.0,516910,99.0,22.8406,-20.0397,111.8786,29.415
+deployment0002,recovered_host,metbk_a_dcl_instrument_recovered,met_sensflx_minute,W m-2,-9999999.0,"[None, None]",522126,5216,0,no global ranges,635.0,516275,98.88,6.5793,-68.0183,105.4521,19.3274
+deployment0002,recovered_host,metbk_hourly,met_rainrte,mm hr-1,-9999999.0,"[0.0, 50.0]",8707,0,0,0,44.0,8663,99.49,0.0291,0.0,1.0951,0.1012
+deployment0002,recovered_host,metbk_hourly,met_buoyfls,W m-2,-9999999.0,"[None, None]",8707,1096,0,no global ranges,3.0,7608,87.38,8.7937,-53.8406,109.1817,20.9203
+deployment0002,recovered_host,metbk_hourly,met_buoyflx,W m-2,-9999999.0,"[None, None]",8707,1096,0,no global ranges,3.0,7608,87.38,9.2064,-54.299,110.7924,21.2419
+deployment0002,recovered_host,metbk_hourly,met_frshflx,mm hr-1,-9999999.0,"[None, None]",8707,1096,0,no global ranges,35.0,7576,87.01,0.0228,-1.14,0.2828,0.1252
+deployment0002,recovered_host,metbk_hourly,met_heatflx,W m-2,-9999999.0,"[None, None]",8707,1096,0,no global ranges,0.0,7611,87.41,-46.1534,-811.7667,374.1912,182.8349
+deployment0002,recovered_host,metbk_hourly,met_latnflx,W m-2,-9999999.0,"[None, None]",8707,1096,0,no global ranges,0.0,7611,87.41,36.6755,-40.2994,195.2074,35.6925
+deployment0002,recovered_host,metbk_hourly,met_mommflx,N m-2,-9999999.0,"[None, None]",8707,1096,0,no global ranges,15.0,7596,87.24,0.2181,0.0002,1.1391,0.1821
+deployment0002,recovered_host,metbk_hourly,met_netlirr,W m-2,-9999999.0,"[200.0, 500.0]",8707,1096,0,7611,,0,0.0,,,,
+deployment0002,recovered_host,metbk_hourly,met_rainflx,W m-2,-9999999.0,"[None, None]",8707,1096,0,no global ranges,20.0,7591,87.18,0.0283,-1.7074,3.005,0.176
+deployment0002,recovered_host,metbk_hourly,met_sensflx,W m-2,-9999999.0,"[None, None]",8707,1096,0,no global ranges,3.0,7608,87.38,6.6889,-51.5032,100.9676,19.3262
+deployment0002,recovered_host,metbk_hourly,met_sphum2m,g kg-1,-9999999.0,"[0.0, 47.0]",8707,1096,0,0,0.0,7611,87.41,5.2045,2.8301,7.4588,0.8843
+deployment0002,recovered_host,metbk_hourly,met_tempa2m,ºC,-9999999.0,"[-50.0, 50.0]",8707,1096,0,0,0.0,7611,87.41,6.4057,1.2712,9.9086,1.4441
+deployment0002,recovered_host,metbk_hourly,met_tempskn,ºC,-9999999.0,"[-2.0, 40.0]",8707,1096,0,0,0.0,7611,87.41,6.9078,5.8042,9.3444,0.798
+deployment0002,recovered_host,metbk_hourly,met_wind10m,m s-1,-9999999.0,"[-33.0, 33.0]",8707,1096,0,0,0.0,7611,87.41,9.9692,0.5086,21.4227,3.6747
+deployment0002,recovered_host,metbk_hourly,met_netsirr_hourly,W m-2,-9999999.0,"[None, None]",8707,0,0,no global ranges,0.0,8707,100.0,99.1908,-1.8459,932.8095,170.1957

@@ -1,0 +1,3 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0002,recovered_inst,phsen_abcdef_instrument,phsen_thermistor_temperature,V,-9999999.0,"[None, None]",3229,0,0,no global ranges,0,3229,100.0,6.6174,5.5675,8.0018,0.6385
+deployment0002,recovered_inst,phsen_abcdef_instrument,phsen_abcdef_ph_seawater,1,-9999999.0,"[7.3, 8.5]",3229,0,0,0,2,3227,99.94,8.064,8.0077,8.1101,0.0108
