@@ -1,0 +1,11 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0002,recovered_inst,ctdbp_cdef_instrument_recovered,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",4909,0,0,0,0,4909,100.0,1026.9572,1026.3524,1027.2536,0.1648
+deployment0002,recovered_inst,ctdbp_cdef_instrument_recovered,practical_salinity,1,-9999999.0,"[0.0, 42.0]",4909,0,0,0,0,4909,100.0,34.5882,34.266,35.3396,0.1671
+deployment0002,recovered_inst,ctdbp_cdef_instrument_recovered,ctdbp_seawater_temperature,ºC,-9999999.0,"[None, None]",4909,0,0,no global ranges,0,4909,100.0,10.1659,7.2223,14.2492,1.4306
+deployment0002,recovered_inst,ctdbp_cdef_instrument_recovered,ctdbp_seawater_pressure,dbar,-9999999.0,"[None, None]",4909,0,0,no global ranges,4,4905,99.92,80.3264,76.4877,83.8292,0.7683
+deployment0002,recovered_inst,ctdbp_cdef_instrument_recovered,ctdbp_seawater_conductivity,S m-1,-9999999.0,"[None, None]",4909,0,0,no global ranges,0,4909,100.0,3.7891,3.4924,4.2572,0.1483
+deployment0003,recovered_inst,ctdbp_cdef_instrument_recovered,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",5781,0,0,0,0,5781,100.0,1026.9786,1026.535,1027.3468,0.1761
+deployment0003,recovered_inst,ctdbp_cdef_instrument_recovered,practical_salinity,1,-9999999.0,"[0.0, 42.0]",5781,0,0,0,5,5776,99.91,34.6302,34.1146,35.3386,0.1424
+deployment0003,recovered_inst,ctdbp_cdef_instrument_recovered,ctdbp_seawater_temperature,ºC,-9999999.0,"[None, None]",5781,0,0,no global ranges,0,5781,100.0,10.2633,6.0666,13.6358,1.2278
+deployment0003,recovered_inst,ctdbp_cdef_instrument_recovered,ctdbp_seawater_pressure,dbar,-9999999.0,"[None, None]",5781,0,0,no global ranges,7,5774,99.88,80.8013,76.5307,83.8602,0.8533
+deployment0003,recovered_inst,ctdbp_cdef_instrument_recovered,ctdbp_seawater_conductivity,S m-1,-9999999.0,"[None, None]",5781,0,0,no global ranges,0,5781,100.0,3.8021,3.377,4.2013,0.1237

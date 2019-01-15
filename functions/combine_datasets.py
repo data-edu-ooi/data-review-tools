@@ -31,7 +31,6 @@ def append_science_data(preferred_stream_df, n_streams, refdes, dataset_list, sc
 
 
 def append_variable_data(ds, variable_dict, common_stream_name, exclude_times):
-    deploy = list(np.unique(ds.deployment.values))[0]
     ds_vars = cf.return_raw_vars(list(ds.data_vars.keys()))
     vars_dict = variable_dict[common_stream_name]['vars']
     for var in ds_vars:
@@ -45,17 +44,18 @@ def append_variable_data(ds, variable_dict, common_stream_name, exclude_times):
                         vars_dict[long_name]['units'].append(ds[var].units)
                     tD = ds['time'].values
                     varD = ds[var].values
+                    deployD = ds['deployment'].values
                     if len(exclude_times) > 0:
                         for et in exclude_times:
-                            tD, varD = exclude_time_ranges(tD, varD, et)
+                            tD, varD, deployD = exclude_time_ranges(tD, varD, deployD, et)
                         if len(tD) > 0:
                             vars_dict[long_name]['t'] = np.append(vars_dict[long_name]['t'], tD)
                             vars_dict[long_name]['values'] = np.append(vars_dict[long_name]['values'], varD)
-                            vars_dict[long_name]['deployments'].append(int(deploy))
+                            vars_dict[long_name]['deployments'] = np.append(vars_dict[long_name]['deployments'], deployD)
                     else:
                         vars_dict[long_name]['t'] = np.append(vars_dict[long_name]['t'], tD)
                         vars_dict[long_name]['values'] = np.append(vars_dict[long_name]['values'], varD)
-                        vars_dict[long_name]['deployments'].append(int(deploy))
+                        vars_dict[long_name]['deployments'] = np.append(vars_dict[long_name]['deployments'], deployD)
 
         except AttributeError:
             continue
@@ -81,19 +81,20 @@ def common_long_names(science_variable_dictionary):
     return var_dict
 
 
-def exclude_time_ranges(time_data, variable_data, time_lst):
+def exclude_time_ranges(time_data, variable_data, deploy_data, time_lst):
     t0 = np.datetime64(time_lst[0])
     t1 = np.datetime64(time_lst[1])
     ind = np.where((time_data < t0) | (time_data > t1), True, False)
     timedata = time_data[ind]
     variabledata = variable_data[ind]
-    return timedata, variabledata
+    deploydata = deploy_data[ind]
+    return timedata, variabledata, deploydata
 
 
 def initialize_empty_arrays(dictionary, stream_name):
     for kk, vv in dictionary[stream_name]['vars'].items():
         dictionary[stream_name]['vars'][kk].update({'t': np.array([], dtype='datetime64[ns]'), 'values': np.array([]),
-                                                    'fv': [], 'units': [], 'deployments': []})
+                                                    'fv': [], 'units': [], 'deployments': np.array([])})
     return dictionary
 
 

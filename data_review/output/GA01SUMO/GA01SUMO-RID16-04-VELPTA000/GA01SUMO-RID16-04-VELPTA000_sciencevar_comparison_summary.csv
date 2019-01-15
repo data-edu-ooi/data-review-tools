@@ -1,0 +1,9 @@
+deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
+deployment0002,recovered_host-velpt_ab_dcl_instrument_recovered,telemetered-velpt_ab_dcl_instrument,Eastward Mean Point Seawater Velocity,eastward_velocity,m s-1,pass,34021,0,no missing data,34020,0.0,0.0,0,0.0
+deployment0002,recovered_host-velpt_ab_dcl_instrument_recovered,telemetered-velpt_ab_dcl_instrument,Northward Mean Point Seawater Velocity,northward_velocity,m s-1,pass,34021,0,no missing data,34020,0.0,0.0,0,0.0
+deployment0002,recovered_host-velpt_ab_dcl_instrument_recovered,telemetered-velpt_ab_dcl_instrument,Upward Mean Point Seawater Velocity,upward_velocity,m s-1,pass,34021,0,no missing data,34020,0.0,0.0,0,0.0
+deployment0002,recovered_host-velpt_ab_dcl_instrument_recovered,telemetered-velpt_ab_dcl_instrument,Seawater Pressure,pressure_mbar,0.001 dbar,pass,34021,0,no missing data,34020,0.0,0.0,0,0.0
+deployment0003,recovered_host-velpt_ab_dcl_instrument_recovered,telemetered-velpt_ab_dcl_instrument,Eastward Mean Point Seawater Velocity,eastward_velocity,m s-1,pass,13602,0,no missing data,13602,0.0,0.0,0,0.0
+deployment0003,recovered_host-velpt_ab_dcl_instrument_recovered,telemetered-velpt_ab_dcl_instrument,Northward Mean Point Seawater Velocity,northward_velocity,m s-1,pass,13602,0,no missing data,13602,0.0,0.0,0,0.0
+deployment0003,recovered_host-velpt_ab_dcl_instrument_recovered,telemetered-velpt_ab_dcl_instrument,Upward Mean Point Seawater Velocity,upward_velocity,m s-1,pass,13602,0,no missing data,13602,0.0,0.0,0,0.0
+deployment0003,recovered_host-velpt_ab_dcl_instrument_recovered,telemetered-velpt_ab_dcl_instrument,Seawater Pressure,pressure_mbar,0.001 dbar,pass,13602,0,no missing data,13602,0.0,0.0,0,0.0

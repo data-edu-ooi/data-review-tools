@@ -1,0 +1,7 @@
+deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
+deployment0001,recovered_wfp-flord_l_wfp_instrument_recovered,no other methods available for comparison,,,,,,,,,,,,
+deployment0002,recovered_wfp-flord_l_wfp_instrument_recovered,telemetered-flord_l_wfp_instrument,Total Scattering Coefficient of Pure Seawater,seawater_scattering_coefficient,m-1,pass,351511.0,0.0,no missing data,383.0,2e-10,2.0059e-06,0.0,0.0
+deployment0002,recovered_wfp-flord_l_wfp_instrument_recovered,telemetered-flord_l_wfp_instrument,Chlorophyll-a Concentration,fluorometric_chlorophyll_a,µg L-1,pass,351511.0,0.0,no missing data,383.0,0.0,0.0,0.0,0.0
+deployment0002,recovered_wfp-flord_l_wfp_instrument_recovered,telemetered-flord_l_wfp_instrument,Total Volume Scattering Coefficient,total_volume_scattering_coefficient,m-1 sr-1,pass,351511.0,0.0,no missing data,383.0,0.0,0.0,0.0,0.0
+deployment0002,recovered_wfp-flord_l_wfp_instrument_recovered,telemetered-flord_l_wfp_instrument,Optical Backscatter,optical_backscatter,m-1,pass,351511.0,0.0,no missing data,383.0,0.0,2.933e-07,0.0,0.0
+deployment0003,recovered_wfp-flord_l_wfp_instrument_recovered,no other methods available for comparison,,,,,,,,,,,,

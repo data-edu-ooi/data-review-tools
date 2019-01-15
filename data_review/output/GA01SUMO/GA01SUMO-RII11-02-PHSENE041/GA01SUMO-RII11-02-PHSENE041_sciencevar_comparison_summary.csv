@@ -1,0 +1,7 @@
+deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
+deployment0001,recovered_host-phsen_abcdef_imodem_instrument_recovered,telemetered-phsen_abcdef_imodem_instrument,Thermistor Temperature at End of Measurement,phsen_thermistor_temperature,V,pass,1742,0,no missing data,1742,0.0,0.0,0,0.0
+deployment0001,recovered_host-phsen_abcdef_imodem_instrument_recovered,telemetered-phsen_abcdef_imodem_instrument,pH,phsen_abcdef_ph_seawater,1,pass,1742,0,no missing data,1742,0.0,0.0,0,0.0
+deployment0002,recovered_host-phsen_abcdef_imodem_instrument_recovered,telemetered-phsen_abcdef_imodem_instrument,Thermistor Temperature at End of Measurement,phsen_thermistor_temperature,V,pass,71,0,no missing data,71,0.0,0.0,0,0.0
+deployment0002,recovered_host-phsen_abcdef_imodem_instrument_recovered,telemetered-phsen_abcdef_imodem_instrument,pH,phsen_abcdef_ph_seawater,1,pass,71,0,no missing data,71,0.0,0.0,0,0.0
+deployment0003,recovered_host-phsen_abcdef_imodem_instrument_recovered,telemetered-phsen_abcdef_imodem_instrument,Thermistor Temperature at End of Measurement,phsen_thermistor_temperature,V,pass,340,0,no missing data,340,0.0,0.0,0,0.0
+deployment0003,recovered_host-phsen_abcdef_imodem_instrument_recovered,telemetered-phsen_abcdef_imodem_instrument,pH,phsen_abcdef_ph_seawater,1,pass,340,0,no missing data,340,0.0,0.0,0,0.0

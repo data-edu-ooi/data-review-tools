@@ -1,0 +1,43 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_host,pco2a_a_dcl_instrument_air_recovered,measured_air_co2,ppm,-9999999.0,"[0.0, 600.0]",36513,0,0,0,0,36513,100.0,287.7159,0.0,459.26,134.3584
+deployment0001,recovered_host,pco2a_a_dcl_instrument_air_recovered,partial_pressure_co2_atm,µatm,-9999999.0,"[180.0, 500.0]",36513,0,0,5787,0,30726,84.15,345.4192,182.8536,465.4923,58.2786
+deployment0001,recovered_host,pco2a_a_dcl_instrument_air_recovered,pco2_co2flux,mol m-2 s-1,-9999999.0,"[-1e-08, 4.4e-07]",36513,3609,0,1422,141,31341,85.84,0.0,-0.0,0.0,0.0
+deployment0001,recovered_host,pco2a_a_dcl_instrument_water_recovered,measured_water_co2,ppm,-9999999.0,"[0.0, 600.0]",36512,0,0,0,0,36512,100.0,276.1,0.0,428.1,128.0949
+deployment0001,recovered_host,pco2a_a_dcl_instrument_water_recovered,partial_pressure_co2_ssw,µatm,-9999999.0,"[100.0, 600.0]",36512,0,0,5646,0,30866,84.54,330.6482,100.0006,434.7544,54.8322
+deployment0001,recovered_host,pco2a_a_dcl_instrument_water_recovered,pco2_co2flux,mol m-2 s-1,-9999999.0,"[-1e-08, 4.4e-07]",36512,3616,0,1436,137,31323,85.79,0.0,-0.0,0.0,0.0
+deployment0002,recovered_host,pco2a_a_dcl_instrument_air_recovered,measured_air_co2,ppm,-9999999.0,"[0.0, 600.0]",44208,0,0,0,90,44118,99.8,399.5722,391.19,417.93,3.5687
+deployment0002,recovered_host,pco2a_a_dcl_instrument_air_recovered,partial_pressure_co2_atm,µatm,-9999999.0,"[180.0, 500.0]",44208,0,0,0,45,44163,99.9,401.3695,386.7286,424.8188,5.0736
+deployment0002,recovered_host,pco2a_a_dcl_instrument_air_recovered,pco2_co2flux,mol m-2 s-1,-9999999.0,"[-1e-08, 4.4e-07]",44208,4581,0,3683,0,35944,81.31,0.0,-0.0,0.0,0.0
+deployment0002,recovered_host,pco2a_a_dcl_instrument_water_recovered,measured_water_co2,ppm,-9999999.0,"[0.0, 600.0]",44177,0,0,0,0,44177,100.0,366.8056,159.3,437.06,41.6729
+deployment0002,recovered_host,pco2a_a_dcl_instrument_water_recovered,partial_pressure_co2_ssw,µatm,-9999999.0,"[100.0, 600.0]",44177,0,0,0,78,44099,99.82,366.9214,167.3141,435.6923,38.9897
+deployment0002,recovered_host,pco2a_a_dcl_instrument_water_recovered,pco2_co2flux,mol m-2 s-1,-9999999.0,"[-1e-08, 4.4e-07]",44177,4566,0,3668,0,35943,81.36,0.0,-0.0,0.0,0.0
+deployment0003,recovered_host,pco2a_a_dcl_instrument_air_recovered,measured_air_co2,ppm,-9999999.0,"[0.0, 600.0]",28701,0,0,0,27,28674,99.91,392.5989,381.22,422.21,6.0703
+deployment0003,recovered_host,pco2a_a_dcl_instrument_air_recovered,partial_pressure_co2_atm,µatm,-9999999.0,"[180.0, 500.0]",28701,0,0,0,27,28674,99.91,397.0269,384.9085,425.4393,6.0366
+deployment0003,recovered_host,pco2a_a_dcl_instrument_air_recovered,pco2_co2flux,mol m-2 s-1,-9999999.0,"[-1e-08, 4.4e-07]",28701,486,0,0,18,28197,98.24,0.0,-0.0,0.0,0.0
+deployment0003,recovered_host,pco2a_a_dcl_instrument_water_recovered,measured_water_co2,ppm,-9999999.0,"[0.0, 600.0]",28699,0,0,0,0,28699,100.0,312.5776,161.9,403.06,44.4532
+deployment0003,recovered_host,pco2a_a_dcl_instrument_water_recovered,partial_pressure_co2_ssw,µatm,-9999999.0,"[100.0, 600.0]",28699,0,0,0,0,28699,100.0,317.2669,168.2514,410.5185,44.0025
+deployment0003,recovered_host,pco2a_a_dcl_instrument_water_recovered,pco2_co2flux,mol m-2 s-1,-9999999.0,"[-1e-08, 4.4e-07]",28699,486,0,0,18,28195,98.24,0.0,-0.0,0.0,0.0
+deployment0004,recovered_host,pco2a_a_dcl_instrument_air_recovered,measured_air_co2,ppm,-9999999.0,"[0.0, 600.0]",44406,0,0,0,27,44379,99.94,403.4742,394.26,422.02,3.5288
+deployment0004,recovered_host,pco2a_a_dcl_instrument_air_recovered,partial_pressure_co2_atm,µatm,-9999999.0,"[180.0, 500.0]",44406,0,0,0,27,44379,99.94,407.6562,391.1128,432.3403,5.38
+deployment0004,recovered_host,pco2a_a_dcl_instrument_air_recovered,pco2_co2flux,mol m-2 s-1,-9999999.0,"[-1e-08, 4.4e-07]",44406,909,0,486,90,42921,96.66,0.0,-0.0,0.0,0.0
+deployment0004,recovered_host,pco2a_a_dcl_instrument_water_recovered,measured_water_co2,ppm,-9999999.0,"[0.0, 600.0]",44292,0,0,0,9,44283,99.98,366.6192,256.63,435.87,24.9527
+deployment0004,recovered_host,pco2a_a_dcl_instrument_water_recovered,partial_pressure_co2_ssw,µatm,-9999999.0,"[100.0, 600.0]",44292,0,0,0,9,44283,99.98,366.1785,257.8331,437.053,23.8521
+deployment0004,recovered_host,pco2a_a_dcl_instrument_water_recovered,pco2_co2flux,mol m-2 s-1,-9999999.0,"[-1e-08, 4.4e-07]",44292,909,0,485,90,42808,96.65,0.0,-0.0,0.0,0.0
+deployment0005,recovered_host,pco2a_a_dcl_instrument_air_recovered,measured_air_co2,ppm,-9999999.0,"[0.0, 600.0]",38436,0,0,0,0,38436,100.0,397.6704,380.98,425.54,7.5351
+deployment0005,recovered_host,pco2a_a_dcl_instrument_air_recovered,partial_pressure_co2_atm,µatm,-9999999.0,"[180.0, 500.0]",38436,0,0,0,0,38436,100.0,404.4627,387.6626,434.2545,7.4754
+deployment0005,recovered_host,pco2a_a_dcl_instrument_air_recovered,pco2_co2flux,mol m-2 s-1,-9999999.0,"[-1e-08, 4.4e-07]",38436,1320,0,36,45,37035,96.35,0.0,0.0,0.0,0.0
+deployment0005,recovered_host,pco2a_a_dcl_instrument_water_recovered,measured_water_co2,ppm,-9999999.0,"[0.0, 600.0]",38436,0,0,0,0,38436,100.0,299.8518,142.53,392.36,49.6045
+deployment0005,recovered_host,pco2a_a_dcl_instrument_water_recovered,partial_pressure_co2_ssw,µatm,-9999999.0,"[100.0, 600.0]",38436,0,0,0,0,38436,100.0,302.0305,148.2622,391.6025,48.4594
+deployment0005,recovered_host,pco2a_a_dcl_instrument_water_recovered,pco2_co2flux,mol m-2 s-1,-9999999.0,"[-1e-08, 4.4e-07]",38436,1320,0,36,45,37035,96.35,0.0,0.0,0.0,0.0
+deployment0006,recovered_host,pco2a_a_dcl_instrument_air_recovered,measured_air_co2,ppm,-9999999.0,"[0.0, 600.0]",38178,0,0,0,27,38151,99.93,401.8794,395.33,420.77,3.7901
+deployment0006,recovered_host,pco2a_a_dcl_instrument_air_recovered,partial_pressure_co2_atm,µatm,-9999999.0,"[180.0, 500.0]",38178,0,0,0,0,38178,100.0,409.2625,397.0596,433.5086,5.6412
+deployment0006,recovered_host,pco2a_a_dcl_instrument_air_recovered,pco2_co2flux,mol m-2 s-1,-9999999.0,"[-1e-08, 4.4e-07]",38178,720,0,1746,27,35685,93.47,0.0,-0.0,0.0,0.0
+deployment0006,recovered_host,pco2a_a_dcl_instrument_water_recovered,measured_water_co2,ppm,-9999999.0,"[0.0, 600.0]",38134,0,0,0,0,38134,100.0,358.4408,209.84,507.09,36.5598
+deployment0006,recovered_host,pco2a_a_dcl_instrument_water_recovered,partial_pressure_co2_ssw,µatm,-9999999.0,"[100.0, 600.0]",38134,0,0,0,0,38134,100.0,360.3345,213.2033,508.9936,35.9696
+deployment0006,recovered_host,pco2a_a_dcl_instrument_water_recovered,pco2_co2flux,mol m-2 s-1,-9999999.0,"[-1e-08, 4.4e-07]",38134,719,0,1748,27,35640,93.46,0.0,-0.0,0.0,0.0
+deployment0007,telemetered,pco2a_a_dcl_instrument_air,measured_air_co2,ppm,-9999999.0,"[0.0, 600.0]",17730,0,0,9,0,17721,99.95,276.4134,62.72,440.67,59.6987
+deployment0007,telemetered,pco2a_a_dcl_instrument_air,partial_pressure_co2_atm,µatm,-9999999.0,"[180.0, 500.0]",17730,0,0,1080,0,16650,93.91,288.1406,182.7651,441.4311,44.404
+deployment0007,telemetered,pco2a_a_dcl_instrument_air,pco2_co2flux,mol m-2 s-1,-9999999.0,"[-1e-08, 4.4e-07]",17730,405,0,5319,36,11970,67.51,-0.0,-0.0,0.0,0.0
+deployment0007,telemetered,pco2a_a_dcl_instrument_water,measured_water_co2,ppm,-9999999.0,"[0.0, 600.0]",17729,0,0,0,0,17729,100.0,295.2387,169.76,395.4,44.9847
+deployment0007,telemetered,pco2a_a_dcl_instrument_water,partial_pressure_co2_ssw,µatm,-9999999.0,"[100.0, 600.0]",17729,0,0,0,0,17729,100.0,298.9325,173.0134,399.2047,44.7139
+deployment0007,telemetered,pco2a_a_dcl_instrument_water,pco2_co2flux,mol m-2 s-1,-9999999.0,"[-1e-08, 4.4e-07]",17729,408,0,5358,36,11927,67.27,-0.0,-0.0,0.0,0.0

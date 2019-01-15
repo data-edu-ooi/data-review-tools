@@ -58,7 +58,7 @@ def insert_into_dict(d, key, value):
 
 def main(sDir, url_list):
     reviewlist = pd.read_csv(
-        'https://raw.githubusercontent.com/data-edu-ooi/data-review-tools/master/review_list/data_review_list.csv')
+        'https://raw.githubusercontent.com/ooi-data-lab/data-review-tools/master/review_list/data_review_list.csv')
 
     rd_list = []
     for uu in url_list:
@@ -246,67 +246,69 @@ def main(sDir, url_list):
                         try:
                             pressure = ds[press]
                             num_dims = len(pressure.dims)
-                            if num_dims > 1:
-                                print('variable has more than 1 dimension')
-                                press_outliers = 'not calculated: variable has more than 1 dimension'
-                                pressure_mean = np.nanmean(pressure.values)
+                            if len(pressure) > 1:
+                                # reject NaNs
+                                p_nonan = pressure.values[~np.isnan(pressure.values)]
 
-                            else:
-                                if len(pressure) > 1:
-                                    # reject NaNs
-                                    p_nonan = pressure.values[~np.isnan(pressure.values)]
+                                # reject fill values
+                                p_nonan_nofv = p_nonan[p_nonan != pressure._FillValue]
 
-                                    # reject fill values
-                                    p_nonan_nofv = p_nonan[p_nonan != pressure._FillValue]
+                                # reject data outside of global ranges
+                                [pg_min, pg_max] = cf.get_global_ranges(r, press)
+                                if pg_min is not None and pg_max is not None:
+                                    pgr_ind = cf.reject_global_ranges(p_nonan_nofv, pg_min, pg_max)
+                                    p_nonan_nofv_gr = p_nonan_nofv[pgr_ind]
+                                else:
+                                    p_nonan_nofv_gr = p_nonan_nofv
 
-                                    # reject data outside of global ranges
-                                    [pg_min, pg_max] = cf.get_global_ranges(r, press)
-                                    if pg_min is not None and pg_max is not None:
-                                        pgr_ind = cf.reject_global_ranges(p_nonan_nofv, pg_min, pg_max)
-                                        p_nonan_nofv_gr = p_nonan_nofv[pgr_ind]
-                                    else:
-                                        p_nonan_nofv_gr = p_nonan_nofv
+                                if (len(p_nonan_nofv_gr) > 0) and (num_dims == 1):
+                                    [press_outliers, pressure_mean, _, pressure_max, _, _] = cf.variable_statistics(p_nonan_nofv_gr, 3)
+                                    pressure_mean = round(pressure_mean, 2)
+                                    pressure_max = round(pressure_max, 2)
+                                elif (len(p_nonan_nofv_gr) > 0) and (num_dims > 1):
+                                    print('variable has more than 1 dimension')
+                                    press_outliers = 'not calculated: variable has more than 1 dimension'
+                                    pressure_mean = round(np.nanmean(p_nonan_nofv_gr), 2)
+                                    pressure_max = round(np.nanmax(p_nonan_nofv_gr), 2)
+                                else:
+                                    press_outliers = None
+                                    pressure_mean = None
+                                    pressure_max = None
+                                    if len(pressure) > 0 and len(p_nonan) == 0:
+                                        notes.append('Pressure variable all NaNs')
+                                    elif len(pressure) > 0 and len(p_nonan) > 0 and len(p_nonan_nofv) == 0:
+                                        notes.append('Pressure variable all fill values')
+                                    elif len(pressure) > 0 and len(p_nonan) > 0 and len(p_nonan_nofv) > 0 and len(p_nonan_nofv_gr) == 0:
+                                        notes.append('Pressure variable outside of global ranges')
 
-                                    if len(p_nonan_nofv_gr) > 0:
-                                        [press_outliers, pressure_mean, _, pressure_max, _, _] = cf.variable_statistics(p_nonan_nofv_gr, 3)
-                                        pressure_mean = round(pressure_mean, 2)
-                                        pressure_max = round(pressure_max, 2)
-                                    else:
-                                        press_outliers = None
-                                        pressure_mean = None
-                                        pressure_max = None
-                                        if len(pressure) > 0 and len(p_nonan) == 0:
-                                            notes.append('Pressure variable all NaNs')
-                                        elif len(pressure) > 0 and len(p_nonan) > 0 and len(p_nonan_nofv) == 0:
-                                            notes.append('Pressure variable all fill values')
-                                        elif len(pressure) > 0 and len(p_nonan) > 0 and len(p_nonan_nofv) > 0 and len(p_nonan_nofv_gr) == 0:
-                                            notes.append('Pressure variable outside of global ranges')
-
-                                else:  # if there is only 1 data point
-                                    press_outliers = 0
-                                    pressure_mean = round(ds[press].values.tolist()[0], 2)
-                                    pressure_max = round(ds[press].values.tolist()[0], 2)
+                            else:  # if there is only 1 data point
+                                press_outliers = 0
+                                pressure_mean = round(ds[press].values.tolist()[0], 2)
+                                pressure_max = round(ds[press].values.tolist()[0], 2)
 
                             try:
                                 pressure_units = pressure.units
                             except AttributeError:
                                 pressure_units = 'no units attribute for pressure'
 
-                            if (not deploy_depth) or (not pressure_mean):
-                                pressure_diff = None
-                                pressure_compare = None
-                            else:
+                            if pressure_mean:
                                 node = refdes.split('-')[1]
-                                if pressure_units == '0.001 dbar':
-                                    pressure_max = round((pressure_max / 1000), 2)
-                                    pressure_mean = round((pressure_mean / 1000), 2)
-                                    notes.append('Pressure converted from 0.001 dbar to dbar for pressure comparison')
                                 if ('WFP' in node) or ('MOAS' in subsite):
                                     pressure_compare = int(round(pressure_max))
                                 else:
                                     pressure_compare = int(round(pressure_mean))
-                                pressure_diff = pressure_compare - deploy_depth
 
+                                if pressure_units == '0.001 dbar':
+                                    pressure_max = round((pressure_max / 1000), 2)
+                                    pressure_mean = round((pressure_mean / 1000), 2)
+                                    notes.append('Pressure converted from 0.001 dbar to dbar for pressure comparison')
+                            else:
+                                pressure_compare = None
+
+                            if (not deploy_depth) or (not pressure_mean):
+                                pressure_diff = None
+                            else:
+                                pressure_diff = pressure_compare - deploy_depth
 
                         except KeyError:
                             press = 'no seawater pressure in file'
@@ -433,7 +435,7 @@ def main(sDir, url_list):
     return json_file_list
 
 if __name__ == '__main__':
-    sDir = '/Users/lgarzio/Documents/repo/OOI/data-edu-ooi/data-review-tools/data_review/output'
+    sDir = '/Users/lgarzio/Documents/repo/OOI/ooi-data-lab/data-review-tools/data_review/output'
     url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181001T150658-GP03FLMA-RIM01-02-CTDMOG040-recovered_host-ctdmo_ghqr_sio_mule_instrument/catalog.html',
                 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181001T150707-GP03FLMA-RIM01-02-CTDMOG040-recovered_inst-ctdmo_ghqr_instrument_recovered/catalog.html']
 

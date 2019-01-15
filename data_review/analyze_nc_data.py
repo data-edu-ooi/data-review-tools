@@ -12,7 +12,7 @@ f: file containing THREDDs urls with .nc files to analyze. The column containing
 import pandas as pd
 import scripts
 
-sDir = '/Users/lgarzio/Documents/repo/OOI/data-edu-ooi/data-review-tools/data_review/output'
+sDir = '/Users/lgarzio/Documents/repo/OOI/ooi-data-lab/data-review-tools/data_review/output'
 f = '/Users/lgarzio/Documents/OOI/DataReviews/test3/GS01SUMO/data_request_summary_20181026T0933.csv'
 #sDir = '/Users/lgarzio/Documents/OOI/DataReviews/test3'
 #f = '/Users/lgarzio/Documents/OOI/DataReviews/test/data_request_summary_metbk.csv'

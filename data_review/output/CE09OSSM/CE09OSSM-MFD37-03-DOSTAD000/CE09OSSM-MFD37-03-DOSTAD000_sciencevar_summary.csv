@@ -1,0 +1,13 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_inst,dosta_abcdjm_ctdbp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",16226,0,0,0,0,16226,100.0,24.6908,12.9236,43.3465,4.6543
+deployment0001,recovered_inst,dosta_abcdjm_ctdbp_instrument_recovered,ctd_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",16226,0,0,0,0,16226,100.0,31.2397,16.382,54.779,5.8722
+deployment0003,recovered_inst,dosta_abcdjm_ctdbp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",12760,0,0,0,0,12760,100.0,25.8669,15.1949,45.8881,4.8688
+deployment0003,recovered_inst,dosta_abcdjm_ctdbp_instrument_recovered,ctd_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",12760,0,0,0,0,12760,100.0,32.7505,19.264,57.974,6.1427
+deployment0004,recovered_inst,dosta_abcdjm_ctdbp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",14783,0,0,0,0,14783,100.0,25.1765,10.8396,48.3263,5.462
+deployment0004,recovered_inst,dosta_abcdjm_ctdbp_instrument_recovered,ctd_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",14783,0,0,0,0,14783,100.0,31.8554,13.714,61.045,6.8965
+deployment0005,recovered_inst,dosta_abcdjm_ctdbp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",17085,0,0,0,2,17083,99.99,24.3557,12.0482,42.0052,4.5795
+deployment0005,recovered_inst,dosta_abcdjm_ctdbp_instrument_recovered,ctd_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",17085,0,0,0,2,17083,99.99,30.8251,15.274,53.076,5.7791
+deployment0006,recovered_inst,dosta_abcdjm_ctdbp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",16971,0,0,0,0,16971,100.0,21.3028,11.0055,39.7053,4.3685
+deployment0006,recovered_inst,dosta_abcdjm_ctdbp_instrument_recovered,ctd_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",16971,0,0,0,0,16971,100.0,26.9629,13.947,50.3,5.5162
+deployment0007,recovered_host,dosta_abcdjm_ctdbp_dcl_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",758,0,0,0,0,758,100.0,21.3078,13.2493,38.949,4.1836
+deployment0007,recovered_host,dosta_abcdjm_ctdbp_dcl_instrument_recovered,dosta_ln_optode_oxygen,uM,-9999999.0,"[0.0, 410.0]",758,0,0,0,0,758,100.0,26.9712,16.785,49.205,5.282

@@ -1,0 +1,10 @@
+deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
+deployment0001,recovered_wfp-dofst_k_wfp_instrument_recovered,telemetered-dofst_k_wfp_instrument,DO - Pressure Temp Sal Corrected (CTD),dofst_k_oxygen_l2,µmol kg-1,pass,11085.0,0.0,no missing data,11085.0,0.0,0.0,0.0,0.0
+deployment0003,recovered_wfp-dofst_k_wfp_instrument_recovered,telemetered-dofst_k_wfp_instrument,DO - Pressure Temp Sal Corrected (CTD),dofst_k_oxygen_l2,µmol kg-1,pass,2072181.0,0.0,no missing data,2069553.0,0.0,0.0,0.0,0.0
+deployment0004,recovered_wfp-dofst_k_wfp_instrument_recovered,telemetered-dofst_k_wfp_instrument,DO - Pressure Temp Sal Corrected (CTD),dofst_k_oxygen_l2,µmol kg-1,pass,1256515.0,0.0,no missing data,1163795.0,0.0,0.0,0.0,0.0
+deployment0005,recovered_wfp-dofst_k_wfp_instrument_recovered,telemetered-dofst_k_wfp_instrument,DO - Pressure Temp Sal Corrected (CTD),dofst_k_oxygen_l2,µmol kg-1,pass,1554132.0,0.0,no missing data,1482741.0,0.0,0.0,0.0,0.0
+deployment0006,telemetered-dofst_k_wfp_instrument,no other methods available for comparison,,,,,,,,,,,,
+deployment0007,recovered_wfp-dofst_k_wfp_instrument_recovered,telemetered-dofst_k_wfp_instrument,DO - Pressure Temp Sal Corrected (CTD),dofst_k_oxygen_l2,µmol kg-1,pass,1210771.0,0.0,no missing data,1209638.0,0.0,0.0,0.0,0.0
+deployment0008,recovered_wfp-dofst_k_wfp_instrument_recovered,telemetered-dofst_k_wfp_instrument,DO - Pressure Temp Sal Corrected (CTD),dofst_k_oxygen_l2,µmol kg-1,pass,3083564.0,0.0,no missing data,2666486.0,0.0,74.3811954471,530.0,0.02
+deployment0009,recovered_wfp-dofst_k_wfp_instrument_recovered,telemetered-dofst_k_wfp_instrument,DO - Pressure Temp Sal Corrected (CTD),dofst_k_oxygen_l2,µmol kg-1,pass,1678225.0,0.0,no missing data,1676177.0,0.0,0.0,0.0,0.0
+deployment0010,recovered_wfp-dofst_k_wfp_instrument_recovered,telemetered-dofst_k_wfp_instrument,DO - Pressure Temp Sal Corrected (CTD),dofst_k_oxygen_l2,µmol kg-1,pass,949243.0,0.0,no missing data,947232.0,0.0,0.0,0.0,0.0

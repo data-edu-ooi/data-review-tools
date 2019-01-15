@@ -1,0 +1,6 @@
+deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
+deployment0009,recovered_host-ctdbp_cdef_dcl_instrument_recovered,telemetered-ctdbp_cdef_dcl_instrument,Seawater Conductivity,conductivity,S m-1,pass,2167,0,no missing data,1638,0.0,0.0,0,0.0
+deployment0009,recovered_host-ctdbp_cdef_dcl_instrument_recovered,telemetered-ctdbp_cdef_dcl_instrument,Seawater Pressure,pressure,dbar,pass,2167,0,no missing data,1638,0.0,0.0,0,0.0
+deployment0009,recovered_host-ctdbp_cdef_dcl_instrument_recovered,telemetered-ctdbp_cdef_dcl_instrument,Seawater Density,density,kg m-3,pass,2167,0,no missing data,1638,0.0,0.0,0,0.0
+deployment0009,recovered_host-ctdbp_cdef_dcl_instrument_recovered,telemetered-ctdbp_cdef_dcl_instrument,Seawater Temperature,temp,ºC,pass,2167,0,no missing data,1638,0.0,0.0,0,0.0
+deployment0009,recovered_host-ctdbp_cdef_dcl_instrument_recovered,telemetered-ctdbp_cdef_dcl_instrument,Practical Salinity,practical_salinity,1,pass,2167,0,no missing data,1638,0.0,0.0,0,0.0

@@ -353,12 +353,8 @@ def main(f, ps, mc):
 
 
 if __name__ == '__main__':
-    f = '/Users/lgarzio/Documents/repo/OOI/data-edu-ooi/data-review-tools/data_review/output/GP03FLMA/GP03FLMA-RIM01-02-CTDMOG040/GP03FLMA-RIM01-02-CTDMOG040-file_analysis.json'
-    ps = '/Users/lgarzio/Documents/repo/OOI/data-edu-ooi/data-review-tools/data_review/output/GP03FLMA/GP03FLMA-RIM01-02-CTDMOG040/GP03FLMA-RIM01-02-CTDMOG040-preferred_stream.json'
-    mc = '/Users/lgarzio/Documents/repo/OOI/data-edu-ooi/data-review-tools/data_review/output/GP03FLMA/GP03FLMA-RIM01-02-CTDMOG040/GP03FLMA-RIM01-02-CTDMOG040-method_comparison.json'
-
-    f = '/Users/lgarzio/Documents/repo/OOI/data-edu-ooi/data-review-tools/data_review/output/GI03FLMA/GI03FLMA-RI000-00-CTDMOH000/GI03FLMA-RI000-00-CTDMOH000-file_analysis.json'
-    ps = '/Users/lgarzio/Documents/repo/OOI/data-edu-ooi/data-review-tools/data_review/output/GI03FLMA/GI03FLMA-RI000-00-CTDMOH000/GI03FLMA-RI000-00-CTDMOH000-preferred_stream.json'
-    mc = '/Users/lgarzio/Documents/repo/OOI/data-edu-ooi/data-review-tools/data_review/output/GI03FLMA/GI03FLMA-RI000-00-CTDMOH000/GI03FLMA-RI000-00-CTDMOH000-method_comparison.json'
+    f = '/Users/lgarzio/Documents/repo/OOI/ooi-data-lab/data-review-tools/data_review/output/GP03FLMA/GP03FLMA-RIM01-02-CTDMOG040/GP03FLMA-RIM01-02-CTDMOG040-file_analysis.json'
+    ps = '/Users/lgarzio/Documents/repo/OOI/ooi-data-lab/data-review-tools/data_review/output/GP03FLMA/GP03FLMA-RIM01-02-CTDMOG040/GP03FLMA-RIM01-02-CTDMOG040-preferred_stream.json'
+    mc = '/Users/lgarzio/Documents/repo/OOI/ooi-data-lab/data-review-tools/data_review/output/GP03FLMA/GP03FLMA-RIM01-02-CTDMOG040/GP03FLMA-RIM01-02-CTDMOG040-method_comparison.json'
 
     main(f, ps, mc)

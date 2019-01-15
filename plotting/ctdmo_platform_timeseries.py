@@ -10,7 +10,7 @@ deviations.
 @usage:
 sDir: local directory to which plots are saved
 f: csv file containing datasets from one platform to plot (e.g. output from one of the data download tools
-data-edu-ooi/data-review-tools/data_download with a column labeled 'outputUrl'.
+ooi-data-lab/data-review-tools/data_download with a column labeled 'outputUrl'.
 Example file 'ctdmo_data_request_summary.csv')
 """
 

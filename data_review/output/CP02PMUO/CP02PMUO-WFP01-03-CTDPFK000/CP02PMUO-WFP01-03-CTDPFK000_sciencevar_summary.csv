@@ -1,0 +1,46 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",11085,0,0,0,0,11085,100.0,1026.3381,1025.4485,1026.7836,0.3945
+deployment0001,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,practical_salinity,1,-9999999.0,"[0.0, 42.0]",11085,0,0,0,0,11085,100.0,34.7063,33.7452,35.577,0.4454
+deployment0001,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,ctdpf_ckl_seawater_pressure,dbar,-9999.0,"[0.0, 6000.0]",11085,0,0,0,0,11085,100.0,68.8799,29.91,85.58,19.5516
+deployment0001,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,ctdpf_ckl_seawater_temperature,ºC,-9999999.0,"[-2.0, 40.0]",11085,0,0,0,0,11085,100.0,13.6576,12.2685,15.4754,1.038
+deployment0001,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,ctdpf_ckl_seawater_conductivity,S m-1,-9999999.0,"[0.0, 6.0]",11085,0,0,0,0,11085,100.0,4.133,3.9332,4.3541,0.1288
+deployment0003,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",2072181,0,0,0,0,2072181,100.0,1027.4227,1023.8182,1029.5197,1.187
+deployment0003,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,practical_salinity,1,-9999999.0,"[0.0, 42.0]",2072181,0,0,0,3154,2069027,99.85,35.5003,33.7465,36.6737,0.3413
+deployment0003,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,ctdpf_ckl_seawater_pressure,dbar,-9999.0,"[0.0, 6000.0]",2072181,0,0,0,0,2072181,100.0,174.1607,23.51,428.14,116.34
+deployment0003,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,ctdpf_ckl_seawater_temperature,ºC,-9999999.0,"[-2.0, 40.0]",2072181,0,0,0,0,2072181,100.0,13.3108,5.9059,25.5437,4.0809
+deployment0003,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,ctdpf_ckl_seawater_conductivity,S m-1,-9999999.0,"[0.0, 6.0]",2072181,0,0,0,0,2072181,100.0,4.1953,3.2822,5.5472,0.4302
+deployment0004,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",1256515,0,0,0,0,1256515,100.0,1027.6453,1024.5905,1029.5407,1.0362
+deployment0004,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,practical_salinity,1,-9999999.0,"[0.0, 42.0]",1256515,0,0,0,1017,1255498,99.92,35.5229,33.9347,36.4118,0.314
+deployment0004,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,ctdpf_ckl_seawater_pressure,dbar,-9999.0,"[0.0, 6000.0]",1256515,0,0,0,0,1256515,100.0,193.3868,21.5,425.49,119.3234
+deployment0004,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,ctdpf_ckl_seawater_temperature,ºC,-9999999.0,"[-2.0, 40.0]",1256515,0,0,0,0,1256515,100.0,12.8647,5.9305,23.0358,3.2801
+deployment0004,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,ctdpf_ckl_seawater_conductivity,S m-1,-9999999.0,"[0.0, 6.0]",1256515,0,0,0,0,1256515,100.0,4.1521,3.4535,5.224,0.3403
+deployment0005,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",1554132,0,0,0,0,1554132,100.0,1027.4223,1023.6514,1029.5823,1.1141
+deployment0005,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,practical_salinity,1,-9999999.0,"[0.0, 42.0]",1554132,0,0,0,6,1554126,100.0,35.7163,33.7231,36.8992,0.4059
+deployment0005,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,ctdpf_ckl_seawater_pressure,dbar,-9999.0,"[0.0, 6000.0]",1554132,0,0,0,0,1554132,100.0,169.1534,27.79,427.45,117.2111
+deployment0005,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,ctdpf_ckl_seawater_temperature,ºC,-9999999.0,"[-2.0, 40.0]",1554132,0,0,0,0,1554132,100.0,13.9903,5.638,26.6355,4.1862
+deployment0005,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,ctdpf_ckl_seawater_conductivity,S m-1,-9999999.0,"[0.0, 6.0]",1554132,0,0,0,0,1554132,100.0,4.287,3.4264,5.6244,0.4537
+deployment0006,telemetered,ctdpf_ckl_wfp_instrument,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",19770,0,0,0,0,19770,100.0,1027.4363,1024.8271,1029.4516,1.3761
+deployment0006,telemetered,ctdpf_ckl_wfp_instrument,practical_salinity,1,-9999999.0,"[0.0, 42.0]",19770,0,0,0,0,19770,100.0,35.5093,34.6705,35.9849,0.2829
+deployment0006,telemetered,ctdpf_ckl_wfp_instrument,ctdpf_ckl_seawater_pressure,dbar,-9999.0,"[0.0, 6000.0]",19770,0,0,0,0,19770,100.0,187.7085,20.33,423.27,126.2866
+deployment0006,telemetered,ctdpf_ckl_wfp_instrument,ctdpf_ckl_seawater_temperature,ºC,-9999999.0,"[-2.0, 40.0]",19770,0,0,0,0,19770,100.0,13.5096,6.7689,22.4451,4.5108
+deployment0006,telemetered,ctdpf_ckl_wfp_instrument,ctdpf_ckl_seawater_conductivity,S m-1,-9999999.0,"[0.0, 6.0]",19770,0,0,0,0,19770,100.0,4.2177,3.5336,5.1505,0.4645
+deployment0007,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",1210771,0,0,0,0,1210771,100.0,1027.285,1023.8199,1029.9181,1.4289
+deployment0007,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,practical_salinity,1,-9999999.0,"[0.0, 42.0]",1210771,0,0,0,0,1210771,100.0,35.2123,33.0403,36.4323,0.44
+deployment0007,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,ctdpf_ckl_seawater_pressure,dbar,-9999.0,"[0.0, 6000.0]",1210771,0,0,0,0,1210771,100.0,164.3472,27.42,427.68,128.164
+deployment0007,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,ctdpf_ckl_seawater_temperature,ºC,-9999999.0,"[-2.0, 40.0]",1210771,0,0,0,0,1210771,100.0,12.6996,5.9319,24.5099,4.0726
+deployment0007,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,ctdpf_ckl_seawater_conductivity,S m-1,-9999999.0,"[0.0, 6.0]",1210771,0,0,0,0,1210771,100.0,4.1029,3.4542,5.3247,0.3974
+deployment0008,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",3083564,0,0,0,9836,3073728,99.68,1026.5171,1024.2835,1029.39,0.5494
+deployment0008,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,practical_salinity,1,-9999999.0,"[0.0, 42.0]",3083564,0,0,0,0,3083564,100.0,34.455,32.4373,36.1086,0.7476
+deployment0008,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,ctdpf_ckl_seawater_pressure,dbar,-9999.0,"[0.0, 6000.0]",3083564,0,0,0,48770,3034794,98.42,45.5057,28.41,298.07,27.5242
+deployment0008,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,ctdpf_ckl_seawater_temperature,ºC,-9999999.0,"[-2.0, 40.0]",3083564,0,0,0,0,3083564,100.0,11.0171,6.2197,23.4076,3.1939
+deployment0008,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,ctdpf_ckl_seawater_conductivity,S m-1,-9999999.0,"[0.0, 6.0]",3083564,0,0,0,0,3083564,100.0,3.8615,3.2902,5.2047,0.367
+deployment0009,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",1678225,0,0,0,0,1678225,100.0,1027.6757,1023.8099,1029.5803,1.1394
+deployment0009,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,practical_salinity,1,-9999999.0,"[0.0, 42.0]",1678225,0,0,0,8111,1670114,99.52,35.3065,33.5368,36.285,0.3237
+deployment0009,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,ctdpf_ckl_seawater_pressure,dbar,-9999.0,"[0.0, 6000.0]",1678225,0,0,0,0,1678225,100.0,195.5568,27.72,427.69,118.6365
+deployment0009,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,ctdpf_ckl_seawater_temperature,ºC,-9999999.0,"[-2.0, 40.0]",1678225,0,0,0,0,1678225,100.0,11.8935,5.5779,23.6436,3.2222
+deployment0009,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,ctdpf_ckl_seawater_conductivity,S m-1,-9999999.0,"[0.0, 6.0]",1678225,0,0,0,0,1678225,100.0,4.0331,3.3647,5.2147,0.3171
+deployment0010,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",949243,0,0,0,0,949243,100.0,1027.1069,1025.0638,1029.5386,1.0487
+deployment0010,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,practical_salinity,1,-9999999.0,"[0.0, 42.0]",949243,0,0,0,0,949243,100.0,34.9305,33.0371,36.041,0.643
+deployment0010,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,ctdpf_ckl_seawater_pressure,dbar,-9999.0,"[0.0, 6000.0]",949243,0,0,0,0,949243,100.0,117.2342,26.9,427.88,122.5999
+deployment0010,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,ctdpf_ckl_seawater_temperature,ºC,-9999999.0,"[-2.0, 40.0]",949243,0,0,0,0,949243,100.0,11.6088,6.0079,19.7038,2.62
+deployment0010,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered,ctdpf_ckl_seawater_conductivity,S m-1,-9999999.0,"[0.0, 6.0]",949243,0,0,0,0,949243,100.0,3.9645,3.3641,4.8243,0.2788

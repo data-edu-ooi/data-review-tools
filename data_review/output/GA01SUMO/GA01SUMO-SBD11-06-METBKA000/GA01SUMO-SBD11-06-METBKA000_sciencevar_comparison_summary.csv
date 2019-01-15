@@ -1,0 +1,100 @@
+deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
+deployment0001,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Barometric Pressure,met_barpres,Pa,pass,9299,0,no missing data,9299,0.0,0.0,0.0,0.0
+deployment0001,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Relative Humidity,relative_humidity,%,pass,9299,0,no missing data,9299,0.0,0.0,0.0,0.0
+deployment0001,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Air Temperature,air_temperature,ºC,pass,9299,0,no missing data,9299,0.0,0.0,0.0,0.0
+deployment0001,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Downwelling Longwave Irradiance,longwave_irradiance,W m-2,pass,9299,0,no missing data,9299,0.0,0.0,0.0,0.0
+deployment0001,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Precipitation,precipitation,mm,pass,9299,0,no missing data,9299,0.0,0.0,0.0,0.0
+deployment0001,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Sea Surface Temperature,sea_surface_temperature,ºC,pass,9299,0,no missing data,9299,0.0,0.0,0.0,0.0
+deployment0001,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Sea Surface Conductivity,sea_surface_conductivity,S m-1,pass,9299,0,no missing data,9299,0.0,0.0,0.0,0.0
+deployment0001,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Downwelling Shortwave Irradiance,shortwave_irradiance,W m-2,pass,9299,0,no missing data,9299,0.0,0.0,0.0,0.0
+deployment0001,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Mean Wind Velocity - Eastward relative to Magnetic North,eastward_wind_velocity,m s-1,pass,9299,0,no missing data,9299,0.0,0.0,0.0,0.0
+deployment0001,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Mean Wind Velocity - Northward relative to Magnetic North,northward_wind_velocity,m s-1,pass,9299,0,no missing data,9299,0.0,0.0,0.0,0.0
+deployment0001,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Mean Wind Velocity - Eastward Relative to True North,met_windavg_mag_corr_east,m s-1,pass,9299,0,no missing data,9299,0.0,0.0,0.0,0.0
+deployment0001,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Mean Wind Velocity - Northward Relative to True North,met_windavg_mag_corr_north,m s-1,pass,9299,0,no missing data,9299,0.0,0.0,0.0,0.0
+deployment0001,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Surface Current Direction,met_current_direction,degrees,pass,9299,9299,No valid data to compare,0,,,,
+deployment0001,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Surface Current Speed,met_current_speed,m s-1,pass,9299,9299,No valid data to compare,0,,,,
+deployment0001,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Relative Wind Direction,met_relwind_direction,degrees,pass,9299,9299,No valid data to compare,0,,,,
+deployment0001,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Relative Wind Speed,met_relwind_speed,m s-1,pass,9299,9299,No valid data to compare,0,,,,
+deployment0001,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Net Shortwave Irradiance,met_netsirr,W m-2,pass,9299,0,no missing data,9299,0.0,0.0,0.0,0.0
+deployment0001,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Sea Surface Practical Salinity,met_salsurf,1,pass,9299,0,no missing data,9299,0.0,0.0,0.0,0.0
+deployment0001,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Specific Humidity,met_spechum,g kg-1,pass,9299,0,no missing data,9299,0.0,0.0,0.0,0.0
+deployment0001,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Net Heat Flux,met_heatflx_minute,W m-2,pass,9299,9299,No valid data to compare,0,,,,
+deployment0001,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Latent Heat Flux,met_latnflx_minute,W m-2,pass,9299,9299,No valid data to compare,0,,,,
+deployment0001,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Net Longwave Radiation,met_netlirr_minute,W m-2,pass,9299,9299,No valid data to compare,0,,,,
+deployment0001,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Sensible Heat Flux,met_sensflx_minute,W m-2,pass,9299,9299,No valid data to compare,0,,,,
+deployment0002,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Barometric Pressure,met_barpres,Pa,pass,414975,0,no missing data,414975,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Relative Humidity,relative_humidity,%,pass,414975,0,no missing data,414975,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Air Temperature,air_temperature,ºC,pass,414975,0,no missing data,414975,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Downwelling Longwave Irradiance,longwave_irradiance,W m-2,pass,414975,0,no missing data,414975,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Precipitation,precipitation,mm,pass,414975,0,no missing data,414975,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Sea Surface Temperature,sea_surface_temperature,ºC,pass,414975,0,no missing data,414975,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Sea Surface Conductivity,sea_surface_conductivity,S m-1,pass,414975,0,no missing data,414975,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Downwelling Shortwave Irradiance,shortwave_irradiance,W m-2,pass,414975,0,no missing data,414975,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Mean Wind Velocity - Eastward relative to Magnetic North,eastward_wind_velocity,m s-1,pass,414975,0,no missing data,414975,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Mean Wind Velocity - Northward relative to Magnetic North,northward_wind_velocity,m s-1,pass,414975,0,no missing data,414975,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Mean Wind Velocity - Eastward Relative to True North,met_windavg_mag_corr_east,m s-1,pass,414975,0,no missing data,414975,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Mean Wind Velocity - Northward Relative to True North,met_windavg_mag_corr_north,m s-1,pass,414975,0,no missing data,414975,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Surface Current Direction,met_current_direction,degrees,pass,414975,0,no missing data,414975,0.0,220.4396088449,2.0,0.0
+deployment0002,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Surface Current Speed,met_current_speed,m s-1,pass,414975,0,no missing data,414975,0.0,0.1391560049,0.0,0.0
+deployment0002,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Relative Wind Direction,met_relwind_direction,degrees,pass,414975,0,no missing data,414975,0.0,3.8148202868,2.0,0.0
+deployment0002,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Relative Wind Speed,met_relwind_speed,m s-1,pass,414975,0,no missing data,414975,0.0,0.0446961078,0.0,0.0
+deployment0002,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Net Shortwave Irradiance,met_netsirr,W m-2,pass,414975,0,no missing data,414975,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Sea Surface Practical Salinity,met_salsurf,1,pass,414975,0,no missing data,414975,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Specific Humidity,met_spechum,g kg-1,pass,414975,0,no missing data,414975,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Net Heat Flux,met_heatflx_minute,W m-2,pass,414975,2132,no missing data,412843,0.0,0.4004699171,0.0,0.0
+deployment0002,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Latent Heat Flux,met_latnflx_minute,W m-2,pass,414975,2132,no missing data,412843,0.0,0.3885182326,0.0,0.0
+deployment0002,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Net Longwave Radiation,met_netlirr_minute,W m-2,pass,414975,2132,no missing data,412843,0.0,0.005427073,0.0,0.0
+deployment0002,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Sensible Heat Flux,met_sensflx_minute,W m-2,pass,414975,2132,no missing data,412843,0.0,0.0065246115,0.0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Rain Rate,met_rainrte,mm hr-1,pass,8575,0,no missing data,8575,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Sonic Buoyancy Flux,met_buoyfls,W m-2,pass,8575,543,no missing data,8032,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Buoyancy Flux,met_buoyflx,W m-2,pass,8575,543,no missing data,8032,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Freshwater Flux,met_frshflx,mm hr-1,pass,8575,543,no missing data,8032,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Net Heat Flux,met_heatflx,W m-2,pass,8575,543,no missing data,8032,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Latent Heat Flux,met_latnflx,W m-2,pass,8575,543,no missing data,8032,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Momentum Flux,met_mommflx,N m-2,pass,8575,543,no missing data,8032,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Net Longwave Radiation,met_netlirr,W m-2,pass,8575,543,no missing data,8032,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Rain Heat Flux,met_rainflx,W m-2,pass,8575,543,no missing data,8032,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Sensible Heat Flux,met_sensflx,W m-2,pass,8575,543,no missing data,8032,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Specific Humidity,met_sphum2m,g kg-1,pass,8575,543,no missing data,8032,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Air Temperature,met_tempa2m,ºC,pass,8575,543,no missing data,8032,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Skin Seawater Temperature,met_tempskn,ºC,pass,8575,543,no missing data,8032,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Wind Velocity at 10 M,met_wind10m,m s-1,pass,8575,543,no missing data,8032,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Net Shortwave Irradiance,met_netsirr_hourly,W m-2,pass,8575,0,no missing data,8575,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Barometric Pressure,met_barpres,Pa,pass,602696,0,no missing data,602696,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Relative Humidity,relative_humidity,%,pass,602696,0,no missing data,602696,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Air Temperature,air_temperature,ºC,pass,602696,0,no missing data,602696,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Downwelling Longwave Irradiance,longwave_irradiance,W m-2,pass,602696,0,no missing data,602696,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Precipitation,precipitation,mm,pass,602696,0,no missing data,602696,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Sea Surface Temperature,sea_surface_temperature,ºC,pass,602696,0,no missing data,602696,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Sea Surface Conductivity,sea_surface_conductivity,S m-1,pass,602696,0,no missing data,602696,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Downwelling Shortwave Irradiance,shortwave_irradiance,W m-2,pass,602696,0,no missing data,602696,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Mean Wind Velocity - Eastward relative to Magnetic North,eastward_wind_velocity,m s-1,pass,602696,0,no missing data,602696,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Mean Wind Velocity - Northward relative to Magnetic North,northward_wind_velocity,m s-1,pass,602696,0,no missing data,602696,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Mean Wind Velocity - Eastward Relative to True North,met_windavg_mag_corr_east,m s-1,pass,602696,0,no missing data,602696,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Mean Wind Velocity - Northward Relative to True North,met_windavg_mag_corr_north,m s-1,pass,602696,0,no missing data,602696,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Surface Current Direction,met_current_direction,degrees,pass,602696,375287,no missing data,227409,0.0,241.9302039312,15.0,0.01
+deployment0003,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Surface Current Speed,met_current_speed,m s-1,pass,602696,375287,no missing data,227409,0.0,0.1291829529,0.0,0.0
+deployment0003,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Relative Wind Direction,met_relwind_direction,degrees,pass,602696,375287,no missing data,227409,0.0,3.5420534753,10.0,0.0
+deployment0003,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Relative Wind Speed,met_relwind_speed,m s-1,pass,602696,375287,no missing data,227409,0.0,0.1417029533,0.0,0.0
+deployment0003,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Net Shortwave Irradiance,met_netsirr,W m-2,pass,602696,0,no missing data,602696,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Sea Surface Practical Salinity,met_salsurf,1,pass,602696,0,no missing data,602696,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Specific Humidity,met_spechum,g kg-1,pass,602696,0,no missing data,602696,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Net Heat Flux,met_heatflx_minute,W m-2,pass,602696,376198,no missing data,226498,0.0,1.3903643086,2.0,0.0
+deployment0003,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Latent Heat Flux,met_latnflx_minute,W m-2,pass,602696,376198,no missing data,226498,0.0,1.3643621615,2.0,0.0
+deployment0003,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Net Longwave Radiation,met_netlirr_minute,W m-2,pass,602696,376198,no missing data,226498,0.0,0.0183266645,0.0,0.0
+deployment0003,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Sensible Heat Flux,met_sensflx_minute,W m-2,pass,602696,376198,no missing data,226498,0.0,0.0206175905,0.0,0.0
+deployment0003,recovered_host-metbk_hourly,telemetered-metbk_hourly,Rain Rate,met_rainrte,mm hr-1,pass,3574,0,no missing data,3574,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_hourly,telemetered-metbk_hourly,Sonic Buoyancy Flux,met_buoyfls,W m-2,pass,3574,223,no missing data,3351,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_hourly,telemetered-metbk_hourly,Buoyancy Flux,met_buoyflx,W m-2,pass,3574,223,no missing data,3351,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_hourly,telemetered-metbk_hourly,Freshwater Flux,met_frshflx,mm hr-1,pass,3574,223,no missing data,3351,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_hourly,telemetered-metbk_hourly,Net Heat Flux,met_heatflx,W m-2,pass,3574,223,no missing data,3351,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_hourly,telemetered-metbk_hourly,Latent Heat Flux,met_latnflx,W m-2,pass,3574,223,no missing data,3351,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_hourly,telemetered-metbk_hourly,Momentum Flux,met_mommflx,N m-2,pass,3574,223,no missing data,3351,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_hourly,telemetered-metbk_hourly,Net Longwave Radiation,met_netlirr,W m-2,pass,3574,223,no missing data,3351,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_hourly,telemetered-metbk_hourly,Rain Heat Flux,met_rainflx,W m-2,pass,3574,223,no missing data,3351,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_hourly,telemetered-metbk_hourly,Sensible Heat Flux,met_sensflx,W m-2,pass,3574,223,no missing data,3351,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_hourly,telemetered-metbk_hourly,Specific Humidity,met_sphum2m,g kg-1,pass,3574,223,no missing data,3351,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_hourly,telemetered-metbk_hourly,Air Temperature,met_tempa2m,ºC,pass,3574,223,no missing data,3351,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_hourly,telemetered-metbk_hourly,Skin Seawater Temperature,met_tempskn,ºC,pass,3574,223,no missing data,3351,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_hourly,telemetered-metbk_hourly,Wind Velocity at 10 M,met_wind10m,m s-1,pass,3574,223,no missing data,3351,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-metbk_hourly,telemetered-metbk_hourly,Net Shortwave Irradiance,met_netsirr_hourly,W m-2,pass,3574,0,no missing data,3574,0.0,0.0,0.0,0.0

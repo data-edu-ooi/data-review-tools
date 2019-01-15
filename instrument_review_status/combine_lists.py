@@ -6,7 +6,7 @@ import pandas as pd
 # Step 1 Users/leila/Documents/NSFEduSupport/database/
 file_1 = 'not_in_preferred_stream_baseline.csv'
 
-file_2 = 'https://raw.githubusercontent.com/data-edu-ooi/data-review-tools/master/prefered_stream_baseline/stream_review_baseline.csv'
+file_2 = 'https://raw.githubusercontent.com/ooi-data-lab/data-review-tools/master/prefered_stream_baseline/stream_review_baseline.csv'
 
 f1 = pd.read_csv(file_1)
 f1 = f1.rename(columns={'reference_designator': 'refdes'})

@@ -138,7 +138,7 @@ def get_nc_urls(catalog_urls):
 
 
 def get_preferred_stream_info(refdes):
-    ps_link = 'https://raw.githubusercontent.com/data-edu-ooi/data-review-tools/master/data_review/output/{}/{}/{}-preferred_stream.json'.format(
+    ps_link = 'https://raw.githubusercontent.com/ooi-data-lab/data-review-tools/master/data_review/output/{}/{}/{}-preferred_stream.json'.format(
         refdes.split('-')[0], refdes, refdes)
     pslnk = urlopen(ps_link)
     psl = json.loads(pslnk.read())

@@ -1,0 +1,41 @@
+deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
+deployment0001,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Density,density,kg m-3,pass,1831520,0,no missing data,1825819,0.0,0.0,0,0.0
+deployment0001,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Practical Salinity,practical_salinity,1,pass,1831520,0,no missing data,1825819,0.0,0.0,0,0.0
+deployment0001,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Pressure,ctdpf_ckl_seawater_pressure,dbar,pass,1831520,0,no missing data,1825819,0.0,0.0,0,0.0
+deployment0001,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Temperature,ctdpf_ckl_seawater_temperature,ºC,pass,1831520,0,no missing data,1825819,0.0,0.0,0,0.0
+deployment0001,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Conductivity,ctdpf_ckl_seawater_conductivity,S m-1,pass,1831520,0,no missing data,1825819,0.0,0.0,0,0.0
+deployment0002,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Density,density,kg m-3,pass,1067195,0,no missing data,1067195,0.0,0.0,0,0.0
+deployment0002,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Practical Salinity,practical_salinity,1,pass,1067195,0,no missing data,1067195,0.0,0.0,0,0.0
+deployment0002,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Pressure,ctdpf_ckl_seawater_pressure,dbar,pass,1067195,0,no missing data,1067195,0.0,0.0,0,0.0
+deployment0002,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Temperature,ctdpf_ckl_seawater_temperature,ºC,pass,1067195,0,no missing data,1067195,0.0,0.0,0,0.0
+deployment0002,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Conductivity,ctdpf_ckl_seawater_conductivity,S m-1,pass,1067195,0,no missing data,1067195,0.0,0.0,0,0.0
+deployment0003,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Density,density,kg m-3,pass,1201435,0,no missing data,1200690,0.0,0.0,0,0.0
+deployment0003,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Practical Salinity,practical_salinity,1,pass,1201435,0,no missing data,1200690,0.0,0.0,0,0.0
+deployment0003,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Pressure,ctdpf_ckl_seawater_pressure,dbar,pass,1201435,0,no missing data,1200690,0.0,0.0,0,0.0
+deployment0003,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Temperature,ctdpf_ckl_seawater_temperature,ºC,pass,1201435,0,no missing data,1200690,0.0,0.0,0,0.0
+deployment0003,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Conductivity,ctdpf_ckl_seawater_conductivity,S m-1,pass,1201435,0,no missing data,1200690,0.0,0.0,0,0.0
+deployment0004,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Density,density,kg m-3,pass,2356891,0,no missing data,2356891,0.0,0.0,0,0.0
+deployment0004,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Practical Salinity,practical_salinity,1,pass,2356891,0,no missing data,2356891,0.0,0.0,0,0.0
+deployment0004,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Pressure,ctdpf_ckl_seawater_pressure,dbar,pass,2356891,0,no missing data,2356891,0.0,0.0,0,0.0
+deployment0004,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Temperature,ctdpf_ckl_seawater_temperature,ºC,pass,2356891,0,no missing data,2356891,0.0,0.0,0,0.0
+deployment0004,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Conductivity,ctdpf_ckl_seawater_conductivity,S m-1,pass,2356891,0,no missing data,2356891,0.0,0.0,0,0.0
+deployment0005,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Density,density,kg m-3,pass,621476,0,no missing data,617181,0.0,0.0,0,0.0
+deployment0005,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Practical Salinity,practical_salinity,1,pass,621476,0,no missing data,617181,0.0,0.0,0,0.0
+deployment0005,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Pressure,ctdpf_ckl_seawater_pressure,dbar,pass,621476,0,no missing data,617181,0.0,0.0,0,0.0
+deployment0005,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Temperature,ctdpf_ckl_seawater_temperature,ºC,pass,621476,0,no missing data,617181,0.0,0.0,0,0.0
+deployment0005,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Conductivity,ctdpf_ckl_seawater_conductivity,S m-1,pass,621476,0,no missing data,617181,0.0,0.0,0,0.0
+deployment0006,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Density,density,kg m-3,pass,117349,0,no missing data,115728,0.0,0.0,0,0.0
+deployment0006,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Practical Salinity,practical_salinity,1,pass,117349,0,no missing data,115728,0.0,0.0,0,0.0
+deployment0006,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Pressure,ctdpf_ckl_seawater_pressure,dbar,pass,117349,0,no missing data,115728,0.0,0.0,0,0.0
+deployment0006,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Temperature,ctdpf_ckl_seawater_temperature,ºC,pass,117349,0,no missing data,115728,0.0,0.0,0,0.0
+deployment0006,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Conductivity,ctdpf_ckl_seawater_conductivity,S m-1,pass,117349,0,no missing data,115728,0.0,0.0,0,0.0
+deployment0007,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Density,density,kg m-3,pass,1607682,0,no missing data,1607682,0.0,0.0,0,0.0
+deployment0007,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Practical Salinity,practical_salinity,1,pass,1607682,0,no missing data,1607682,0.0,0.0,0,0.0
+deployment0007,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Pressure,ctdpf_ckl_seawater_pressure,dbar,pass,1607682,0,no missing data,1607682,0.0,0.0,0,0.0
+deployment0007,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Temperature,ctdpf_ckl_seawater_temperature,ºC,pass,1607682,0,no missing data,1607682,0.0,0.0,0,0.0
+deployment0007,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Conductivity,ctdpf_ckl_seawater_conductivity,S m-1,pass,1607682,0,no missing data,1607682,0.0,0.0,0,0.0
+deployment0008,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Density,density,kg m-3,pass,577284,0,no missing data,577284,0.0,0.0,0,0.0
+deployment0008,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Practical Salinity,practical_salinity,1,pass,577284,0,no missing data,577284,0.0,0.0,0,0.0
+deployment0008,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Pressure,ctdpf_ckl_seawater_pressure,dbar,pass,577284,0,no missing data,577284,0.0,0.0,0,0.0
+deployment0008,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Temperature,ctdpf_ckl_seawater_temperature,ºC,pass,577284,0,no missing data,577284,0.0,0.0,0,0.0
+deployment0008,recovered_wfp-ctdpf_ckl_wfp_instrument_recovered,telemetered-ctdpf_ckl_wfp_instrument,Seawater Conductivity,ctdpf_ckl_seawater_conductivity,S m-1,pass,577284,0,no missing data,577284,0.0,0.0,0,0.0

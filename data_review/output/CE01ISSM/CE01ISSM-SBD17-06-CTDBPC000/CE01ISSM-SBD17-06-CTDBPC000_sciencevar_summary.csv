@@ -1,0 +1,6 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0009,recovered_host,ctdbp_cdef_dcl_instrument_recovered,conductivity,S m-1,-9999999.0,"[0.0, 6.0]",2167,0,0,0,0,2167,100.0,3.6793,3.3228,4.0037,0.1253
+deployment0009,recovered_host,ctdbp_cdef_dcl_instrument_recovered,pressure,dbar,-9999999.0,"[0.0, 6000.0]",2167,0,0,0,1,2166,99.95,1.1083,0.903,1.359,0.0568
+deployment0009,recovered_host,ctdbp_cdef_dcl_instrument_recovered,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",2167,0,0,0,0,2167,100.0,1024.9338,1020.9893,1026.3222,0.9425
+deployment0009,recovered_host,ctdbp_cdef_dcl_instrument_recovered,temp,ºC,-9999999.0,"[-2.0, 40.0]",2167,0,0,0,0,2167,100.0,11.124,8.0482,15.8494,1.5391
+deployment0009,recovered_host,ctdbp_cdef_dcl_instrument_recovered,practical_salinity,1,-9999999.0,"[0.0, 42.0]",2167,0,0,0,0,2167,100.0,32.6632,28.3256,33.8466,0.9971

@@ -1,0 +1,13 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_host,flort_sample,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",1699727,0,362025,no global ranges,0.0,1337702,78.7,0.0006,0.0006,0.0006,0.0
+deployment0001,recovered_host,flort_sample,fluorometric_chlorophyll_a,µg L-1,-9999999.0,"[0.0, 50.0]",1699727,0,0,184,27311.0,1672232,98.38,0.4994,0.0,2.7951,0.2637
+deployment0001,recovered_host,flort_sample,fluorometric_cdom,ppb,-9999999.0,"[0.0, 375.0]",1699727,0,0,9150,2102.0,1688475,99.34,1.0261,0.0,3.178,0.4246
+deployment0001,recovered_host,flort_sample,total_volume_scattering_coefficient,m-1 sr-1,-9999999.0,"[0.0, 0.0079]",1699727,0,0,0,22966.0,1676761,98.65,0.0001,0.0,0.0004,0.0
+deployment0001,recovered_host,flort_sample,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",1699727,0,362025,4,19869.0,1317829,77.53,0.001,0.0003,0.0027,0.0002
+deployment0001,recovered_host,flort_sample,pressure_depth,dbar,-9999999.0,"[None, None]",1699727,0,1699727,no global ranges,,0,0.0,,,,
+deployment0002,recovered_host,flort_sample,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",5255355,0,0,no global ranges,0.0,5255355,100.0,0.0006,0.0006,0.0006,0.0
+deployment0002,recovered_host,flort_sample,fluorometric_chlorophyll_a,µg L-1,-9999999.0,"[0.0, 50.0]",5255355,0,0,0,58053.0,5197302,98.9,0.798,0.121,3.8478,0.4811
+deployment0002,recovered_host,flort_sample,fluorometric_cdom,ppb,-9999999.0,"[0.0, 375.0]",5255355,0,0,1399,16770.0,5237186,99.65,1.8109,0.898,2.694,0.1701
+deployment0002,recovered_host,flort_sample,total_volume_scattering_coefficient,m-1 sr-1,-9999999.0,"[0.0, 0.0079]",5255355,0,0,0,15392.0,5239963,99.71,0.0002,0.0001,0.0005,0.0001
+deployment0002,recovered_host,flort_sample,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",5255355,0,0,0,15392.0,5239963,99.71,0.0013,0.0008,0.0036,0.0004
+deployment0002,recovered_host,flort_sample,pressure_depth,dbar,-9999999.0,"[None, None]",5255355,0,5255355,no global ranges,,0,0.0,,,,

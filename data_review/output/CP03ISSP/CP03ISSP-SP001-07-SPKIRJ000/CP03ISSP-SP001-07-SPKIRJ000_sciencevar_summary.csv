@@ -1,0 +1,3 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0003,telemetered,spkir_abj_cspp_instrument,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",1112,0.0,0.0,0.0,0.0,1112,100.0,34.5417,0.94,80.462,22.2757
+deployment0003,telemetered,spkir_abj_cspp_instrument,spkir_abj_cspp_downwelling_vector,µW cm-2 nm-1,None,"[0.0, 6000.0]",1112,,,,,variable has more than 1 dimension,stats not calculated,,,,
