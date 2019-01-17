@@ -19,7 +19,7 @@ import functions.combine_datasets as cd
 import functions.group_by_timerange as gt
 
 from matplotlib import pyplot
-
+from matplotlib import colors as mcolors
 import datetime
 from matplotlib.dates import (YEARLY, DateFormatter, rrulewrapper, RRuleLocator, drange)
 import matplotlib.dates as mdates
@@ -27,6 +27,9 @@ import matplotlib.ticker as ticker
 from matplotlib.ticker import MaxNLocator
 from statsmodels.nonparametric.kde import KDEUnivariate
 
+
+colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
+color_names = [name for hsv, name in colors.items()]
 
 def get_deployment_information(data, deployment):
     d_info = [x for x in data['instrument']['deployments'] if x['deployment_number'] == deployment]
@@ -78,7 +81,7 @@ def main(sDir, url_list):
 
         for ms in np.unique(methodstream):
             fdatasets_sel = [x for x in fdatasets if ms in x]
-            save_dir = os.path.join(sDir, array, subsite, r, 'timeseries_yearly_plot', ms.split('-')[0])
+            save_dir = os.path.join(sDir, array, subsite, r, 'Raw_timeseries_yearly_plot', ms.split('-')[0])
             cf.create_dir(save_dir)
 
             stream_sci_vars_dict = dict()
@@ -122,41 +125,65 @@ def main(sDir, url_list):
                         x = vinfo['t']
                         y = vinfo['values']
 
-                        # reject NaNs
-                        nan_ind = ~np.isnan(y)
-                        x_nonan = x[nan_ind]
-                        y_nonan = y[nan_ind]
-
-                        # reject fill values
-                        fv_ind = y_nonan != vinfo['fv'][0]
-                        x_nonan_nofv = x_nonan[fv_ind]
-                        y_nonan_nofv = y_nonan[fv_ind]
-
-                        # reject extreme values
-                        Ev_ind = cf.reject_extreme_values(y_nonan_nofv)
-                        y_nonan_nofv_nE = y_nonan_nofv[Ev_ind]
-                        x_nonan_nofv_nE = x_nonan_nofv[Ev_ind]
-
-                        # reject values outside global ranges:
+                        # # reject NaNs
+                        # nan_ind = ~np.isnan(y)
+                        # x_nonan = x[nan_ind]
+                        # y_nonan = y[nan_ind]
+                        #
+                        # # reject fill values
+                        # fv_ind = y_nonan != vinfo['fv'][0]
+                        # x_nonan_nofv = x_nonan[fv_ind]
+                        # y_nonan_nofv = y_nonan[fv_ind]
+                        #
+                        # # reject extreme values
+                        # Ev_ind = cf.reject_extreme_values(y_nonan_nofv)
+                        # y_nonan_nofv_nE = y_nonan_nofv[Ev_ind]
+                        # x_nonan_nofv_nE = x_nonan_nofv[Ev_ind]
+                        #
+                        # # reject values outside global ranges:
                         global_min, global_max = cf.get_global_ranges(r, sv)
-                        gr_ind = cf.reject_global_ranges(y_nonan_nofv_nE, global_min, global_max)
-                        y_nonan_nofv_nE_nogr = y_nonan_nofv_nE[gr_ind]
-                        x_nonan_nofv_nE_nogr = x_nonan_nofv_nE[gr_ind]
+                        # gr_ind = cf.reject_global_ranges(y_nonan_nofv_nE, global_min, global_max)
+                        # y_nonan_nofv_nE_nogr = y_nonan_nofv_nE[gr_ind]
+                        # x_nonan_nofv_nE_nogr = x_nonan_nofv_nE[gr_ind]
 
                         title = ' '.join((r, ms.split('-')[0]))
 
-                        if len(y_nonan_nofv) > 0:
+                        if len(y) > 0:
                             if m == 'common_stream_placeholder':
                                 sname = '-'.join((r, sv))
                             else:
                                 sname = '-'.join((r, m, sv))
 
                             # group data by year
-                            groups, g_data = gt.group_by_timerange(x_nonan_nofv_nE_nogr, y_nonan_nofv_nE_nogr, 'A')
+                            groups, g_data = gt.group_by_timerange(x, y, 'A')
 
                             # plotting
-                            colors = [color['color'] for color in
-                                      list(pyplot.rcParams['axes.prop_cycle'][:len(groups)])]
+
+                            # create bins for histogram
+                            groups_min = min(groups.describe()['DO']['min'])
+                            groups_max = max(groups.describe()['DO']['max'])
+                            lower_bound = int(round(groups_min))
+                            upper_bound = int(round(groups_max + (groups_max / 50)))
+                            step_bound = int(round((groups_max - groups_min) / 10))
+
+                            if step_bound == 0:
+                                step_bound += 1
+
+                            if (upper_bound - lower_bound) == step_bound:
+                                lower_bound -= 1
+                                upper_bound += 1
+                            if (upper_bound - lower_bound) < step_bound:
+                                step_bound = int(round(step_bound / 10))
+
+                            bin_range = list(range(lower_bound, upper_bound, step_bound))
+
+                            # preparing color palette
+                            colors = color_names[:len(groups)]
+
+                            # colors = [color['color'] for color in
+                            #           list(pyplot.rcParams['axes.prop_cycle'][:len(groups)])]
+
+                            # preparing figure handle
                             fig0, ax0 = pyplot.subplots(nrows=2, ncols=1)
 
                             # subplot for  histogram and basic statistics table
@@ -177,9 +204,9 @@ def main(sDir, url_list):
 
                                 # prepare data for plotting
                                 y_data = g_data[ny + (t + 1)].dropna(axis=0)
-                                x_time = g_data[ny+t].dropna(axis=0)
+                                x_time = g_data[ny + t][y_data.index]   #g_data[ny + t].dropna(axis=0)
                                 t += 1
-
+                                print(len(x_time), len(y_data))
                                 n_year = x_time[0].year
 
                                 col_name = str(n_year)
@@ -188,38 +215,19 @@ def main(sDir, url_list):
                                 serie_n[col_name] = list(y_data[:])
 
                                 # plot histogram
-                                # create bins
-                                data_min = min(serie_n[col_name].values)
-                                data_max = max(serie_n[col_name].values)
-                                lower_bound = int(round(data_min))
-                                upper_bound = int(round(data_max+(data_max/50)))
-                                step_bound = int(round((data_max+data_min)/10))
-
-                                lower_bound = int(round(global_min))
-                                upper_bound = int(round(global_max+(global_max/50)))
-                                step_bound = int(round((data_max - data_min)/10))
-
-                                if step_bound == 0:
-                                    step_bound += 1
-
-                                if (upper_bound-lower_bound) == step_bound:
-                                    lower_bound -= 1
-                                    upper_bound += 1
-                                if (upper_bound-lower_bound) < step_bound:
-                                    step_bound = int(round(step_bound/10))
-
-                                bin_range = list(range(lower_bound, upper_bound, step_bound))
-                                print(bin_range)
                                 # serie_n.plot.hist(ax=ax0[0], bins=bin_range,
                                 #                   histtype='bar', color=colors[ny], stacked=True)
+
+                                # Plot Kernel density estimates
                                 serie_n.plot.kde(ax=ax0[0], color=colors[ny])
                                 ax0[0].legend(fontsize=8, bbox_to_anchor=(0., 1.12, 1., .102), loc=3,
                                               ncol=len(groups), mode="expand", borderaxespad=0.)
 
                                 # ax0[0].set_xticks(bin_range)
-                                ax0[0].set_xlabel('Observation Ranges', fontsize=8)
-                                ax0[0].set_ylabel('Density', fontsize=8) #'Number of Observations'
-                                ax0[0].set_title(ms.split('-')[0] + ' (' + sv + ', ' + sv_units+')' + '  Kernel Density Estimates', fontsize=8)
+                                ax0[0].set_xlabel('Observation Ranges' + ' (' + sv + ', ' + sv_units+')', fontsize=8)
+                                ax0[0].set_ylabel('Density',fontsize=8) #'Number of Observations'
+                                ax0[0].set_title(str(n_year) + '  Kernel Density Estimates & Basic Statistics',
+                                                 fontsize=8)
 
                                 # plot data
                                 serie_n.plot(ax=ax[ny], linestyle='None', marker='.', markersize=0.5, color=colors[ny])
@@ -281,14 +289,15 @@ def main(sDir, url_list):
                                                     bbox=dict(boxstyle='round',
                                                               ec=(0., 0.5, 0.5),
                                                               fc=(1., 1., 1.))
-                                                )
+                                                    )
                                     dep += 1
 
                             # save figure to a file
+                            sfile = '_'.join(('Raw_', sname))
                             save_file = os.path.join(save_dir, sname)
                             fig.savefig(str(save_file), dpi=150)
 
-                            sfile = '_'.join(('Statistics', sname))
+                            sfile = '_'.join(('Statistics_Raw_', sname))
                             save_file = os.path.join(save_dir, sfile)
                             fig0.savefig(str(save_file), dpi=150)
 
