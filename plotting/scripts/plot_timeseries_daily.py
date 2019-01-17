@@ -15,11 +15,10 @@ import xarray as xr
 import functions.common as cf
 import functions.plotting as pf
 import functions.combine_datasets as cd
-from pandas import Series
-from pandas import Grouper
+import functions.group_by_timerange as gt
+
+
 from matplotlib import pyplot
-from pandas import concat
-from pandas import DataFrame
 import datetime
 from matplotlib.dates import (YEARLY, DateFormatter, rrulewrapper, RRuleLocator, drange)
 import matplotlib.dates as mdates
@@ -149,59 +148,35 @@ def main(sDir, url_list):
                             else:
                                 sname = '-'.join((r, m, sv))
 
-
-                            # plot to compare line plots for the same interval, such as from day-to-day, month-to-month, and year-to-year
-
                             # 1st group by year
-                            series = pd.DataFrame(columns=['Date', 'DO'], index=x_nonan_nofv_nE_nogr)
-                            series['Date'] = x_nonan_nofv_nE_nogr
-                            series['DO'] = y_nonan_nofv_nE_nogr
-                            group_y = series.groupby(Grouper(freq='A'))
+                            ygroups, gy_data = gt.group_by_timerange(x_nonan_nofv_nE_nogr, y_nonan_nofv_nE_nogr, 'A')
 
-
-                            year_n = concat([DataFrame(x[1].values) for x in group_y], axis=1)
-                            year_n = DataFrame(year_n)
-                            year_n.columns = range(1, len(year_n.columns) + 1)
-
-                            # 2nd group by month
                             tn = 1
-                            for n in range(len(group_y)):
-                                x_time = year_n[n+tn].dropna(axis=0)
-                                y_DO = year_n[n+(tn+1)].dropna(axis=0)
-                                tn += 1
+                            for n in range(len(ygroups)):
+                                x_time = gy_data[n + tn].dropna(axis=0)
+                                y_data = gy_data[n + (tn + 1)].dropna(axis=0)
+
+                                # 2nd group by month
+                                mgroups, gm_data = gt.group_by_timerange(x_time.values, y_data.values, 'M')
+
                                 if len(x_time) == 0:
                                     continue
-                                series_y = pd.DataFrame(columns=['Dm', 'Do'], index=x_time)
-                                series_y['Dm'] = list(x_time[:])
-                                series_y['Do'] = list(y_DO[:])
-                                group_m = series_y.groupby(Grouper(freq='M'))
 
-                                month_n = concat([DataFrame(x[1].values) for x in group_m], axis=1)
-                                month_n = DataFrame(month_n)
-                                month_n.columns = range(1, len(month_n.columns) + 1)
-
-                                # 3rd group by day
                                 td = 1
-                                for jj in range(len(group_m)):
-                                    x_time = month_n[jj + td].dropna(axis=0)
-                                    y_DO = month_n[jj + (td + 1)].dropna(axis=0)
-                                    td += 1
+                                for jj in range(len(mgroups)):
+                                    x_time = gm_data[jj + td].dropna(axis=0)
+                                    y_data = gm_data[jj + (td + 1)].dropna(axis=0)
 
                                     if len(x_time) == 0:
                                         continue
 
-                                    series_y = pd.DataFrame(columns=['Dm', 'Do'], index=x_time)
-                                    series_y['Dm'] = list(x_time[:])
-                                    series_y['Do'] = list(y_DO[:])
-                                    group_d = series_y.groupby(Grouper(freq='D'))
+                                    # 3rd group by day
+                                    dgroups, gd_data = gt.group_by_timerange(x_time.values, y_data.values, 'D')
 
                                     x_year = x_time[0].year
                                     x_month = x_time[0].month
                                     month_name = calendar.month_abbr[x_month]
                                     print(x_year, x_month)
-                                    day_n = concat([DataFrame(x[1].values) for x in group_d], axis=1)
-                                    day_n = DataFrame(day_n)
-                                    day_n.columns = range(1, len(day_n.columns) + 1)
 
                                     sfile = '_'.join((str(x_year), str(x_month), sname))
 
@@ -245,11 +220,12 @@ def main(sDir, url_list):
                                             if kk is 6 and ff in list(range(1, 5)):
                                                 fig.delaxes(ax[kk][ff])
 
+
                                     tm = 1
-                                    for mt in range(len(group_d)):
-                                        x_time = day_n[mt + tm].dropna(axis=0)
-                                        y_DO = day_n[mt + (tm + 1)].dropna(axis=0)
-                                        tm += 1
+                                    for mt in range(len(dgroups)):
+                                        x_time = gd_data[mt + tm].dropna(axis=0)
+                                        y_DO = gd_data[mt + (tm + 1)].dropna(axis=0)
+
                                         series_m = pd.DataFrame(columns=['DO_n'], index=x_time)
                                         series_m['DO_n'] = list(y_DO[:])
 
@@ -259,7 +235,6 @@ def main(sDir, url_list):
                                         x_day = x_time[0].day
 
                                         print(x_time[0].year, x_time[0].month, x_day)
-                                        # print(series_m['DO_n'])
 
                                         i0 = day_i[x_day][0]
                                         i1 = day_i[x_day][1]
@@ -268,8 +243,8 @@ def main(sDir, url_list):
                                         series_m.plot(ax=ax[i0][i1], linestyle='None', marker='.', markersize=1)
                                         ax[i0][i1].legend().set_visible(False)
 
-                                        ma = series_m.rolling(2).mean()
-                                        mstd = series_m.rolling(2).std()
+                                        ma = series_m.rolling('3600s').mean()
+                                        mstd = series_m.rolling('3600s').std()
 
                                         ax[i0][i1].plot(ma.index, ma.DO_n, 'b', linewidth=0.25)
                                         ax[i0][i1].fill_between(mstd.index, ma.DO_n-3*mstd.DO_n, ma.DO_n+3*mstd.DO_n,
@@ -311,20 +286,24 @@ def main(sDir, url_list):
                                                                       ))
 
                                             dep += 1
-
-
+                                        tm += 1
+                                    td += 1
                                     pf.save_fig(save_dir, sfile)
-                                    print('here now')
+                                tn += 1
 
 
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list = [
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163408-CE06ISSM-RID16-03-DOSTAD000-recovered_host-dosta_abcdjm_ctdbp_dcl_instrument_recovered/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163419-CE06ISSM-RID16-03-DOSTAD000-recovered_inst-dosta_abcdjm_ctdbp_instrument_recovered/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163558-CE06ISSM-RID16-03-DOSTAD000-telemetered-dosta_abcdjm_ctdbp_dcl_instrument/catalog.html'
-                ]
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T154700-CE06ISSM-RID16-03-CTDBPC000-recovered_host-ctdbp_cdef_dcl_instrument_recovered/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T154713-CE06ISSM-RID16-03-CTDBPC000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T154849-CE06ISSM-RID16-03-CTDBPC000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html']
+
+        # [
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163408-CE06ISSM-RID16-03-DOSTAD000-recovered_host-dosta_abcdjm_ctdbp_dcl_instrument_recovered/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163419-CE06ISSM-RID16-03-DOSTAD000-recovered_inst-dosta_abcdjm_ctdbp_instrument_recovered/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163558-CE06ISSM-RID16-03-DOSTAD000-telemetered-dosta_abcdjm_ctdbp_dcl_instrument/catalog.html'
+        #         ]
     # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163751-CE09OSPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html',
     # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163824-CE09OSPM-WFP01-02-DOFSTK000-telemetered-dofst_k_wfp_instrument/catalog.html',
     # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163845-CE09OSSM-RID27-04-DOSTAD000-recovered_host-dosta_abcdjm_dcl_instrument_recovered/catalog.html',

@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 """
-Created on Dec 14 2018
+Created on Jan 6 2019
 
-@author: Lori Garzio
-@brief: This script is used create two timeseries plots of raw and science variables for all deployments of a reference
-designator by delivery method: 1) plot all data, 2) plot data, omitting outliers beyond 5 standard deviations.
+@author: Leila Belabbassi
+@brief: This script is used to compare monthly timeseries plots for a science variable and
+provide statistical data description:
+Figure 1 - shows data and the mean and std lines calculated using the rolling window method,
+Figure 2 - shows data histograms and a table with basic statistics
 """
 
 import os
@@ -15,11 +17,12 @@ import xarray as xr
 import functions.common as cf
 import functions.plotting as pf
 import functions.combine_datasets as cd
-from pandas import Series
-from pandas import Grouper
+import functions.group_by_timerange as gt
+
 from matplotlib import pyplot
-from pandas import concat
-from pandas import DataFrame
+from matplotlib import colors as mcolors
+
+import matplotlib.gridspec as gridspec
 import datetime
 from matplotlib.dates import (YEARLY, DateFormatter, rrulewrapper, RRuleLocator, drange)
 import matplotlib.dates as mdates
@@ -27,6 +30,10 @@ import matplotlib.ticker as ticker
 import calendar
 from calendar import monthrange
 from matplotlib.ticker import MaxNLocator, LinearLocator
+
+
+colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
+color_names = [name for hsv, name in colors.items()]
 
 def get_deployment_information(data, deployment):
     d_info = [x for x in data['instrument']['deployments'] if x['deployment_number'] == deployment]
@@ -150,142 +157,201 @@ def main(sDir, url_list):
                             else:
                                 sname = '-'.join((r, m, sv))
 
-
-                            # plot to compare line plots for the same interval, such as from day-to-day, month-to-month, and year-to-year
-
                             # 1st group by year
-                            series = pd.DataFrame(columns=['Date', 'DO'], index=x_nonan_nofv_nE_nogr)
-                            series['Date'] = x_nonan_nofv_nE_nogr
-                            series['DO'] = y_nonan_nofv_nE_nogr
-                            group_y = series.groupby(Grouper(freq='A'))
-
-
-                            year_n = concat([DataFrame(x[1].values) for x in group_y], axis=1)
-                            year_n = DataFrame(year_n)
-                            year_n.columns = range(1, len(year_n.columns) + 1)
+                            ygroups, gy_data = gt.group_by_timerange(x_nonan_nofv_nE_nogr, y_nonan_nofv_nE_nogr, 'A')
 
                             tn = 1
-                            for n in range(len(group_y)):
-
-
+                            for n in range(len(ygroups)):
+                                x_time = gy_data[n+tn].dropna(axis=0)
+                                y_data = gy_data[n+(tn+1)].dropna(axis=0)
+                                y_data = y_data.astype(float)
                                 # 2nd group by month
-                                x_time = year_n[n+tn].dropna(axis=0)
-                                y_DO = year_n[n+(tn+1)].dropna(axis=0)
-                                tn += 1
+                                mgroups, gm_data = gt.group_by_timerange(x_time.values, y_data.values, 'M')
 
-                                series_y = pd.DataFrame(columns=['Dm', 'Do'], index=x_time)
-                                series_y['Dm'] = list(x_time[:])
-                                series_y['Do'] = list(y_DO[:])
-                                group_m = series_y.groupby(Grouper(freq='M'))
                                 x_year = x_time[0].year
                                 print(x_year)
+                                #
+                                # create bins for histogram
+                                mgroups_min = min(mgroups.describe()['DO']['min'])
+                                mgroups_max = max(mgroups.describe()['DO']['max'])
+                                lower_bound = int(round(mgroups_min))
+                                upper_bound = int(round(mgroups_max + (mgroups_max / 50)))
+                                step_bound = int(round((mgroups_max - mgroups_min) / 10))
 
-                                month_n = concat([DataFrame(x[1].values) for x in group_m], axis=1)
-                                month_n = DataFrame(month_n)
-                                month_n.columns = range(1, len(month_n.columns) + 1)
+                                lower_bound = int(round(global_min))
+                                upper_bound = int(round(global_max + (global_max / 50)))
+                                step_bound = int(round((global_max - global_min) / 10))
 
-                                sfile = '_'.join((str(x_year), sname))
+                                if step_bound == 0:
+                                    step_bound += 1
+
+                                if (upper_bound - lower_bound) == step_bound:
+                                    lower_bound -= 1
+                                    upper_bound += 1
+                                if (upper_bound - lower_bound) < step_bound:
+                                    step_bound = int(round(step_bound / 10))
+
+                                bin_range = list(range(lower_bound, upper_bound, step_bound))
+                                print(bin_range)
+
+                                # create color palette
+
+                                colors = color_names[:len(mgroups)]
+                                print('1--- ', len(colors))
+                                print(colors)
+
+
+                                fig0, ax0 = pyplot.subplots(nrows=2, ncols=1)
+
+                                # # subplot for  histogram and basic statistics table
+                                ax0[0].axis('off')
+                                ax0[0].axis('tight')
+
+                                the_table = ax0[0].table(cellText=mgroups.describe().round(2).values,
+                                                         rowLabels=mgroups.describe().index.month,
+                                                         rowColours=colors,
+                                                         colLabels=mgroups.describe().columns.levels[1], loc='center')
+                                the_table.set_fontsize(5)
 
                                 fig, ax = pyplot.subplots(nrows=12, ncols=1, sharey=True)
 
                                 for kk in list(range(0, 12)):
                                     ax[kk].tick_params(axis='both', which='both', color='r', labelsize=7,
-                                                       labelcolor='m', rotation=0)
+                                                       labelcolor='m', rotation=0, pad=0.1, length=1)
                                     month_name = calendar.month_abbr[kk + 1]
                                     ax[kk].set_ylabel(month_name, rotation=0, fontsize=8, color='b', labelpad=20)
                                     if kk == 0:
-                                        ax[kk].set_title(str(x_year) + '\n y-axis label: month-number \n Parameter: ' + sv + " (" + sv_units + ")", fontsize=8)
+                                        ax[kk].set_title(str(x_year) + '\n ' + sv + " (" + sv_units + ")" +
+                                                         ' Global Range: [' + str(int(global_min)) + ',' + str(int(global_max)) + ']' +
+                                                         '\n End of deployments are marked with a vertical line \n ' +
+                                                         'Plotted: Data, Mean and STD (Method: 1 day' +
+                                                         ' rolling window calculations)',
+                                                         fontsize=8)
+
                                     if kk < 11:
                                         ax[kk].tick_params(labelbottom=False)
                                     if kk == 11:
                                         ax[kk].set_xlabel('Days', rotation=0, fontsize=8, color='b')
 
                                 tm = 1
-                                for mt in range(len(group_m)):
-                                    x_time = month_n[mt + tm].dropna(axis=0)
-                                    y_DO = month_n[mt + (tm + 1)].dropna(axis=0)
-                                    tm += 1
-                                    series_m = pd.DataFrame(columns=['DO_n'], index=x_time)
-                                    series_m['DO_n'] = list(y_DO[:])
+                                for mt in range(len(mgroups)):
+                                    x_time = gm_data[mt+tm].dropna(axis=0)
+                                    y_data = gm_data[mt+(tm+1)].dropna(axis=0)
 
                                     if len(x_time) == 0:
-                                        ax[mt].tick_params(which='both', labelbottom=False, labelleft=False,
-                                                           pad=0.1, length=1)
+                                        # ax[plt_index].tick_params(which='both', labelbottom=False, labelleft=False,
+                                        #                    pad=0.1, length=1)
                                         continue
 
                                     x_month = x_time[0].month
+                                    col_name = str(x_month)
 
-                                    mt = x_month - 1
+                                    series_m = pd.DataFrame(columns=[col_name], index=x_time)
+                                    series_m[col_name] = list(y_data[:])
+
+
+                                    # serie_n.plot.hist(ax=ax0[0], bins=bin_range,
+                                    #                   histtype='bar', color=colors[ny], stacked=True)
+                                    series_m.plot.kde(ax=ax0[0], color=colors[mt])
+                                    ax0[0].legend(fontsize=8, bbox_to_anchor=(0., 1.12, 1., .102), loc=3,
+                                                  ncol=len(mgroups), mode="expand", borderaxespad=0.)
+
+                                    # ax0[0].set_xticks(bin_range)
+                                    ax0[0].set_xlabel('Observation Ranges' + ' (' + sv + ', ' + sv_units + ')', fontsize=8)
+                                    ax0[0].set_ylabel('Density', fontsize=8)  # 'Number of Observations'
+                                    ax0[0].set_title('Kernel Density Estimates', fontsize=8)
+                                    ax0[0].tick_params(which='both', labelsize=7, pad=0.1, length=1, rotation=0)
+
+                                    plt_index = x_month - 1
 
                                     # Plot data
-                                    series_m.plot(ax=ax[mt],linestyle='None', marker='.', markersize=1)
-                                    ax[mt].legend().set_visible(False)
+                                    series_m.plot(ax=ax[plt_index], linestyle='None', marker='.', markersize=1)
+                                    ax[plt_index].legend().set_visible(False)
 
-                                    ma = series_m.rolling(6).mean()
-                                    mstd = series_m.rolling(6).std()
+                                    ma = series_m.rolling('86400s').mean()
+                                    mstd = series_m.rolling('86400s').std()
 
-                                    ax[mt].plot(ma.index, ma.DO_n, 'b')
-                                    ax[mt].fill_between(mstd.index, ma.DO_n-3*mstd.DO_n, ma.DO_n+3*mstd.DO_n, color='b', alpha=0.2)
+                                    ax[plt_index].plot(ma.index, ma[col_name].values, 'b')
+                                    ax[plt_index].fill_between(mstd.index, ma[col_name].values-3*mstd[col_name].values,
+                                                               ma[col_name].values+3*mstd[col_name].values,
+                                                               color='b', alpha=0.2)
 
                                     # prepare the time axis parameters
                                     mm, nod = monthrange(x_year, x_month)
                                     datemin = datetime.date(x_year, x_month, 1)
                                     datemax = datetime.date(x_year, x_month, nod)
-                                    ax[mt].set_xlim(datemin, datemax)
+                                    ax[plt_index].set_xlim(datemin, datemax)
                                     xlocator = mdates.DayLocator()  # every day
                                     myFmt = mdates.DateFormatter('%d')
-                                    ax[mt].xaxis.set_major_locator(xlocator)
-                                    ax[mt].xaxis.set_major_formatter(myFmt)
-                                    ax[mt].xaxis.set_minor_locator(pyplot.NullLocator())
-                                    ax[mt].xaxis.set_minor_formatter(pyplot.NullFormatter())
+                                    ax[plt_index].xaxis.set_major_locator(xlocator)
+                                    ax[plt_index].xaxis.set_major_formatter(myFmt)
+                                    ax[plt_index].xaxis.set_minor_locator(pyplot.NullLocator())
+                                    ax[plt_index].xaxis.set_minor_formatter(pyplot.NullFormatter())
 
                                     # data_min = min(ma.DO_n.dropna(axis=0) - 5 * mstd.DO_n.dropna(axis=0))
                                     # 0data_max = max(ma.DO_n.dropna(axis=0) + 5 * mstd.DO_n.dropna(axis=0))
-                                    # ax[mt].set_ylim([data_min, data_max])
+                                    # ax[plt_index].set_ylim([data_min, data_max])
 
                                     ylocator = MaxNLocator(prune='both', nbins=3)
-                                    ax[mt].yaxis.set_major_locator(ylocator)
+                                    ax[plt_index].yaxis.set_major_locator(ylocator)
 
 
                                     if x_month != 12:
-                                        ax[mt].tick_params(which='both', labelbottom=False, pad=0.1, length=1)
-                                        ax[mt].set_xlabel(' ')
+                                        ax[plt_index].tick_params(which='both', labelbottom=False, pad=0.1, length=1)
+                                        ax[plt_index].set_xlabel(' ')
                                     else:
-                                        ax[mt].tick_params(which='both', color='r', labelsize=7, labelcolor='m',
+                                        ax[plt_index].tick_params(which='both', color='r', labelsize=7, labelcolor='m',
                                                            pad=0.1, length=1, rotation=0)
-                                        ax[mt].set_xlabel('Days', rotation=0, fontsize=8, color='b')
+                                        ax[plt_index].set_xlabel('Days', rotation=0, fontsize=8, color='b')
 
                                     dep = 1
                                     for etimes in end_times:
-                                        ax[mt].axvline(x=etimes, color='b', linestyle='--', linewidth=.8)
-                                        if ma.DO_n.any():
-                                            ax[mt].text(etimes, max(ma.DO_n.dropna(axis=0)), 'End' + str(dep),
+                                        ax[plt_index].axvline(x=etimes, color='b', linestyle='--', linewidth=.8)
+                                        if ma[col_name].values.any():
+                                            ax[plt_index].text(etimes, max(ma[col_name].dropna(axis=0)), 'End' + str(dep),
                                                         fontsize=6, style='italic',
                                                         bbox=dict(boxstyle='round',
                                                                   ec=(0., 0.5, 0.5),
                                                                   fc=(1., 1., 1.),
                                                                   ))
                                         else:
-                                            ax[mt].text(etimes, min(series_m['DO_n']), 'End' + str(dep),
+                                            ax[plt_index].text(etimes, min(series_m['DO_n']), 'End' + str(dep),
                                                         fontsize=6, style='italic',
                                                         bbox=dict(boxstyle='round',
                                                                   ec=(0., 0.5, 0.5),
                                                                   fc=(1., 1., 1.),
                                                                   ))
                                         dep += 1
+                                    tm += 1
+                                tn += 1
+
 
                                 # pyplot.show()
-                                pf.save_fig(save_dir, sfile)
+                                sfile = '_'.join((str(x_year), sname))
+                                save_file = os.path.join(save_dir, sfile)
+                                fig.savefig(str(save_file), dpi=150)
+
+                                sfile = '_'.join(('Statistics', str(x_year), sname))
+                                save_file = os.path.join(save_dir, sfile)
+                                fig0.savefig(str(save_file), dpi=150)
+
+
 
 
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list = [
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163408-CE06ISSM-RID16-03-DOSTAD000-recovered_host-dosta_abcdjm_ctdbp_dcl_instrument_recovered/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163419-CE06ISSM-RID16-03-DOSTAD000-recovered_inst-dosta_abcdjm_ctdbp_instrument_recovered/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163558-CE06ISSM-RID16-03-DOSTAD000-telemetered-dosta_abcdjm_ctdbp_dcl_instrument/catalog.html'
-                ]
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T154700-CE06ISSM-RID16-03-CTDBPC000-recovered_host-ctdbp_cdef_dcl_instrument_recovered/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T154713-CE06ISSM-RID16-03-CTDBPC000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T154849-CE06ISSM-RID16-03-CTDBPC000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html']
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163845-CE09OSSM-RID27-04-DOSTAD000-recovered_host-dosta_abcdjm_dcl_instrument_recovered/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163907-CE09OSSM-RID27-04-DOSTAD000-telemetered-dosta_abcdjm_dcl_instrument/catalog.html']
+
+                # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163408-CE06ISSM-RID16-03-DOSTAD000-recovered_host-dosta_abcdjm_ctdbp_dcl_instrument_recovered/catalog.html',
+                # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163419-CE06ISSM-RID16-03-DOSTAD000-recovered_inst-dosta_abcdjm_ctdbp_instrument_recovered/catalog.html',
+                # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163558-CE06ISSM-RID16-03-DOSTAD000-telemetered-dosta_abcdjm_ctdbp_dcl_instrument/catalog.html'
+
     # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163751-CE09OSPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html',
     # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163824-CE09OSPM-WFP01-02-DOFSTK000-telemetered-dofst_k_wfp_instrument/catalog.html',
     # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163845-CE09OSSM-RID27-04-DOSTAD000-recovered_host-dosta_abcdjm_dcl_instrument_recovered/catalog.html',
