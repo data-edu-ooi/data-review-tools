@@ -26,7 +26,22 @@ def get_deployment_information(data, deployment):
         return None
 
 
-def main(sDir, url_list):
+def var_long_names(refdes):
+    # get science variable long names from the Data Review Database
+    stream_vars_dict = dict()
+    dr = cf.refdes_datareview_json(refdes)
+    for x in dr['instrument']['data_streams']:
+        dr_ms = '-'.join((x['method'], x['stream_name']))
+        sci_vars = dict()
+        for y in x['stream']['parameters']:
+            if (y['data_product_type'] == 'Science Data') or (y['data_product_type'] == 'Unprocessed Data'):
+                sci_vars.update({y['display_name']: dict(db_units=y['unit'], var_name=y['name'])})
+        if len(sci_vars) > 0:
+            stream_vars_dict.update({dr_ms: sci_vars})
+    return stream_vars_dict
+
+
+def main(sDir, url_list, start_time, end_time):
     rd_list = []
     for uu in url_list:
         elements = uu.split('/')[-2].split('-')
@@ -61,17 +76,19 @@ def main(sDir, url_list):
         fdatasets_sel = cf.filter_collocated_instruments(main_sensor, fdatasets)
 
         # get science variable long names from the Data Review Database
-        stream_sci_vars = cd.sci_var_long_names(r)
+        #stream_sci_vars = cd.sci_var_long_names(r)
+        stream_vars = var_long_names(r)
 
         # check if the science variable long names are the same for each stream and initialize empty arrays
-        sci_vars_dict = cd.sci_var_long_names_check(stream_sci_vars)
+        sci_vars_dict = cd.sci_var_long_names_check(stream_vars)
 
         # get the preferred stream information
         ps_df, n_streams = cf.get_preferred_stream_info(r)
 
         # build dictionary of science data from the preferred dataset for each deployment
         print('\nAppending data from files')
-        sci_vars_dict = cd.append_science_data(ps_df, n_streams, r, fdatasets_sel, sci_vars_dict)
+        et = []
+        sci_vars_dict = cd.append_science_data(ps_df, n_streams, r, fdatasets_sel, sci_vars_dict, et, start_time, end_time)
 
         # get end times of deployments
         dr_data = cf.refdes_datareview_json(r)
@@ -102,8 +119,8 @@ def main(sDir, url_list):
                     x = vinfo['t']
                     y = vinfo['values']
 
-                    # reject NaNs
-                    nan_ind = ~np.isnan(y)
+                    # reject NaNs and values of 0.0
+                    nan_ind = (~np.isnan(y)) & (y != 0.0)
                     x_nonan = x[nan_ind]
                     y_nonan = y[nan_ind]
 
@@ -139,13 +156,13 @@ def main(sDir, url_list):
                                      fontsize=8)
                         for etimes in end_times:
                             ax.axvline(x=etimes,  color='b', linestyle='--', linewidth=.6)
-                        if not any(e is None for e in [global_min, global_max]):
-                            ax.axhline(y=global_min, color='r', linestyle='--', linewidth=.6)
-                            ax.axhline(y=global_max, color='r', linestyle='--', linewidth=.6)
-                        else:
-                            maxpoint = x[np.argmax(y_nonan_nofv)], max(y_nonan_nofv)
-                            ax.annotate('No Global Ranges', size=8,
-                                        xy=maxpoint, xytext=(5, 5), textcoords='offset points')
+                        # if not any(e is None for e in [global_min, global_max]):
+                        #     ax.axhline(y=global_min, color='r', linestyle='--', linewidth=.6)
+                        #     ax.axhline(y=global_max, color='r', linestyle='--', linewidth=.6)
+                        # else:
+                        #     maxpoint = x[np.argmax(y_nonan_nofv)], max(y_nonan_nofv)
+                        #     ax.annotate('No Global Ranges', size=8,
+                        #                 xy=maxpoint, xytext=(5, 5), textcoords='offset points')
                         pf.save_fig(save_dir, sname)
 
                         # Plot data with outliers removed
@@ -155,13 +172,13 @@ def main(sDir, url_list):
                                      fontsize=8)
                         for etimes in end_times:
                             ax.axvline(x=etimes,  color='b', linestyle='--', linewidth=.6)
-                        if not any(e is None for e in [global_min, global_max]):
-                            ax.axhline(y=global_min, color='r', linestyle='--', linewidth=.6)
-                            ax.axhline(y=global_max, color='r', linestyle='--', linewidth=.6)
-                        else:
-                            maxpoint = x[np.argmax(y_nonan_nofv_nE_nogr)], max(y_nonan_nofv_nE_nogr)
-                            ax.annotate('No Global Ranges', size=8,
-                                        xy=maxpoint, xytext=(5, 5), textcoords='offset points')
+                        # if not any(e is None for e in [global_min, global_max]):
+                        #     ax.axhline(y=global_min, color='r', linestyle='--', linewidth=.6)
+                        #     ax.axhline(y=global_max, color='r', linestyle='--', linewidth=.6)
+                        # else:
+                        #     maxpoint = x[np.argmax(y_nonan_nofv_nE_nogr)], max(y_nonan_nofv_nE_nogr)
+                        #     ax.annotate('No Global Ranges', size=8,
+                        #                 xy=maxpoint, xytext=(5, 5), textcoords='offset points')
 
                         sfile = '_'.join((sname, 'rmoutliers'))
                         pf.save_fig(save_dir, sfile)
@@ -178,9 +195,8 @@ if __name__ == '__main__':
                 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163419-CE06ISSM-RID16-03-DOSTAD000-recovered_inst-dosta_abcdjm_ctdbp_instrument_recovered/catalog.html',
                 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163558-CE06ISSM-RID16-03-DOSTAD000-telemetered-dosta_abcdjm_ctdbp_dcl_instrument/catalog.html',
                 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163845-CE09OSSM-RID27-04-DOSTAD000-recovered_host-dosta_abcdjm_dcl_instrument_recovered/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163907-CE09OSSM-RID27-04-DOSTAD000-telemetered-dosta_abcdjm_dcl_instrument/catalog.html', git
-                ]
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163907-CE09OSSM-RID27-04-DOSTAD000-telemetered-dosta_abcdjm_dcl_instrument/catalog.html']
 
-
+    start_time = None  # dt.datetime(2015, 4, 20, 0, 0, 0)  # optional, set to None if plotting all data
+    end_time = None  # dt.datetime(2017, 5, 20, 0, 0, 0)  # optional, set to None if plotting all data
     main(sDir, url_list)
-# '

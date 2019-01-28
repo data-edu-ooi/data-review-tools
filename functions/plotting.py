@@ -230,6 +230,23 @@ def plot_timeseries_panel(ds, x, vars, colors, stdev=None):
     return fig, ax
 
 
+def plot_ts(sal_vector, temp_vector, dens, salinity, temperature, cbar):
+    fig, ax = plt.subplots()
+    CS = plt.contour(sal_vector, temp_vector, dens, linestyles='dashed', colors='k')
+    plt.clabel(CS, fontsize=12, inline=1, fmt='%1.0f')  # Label every second level
+    xc = ax.scatter(salinity, temperature, c=cbar, s=2, edgecolor='None')
+
+    # add colorbar
+    #bar = fig.colorbar(xc, ax=ax)
+    #bar
+    #bar.formatter.set_useOffset(False)
+
+    ax.set_xlabel('Salinity')
+    ax.set_ylabel('Temperature (C)')
+
+    return fig, ax
+
+
 def plot_xsection(subsite, x, y, z, stdev=None):
     """
     Create a cross-section plot for mobile instruments
