@@ -1,3 +1,0 @@
-Requirement already satisfied: PyHamcrest in /Users/leila/anaconda3/lib/python3.7/site-packages (1.9.0)
-Requirement already satisfied: setuptools in /Users/leila/anaconda3/lib/python3.7/site-packages (from PyHamcrest) (40.2.0)
-Requirement already satisfied: six in /Users/leila/anaconda3/lib/python3.7/site-packages (from PyHamcrest) (1.11.0)
