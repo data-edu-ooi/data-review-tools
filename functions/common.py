@@ -75,6 +75,19 @@ def filter_collocated_instruments(main_sensor, datasets):
     return datasets_filtered
 
 
+def filter_other_streams(r, stream_list, fdatasets):
+    # Remove other streams from a list of datasets from THREDDS
+    datasets_filtered = []
+    for d in fdatasets:
+        fname = d.split(r + '-')[-1].split('_2')[0]
+        for s in stream_list:
+            if s == fname:
+                if d not in datasets_filtered:
+                    datasets_filtered.append(d)
+
+
+    return datasets_filtered
+
 def get_global_ranges(refdes, variable, api_user=None, api_token=None):
     port = '12578'
     spl = refdes.split('-')
