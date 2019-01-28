@@ -8,25 +8,27 @@ Figure 1 - shows data and the mean and std lines calculated using the rolling wi
 Figure 2 - shows data histograms and a table with basic statistics
 """
 
+import functions.common as cf
+import functions.plotting as pf
+import functions.combine_datasets as cd
+import functions.group_by_timerange as gt
 import os
 import pandas as pd
 import itertools
 import numpy as np
 import xarray as xr
-import functions.common as cf
-import functions.plotting as pf
-import functions.combine_datasets as cd
-import functions.group_by_timerange as gt
-
-from matplotlib import pyplot
-
 import datetime
-from matplotlib.dates import (YEARLY, DateFormatter, rrulewrapper, RRuleLocator, drange)
 import matplotlib.dates as mdates
 import matplotlib.ticker as ticker
+from matplotlib import pyplot
+from matplotlib import colors as mcolors
+from matplotlib.dates import (YEARLY, DateFormatter, rrulewrapper, RRuleLocator, drange)
 from matplotlib.ticker import MaxNLocator
 from statsmodels.nonparametric.kde import KDEUnivariate
 
+
+colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
+color_names = [name for hsv, name in colors.items()]
 
 def get_deployment_information(data, deployment):
     d_info = [x for x in data['instrument']['deployments'] if x['deployment_number'] == deployment]
@@ -37,11 +39,15 @@ def get_deployment_information(data, deployment):
 
 def main(sDir, url_list):
     rd_list = []
+    ms_list = []
     for uu in url_list:
         elements = uu.split('/')[-2].split('-')
         rd = '-'.join((elements[1], elements[2], elements[3], elements[4]))
+        ms = uu.split(rd + '-')[1].split('/')[0]
         if rd not in rd_list:
             rd_list.append(rd)
+        if ms not in ms_list:
+            ms_list.append(ms)
 
     for r in rd_list:
         print('\n{}'.format(r))
@@ -72,6 +78,7 @@ def main(sDir, url_list):
         datasets = list(itertools.chain(*datasets))
         main_sensor = r.split('-')[-1]
         fdatasets = cf.filter_collocated_instruments(main_sensor, datasets)
+        fdatasets = cf.filter_other_streams(r, ms_list, fdatasets)
         methodstream = []
         for f in fdatasets:
             methodstream.append('-'.join((f.split('/')[-2].split('-')[-2], f.split('/')[-2].split('-')[-1])))
@@ -97,6 +104,7 @@ def main(sDir, url_list):
             print('\nAppending data from files: {}'.format(ms))
             for fd in fdatasets_sel:
                 ds = xr.open_dataset(fd, mask_and_scale=False)
+                print('I am here', fd)
                 for var in list(sci_vars_dict[ms]['vars'].keys()):
                     sh = sci_vars_dict[ms]['vars'][var]
                     if ds[var].units == sh['db_units']:
@@ -108,6 +116,7 @@ def main(sDir, url_list):
                         varD = ds[var].values
                         sh['t'] = np.append(sh['t'], tD)
                         sh['values'] = np.append(sh['values'], varD)
+                        print('here: ', var)
 
             print('\nPlotting data')
             for m, n in sci_vars_dict.items():
@@ -139,9 +148,14 @@ def main(sDir, url_list):
 
                         # reject values outside global ranges:
                         global_min, global_max = cf.get_global_ranges(r, sv)
-                        gr_ind = cf.reject_global_ranges(y_nonan_nofv_nE, global_min, global_max)
-                        y_nonan_nofv_nE_nogr = y_nonan_nofv_nE[gr_ind]
-                        x_nonan_nofv_nE_nogr = x_nonan_nofv_nE[gr_ind]
+                        print('global ranges: ', global_min, global_max)
+                        if global_min and global_max:
+                            gr_ind = cf.reject_global_ranges(y_nonan_nofv_nE, global_min, global_max)
+                            y_nonan_nofv_nE_nogr = y_nonan_nofv_nE[gr_ind]
+                            x_nonan_nofv_nE_nogr = x_nonan_nofv_nE[gr_ind]
+                        else:
+                            y_nonan_nofv_nE_nogr = y_nonan_nofv_nE
+                            x_nonan_nofv_nE_nogr = x_nonan_nofv_nE
 
                         title = ' '.join((r, ms.split('-')[0]))
 
@@ -154,9 +168,36 @@ def main(sDir, url_list):
                             # group data by year
                             groups, g_data = gt.group_by_timerange(x_nonan_nofv_nE_nogr, y_nonan_nofv_nE_nogr, 'A')
 
-                            # plotting
-                            colors = [color['color'] for color in
-                                      list(pyplot.rcParams['axes.prop_cycle'][:len(groups)])]
+                            # create bins
+                            groups_min = min(groups.describe()['DO']['min'])
+                            lower_bound = int(round(groups_min))
+                            groups_max = max(groups.describe()['DO']['max'])
+                            if groups_max < 1:
+                                upper_bound = 1
+                                step_bound = 1
+                            else:
+                                upper_bound = int(round(groups_max + (groups_max / 50)))
+                                step_bound = int(round((groups_max - groups_min) / 10))
+
+                            if step_bound == 0:
+                                step_bound += 1
+
+                            if (upper_bound - lower_bound) == step_bound:
+                                lower_bound -= 1
+                                upper_bound += 1
+                            if (upper_bound - lower_bound) < step_bound:
+                                step_bound = int(round(step_bound / 10))
+
+                            bin_range = list(range(lower_bound, upper_bound, step_bound))
+                            print(bin_range)
+
+                            # preparing color palette
+                            colors = color_names[:len(groups)]
+
+                            # colors = [color['color'] for color in
+                            #           list(pyplot.rcParams['axes.prop_cycle'][:len(groups)])]
+
+
                             fig0, ax0 = pyplot.subplots(nrows=2, ncols=1)
 
                             # subplot for  histogram and basic statistics table
@@ -188,28 +229,6 @@ def main(sDir, url_list):
                                 serie_n[col_name] = list(y_data[:])
 
                                 # plot histogram
-                                # create bins
-                                data_min = min(serie_n[col_name].values)
-                                data_max = max(serie_n[col_name].values)
-                                lower_bound = int(round(data_min))
-                                upper_bound = int(round(data_max+(data_max/50)))
-                                step_bound = int(round((data_max+data_min)/10))
-
-                                lower_bound = int(round(global_min))
-                                upper_bound = int(round(global_max+(global_max/50)))
-                                step_bound = int(round((data_max - data_min)/10))
-
-                                if step_bound == 0:
-                                    step_bound += 1
-
-                                if (upper_bound-lower_bound) == step_bound:
-                                    lower_bound -= 1
-                                    upper_bound += 1
-                                if (upper_bound-lower_bound) < step_bound:
-                                    step_bound = int(round(step_bound/10))
-
-                                bin_range = list(range(lower_bound, upper_bound, step_bound))
-                                print(bin_range)
                                 # serie_n.plot.hist(ax=ax0[0], bins=bin_range,
                                 #                   histtype='bar', color=colors[ny], stacked=True)
                                 serie_n.plot.kde(ax=ax0[0], color=colors[ny])
@@ -219,7 +238,8 @@ def main(sDir, url_list):
                                 # ax0[0].set_xticks(bin_range)
                                 ax0[0].set_xlabel('Observation Ranges', fontsize=8)
                                 ax0[0].set_ylabel('Density', fontsize=8) #'Number of Observations'
-                                ax0[0].set_title(ms.split('-')[0] + ' (' + sv + ', ' + sv_units+')' + '  Kernel Density Estimates', fontsize=8)
+                                ax0[0].set_title(ms.split('-')[0] + ' (' + sv + ', ' + sv_units+')' +
+                                                 '  Kernel Density Estimates', fontsize=8)
 
                                 # plot data
                                 serie_n.plot(ax=ax[ny], linestyle='None', marker='.', markersize=0.5, color=colors[ny])
@@ -261,12 +281,21 @@ def main(sDir, url_list):
                                     ax[ny].set_xlabel('Months', rotation=0, fontsize=8, color='b')
 
                                 ax[ny].set_ylabel(n_year, rotation=0, fontsize=8, color='b', labelpad=20)
+                                ax[ny].yaxis.set_label_position("right")
 
                                 if ny == 0:
-                                    ax[ny].set_title(sv + '( '+ sv_units + ') -- Global Range: [' + str(int(global_min)) +
-                                                     ',' + str(int(global_max)) + '] \n'
-                                                     'Plotted: Data, Mean and 2STD (Method: One day rolling window calculations) \n',
-                                                     fontsize=8)
+                                    if global_min and global_max:
+
+                                        ax[ny].set_title(sv + '( '+ sv_units + ') -- Global Range: [' + str(int(global_min)) +
+                                                         ',' + str(int(global_max)) + '] \n'
+                                                         'Plotted: Data, Mean and 2STD (Method: One day rolling window calculations) \n',
+                                                         fontsize=8)
+                                    else:
+                                        ax[ny].set_title(
+                                         sv + '( ' + sv_units + ') -- Global Range: [] \n'
+                                        'Plotted: Data, Mean and 2STD (Method: One day rolling window calculations) \n',
+                                            fontsize=8)
+
                                 # plot global ranges
                                 # ax[ny].axhline(y=global_min, color='r', linestyle='--', linewidth=.6)
                                 # ax[ny].axhline(y=global_max, color='r', linestyle='--', linewidth=.6)
@@ -275,12 +304,12 @@ def main(sDir, url_list):
                                 ymin, ymax = ax[ny].get_ylim()
                                 dep = 1
                                 for etimes in end_times:
-                                    if etimes < x_time[len(x_time)-1]:
-                                        ax[ny].axvline(x=etimes, color='b', linestyle='--', linewidth=.6)
-                                        ax[ny].text(etimes, ymin, 'End' + str(dep), fontsize=6, style='italic',
-                                                    bbox=dict(boxstyle='round',
-                                                              ec=(0., 0.5, 0.5),
-                                                              fc=(1., 1., 1.))
+                                    # if etimes < x_time[len(x_time)-1]:
+                                    ax[ny].axvline(x=etimes, color='b', linestyle='--', linewidth=.6)
+                                    ax[ny].text(etimes, ymin, 'End' + str(dep), fontsize=6, style='italic',
+                                                bbox=dict(boxstyle='round',
+                                                          ec=(0., 0.5, 0.5),
+                                                          fc=(1., 1., 1.))
                                                 )
                                     dep += 1
 
@@ -299,23 +328,46 @@ def main(sDir, url_list):
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T154700-CE06ISSM-RID16-03-CTDBPC000-recovered_host-ctdbp_cdef_dcl_instrument_recovered/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T154713-CE06ISSM-RID16-03-CTDBPC000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T154849-CE06ISSM-RID16-03-CTDBPC000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html']
+    url_list = [
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160530-CE06ISSM-RID16-05-PCO2WB000-recovered_host-pco2w_abc_dcl_instrument_recovered/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160550-CE06ISSM-RID16-05-PCO2WB000-telemetered-pco2w_abc_dcl_instrument/catalog.html',
+                ]
+    # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160513-CE06ISSM-RID16-05-PCO2WB000-recovered_host-pco2w_abc_dcl_instrument_blank_recovered/catalog.html',
+    # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160606-CE06ISSM-RID16-05-PCO2WB000-telemetered-pco2w_abc_dcl_instrument_blank/catalog.html'
+# ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160622-CE06ISSM-RID16-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html',
+#  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160645-CE06ISSM-RID16-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
+#  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160700-CE06ISSM-RID16-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html']
 
-    # [
-    #     'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163408-CE06ISSM-RID16-03-DOSTAD000-recovered_host-dosta_abcdjm_ctdbp_dcl_instrument_recovered/catalog.html',
-    #     'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163419-CE06ISSM-RID16-03-DOSTAD000-recovered_inst-dosta_abcdjm_ctdbp_instrument_recovered/catalog.html',
-    #     'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163558-CE06ISSM-RID16-03-DOSTAD000-telemetered-dosta_abcdjm_ctdbp_dcl_instrument/catalog.html']
+# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T155131-CE06ISSM-RID16-02-FLORTD000-recovered_host-flort_sample/catalog.html',
+# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T155144-CE06ISSM-RID16-02-FLORTD000-telemetered-flort_sample/catalog.html',
+# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160252-CE06ISSM-RID16-04-VELPTA000-recovered_host-velpt_ab_instrument_recovered/catalog.html',
+# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160441-CE06ISSM-RID16-04-VELPTA000-recovered_inst-velpt_ab_instrument_recovered/catalog.html',
+# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160458-CE06ISSM-RID16-04-VELPTA000-telemetered-velpt_ab_dcl_instrument/catalog.html',
+# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160715-CE06ISSM-RID16-07-NUTNRB000-recovered_host-nutnr_b_dcl_conc_instrument_recovered/catalog.html',
+# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160735-CE06ISSM-RID16-07-NUTNRB000-recovered_host-nutnr_b_dcl_dark_conc_instrument_recovered/catalog.html',
+# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160748-CE06ISSM-RID16-07-NUTNRB000-recovered_inst-nutnr_b_instrument_recovered/catalog.html',
+# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160803-CE06ISSM-RID16-07-NUTNRB000-telemetered-nutnr_b_dcl_conc_instrument/catalog.html',
+# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160819-CE06ISSM-RID16-07-NUTNRB000-telemetered-nutnr_b_dcl_dark_conc_instrument/catalog.html',
+# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160837-CE06ISSM-RID16-07-NUTNRB000-telemetered-nutnr_b_dcl_full_instrument/catalog.html']
 
-        # []
+# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T161639-CE09OSSM-RID27-03-CTDBPC000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html',
+# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T161513-CE09OSSM-RID27-03-CTDBPC000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
+# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T161501-CE09OSSM-RID27-03-CTDBPC000-recovered_host-ctdbp_cdef_dcl_instrument_recovered/catalog.html']
 
 
-        # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163845-CE09OSSM-RID27-04-DOSTAD000-recovered_host-dosta_abcdjm_dcl_instrument_recovered/catalog.html',
-        # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163907-CE09OSSM-RID27-04-DOSTAD000-telemetered-dosta_abcdjm_dcl_instrument/catalog.html']
-        #
-        #         ]
-    # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163751-CE09OSPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html',
-    # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163824-CE09OSPM-WFP01-02-DOFSTK000-telemetered-dofst_k_wfp_instrument/catalog.html',
+# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T154700-CE06ISSM-RID16-03-CTDBPC000-recovered_host-ctdbp_cdef_dcl_instrument_recovered/catalog.html',
+# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T154713-CE06ISSM-RID16-03-CTDBPC000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
+# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T154849-CE06ISSM-RID16-03-CTDBPC000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html']
+
+# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163408-CE06ISSM-RID16-03-DOSTAD000-recovered_host-dosta_abcdjm_ctdbp_dcl_instrument_recovered/catalog.html',
+# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163419-CE06ISSM-RID16-03-DOSTAD000-recovered_inst-dosta_abcdjm_ctdbp_instrument_recovered/catalog.html',
+# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163558-CE06ISSM-RID16-03-DOSTAD000-telemetered-dosta_abcdjm_ctdbp_dcl_instrument/catalog.html']
+
+# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163845-CE09OSSM-RID27-04-DOSTAD000-recovered_host-dosta_abcdjm_dcl_instrument_recovered/catalog.html',
+# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163907-CE09OSSM-RID27-04-DOSTAD000-telemetered-dosta_abcdjm_dcl_instrument/catalog.html']
+
+# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163751-CE09OSPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html',
+# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163824-CE09OSPM-WFP01-02-DOFSTK000-telemetered-dofst_k_wfp_instrument/catalog.html',
+
 
     main(sDir, url_list)
