@@ -5,7 +5,7 @@ import pandas as pd
 import functions.common as cf
 
 
-def append_science_data(preferred_stream_df, n_streams, refdes, dataset_list, sci_vars_dict, et=[]):
+def append_science_data(preferred_stream_df, n_streams, refdes, dataset_list, sci_vars_dict, et=[], stime=None, etime=None):
     # build dictionary of science data from the preferred dataset for each deployment
     for index, row in preferred_stream_df.iterrows():
         for ii in range(n_streams):
@@ -17,6 +17,13 @@ def append_science_data(preferred_stream_df, n_streams, refdes, dataset_list, sc
                 ds_drms = d.split('/')[-1].split('_20')[0]
                 if ds_drms == drms:
                     ds = xr.open_dataset(d, mask_and_scale=False)
+                    ds = ds.swap_dims({'obs': 'time'})
+                    if stime is not None and etime is not None:
+                        ds = ds.sel(time=slice(stime, etime))
+                        if len(ds['time'].values) == 0:
+                            print('No data for specified time range: ({} to {})'.format(stime, etime))
+                            continue
+
                     fmethod_stream = '-'.join((ds.collection_method, ds.stream))
 
                     for strm, b in sci_vars_dict.items():

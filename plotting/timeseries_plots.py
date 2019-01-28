@@ -12,12 +12,13 @@ preferred_only: if set to 'yes', only plots the preferred data for a deployment.
 """
 
 import pandas as pd
+import datetime as dt
 import scripts
 
 sDir = '/Users/lgarzio/Documents/OOI/DataReviews'
-f = '/Users/lgarzio/Documents/OOI/DataReviews/GI/GI03FLMA/data_request_summary_run1.csv'
-start_time = None  # dt.datetime(2015, 4, 20, 0, 0, 0)  # optional, set to None if plotting all data
-end_time = None  # dt.datetime(2017, 5, 20, 0, 0, 0)  # optional, set to None if plotting all data
+f = '/Users/lgarzio/Documents/OOI/DataReviews/GA/GA03FLMA/data_request_summary_run1.csv'
+start_time = None  # dt.datetime(2015, 5, 16, 20, 0, 0)  # optional, set to None if plotting all data
+end_time = None  # dt.datetime(2015, 5, 18, 0, 0, 0)  # optional, set to None if plotting all data
 preferred_only = 'yes'  # options: 'yes', 'no'
 
 ff = pd.read_csv(f)
@@ -26,6 +27,7 @@ url_list = [u for u in url_list if u not in 'no_output_url']
 
 scripts.plot_timeseries.main(sDir, url_list, start_time, end_time, preferred_only)
 scripts.plot_timeseries_panel.main(sDir, url_list, start_time, end_time, preferred_only)
-scripts.plot_timeseries_pm_all.main(sDir, url_list)
+scripts.plot_timeseries_pm_all.main(sDir, url_list, start_time, end_time)
 scripts.plot_timeseries_all.main(sDir, url_list)
 scripts.plot_compare_timeseries.main(sDir, url_list, start_time, end_time)
+scripts.plot_ts.main(sDir, url_list, start_time, end_time, preferred_only)
