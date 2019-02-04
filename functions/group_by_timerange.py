@@ -21,3 +21,15 @@ def group_by_timerange(data_x, data_y, g_freq):
 
     return groups, g_data
 
+def group_by_time_frequency(data_x, data_y, columns, g_freq):
+
+    data_in = pd.DataFrame(columns=columns, index=data_x)
+    data_in['time'] = data_x
+    data_in[columns[1:len(columns)]] = data_y
+    groups = data_in.groupby(Grouper(freq=g_freq))
+
+    d_groups = concat([DataFrame(x[1].values) for x in groups], axis=1)
+    d_groups = DataFrame(d_groups)
+    d_groups.columns = range(1, len(d_groups.columns) + 1)
+
+    return groups, d_groups
