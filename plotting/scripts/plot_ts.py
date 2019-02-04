@@ -101,56 +101,121 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                 xvar = return_var(ds, raw_vars, 'salinity', 'Practical Salinity')
                 sal = ds[xvar].values
                 sal_fv = ds[xvar]._FillValue
-                # get rid of nans, 0.0s, fill values
-                ind = (~np.isnan(sal)) & (sal != 0.0) & (sal != sal_fv)
-                sal = sal[ind]
-
-                ind2 = cf.reject_outliers(sal, 5)
-                sal = sal[ind2]
 
                 yvar = return_var(ds, raw_vars, 'temp', 'Seawater Temperature')
                 temp = ds[yvar].values
-                temp = temp[ind]
-                temp = temp[ind2]
-
-                tme = tme[ind]
-                tme = tme[ind2]
-                colors = cm.rainbow(np.linspace(0, 1, len(tme)))
+                temp_fv = ds[yvar]._FillValue
 
                 press = pf.pressure_var(ds, list(ds.coords.keys()))
                 if press is None:
                     press = pf.pressure_var(ds, list(ds.data_vars.keys()))
-                p = ds[press].values[ind]
-                p = p[ind2]
+                p = ds[press].values
 
-                # Figure out boundaries (mins and maxes)
-                smin = sal.min() - (0.01 * sal.min())
-                smax = sal.max() + (0.01 * sal.max())
-                tmin = temp.min() - (0.01 * temp.min())
-                tmax = temp.max() + (0.01 * temp.max())
+                # get rid of nans, 0.0s, fill values
+                sind1 = (~np.isnan(sal)) & (sal != 0.0) & (sal != sal_fv)
+                sal = sal[sind1]
+                temp = temp[sind1]
+                tme = tme[sind1]
+                p = p[sind1]
+                tind1 = (~np.isnan(temp)) & (temp != 0.0) & (temp != temp_fv)
+                sal = sal[tind1]
+                temp = temp[tind1]
+                tme = tme[tind1]
+                p = p[tind1]
 
-                # Calculate how many gridcells are needed in the x and y directions
-                xdim = int(round((smax-smin)/0.1+1, 0))
-                ydim = int(round((tmax-tmin)+1, 0))
+                # reject values outside global ranges:
+                global_min, global_max = cf.get_global_ranges(r, xvar)
+                if any(e is None for e in [global_min, global_max]):
+                    sal = sal
+                    temp = temp
+                    tme = tme
+                    p = p
+                else:
+                    sgr_ind = cf.reject_global_ranges(sal, global_min, global_max)
+                    sal = sal[sgr_ind]
+                    temp = temp[sgr_ind]
+                    tme = tme[sgr_ind]
+                    p = p[sgr_ind]
 
-                # Create empty grid of zeros
-                mdens = np.zeros((ydim, xdim))
+                global_min, global_max = cf.get_global_ranges(r, yvar)
+                if any(e is None for e in [global_min, global_max]):
+                    sal = sal
+                    temp = temp
+                    tme = tme
+                    p = p
+                else:
+                    tgr_ind = cf.reject_global_ranges(temp, global_min, global_max)
+                    sal = sal[tgr_ind]
+                    temp = temp[tgr_ind]
+                    tme = tme[tgr_ind]
+                    p = p[tgr_ind]
 
-                # Create temp and sal vectors of appropriate dimensions
-                ti = np.linspace(0, ydim - 1, ydim) + tmin
-                si = np.linspace(0, xdim - 1, xdim) * 0.1 + smin
+                # get rid of outliers
+                soind = cf.reject_outliers(sal, 5)
+                sal = sal[soind]
+                temp = temp[soind]
+                tme = tme[soind]
+                p = p[soind]
 
-                # Loop to fill in grid with densities
-                for j in range(0, ydim):
-                    for i in range(0, xdim):
-                        mdens[j, i] = gsw.density.rho(si[i], ti[j], np.median(p))  # calculate density using median pressure value
+                toind = cf.reject_outliers(temp, 5)
+                sal = sal[toind]
+                temp = temp[toind]
+                tme = tme[toind]
+                p = p[toind]
 
-                fig, ax = pf.plot_ts(si, ti, mdens, sal, temp, colors)
+                if len(sal) > 0:  # if there are any data to plot
 
-                ax.set_title((title + '\n' + t0 + ' - ' + t1 + '\ncolors = time (cooler: earlier)'), fontsize=9)
-                leg_text = ('Removed {} values (SD=5)'.format(len(ds[xvar].values) - len(sal)),)
-                ax.legend(leg_text, loc='best', fontsize=6)
-                pf.save_fig(save_dir, filename)
+                    colors = cm.rainbow(np.linspace(0, 1, len(tme)))
+
+                    # Figure out boundaries (mins and maxes)
+                    #smin = sal.min() - (0.01 * sal.min())
+                    #smax = sal.max() + (0.01 * sal.max())
+                    if sal.max() - sal.min() < 0.2:
+                        smin = sal.min() - (0.0005 * sal.min())
+                        smax = sal.max() + (0.0005 * sal.max())
+                    else:
+                        smin = sal.min() - (0.001 * sal.min())
+                        smax = sal.max() + (0.001 * sal.max())
+
+                    if temp.max() - temp.min() <= 1:
+                        tmin = temp.min() - (0.01 * temp.min())
+                        tmax = temp.max() + (0.01 * temp.max())
+                    elif 1 < temp.max() - temp.min() < 1.5:
+                        tmin = temp.min() - (0.05 * temp.min())
+                        tmax = temp.max() + (0.05 * temp.max())
+                    else:
+                        tmin = temp.min() - (0.1 * temp.min())
+                        tmax = temp.max() + (0.1 * temp.max())
+
+                    # Calculate how many gridcells are needed in the x and y directions and
+                    # Create temp and sal vectors of appropriate dimensions
+                    xdim = int(round((smax-smin)/0.1 + 1, 0))
+                    si = np.linspace(0, xdim - 1, xdim) * 0.1 + smin
+
+                    if 1.1 <= temp.max() - temp.min() < 1.7:  # if the diff between min and max temp is small
+                        ydim = int(round((tmax-tmin)/0.75 + 1, 0))
+                        ti = np.linspace(0, ydim - 1, ydim) * 0.75 + tmin
+                    elif temp.max() - temp.min() < 1.1:
+                        ydim = int(round((tmax - tmin) / 0.1 + 1, 0))
+                        ti = np.linspace(0, ydim - 1, ydim) * 0.1 + tmin
+                    else:
+                        ydim = int(round((tmax - tmin) + 1, 0))
+                        ti = np.linspace(0, ydim - 1, ydim) + tmin
+
+                    # Create empty grid of zeros
+                    mdens = np.zeros((ydim, xdim))
+
+                    # Loop to fill in grid with densities
+                    for j in range(0, ydim):
+                        for i in range(0, xdim):
+                            mdens[j, i] = gsw.density.rho(si[i], ti[j], np.median(p))  # calculate density using median pressure value
+
+                    fig, ax = pf.plot_ts(si, ti, mdens, sal, temp, colors)
+
+                    ax.set_title((title + '\n' + t0 + ' - ' + t1 + '\ncolors = time (cooler: earlier)'), fontsize=9)
+                    leg_text = ('Removed {} values (SD=5)'.format(len(ds[xvar].values) - len(sal)),)
+                    ax.legend(leg_text, loc='best', fontsize=6)
+                    pf.save_fig(save_dir, filename)
 
 
 if __name__ == '__main__':
