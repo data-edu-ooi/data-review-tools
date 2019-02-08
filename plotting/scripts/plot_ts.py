@@ -190,6 +190,8 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                     # Calculate how many gridcells are needed in the x and y directions and
                     # Create temp and sal vectors of appropriate dimensions
                     xdim = int(round((smax-smin)/0.1 + 1, 0))
+                    if xdim == 1:
+                        xdim = 2
                     si = np.linspace(0, xdim - 1, xdim) * 0.1 + smin
 
                     if 1.1 <= temp.max() - temp.min() < 1.7:  # if the diff between min and max temp is small

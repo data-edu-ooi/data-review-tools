@@ -91,6 +91,11 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                         print('Array of all fill values - skipping plot.')
 
                     else:
+                        # reject fill values
+                        ind = y.values != fv
+                        t = t[ind]
+                        y = y[ind]
+
                         # Plot all data
                         fig, ax = pf.plot_timeseries(t, y, stdev=None)
                         ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
