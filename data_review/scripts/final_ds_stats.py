@@ -41,7 +41,7 @@ def index_dataset(refdes, var_name, var_data, fv):
         dataind = (~np.isnan(var_data)) & (var_data != fv) & (var_data >= g_min) & (var_data <= g_max)
         n_grange = np.sum((var_data < g_min) & (var_data > g_max))
     else:
-        dataind = (~np.isnan(var_data)) & (var_data == fv)
+        dataind = (~np.isnan(var_data)) & (var_data != fv)
         n_grange = 'no global ranges'
 
     return [dataind, g_min, g_max, n_nan, n_fv, n_grange]
@@ -238,21 +238,30 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                     lunits = np.unique(vinfo['units']).tolist()
 
                     t = vinfo['t']
-                    data = vinfo['values']
-                    n_all = len(t)
+                    if len(t) > 1:
+                        data = vinfo['values']
+                        n_all = len(t)
 
-                    [dataind, g_min, g_max, n_nan, n_fv, n_grange] = index_dataset(r, vinfo['var_name'], data, fill_value)
+                        [dataind, g_min, g_max, n_nan, n_fv, n_grange] = index_dataset(r, vinfo['var_name'], data, fill_value)
 
-                    t_final = t[dataind]
-                    t0 = pd.to_datetime(min(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
-                    t1 = pd.to_datetime(max(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
-                    data_final = data[dataind]
-                    deploy_final = vinfo['deployments'][dataind]
-                    deploy = list(np.unique(deploy_final))
-                    deployments = [int(dd) for dd in deploy]
+                        t_final = t[dataind]
+                        t0 = pd.to_datetime(min(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
+                        t1 = pd.to_datetime(max(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
+                        data_final = data[dataind]
+                        deploy_final = vinfo['deployments'][dataind]
+                        deploy = list(np.unique(deploy_final))
+                        deployments = [int(dd) for dd in deploy]
 
-                    if len(data_final) > 1:
-                        [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(data_final, sd_calc)
+                        if len(data_final) > 1:
+                            [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(data_final, sd_calc)
+                        else:
+                            sd_calc = None
+                            num_outliers = None
+                            mean = None
+                            vmin = None
+                            vmax = None
+                            sd = None
+                            n_stats = None
                     else:
                         sd_calc = None
                         num_outliers = None
@@ -265,35 +274,36 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                     rows.append([m, list(np.unique(pms)), deployments, sv, lunits, t0, t1, fv_lst, [g_min, g_max],
                                  n_all, n_nan, n_fv, n_grange, sd_calc, num_outliers, n_stats, mean, vmin, vmax, sd])
 
-                    # plot data used for stats
-                    psave_dir = os.path.join(plotting_sDir, array, subsite, r, 'timeseries_plots_stats')
-                    cf.create_dir(psave_dir)
+                    if len(t) > 0:
+                        # plot data used for stats
+                        psave_dir = os.path.join(plotting_sDir, array, subsite, r, 'timeseries_plots_stats')
+                        cf.create_dir(psave_dir)
 
-                    dr_data = cf.refdes_datareview_json(r)
-                    deployments = []
-                    end_times = []
-                    for index, row in ps_df.iterrows():
-                        deploy = row['deployment']
-                        deploy_info = get_deployment_information(dr_data, int(deploy[-4:]))
-                        deployments.append(int(deploy[-4:]))
-                        end_times.append(pd.to_datetime(deploy_info['stop_date']))
+                        dr_data = cf.refdes_datareview_json(r)
+                        deployments = []
+                        end_times = []
+                        for index, row in ps_df.iterrows():
+                            deploy = row['deployment']
+                            deploy_info = get_deployment_information(dr_data, int(deploy[-4:]))
+                            deployments.append(int(deploy[-4:]))
+                            end_times.append(pd.to_datetime(deploy_info['stop_date']))
 
-                    sname = '-'.join((r, sv))
-                    fig, ax = pf.plot_timeseries_all(t_final, data_final, sv, lunits[0], stdev=None)
-                    ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
-                                 fontsize=8)
-                    for etimes in end_times:
-                        ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
-                    pf.save_fig(psave_dir, sname)
-
-                    if sd_calc:
-                        sname = '-'.join((r, sv, 'rmoutliers'))
-                        fig, ax = pf.plot_timeseries_all(t_final, data_final, sv, lunits[0], stdev=sd_calc)
+                        sname = '-'.join((r, sv))
+                        fig, ax = pf.plot_timeseries_all(t_final, data_final, sv, lunits[0], stdev=None)
                         ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
                                      fontsize=8)
                         for etimes in end_times:
                             ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
                         pf.save_fig(psave_dir, sname)
+
+                        if sd_calc:
+                            sname = '-'.join((r, sv, 'rmoutliers'))
+                            fig, ax = pf.plot_timeseries_all(t_final, data_final, sv, lunits[0], stdev=sd_calc)
+                            ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
+                                         fontsize=8)
+                            for etimes in end_times:
+                                ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
+                            pf.save_fig(psave_dir, sname)
 
         fsum = pd.DataFrame(rows, columns=headers)
         fsum.to_csv('{}/{}_final_stats.csv'.format(save_dir, r), index=False)
