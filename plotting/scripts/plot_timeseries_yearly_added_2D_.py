@@ -28,6 +28,7 @@ from statsmodels.nonparametric.kde import KDEUnivariate
 from pandas.plotting import scatter_matrix
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
+
 colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
 color_names = [name for hsv, name in colors.items()]
 
@@ -75,7 +76,6 @@ def main(sDir, url_list):
         # filter datasets
         datasets = []
         for u in url_list:
-            print(u)
             splitter = u.split('/')[-2].split('-')
             rd_check = '-'.join((splitter[1], splitter[2], splitter[3], splitter[4]))
             if rd_check == r:
@@ -123,14 +123,7 @@ def main(sDir, url_list):
 
                         tD = ds['time'].values
                         varD = ds[var].values
-
-                        print(fcount, var, varD.shape, tD.shape, sh['values'].shape, sh['t'].shape)
-
-                        # put deployments time series together
-
-                        # np.append(sh['t'], tD)
-                        # np.append(sh['values'], varD)
-                        sh['t'] = np.append(sh['t'], tD) #np.concatenate((sh['t'], tD), axis=0)
+                        sh['t'] = np.append(sh['t'], tD)  # put deployments time series together
 
                         if fcount == 0:
                             if varD.ndim > 1:
@@ -146,7 +139,6 @@ def main(sDir, url_list):
 
                         print(fcount, var, sh['values'].shape, sh['t'].shape)
                 fcount += 1
-
 
             print('\nPlotting data')
             for m, n in sci_vars_dict.items():
@@ -167,34 +159,45 @@ def main(sDir, url_list):
                         else:
                             sname = '-'.join((r, m, sv))
 
-                        col = [str(x) for x in list(range(1, y.shape[1] + 1))]
+                        if y.ndim == 1:
+                            num_col = 1
+                        else:
+                            num_col = y.shape[1]
+
+                        col = [str(x) for x in list(range(1, num_col + 1))]
                         col.insert(0, 'time')
 
                         groups, d_groups = gt.group_by_time_frequency(x, y, col, 'A')
 
                         time_ind = list(range(1, len(d_groups.columns), len(col)))
                         data_ind0 = list(range(2, len(d_groups.columns), len(col)))
+                        if data_ind0[-1] == d_groups.columns.values[-(len(col)+1)]:
+                            data_ind0.insert(len(groups) - 1, len(d_groups.columns))
                         data_ind1 = list(range(len(col), len(d_groups.columns), len(col)))
                         data_ind1.insert(len(groups)-1, len(d_groups.columns))
 
                         save_file = os.path.join(save_dir, sname)
-                        fig, ax = pyplot.subplots(nrows=len(groups)+1, ncols=1)
 
+                        print('\ncreating images')
+                        fig, ax = pyplot.subplots(nrows=len(groups), ncols=1)
+                        colors = color_names[:len(groups)]
+                        images = []
                         for group in range(len(groups)):
                             nan_ind = d_groups[time_ind[group]].notnull()
                             xtime = d_groups[time_ind[group]][nan_ind]
                             n_year = xtime[0].year
+                            print(n_year)
                             ycol = list(range(data_ind0[group], data_ind1[group] + 1))
 
                             ydata = d_groups[ycol][nan_ind]
                             ydata = ydata.set_index(xtime)
 
-                            if ydata.ndim > 1:
-                                print('D > 1')
+                            if len(ydata.columns) > 1:
+                                print('more than one col: ', len(ydata.columns))
                                 b = fsplt.split_by_timegap(ydata, 86400)
 
                                 if b:
-                                    print('b exists')
+                                    print('gaps exist, splitting data')
                                     for ib in (range(len(b))):
                                         iydata = b[ib][b[ib].columns.values[0:-2]]
                                         Y = iydata.columns.values
@@ -203,37 +206,50 @@ def main(sDir, url_list):
                                         if Z.shape[0] == 1:
                                             X = np.repeat(X[0], len(Y), axis=0)
                                             df = pd.DataFrame(dict(a=list(X), b=list(Y), c=list(Z[0])))
-                                            ax[group].scatter(df['a'].values, df['b'].values, c=df['c'].values, cmap=pyplot.cm.jet, s=1)
+                                            images.append(ax[group].scatter(df['a'].values, df['b'].values, c=df['c'].values, cmap='Blues', s=1))
                                         else:
                                             Z = Z.T
                                             x, y = np.meshgrid(X, Y)
-                                            ax[group].contourf(x, y, Z, alpha=0.7, cmap=pyplot.cm.jet)
+                                            images.append(ax[group].contourf(x, y, Z, alpha=0.7, cmap='Blues'))
 
                                 else:
-                                    print('no b')
+                                    print('no gaps exist, not splitting data')
                                     iydata = ydata[ydata.columns.values[0:-2]]
                                     Y = iydata.columns.values
                                     X = iydata.index.values
                                     Z = iydata.values
                                     Z = Z.T
                                     x, y = np.meshgrid(X, Y)
-                                    im = ax[group].contourf(x, y, Z, alpha=0.7, cmap=pyplot.cm.jet)
+                                    im = ax[group].contourf(x, y, Z, alpha=0.7, cmap='Blues') #pyplot.cm.jet
+                                    images.append(ax[group].contourf(x, y, Z, alpha=0.7, cmap='Blues'))
 
                             else:
-                                print('D = 1')
-                                ydata.plot(ax=ax[group], linestyle='None', marker='.', markersize=0.5,
-                                           color=colors[group])
+                                print('with one column:', len(ydata.columns))
+                                ax[group].contourf(x, y, Z, alpha=0.7, cmap='Blues')(ydata.plot(ax=ax[group],
+                                                    linestyle='None',
+                                                    marker='.',
+                                                    markersize=0.5,
+                                                    color=colors[group]))
 
                                 ax[group].legend().set_visible(False)
 
                                 # plot Mean and Standard deviation
-                                ma = serie_n.rolling('86400s').mean()
-                                mstd = serie_n.rolling('86400s').std()
+                                ma = ydata.rolling('86400s').mean()
+                                mstd = ydata.rolling('86400s').std()
+                                m_mstd_min = [ycol].values - 2 * mstd[ycol].values
+                                m_mstd_max = ma[ycol].values + 2 * mstd[ycol].values
+                                ax[group].plot(ma.index.values, ma[ycol].values, 'k', linewidth=0.15)
+                                ax[group].fill_between(mstd.index.values, m_mstd_min, m_mstd_max, color='b', alpha=0.2)
 
-                                ax[group].plot(ma.index, ma[col_name].values, 'k', linewidth=0.15)
-                                ax[group].fill_between(mstd.index, ma[col_name].values - 2 * mstd[col_name].values,
-                                                    ma[col_name].values + 2 * mstd[col_name].values,
-                                                    color='b', alpha=0.2)
+                            # flag deployments end-time for reference
+                            ymin, ymax = ax[group].get_ylim()
+                            dep = 1
+                            for etimes in end_times:
+                                if etimes.year == n_year:
+                                    ax[group].axvline(x=etimes, color='b', linestyle='--', linewidth=.6)
+                                    ax[group].text(etimes, ymin, 'End' + str(dep), fontsize=6, style='italic',
+                                                   bbox=dict(boxstyle='round', ec=(0., 0.5, 0.5), fc=(1., 1., 1.)))
+                                dep += 1
 
                             # prepare the time axis parameters
                             datemin = datetime.date(n_year, 1, 1)
@@ -244,14 +260,17 @@ def main(sDir, url_list):
                             ax[group].xaxis.set_minor_locator(xlocator)
                             ax[group].xaxis.set_major_formatter(myFmt)
 
-                            # prepare the time axis parameters
+                            # prepare the y axis parameters
+                            ax[group].set_ylabel(n_year, rotation=0, fontsize=8, color='b', labelpad=20)
+                            ax[group].yaxis.set_label_position("right")
                             ylocator = MaxNLocator(prune='both', nbins=3)
                             ax[group].yaxis.set_major_locator(ylocator)
+                            ax[group].yaxis.set_ticklabels([]) #range(1, len(col), 1)
 
                             # format figure
                             ax[group].tick_params(axis='both', color='r', labelsize=7, labelcolor='m')
                             if group == 0:
-                                ax[group].set_title(sv + '( ' + sv_units, fontsize=8)
+                                ax[group].set_title(sv + '( ' + sv_units + ')', fontsize=8)
                             if group < len(groups) - 1:
                                 ax[group].tick_params(which='both', pad=0.1, length=1, labelbottom=False)
                                 ax[group].set_xlabel(' ')
@@ -259,26 +278,16 @@ def main(sDir, url_list):
                                 ax[group].tick_params(which='both', color='r', labelsize=7, labelcolor='m',
                                                       pad=0.1, length=1, rotation=0)
                                 ax[group].set_xlabel('Months', rotation=0, fontsize=8, color='b')
-                                # pyplot.colorbar(im, extend='both', shrink=0.9, orientation="horizontal",
-                                #                 pad=-0.5, ax=ax[group])
 
 
-                            ax[group].set_ylabel(n_year, rotation=0, fontsize=8, color='b', labelpad=20)
-                            ax[group].yaxis.set_label_position("right")
+                        vmin = min(image.get_array().min() for image in images)
+                        vmax = max(image.get_array().max() for image in images)
+                        norm = mcolors.Normalize(vmin=vmin, vmax=vmax)
 
-                            ymin, ymax = ax[group].get_ylim()
-                            dep = 1
-                            for etimes in end_times:
-                                # if etimes < x_time[len(x_time)-1]:
-                                ax[group].axvline(x=etimes, color='b', linestyle='--', linewidth=.6)
-                                ax[group].text(etimes, ymin, 'End' + str(dep), fontsize=6, style='italic',
-                                            bbox=dict(boxstyle='round',
-                                                      ec=(0., 0.5, 0.5),
-                                                      fc=(1., 1., 1.))
-                                            )
-                                dep += 1
+                        for im in images:
+                            im.set_norm(norm)
 
-                        fig.colorbar(im, cax=ax[len(groups)], orientation="horizontal")
+                        fig.colorbar(images[0], ax=ax, orientation='horizontal', fraction=.1, spacing='proportional')
 
                         fig.savefig(str(save_file), dpi=150)
                         pyplot.close()
@@ -288,33 +297,41 @@ def main(sDir, url_list):
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160622-CE06ISSM-RID16-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160645-CE06ISSM-RID16-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160700-CE06ISSM-RID16-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html'
-                ]
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T002531-CP03ISSM-MFD35-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T002555-CP03ISSM-MFD35-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T002607-CP03ISSM-MFD35-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html']
 main(sDir, url_list)
 
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160513-CE06ISSM-RID16-05-PCO2WB000-recovered_host-pco2w_abc_dcl_instrument_blank_recovered/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160606-CE06ISSM-RID16-05-PCO2WB000-telemetered-pco2w_abc_dcl_instrument_blank/catalog.html'
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160530-CE06ISSM-RID16-05-PCO2WB000-recovered_host-pco2w_abc_dcl_instrument_recovered/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160550-CE06ISSM-RID16-05-PCO2WB000-telemetered-pco2w_abc_dcl_instrument/catalog.html'
+# ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T002620-CP03ISSM-RID26-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html',
+# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T002644-CP03ISSM-RID26-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
+#  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T002656-CP03ISSM-RID26-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html']
 
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T155131-CE06ISSM-RID16-02-FLORTD000-recovered_host-flort_sample/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T155144-CE06ISSM-RID16-02-FLORTD000-telemetered-flort_sample/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160252-CE06ISSM-RID16-04-VELPTA000-recovered_host-velpt_ab_instrument_recovered/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160441-CE06ISSM-RID16-04-VELPTA000-recovered_inst-velpt_ab_instrument_recovered/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160458-CE06ISSM-RID16-04-VELPTA000-telemetered-velpt_ab_dcl_instrument/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160715-CE06ISSM-RID16-07-NUTNRB000-recovered_host-nutnr_b_dcl_conc_instrument_recovered/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160735-CE06ISSM-RID16-07-NUTNRB000-recovered_host-nutnr_b_dcl_dark_conc_instrument_recovered/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160748-CE06ISSM-RID16-07-NUTNRB000-recovered_inst-nutnr_b_instrument_recovered/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160803-CE06ISSM-RID16-07-NUTNRB000-telemetered-nutnr_b_dcl_conc_instrument/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160819-CE06ISSM-RID16-07-NUTNRB000-telemetered-nutnr_b_dcl_dark_conc_instrument/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160837-CE06ISSM-RID16-07-NUTNRB000-telemetered-nutnr_b_dcl_full_instrument/catalog.html']
+#'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T145838-CE02SHBP-LJ01D-10-PHSEND103-streamed-phsen_data_record/catalog.html']
+
+#'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160622-CE06ISSM-RID16-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html',
+#'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160645-CE06ISSM-RID16-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
+#'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160700-CE06ISSM-RID16-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html'
+
+#'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160513-CE06ISSM-RID16-05-PCO2WB000-recovered_host-pco2w_abc_dcl_instrument_blank_recovered/catalog.html',
+#'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160606-CE06ISSM-RID16-05-PCO2WB000-telemetered-pco2w_abc_dcl_instrument_blank/catalog.html'
+#'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160530-CE06ISSM-RID16-05-PCO2WB000-recovered_host-pco2w_abc_dcl_instrument_recovered/catalog.html',
+#'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160550-CE06ISSM-RID16-05-PCO2WB000-telemetered-pco2w_abc_dcl_instrument/catalog.html'
+
+#'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T155131-CE06ISSM-RID16-02-FLORTD000-recovered_host-flort_sample/catalog.html',
+#'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T155144-CE06ISSM-RID16-02-FLORTD000-telemetered-flort_sample/catalog.html',
+#'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160252-CE06ISSM-RID16-04-VELPTA000-recovered_host-velpt_ab_instrument_recovered/catalog.html',
+#'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160441-CE06ISSM-RID16-04-VELPTA000-recovered_inst-velpt_ab_instrument_recovered/catalog.html',
+#'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160458-CE06ISSM-RID16-04-VELPTA000-telemetered-velpt_ab_dcl_instrument/catalog.html',
+#'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160715-CE06ISSM-RID16-07-NUTNRB000-recovered_host-nutnr_b_dcl_conc_instrument_recovered/catalog.html',
+#'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160735-CE06ISSM-RID16-07-NUTNRB000-recovered_host-nutnr_b_dcl_dark_conc_instrument_recovered/catalog.html',
+#'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160748-CE06ISSM-RID16-07-NUTNRB000-recovered_inst-nutnr_b_instrument_recovered/catalog.html',
+#'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160803-CE06ISSM-RID16-07-NUTNRB000-telemetered-nutnr_b_dcl_conc_instrument/catalog.html',
+#'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160819-CE06ISSM-RID16-07-NUTNRB000-telemetered-nutnr_b_dcl_dark_conc_instrument/catalog.html',
+#'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160837-CE06ISSM-RID16-07-NUTNRB000-telemetered-nutnr_b_dcl_full_instrument/catalog.html']
 
 # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T161639-CE09OSSM-RID27-03-CTDBPC000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html',
 # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T161513-CE09OSSM-RID27-03-CTDBPC000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
 # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T161501-CE09OSSM-RID27-03-CTDBPC000-recovered_host-ctdbp_cdef_dcl_instrument_recovered/catalog.html']
-
 
 # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T154700-CE06ISSM-RID16-03-CTDBPC000-recovered_host-ctdbp_cdef_dcl_instrument_recovered/catalog.html',
 # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T154713-CE06ISSM-RID16-03-CTDBPC000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
