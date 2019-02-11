@@ -129,7 +129,7 @@ def sci_var_long_names_check(stream_sci_vars_dict):
         streams.append(k.split('-')[1])
 
     # if the reference designator has one science data stream
-    if len(np.unique(methods)) > len(np.unique(streams)):
+    if (len(np.unique(methods)) > len(np.unique(streams))) or ('ctdbp' in streams[0]):
         var_dict = common_long_names(stream_sci_vars_dict)
         sci_vars_dict = dict(common_stream_placeholder=dict(vars=var_dict,
                                                             ms=list(stream_sci_vars_dict.keys())))
