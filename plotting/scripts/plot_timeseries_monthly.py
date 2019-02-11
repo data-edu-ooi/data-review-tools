@@ -35,12 +35,14 @@ from matplotlib.ticker import MaxNLocator, LinearLocator
 colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
 color_names = [name for hsv, name in colors.items()]
 
+
 def get_deployment_information(data, deployment):
     d_info = [x for x in data['instrument']['deployments'] if x['deployment_number'] == deployment]
     if d_info:
         return d_info[0]
     else:
         return None
+
 
 def main(sDir, url_list):
     rd_list = []
@@ -334,8 +336,6 @@ def main(sDir, url_list):
                                 sfile = '_'.join(('Statistics', str(x_year), sname))
                                 save_file = os.path.join(save_dir, sfile)
                                 fig0.savefig(str(save_file), dpi=150)
-
-
 
 
 if __name__ == '__main__':

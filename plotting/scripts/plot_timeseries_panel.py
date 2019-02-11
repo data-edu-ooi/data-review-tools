@@ -72,23 +72,25 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                 array = subsite[0:2]
                 save_dir = os.path.join(sDir, array, subsite, refdes, 'timeseries_panel_plots')
                 filename = '_'.join(fname.split('_')[:-1])
-                cf.create_dir(save_dir)
-
                 sci_vars = cf.return_science_vars(stream)
 
-                colors = cm.jet(np.linspace(0, 1, len(sci_vars)))
+                if len(sci_vars) > 1:
+                    cf.create_dir(save_dir)
+                    colors = cm.jet(np.linspace(0, 1, len(sci_vars)))
 
-                t = ds['time'].values
-                t0 = pd.to_datetime(t.min()).strftime('%Y-%m-%dT%H:%M:%S')
-                t1 = pd.to_datetime(t.max()).strftime('%Y-%m-%dT%H:%M:%S')
-                title = ' '.join((deployment, refdes, method))
+                    t = ds['time'].values
+                    t0 = pd.to_datetime(t.min()).strftime('%Y-%m-%dT%H:%M:%S')
+                    t1 = pd.to_datetime(t.max()).strftime('%Y-%m-%dT%H:%M:%S')
+                    title = ' '.join((deployment, refdes, method))
 
-                # Plot data with outliers removed
-                fig, ax = pf.plot_timeseries_panel(ds, t, sci_vars, colors, 5)
-                plt.xticks(fontsize=7)
-                ax[0].set_title((title + '\n' + t0 + ' - ' + t1), fontsize=7)
-                sfile = '-'.join((filename, 'timeseries_panel'))
-                pf.save_fig(save_dir, sfile)
+                    # Plot data with outliers removed
+                    fig, ax = pf.plot_timeseries_panel(ds, t, sci_vars, colors, 5)
+                    plt.xticks(fontsize=7)
+                    ax[0].set_title((title + '\n' + t0 + ' - ' + t1), fontsize=7)
+                    sfile = '-'.join((filename, 'timeseries_panel'))
+                    pf.save_fig(save_dir, sfile)
+                else:
+                    print('Only one science variable in file, no panel plots necessary')
 
 
 if __name__ == '__main__':

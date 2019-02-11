@@ -6,3 +6,5 @@ from . import plot_timeseries_panel
 from . import plot_timeseries_pm_all
 from . import plot_ts
 from . import plot_xsection
+from . import plot_timeseries_monthly
+from . import plot_timeseries_daily
