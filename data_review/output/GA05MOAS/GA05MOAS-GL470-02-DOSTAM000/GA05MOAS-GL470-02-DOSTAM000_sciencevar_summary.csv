@@ -1,0 +1,4 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,telemetered,dosta_abcdjm_glider_instrument,sci_oxy4_oxygen,µmol L-1,nan,"[0.0, 400.0]",60935,0,0,0,1407,59528,97.69,220.7446,149.205,283.976,18.8847
+deployment0001,telemetered,dosta_abcdjm_glider_instrument,sci_oxy4_saturation,percent,nan,"[0.0, 110.0]",60935,0,0,0,0,60935,100.0,70.292,0.0,99.988,14.2143
+deployment0001,telemetered,dosta_abcdjm_glider_instrument,sci_abs_oxygen,µmol kg-1,nan,"[0.0, 400.0]",60935,0,0,0,1407,59528,97.69,173.8889,118.4188,221.951,14.277

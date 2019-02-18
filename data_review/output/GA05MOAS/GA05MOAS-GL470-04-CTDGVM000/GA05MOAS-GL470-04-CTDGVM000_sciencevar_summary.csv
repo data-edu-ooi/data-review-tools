@@ -1,0 +1,7 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,telemetered,ctdgv_m_glider_instrument,practical_salinity,1,-9999999.0,"[0.0, 42.0]",61016,0,0,0,1407,59609,97.69,34.3903,33.4383,35.7743,0.2919
+deployment0001,telemetered,ctdgv_m_glider_instrument,sci_water_cond,S m-1,nan,"[0.0, 6.0]",61016,0,0,0,1407,59609,97.69,3.4095,3.1078,4.8213,0.3199
+deployment0001,telemetered,ctdgv_m_glider_instrument,sci_water_pressure,bar,nan,"[0.0, 6000.0]",61016,0,0,38,0,60978,99.94,45.6938,0.0,97.499,29.3493
+deployment0001,telemetered,ctdgv_m_glider_instrument,sci_water_temp,ºC,nan,"[-2.0, 40.0]",61016,0,0,0,0,61016,100.0,5.8571,0.0,19.4554,3.4392
+deployment0001,telemetered,ctdgv_m_glider_instrument,sci_seawater_density,kg m-3,nan,"[1000.0, 1100.0]",61016,0,0,1407,0,59609,97.69,1029.1717,1024.5444,1031.957,1.6158
+deployment0001,telemetered,ctdgv_m_glider_instrument,sci_water_pressure_dbar,dbar,nan,"[0.0, 6000.0]",61016,0,0,38,0,60978,99.94,456.9375,0.0,974.99,293.4925
