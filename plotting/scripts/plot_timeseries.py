@@ -53,6 +53,7 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
         else:
             fdatasets = datasets
 
+        fdatasets = np.unique(fdatasets).tolist()
         for fd in fdatasets:
             with xr.open_dataset(fd, mask_and_scale=False) as ds:
                 ds = ds.swap_dims({'obs': 'time'})
@@ -72,9 +73,9 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                 save_dir = os.path.join(sDir, array, subsite, refdes, 'timeseries_plots', deployment)
                 cf.create_dir(save_dir)
 
-                t = ds['time'].values
-                t0 = pd.to_datetime(t.min()).strftime('%Y-%m-%dT%H:%M:%S')
-                t1 = pd.to_datetime(t.max()).strftime('%Y-%m-%dT%H:%M:%S')
+                tm = ds['time'].values
+                t0 = pd.to_datetime(tm.min()).strftime('%Y-%m-%dT%H:%M:%S')
+                t1 = pd.to_datetime(tm.max()).strftime('%Y-%m-%dT%H:%M:%S')
                 title = ' '.join((deployment, refdes, method))
 
                 for var in raw_vars:
@@ -93,7 +94,7 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                     else:
                         # reject fill values
                         ind = y.values != fv
-                        t = t[ind]
+                        t = tm[ind]
                         y = y[ind]
 
                         # Plot all data

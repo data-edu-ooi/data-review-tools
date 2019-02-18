@@ -107,23 +107,32 @@ def compare_plot_datasets(df, r, start_time, end_time, sDir):
                                 ds0_var = ds0[name_ds0]
                                 ds1_var = ds1[name_ds1]
 
-                                # Plot all data
-                                # fig, ax = pf.plot_timeseries_compare(t0, t1, ds0_var, ds1_var, ds0_method, ds1_method,
-                                #                                      long_name, stdev=None)
-                                #
-                                # title = ' '.join((d, r, '{} vs {}'.format(ds0_method, ds1_method)))
-                                # ax.set_title(title, fontsize=9)
-                                # sfile = '_'.join((d, r, long_name))
-                                # pf.save_fig(save_dir, sfile)
+                                # reject NaNs
+                                nan0_ind = ~np.isnan(ds0_var.data)
+                                ds0_nonan = ds0_var.data[nan0_ind]
 
-                                # Plot data with outliers removed
-                                fig, ax = pf.plot_timeseries_compare(t0, t1, ds0_var, ds1_var, ds0_method, ds1_method,
-                                                                     long_name, stdev=5)
+                                nan1_ind = ~np.isnan(ds1_var.data)
+                                ds1_nonan = ds1_var.data[nan1_ind]
 
-                                title = ' '.join((d, r, '{} vs {}'.format(ds0_method, ds1_method)))
-                                ax.set_title(title, fontsize=9)
-                                sfile = '_'.join((d, r, long_name, 'rmoutliers'))
-                                pf.save_fig(save_dir, sfile)
+                                # only plot if both arrays have data
+                                if len(ds0_nonan) > 0 and len(ds1_nonan) > 0:
+                                    # Plot all data
+                                    # fig, ax = pf.plot_timeseries_compare(t0, t1, ds0_var, ds1_var, ds0_method, ds1_method,
+                                    #                                      long_name, stdev=None)
+                                    #
+                                    # title = ' '.join((d, r, '{} vs {}'.format(ds0_method, ds1_method)))
+                                    # ax.set_title(title, fontsize=9)
+                                    # sfile = '_'.join((d, r, long_name))
+                                    # pf.save_fig(save_dir, sfile)
+
+                                    # Plot data with outliers removed
+                                    fig, ax = pf.plot_timeseries_compare(t0, t1, ds0_var, ds1_var, ds0_method, ds1_method,
+                                                                         long_name, stdev=5)
+
+                                    title = ' '.join((d, r, '{} vs {}'.format(ds0_method, ds1_method)))
+                                    ax.set_title(title, fontsize=9)
+                                    sfile = '_'.join((d, r, long_name, 'rmoutliers'))
+                                    pf.save_fig(save_dir, sfile)
 
 
 def long_names(dataset, vars):
