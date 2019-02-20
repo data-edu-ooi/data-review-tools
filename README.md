@@ -2,6 +2,9 @@
 This is a collection of tools to facilitate the review of OOI 1.0 data.
 
 ## Folders
+### cruise_data
+Contains tools for comparing OOI platform data with data collected on OOI maintenance cruises.
+
 ### data_download
 Contains examples and tools for downloading data from uFrame via the OOI Machine to Machine (M2M) interface. Data can be downloaded from multiple platforms, sensors, and data streams.
 
