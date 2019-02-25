@@ -67,21 +67,24 @@ def main(sDir, f, start_time, end_time):
                     x = ds[var]
 
                     # Plot all data
-                    fig, ax = pf.plot_profiles(x, y, colors, stdev=None)
+                    xlabel = var + " (" + x.units + ")"
+                    ylabel = pressure + " (" + y.units + ")"
+
+                    fig, ax = pf.plot_profiles(x, y, colors, ylabel, xlabel, stdev=None)
                     ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-                    sfile = '_'.join((fname, x.name))
+                    sfile = '_'.join((fname[0:-46], x.name))
                     pf.save_fig(save_dir, sfile)
 
                     # Plot data with outliers removed
-                    fig, ax = pf.plot_profiles(x, y, colors, stdev=5)
+                    fig, ax = pf.plot_profiles(x, y, colors, ylabel, xlabel, stdev=5)
                     ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-                    sfile = '_'.join((fname, x.name, 'rmoutliers'))
+                    sfile = '_'.join((fname[0:-46], x.name, 'rmoutliers'))
                     pf.save_fig(save_dir, sfile)
 
 
 if __name__ == '__main__':
-    sDir = '/Users/lgarzio/Documents/OOI/DataReviews'
-    f = 'data_request_summary.csv'
+    sDir = '/Users/leila/Documents/NSFEduSupport/review/test/'
+    f = '/Users/leila/Documents/NSFEduSupport/review/request/20190218T1043/data_request_summary_20190218T1043.csv'
     start_time = None  # dt.datetime(2016, 6, 1, 0, 0, 0)  # optional, set to None if plotting all data
     end_time = None  # dt.datetime(2017, 10, 1, 0, 0, 0)  # optional, set to None if plotting all data
     main(sDir, f, start_time, end_time)
