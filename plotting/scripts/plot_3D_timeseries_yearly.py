@@ -169,17 +169,24 @@ def main(sDir, url_list):
 
                         groups, d_groups = gt.group_by_time_frequency(x, y, col, 'A')
 
-                        time_ind = list(range(1, len(d_groups.columns), len(col)))
-                        data_ind0 = list(range(2, len(d_groups.columns), len(col)))
-                        if data_ind0[-1] == d_groups.columns.values[-(len(col)+1)]:
-                            data_ind0.insert(len(groups) - 1, len(d_groups.columns))
-                        data_ind1 = list(range(len(col), len(d_groups.columns), len(col)))
-                        data_ind1.insert(len(groups)-1, len(d_groups.columns))
+                        if len(d_groups.columns) == len(col):
+                            time_ind = [1]
+                            data_ind0 = [2]
+                            data_ind1 = [len(col)]
+                        else:
+                            time_ind = list(range(1, len(d_groups.columns), len(col)))
+                            data_ind0 = list(range(2, len(d_groups.columns), len(col)))
+                            if data_ind0[-1] == d_groups.columns.values[-(len(col)+1)]:
+                                data_ind0.insert(len(groups) - 1, len(d_groups.columns))
+                            data_ind1 = list(range(len(col), len(d_groups.columns), len(col)))
+                            data_ind1.insert(len(groups)-1, len(d_groups.columns))
 
                         save_file = os.path.join(save_dir, sname)
 
                         print('\ncreating images')
                         fig, ax = pyplot.subplots(nrows=len(groups), ncols=1)
+                        if len(groups) == 1:
+                            ax = [ax]
                         colors = color_names[:len(groups)]
                         images = []
                         for group in range(len(groups)):
@@ -293,24 +300,54 @@ def main(sDir, url_list):
                         pyplot.close()
 
 
-
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T002531-CP03ISSM-MFD35-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T002555-CP03ISSM-MFD35-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T002607-CP03ISSM-MFD35-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html']
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T013526-CE09OSSM-RID26-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html',
+     'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T013539-CE09OSSM-RID26-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
+     'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T013552-CE09OSSM-RID26-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html']
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T013452-CE09OSSM-MFD35-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T013503-CE09OSSM-MFD35-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T013515-CE09OSSM-MFD35-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html']
+
+
+
+    # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T002620-CP03ISSM-RID26-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html',
+    #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T002644-CP03ISSM-RID26-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
+    #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T002656-CP03ISSM-RID26-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html']
+
+    # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190112T003252-GA01SUMO-RII11-02-PHSENE041-telemetered-phsen_abcdef_imodem_instrument/catalog.html',
+    # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190112T003235-GA01SUMO-RII11-02-PHSENE041-recovered_host-phsen_abcdef_imodem_instrument_recovered/catalog.html']
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190112T003335-GA01SUMO-RII11-02-PHSENE042-telemetered-phsen_abcdef_imodem_instrument/catalog.html',
+        #  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190112T003322-GA01SUMO-RII11-02-PHSENE042-recovered_host-phsen_abcdef_imodem_instrument_recovered/catalog.html',
+        #  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190112T003307-GA01SUMO-RII11-02-PHSENE042-recovered_inst-phsen_abcdef_instrument/catalog.html']
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190112T020706-GS01SUMO-RII11-02-PHSENE041-recovered_inst-phsen_abcdef_instrument/catalog.html',
+        #  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190112T020724-GS01SUMO-RII11-02-PHSENE041-recovered_host-phsen_abcdef_imodem_instrument_recovered/catalog.html',
+        #  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190112T020745-GS01SUMO-RII11-02-PHSENE041-telemetered-phsen_abcdef_imodem_instrument/catalog.html']
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190112T020811-GS01SUMO-RII11-02-PHSENE042-recovered_inst-phsen_abcdef_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190112T020830-GS01SUMO-RII11-02-PHSENE042-recovered_host-phsen_abcdef_imodem_instrument_recovered/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190112T020858-GS01SUMO-RII11-02-PHSENE042-telemetered-phsen_abcdef_imodem_instrument/catalog.html']
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T145838-CE02SHBP-LJ01D-10-PHSEND103-streamed-phsen_data_record/catalog.html']
+
 main(sDir, url_list)
 
-# ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T002620-CP03ISSM-RID26-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T002644-CP03ISSM-RID26-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
-#  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T002656-CP03ISSM-RID26-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html']
+# ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160622-CE06ISSM-RID16-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html',
+#         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160645-CE06ISSM-RID16-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
+#         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160700-CE06ISSM-RID16-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html']
+#
+# # [
+#
+#         ]
+# ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T002531-CP03ISSM-MFD35-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html',
+#                 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T002555-CP03ISSM-MFD35-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
+                # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T002607-CP03ISSM-MFD35-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html']
 
-#'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T145838-CE02SHBP-LJ01D-10-PHSEND103-streamed-phsen_data_record/catalog.html']
+#
 
-#'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160622-CE06ISSM-RID16-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html',
-#'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160645-CE06ISSM-RID16-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
-#'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160700-CE06ISSM-RID16-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html'
 
 #'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160513-CE06ISSM-RID16-05-PCO2WB000-recovered_host-pco2w_abc_dcl_instrument_blank_recovered/catalog.html',
 #'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160606-CE06ISSM-RID16-05-PCO2WB000-telemetered-pco2w_abc_dcl_instrument_blank/catalog.html'
