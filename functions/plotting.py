@@ -8,7 +8,7 @@ import matplotlib.dates as mdates
 import os
 import numpy as np
 import functions.common as cf
-
+import matplotlib.cm as cm
 
 def get_units(variable):
     try:
@@ -25,7 +25,7 @@ def format_date_axis(axis, figure):
     figure.autofmt_xdate()
 
 
-def plot_profiles(x, y, colors, stdev=None):
+def plot_profiles(x, y, color, ylabel, xlabel, stdev=None):
     """
     Create a profile plot for mobile instruments
     :param x: .nc data array containing data for plotting variable of interest (e.g. density)
@@ -33,30 +33,37 @@ def plot_profiles(x, y, colors, stdev=None):
     :param colors: list of colors to be used for plotting
     :param stdev: desired standard deviation to exclude from plotting
     """
+    if type(color) is not np.ndarray:
+        z = color.values
+
+    if type(y) is not np.ndarray:
+        y = y.values
+
+    if type(x) is not np.ndarray:
+        x = x.values
+
     if stdev is None:
-        xD = x.values
-        yD = y.values
+        xD = x
+        yD = y
+        nZ = color
         leg_text = ()
     else:
-        ind = cf.reject_extreme_values(x.values)
-        xdata = x[ind]
-        ydata = y[ind]
-        
-        ind2 = cf.reject_outliers(xdata.values, stdev)
-        xD = xdata[ind2].values
-        yD = ydata[ind2].values
+        ind2 = cf.reject_outliers(x, stdev)
+        xD = x[ind2]
+        yD = y[ind2]
+        nZ = color[ind2]
         outliers = str(len(x) - len(xD))
         leg_text = ('removed {} outliers (SD={})'.format(outliers, stdev),)
 
-    x_units = get_units(x)
-    y_units = get_units(y)
     fig, ax = plt.subplots()
+    plt.margins(y=.08, x=.02)
     plt.grid()
-    ax.scatter(xD, yD, c=colors, s=2, edgecolor='None')
+    ax.scatter(xD, yD, c=nZ, s=2, edgecolor='None')
     ax.invert_yaxis()
-    ax.set_xlabel((x.name + " (" + x_units + ")"), fontsize=9)
-    ax.set_ylabel((y.name + " (" + y_units + ")"), fontsize=9)
+    ax.set_xlabel(xlabel, fontsize=9)
+    ax.set_ylabel(ylabel, fontsize=9)
     ax.legend(leg_text, loc='best', fontsize=6)
+
     return fig, ax
 
 
@@ -247,7 +254,7 @@ def plot_ts(sal_vector, temp_vector, dens, salinity, temperature, cbar):
     return fig, ax
 
 
-def plot_xsection(subsite, x, y, z, stdev=None):
+def plot_xsection(subsite, x, y, z, clabel, ylabel, stdev=None):
     """
     Create a cross-section plot for mobile instruments
     :param subsite: subsite part of reference designator to plot
@@ -256,27 +263,35 @@ def plot_xsection(subsite, x, y, z, stdev=None):
     :param z: .nc data array containing data for plotting variable of interest (e.g. density)
     :param stdev: desired standard deviation to exclude from plotting
     """
-    z_data = z.values
+    if type(z) is not np.ndarray:
+        z = z.values
+
+    if type(y) is not np.ndarray:
+        y = y.values
+
+    if type(x) is not np.ndarray:
+        x = x.values
+
     # when plotting gliders, remove zeros (glider fill values) and negative numbers
     if 'MOAS' in subsite:
-        z_data[z_data <= 0.0] = np.nan
-        zeros = str(len(z) - np.count_nonzero(~np.isnan(z_data)))
+        z[z <= 0.0] = np.nan
+        zeros = str(len(z) - np.count_nonzero(~np.isnan(z)))
 
     if stdev is None:
         xD = x
-        yD = y.values
-        zD = z_data
+        yD = y
+        zD = z
     else:
-        ind = cf.reject_extreme_values(z_data)
+        ind = cf.reject_extreme_values(z)
         xdata = x[ind]
         ydata = y[ind]
-        zdata = z_data[ind]
+        zdata = z[ind]
         
         ind2 = cf.reject_outliers(zdata, stdev)
         xD = xdata[ind2]
-        yD = ydata[ind2].values
+        yD = ydata[ind2]
         zD = zdata[ind2]
-        outliers = str(len(z_data) - len(zD))
+        outliers = str(len(zdata) - len(zD))
 
     try:
         zeros
@@ -293,14 +308,11 @@ def plot_xsection(subsite, x, y, z, stdev=None):
     xc = ax.scatter(xD, yD, c=zD, s=2, edgecolor='None')
     ax.invert_yaxis()
 
-    # add colorbar
-    z_units = get_units(z)
-    bar = fig.colorbar(xc, ax=ax, label=(z.name + " (" + z_units + ")"))
-    bar
+    # add color bar
+    bar = fig.colorbar(xc, ax=ax, label=clabel)
     bar.formatter.set_useOffset(False)
 
-    y_units = get_units(y)
-    ax.set_ylabel((y.name + " (" + y_units + ")"), fontsize=9)
+    ax.set_ylabel(ylabel, fontsize=9)
     format_date_axis(ax, fig)
 
     if zeros is None and type(outliers) is str:
@@ -326,22 +338,27 @@ def pressure_var(dataset, vars):
                      'presf_wave_burst_pressure', 'pressure', 'velpt_pressure', 'ctd_dbar', 'vel3d_k_pressure',
                      'seafloor_pressure', 'pressure_mbar']
     pvariables = list(set(pressure_variables).intersection(vars))
-    pvars = []
-    for press_var in pvariables:
-        if press_var == 'int_ctd_pressure':
-            pvars.append(str(press_var))
-        else:
-            try:
-                units = dataset[press_var].units
-                if units in ['dbar', '0.001 dbar']:
-                    pvars.append(str(press_var))
-            except AttributeError:
-                continue
+    if pvariables:
+        pvars = []
+        for press_var in pvariables:
+            if press_var == 'int_ctd_pressure':
+                pvars.append(str(press_var))
+            else:
+                try:
+                    units = dataset[press_var].units
+                    if units in ['dbar', '0.001 dbar']:
+                        pvars.append(str(press_var))
+                except AttributeError:
+                    continue
 
-    if len(pvars) > 1:
-        print('More than 1 pressure variable found in the file')
-    elif len(pvars) == 1:
-        pvar = str(pvars[0])
+        if len(pvars) > 1:
+            print('More than 1 pressure variable found in the file')
+        elif len(pvars) == 1:
+            pvar = str(pvars[0])
+            return pvar
+    else:
+        x = [x for x in list(dataset.coords.keys()) if 'pressure' in x]
+        pvar = str(x[0])
         return pvar
 
 
