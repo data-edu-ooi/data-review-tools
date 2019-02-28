@@ -1,0 +1,201 @@
+type,reference_designator,deployment,start_date,end_date,author,modified,image_url,comment
+annotation,CE09OSPM-WFP01-02-DOFSTK000,1.0,,,Leila,2019-02-22T15:50:00,,The data record ended long before the deployment end data. There is no annotation in the system to explain the gap.
+annotation,CE09OSPM-WFP01-02-DOFSTK000,6.0,,,Leila,2019-02-21T14:24:00,,"Update annotation ID # 925 to indicate that the profiler was lost at see and no recovered data are expected. 
+Two other issues with telemetered data need to be mentioned (1) the gaps in the data and (2) the change in the sampling rate. "
+comment,GA01SUMO-RII11-02-CTDMOQ015,2.0,2016-01-30T00:00:00,2016-02-01T00:00:00,Lori,2019-02-07T19:57:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GA/GA01SUMO/GA01SUMO-RII11-02-CTDMOQ015/deployment0002_event/,"Salinity and density dropped suddenly, then returned to reasonable values. UPDATE: This appears to be a real event as it was captured by other CTDs on this mooring (GA01SUMO-RII11-02-CTDBPP031, 32, and 33)"
+exclusion,GI01SUMO-RII11-02-CTDMOQ013,3.0,2016-07-10T17:44:00,2017-08-14T09:33:00,Lori,2019-02-04T14:12:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GI/GI01SUMO/GI01SUMO-RII11-02-CTDMOQ013/deployment0003_issue/,"Temperature, salinity, and density are offset between the recovered_host/telemetered and recovered_inst datasets. Excluding data from this deployment for statistics as it's unclear which dataset is correct. This should be investigated and the incorrect dataset should be fixed or annotated to indicate which dataset is correct. "
+exclusion,GI01SUMO-RII11-02-CTDMOQ014,2.0,2015-08-15T19:22:00,2016-07-19T00:00:00,Lori,2019-02-04T14:46:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GI/GI01SUMO/GI01SUMO-RII11-02-CTDMOQ014/deployment0002_issue/,"Salinity and density increase gradually throughout the deployment, then drop back to values similar to the beginning of the deployment. This behavior isn't seen in surrounding CTDs and should be investigated and annotated if an issue is found. Excluding from final statistics."
+exclusion,GI01SUMO-RII11-02-CTDMOQ016,2.0,2015-08-15T19:22:00,2016-07-19T00:00:00,Lori,2019-02-05T14:01:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GI/GI01SUMO/GI01SUMO-RII11-02-CTDMOQ016/deployment0002_issue/,Salinity and density steadily increased throughout the deployment. This should be investigated and annotated to alert users of issues. Excluding from final statistics.
+exclusion,GI01SUMO-RII11-02-CTDMOQ031,1.0,2014-11-20T00:00:00,2014-11-20T12:00:00,Lori,2019-02-05T14:22:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GI/GI01SUMO/GI01SUMO-RII11-02-CTDMOQ031/deployment0001_issue/,"Conductivity (and salinity and density) dropped suddenly, then returned to reasonable values. Excluding data from final statistics."
+exclusion,GI01SUMO-RII11-02-CTDMOQ031,1.0,2014-12-19T12:00:00,2014-12-20T06:00:00,Lori,2019-02-05T14:27:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GI/GI01SUMO/GI01SUMO-RII11-02-CTDMOQ031/deployment0001_issue/,"Conductivity (and salinity and density) dropped suddenly, then returned to reasonable values. Excluding data from final statistics."
+exclusion,GS01SUMO-RII11-02-CTDMOQ014,2.0,2016-11-08T00:00:00,2016-12-12T07:58:00,Lori,2019-02-06T17:17:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GS/GS01SUMO/GS01SUMO-RII11-02-CTDMOQ014/deployment0002_issue/,"Conductivity, density and salinity drop off at the end of the deployment. This should be investigated and annotated in uFrame. Excluding from final statistics."
+exclusion,GS01SUMO-RII11-02-CTDMOR020,1.0,2015-02-18T21:06:00,2015-12-27T11:20:00,Lori,2019-02-06T20:29:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GS/GS01SUMO/GS01SUMO-RII11-02-CTDMOR020/deployment0001_issue/,"Annotation ID 749: ""High conductivity bias starting in the middle of the deployment (around July 2015)."" This should be investigated and the annotation should be updated. Excluding entire deployment from final statistics."
+annotation,GS01SUMO-RII11-02-CTDMOQ011,2.0,2016-06-18T14:00:00,2016-07-12T15:45:00,Lori,2019-02-06T16:27:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GS/GS01SUMO/GS01SUMO-RII11-02-CTDMOQ011/deployment0002_issue/deployment0002_GS01SUMO-RII11-02-CTDMOQ011-recovered_inst-ctdmo_ghqr_instrument_recovered-ctdmo_seawater_pressure.png,"There is a 24 day gap in the data from 2016-06-18T14:00:01 to 2016-07-12T15:45:01 - this gap should either be filled in if the data are available, or annotated to inform users of the issue."
+annotation,GS01SUMO-RII11-02-CTDMOQ015,2.0,2016-06-23T16:30:00,2016-07-12T15:45:00,Lori,2019-02-06T17:28:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GS/GS01SUMO/GS01SUMO-RII11-02-CTDMOQ015/deployment0002_issue/deployment0002_GS01SUMO-RII11-02-CTDMOQ015-recovered_inst-ctdmo_ghqr_instrument_recovered-ctdmo_seawater_pressure_rmoutliers.png,"There is an 18 day gap in the data from 2016-06-23T16:30:01 to 2016-07-12T15:45:01 - this gap should either be filled in if the data are available, or annotated to inform users of the issue."
+comment,CP03ISSM-MFD35-06-PHSEND000,,,,Leila,2019-02-06T22:46:00,,pressure coordinate is missing from the netCDF files.
+annotation,CP03ISSM-MFD35-06-PHSEND000,3.0,,,Leila,2019-02-06T22:52:00,,Add an annotation for missing  data from  telemetered and recovered_host.
+annotation,CP03ISSM-MFD35-06-PHSEND000,3.0,,,Leila,2019-02-06T22:57:00,,Need an annotation for a 30 days gap at the end of deployment.
+comment,CP03ISSM-MFD35-06-PHSEND000,6.0,,,Leila,2019-02-11T15:34:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/CP/CP03ISSM/CP03ISSM-MFD35-06-PHSEND000/method_compare_plots/recovered_host-recovered_inst/deployment0006_CP03ISSM-MFD35-06-PHSEND000_pH_rmoutliers.png,"14 days of the missing data ['2017-07-24T00:59:59', '2017-08-06T22:59:59'] are found in the telemetered and recovered host. Are recovered-inst data incomplete?"
+exclusion,CP03ISSM-MFD35-06-PHSEND000,4.0,2014-12-14T18:52:00,2016-10-15T12:14:00,Leila,2019-02-11T15:33:00,,pH data for deployment 1 through 4 look suspect and are removed from statistical computations.
+exclusion,CP03ISSM-MFD35-06-PHSEND000,6.0,2017-06-15T13:43:00,2017-11-01T14:17:00,Leila,2019-02-11T15:33:00,,pH data for deployment 6 are suspect and are removed from statistical computations.
+annotation,GA01SUMO-RID16-03-CTDBPF000,2.0,2015-11-14T21:06:00,2016-11-08T10:10:00,Lori,2019-02-07T16:39:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GA/GA01SUMO/GA01SUMO-RID16-03-CTDBPF000/deployment0002_issue/GA01SUMO-RID16-03-CTDBPF000-ctdbp_cdef_instrument-Seawater%20Pressure.png,"The sampling rates for deployments 1 and 3 are 900 seconds (15 mins), but the sampling rate for deployment 2 is 12 seconds. This deployment should be annotated to explain why there is a difference in sampling rates. It appears that the high sampling rate captured a greater range in seawater pressure (see attached figure)."
+annotation,GA01SUMO-RII11-02-CTDBPP031,2.0,,,Lori,2019-02-07T19:45:00,,"The 6 day data gap at the beginning of the deployment should be annotated. If more details are known, annotation ID 126 should be updated to include why the instrument failed."
+comment,GA01SUMO-RII11-02-CTDBPP031,2.0,2016-01-31T00:00:00,2016-02-04T00:00:00,Lori,2019-02-07T20:00:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GA/GA01SUMO/GA01SUMO-RII11-02-CTDBPP031/deployment0002_event/,"Conductivity, salinity and density dropped suddenly, then returned to reasonable values. This appears to be a real event as it was captured by other CTDs on this mooring (GA01SUMO-RII11-02-CTDMOQ015, GA01SUMO-RII11-02-CTDBPP032, and GA01SUMO-RII11-02-CTDBPP033)"
+annotation,GA01SUMO-RII11-02-CTDBPP033,,,,Lori,2019-02-07T19:43:00,,"If more details are known, annotation IDs 416 and 417 should be updated to include why the instruments failed during deployments 2 and 3."
+annotation,GA01SUMO-RII11-02-CTDBPP032,,,,Lori,2019-02-07T19:44:00,,"If more details are known, annotation IDs 127 and 430 should be updated to include why the instruments failed during deployments 2 and 3."
+comment,GA01SUMO-RII11-02-CTDBPP033,2.0,2016-01-31T00:00:00,2016-02-04T00:00:00,Lori,2019-02-07T20:02:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GA/GA01SUMO/GA01SUMO-RII11-02-CTDBPP033/deployment0002_event/,"Conductivity, salinity and density dropped suddenly, then returned to reasonable values. This appears to be a real event as it was captured by other CTDs on this mooring (GA01SUMO-RII11-02-CTDMOQ015, GA01SUMO-RII11-02-CTDBPP031, and GA01SUMO-RII11-02-CTDBPP032)"
+comment,GA01SUMO-SBD12-02-FLORTD000,,,,Lori,2019-02-08T14:12:00,,The pressure coordinate 'pressure_depth' is all fill values for deployments 1-3. This variable should contain valid pressure data.
+annotation,GA01SUMO-SBD12-02-FLORTD000,1.0,,,Lori,2019-02-08T14:25:00,,There are only 7 days of data for this deployment. This dataset should be annotated to explain why the majority of the deployment is missing (if known).
+annotation,GA01SUMO-SBD12-02-FLORTD000,,2015-11-14T21:06:00,2018-01-04T10:24:00,Lori,2019-02-08T14:32:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GA/GA01SUMO/GA01SUMO-SBD12-02-FLORTD000/deployment0002-00003_issue/,Deployments 2 and 3: the heavy biofouling of the surface buoy appears to have negatively affected this instrument. The datasets should be annotated to indicate that the data are unreasonable/suspect.
+comment,GA01SUMO-RID16-02-FLORTD000,,,,Lori,2019-02-08T15:15:00,,The pressure coordinate 'pressure_depth' is all fill values for deployments 1-3. This variable should contain valid pressure data.
+comment,GA01SUMO-RID16-02-FLORTD000,3.0,,,Lori,2019-02-08T15:37:00,,seawater_scattering_coefficient and optical backscatter data arrays contain a high percentage of fill values (71%).
+annotation,GA01SUMO-RID16-02-FLORTD000,3.0,,,Lori,2019-02-08T15:27:00,,There are 16 gaps in the data totaling 168 days of missing data (from 2017-06-21 to 2018-01-10). This should be investigated and the data should be filled in (if available) or annotated to explain why these data are missing.
+exclusion,GA01SUMO-RID16-02-FLORTD000,1.0,2015-09-01T00:00:00,2015-11-01T00:00:00,Lori,2019-02-08T15:44:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GA/GA01SUMO/GA01SUMO-RID16-02-FLORTD000/deployment0001_issue/deployment0001_GA01SUMO-RID16-02-FLORTD000-recovered_host-flort_sample-optical_backscatter.png,The sudden and sustained high variability in optical_backscatter seems suspect and should be investigated. Excluding from final statistics.
+comment,GA01SUMO-RII11-02-FLORDG031,,,,Lori,2019-02-08T16:14:00,,Deployments 2 and 3: there is no pressure variable in the netCDF files. This should be a coordinate.
+comment,GA01SUMO-RII11-02-FLORDG032,,,,Lori,2019-02-08T16:14:00,,Deployments 2 and 3: there is no pressure variable in the netCDF files. This should be a coordinate.
+comment,GA01SUMO-RII11-02-FLORDG033,,,,Lori,2019-02-08T16:14:00,,Deployments 2 and 3: there is no pressure variable in the netCDF files. This should be a coordinate.
+comment,GA01SUMO-RII11-02-DOSTAD031,,,,Lori,2019-02-08T16:15:00,,Deployments 2 and 3: there is no pressure variable in the netCDF files. This should be a coordinate.
+comment,GA01SUMO-RII11-02-DOSTAD032,,,,Lori,2019-02-08T16:15:00,,Deployments 2 and 3: there is no pressure variable in the netCDF files. This should be a coordinate.
+comment,GA01SUMO-RII11-02-DOSTAD033,,,,Lori,2019-02-08T16:15:00,,Deployments 2 and 3: there is no pressure variable in the netCDF files. This should be a coordinate.
+annotation,GA01SUMO-RII11-02-FLORDG031,2.0,,,Lori,2019-02-19T16:04:00,,"The 6 day data gap at the beginning of the deployment should be annotated, and the 193 missing days at the end of the deployment should be annotated (the CTD to which this instrument was connected failed)."
+exclusion,GA01SUMO-RII11-02-FLORDG031,3.0,2017-03-04T00:00:00,2018-01-14T00:00:00,Lori,2019-02-11T16:48:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GA/GA01SUMO/GA01SUMO-RII11-02-FLORDG031/deployment0003_issue/deployment0003_GA01SUMO-RII11-02-FLORDG031-recovered_host-flord_g_ctdbp_p_dcl_instrument_recovered-fluorometric_chlorophyll_a.png,Annotation ID 390 should be updated to indicate that it looks like the cables look like they were severed on/near 2017-03-04 (according to the data). Excluding data after this time from final stats.
+annotation,GA01SUMO-RII11,,2015-12-04T00:00:00,2016-03-14T00:00:00,Lori,2019-02-11T17:05:00,,"Deployment 2: The recovered_host data from the following instruments have the same 4 data gaps [['2015-12-04', '2015-12-14'], ['2016-01-06', '2016-01-11'], ['2016-02-05', '2016-02-10'], ['2016-03-11', '2016-03-14']]. These gaps should be annotated to explain why the data are missing, or gaps should be filled in if the data are available. [02-FLORDG031, 02-FLORDG032, 02-FLORDG033, 02-DOSTAD031, 02-DOSTAD032, 02-DOSTAD033]"
+annotation,GA01SUMO-RII11-02-FLORDG032,2.0,,,Lori,2019-02-19T16:06:00,,The missing data at the end of deployments 2 should be annotated (the CTD to which the instrument was connected failed)
+exclusion,GA01SUMO-RII11-02-FLORDG032,3.0,2017-04-27T00:00:00,2018-01-14T10:24:00,Lori,2019-02-19T16:06:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GA/GA01SUMO/GA01SUMO-RII11-02-FLORDG032/deployment0003_issue/deployment0003_GA01SUMO-RII11-02-FLORDG032-recovered_host-flord_g_ctdbp_p_dcl_instrument_recovered-fluorometric_chlorophyll_a.png,"Annotation ID 432 should be updated to include the time range, and more information regarding the instrument failure (the CTD to which the instrument was connected failed). Data appear to be suspect starting around 2017-4-27 - excluding  from final statistics."
+annotation,GA01SUMO-RII11-02-FLORDG033,,,,Lori,2019-02-19T16:07:00,,The missing data at the end of deployments 2 and 3 should be annotated (the CTD to which the instrument was connected failed).
+comment,GA01SUMO-RID16-06-DOSTAD000,3.0,2016-10-27T01:47:00,2018-01-14T10:24:00,Lori,2019-02-14T20:53:00,,"The deployment 3 netCDF file contains the variable int_ctd_pressure and that variable contains valid pressure data, however it does not have any attributes (e.g. standard_name, units) and this variable is not listed as a coordinate for any of the variables in the file. There is pressure data from the collocated CTD (GA01SUMO-RID16-03-CTDBPF000) for the beginning of deployment 3, and these CTD files are included in the thredds server when I downloaded the DOSTA data (https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190111T235754-GA01SUMO-RID16-06-DOSTAD000-recovered_host-dosta_abcdjm_dcl_instrument_recovered/catalog.html). int_ctd_pressure is a coordinate in the deployment 1 and 2 files. It should also be a coordinate for deployment 3."
+exclusion,GA01SUMO-RID16-06-DOSTAD000,3.0,2017-08-13T00:00:00,2018-01-14T10:24:00,Lori,2019-02-14T20:59:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GA/GA01SUMO/GA01SUMO-RID16-06-DOSTAD000/deployment0003_issue2/,Oxygen concentration and saturation drop off - excluding from final statistics.
+exclusion,CE06ISSM-RID16-06-PHSEND000,1.0,2015-02-01T00:00:00,2015-04-10T00:00:00,Leila,2019-02-12T01:42:00,,pH data are suspect.
+exclusion,CE06ISSM-RID16-06-PHSEND000,2.0,2015-04-10T04:30:00,2015-10-13T23:45:00,Leila,2019-02-12T01:18:00,,pH data are suspect.
+exclusion,CE06ISSM-RID16-06-PHSEND000,4.0,2016-05-06T02:24:00,2016-09-24T15:33:00,Leila,2019-02-12T01:21:00,,pH data are suspect.
+exclusion,CE06ISSM-RID16-06-PHSEND000,5.0,2016-09-27T16:43:00,2016-10-15T00:00:00,Leila,2019-02-12T02:13:00,,pH data are suspect.
+exclusion,CE06ISSM-RID16-06-PHSEND000,5.0,2017-01-01T00:00:00,2017-04-15T14:00:00,Leila,2019-02-12T01:27:00,,pH data are suspect.
+exclusion,CE06ISSM-RID16-06-PHSEND000,6.0,2017-04-13T19:53:00,2017-10-05T13:53:00,Leila,2019-02-12T01:28:00,,pH data are suspect.
+exclusion,CE06ISSM-RID16-06-PHSEND000,7.0,2017-10-05T23:35:00,2017-11-30T00:00:00,Leila,2019-02-12T01:29:00,,pH data are suspect.
+exclusion,CE06ISSM-RID16-06-PHSEND000,7.0,2018-01-30T00:00:00,2018-03-28T17:54:00,Leila,2019-02-12T01:30:00,,pH data are suspect.
+exclusion,CE06ISSM-RID16-06-PHSEND000,8.0,2018-03-28T16:14:00,2018-09-20T15:26:00,Leila,2019-02-12T02:07:00,,pH data are suspect.
+exclusion,CE06ISSM-RID16-06-PHSEND000,3.0,2016-03-07T00:00:00,2016-05-06T15:00:00,Leila,2019-02-12T01:57:00,,pH data are suspect.
+comment,CE02SHBP-LJ01D-10-PHSEND103,,,,Leila,2019-02-14T15:36:00,,pressure coordinate is missing in the NetCDF data files for all deployments.
+annotation,CE02SHBP-LJ01D-10-PHSEND103,1.0,,,Leila,2019-02-14T15:43:00,,"List of gaps not annotated in the system:
+Gap 1: 15 days are missing at the beginning of the deployment
+Gap 2: ['2014-11-04T16:00:00', '2014-11-05T20:00:00']
+Gap 3: ['2015-03-07T22:00:00', '2015-03-09T08:00:00']
+"
+annotation,CE02SHBP-LJ01D-10-PHSEND103,2.0,,,Leila,2019-02-14T15:47:00,,"List of gaps not annotated in the system:
+
+['2016-04-14T19:00:00', '2016-04-20T16:00:00']
+['2016-04-20T16:00:00', '2016-04-22T15:00:00']
+['2016-04-22T16:00:00', '2016-04-25T03:00:00']
+7 days are missing at the end of the deployment."
+annotation,CE02SHBP-LJ01D-10-PHSEND103,3.0,,,Leila,2019-02-14T15:53:00,,"List of gaps not annotated in the system:
+2 days are missing at the beginning of the deployment
+['2016-12-22T01:00:00', '2016-12-23T13:00:00']
+['2017-08-09T16:00:00', '2017-08-10T23:00:00']
+
+List of gaps listed in the annotations but may need to be modified:
+ Id: 942 : ['2017-01-09T18:00:00', '2017-01-11T02:00:00']
+ Id: 941 : ['2017-02-15T14:00:00', '2017-02-16T23:00:00']"
+annotation,CE02SHBP-LJ01D-10-PHSEND103,4.0,,,Leila,2019-02-14T15:56:00,,"List of gaps not annotated in the system:
+
+['2017-11-13T23:00:00', '2017-11-15T00:00:01']
+['2017-12-08T18:00:01', '2017-12-11T16:00:00']
+['2018-03-10T20:00:00', '2018-03-12T17:00:00']
+"
+exclusion,CE02SHBP-LJ01D-10-PHSEND103,,2014-09-10T15:43:00,2016-07-21T00:00:00,Leila,2019-02-14T16:17:00,,suspect data
+exclusion,CE02SHBP-LJ01D-10-PHSEND103,,2016-08-25T00:00:00,2018-07-14T00:00:00,Leila,2019-02-14T16:27:00,,suspect data
+exclusion,CE02SHBP-LJ01D-10-PHSEND103,,2018-07-22T00:00:00,2019-01-30T00:00:00,Leila,2019-02-14T16:28:00,,suspect data
+comment,CP03ISSM-RID26-06-PHSEND000,,,,Leila,2019-02-14T16:52:00,,pressure coordinate is missing in the netCDF files.
+comment,CP03ISSM-RID26-06-PHSEND000,4.0,,,Leila,2019-02-14T17:06:00,,why are deployment 4 recovered-host and telemetered data missing?
+exclusion,CP03ISSM-RID26-06-PHSEND000,,2016-10-05T00:00:00,2017-10-30T00:00:00,Leila,2019-02-14T17:23:00,,suspect data
+exclusion,CP03ISSM-RID26-06-PHSEND000,,2018-03-15T00:00:00,2018-04-05T00:00:00,Leila,2019-02-14T17:20:00,,suspect data
+comment,CE09OSSM-MFD35-06-PHSEND000,,,,Leila,2019-02-14T19:04:00,,pressure coordinate is missing in the netCDF files.
+annotation,CE09OSSM-MFD35-06-PHSEND000,1.0,,,Leila,2019-02-14T19:09:00,,Short deployment ! Need to annotate the 159 days gap at the end of the deployment. 
+comment,CE09OSSM-MFD35-06-PHSEND000,5.0,,,Leila,2019-02-14T19:17:00,,recovered data are missing.
+annotation,CE09OSSM-MFD35-06-PHSEND000,5.0,,,Leila,2019-02-14T19:40:00,,"List of gaps with no annotation in the system:
+['2017-05-13T23:30:48', '2017-05-16T00:30:48']
+['2017-05-19T23:30:51', '2017-05-21T00:30:52']
+
+['2017-08-11T19:31:43', '2017-08-21T15:31:48']
+['2017-08-22T13:31:48', '2017-08-25T16:31:51']
+['2017-08-25T16:31:51', '2017-08-27T20:31:54']
+['2017-08-28T18:31:53', '2017-09-03T17:31:57']
+['2017-09-03T17:31:57', '2017-09-07T07:31:59']
+['2017-09-07T07:31:59', '2017-09-09T17:32:00']
+['2017-09-09T17:32:00', '2017-09-14T16:32:04']
+['2017-09-15T17:32:04', '2017-09-19T00:32:06']
+
+15 days at the end of the deployment"
+annotation,CE09OSSM-MFD35-06-PHSEND000,7.0,,,Leila,2019-02-14T19:41:00,,147 days gap at the end of deployment is not annotated in the system.
+exclusion,CE09OSSM-MFD35-06-PHSEND000,,2015-04-09T00:00:00,2016-05-20T00:00:00,Leila,2019-02-14T19:46:00,,suspect data
+comment,CE09OSSM-RID26-06-PHSEND000,,,,Leila,2019-02-14T20:01:00,,pressure coordinate is missing from the netCDF files
+exclusion,CE09OSSM-RID26-06-PHSEND000,,2015-04-09T00:00:00,2015-09-25T00:00:00,Leila,2019-02-14T20:08:00,,suspect data
+exclusion,CE09OSSM-RID26-06-PHSEND000,,2016-04-28T00:00:00,2017-10-20T00:00:00,Leila,2019-02-14T20:12:00,,suspect data
+exclusion,GA01SUMO-RID16-06-DOSTAD000,1.0,2015-05-01T00:00:00,2015-11-26T10:08:00,Lori,2019-02-14T20:14:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GA/GA01SUMO/GA01SUMO-RID16-06-DOSTAD000/deployment0001_issue/,"Dissolved oxygen noise increased, possibly from biofouling. Excluding from final statistics. (annotation ID 769)"
+exclusion,CE09OSSM-RID26-06-PHSEND000,,2018-02-01T00:00:00,2018-06-30T00:00:00,Leila,2019-02-14T20:15:00,,suspect data
+annotation,CE09OSSM-RID26-06-PHSEND000,1.0,,,Leila,2019-02-14T20:19:00,,122 days gap at the end of the deployment is not annotated in the system.
+annotation,CE09OSSM-RID26-06-PHSEND000,6.0,,,Leila,2019-02-14T20:23:00,,62 days gaps at the end of the deployment are not annotated in the system.
+annotation,CE09OSSM-RID26-06-PHSEND000,7.0,,,Leila,2019-02-14T20:26:00,,"list of gaps not annotated in the system:
+['2018-04-16T15:30:31', '2018-04-17T19:30:35']
+['2018-04-29T12:30:37', '2018-05-25T17:30:48']
+97 days gap at the end of the deployment are not annotated in the system."
+comment,GA01SUMO-RID16-06-DOSTAD000,3.0,,,Lori,2019-02-14T20:51:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GA/GA01SUMO/GA01SUMO-RID16-06-DOSTAD000/deployment0003_issue1/deployment0003_GA01SUMO-RID16-06-DOSTAD000-recovered_host-dosta_abcdjm_dcl_instrument_recovered-dissolved_oxygen_rmoutliers.png,Temperature and salinity corrected dissolved oxygen (umol kg-1) ends on 1-4-2017 because the collocated CTD data are not available after this time period (the CTD was damaged).
+comment,CE09OSSM-RID26-06-PHSEND000,6.0,,,Leila,2019-02-14T20:33:00,,missing data in the recovered-inst stream are found in recovered_host or telemetered data streams.
+comment,CE09OSSM-RID26-06-PHSEND000,7.0,,,Leila,2019-02-14T20:34:00,,missing data in the recovered_host stream are found in telemetered steam.
+comment,CE09OSSM-RID26-06-PHSEND000,7.0,,,Leila,2019-02-14T20:36:00,,recovered_inst data are missing
+exclusion,CE09OSSM-RID27-04-DOSTAD000,,2016-07-01T00:00:00,2016-09-23T00:00:00,Leila,2019-02-14T20:58:00,,suspect data
+exclusion,CE09OSSM-RID27-04-DOSTAD000,,2016-12-01T00:00:00,2017-04-25T00:00:00,Leila,2019-02-14T20:59:00,,suspect data
+exclusion,CE09OSSM-RID27-04-DOSTAD000,,2017-08-01T00:00:00,2017-10-30T00:00:00,Leila,2019-02-14T21:01:00,,suspect data
+exclusion,CE09OSSM-RID27-04-DOSTAD000,,2017-12-01T00:00:00,2018-04-02T00:00:00,Leila,2019-02-14T21:02:00,,suspect data
+comment,GA01SUMO-RII11-02-PHSENE041,,,,Leila,2019-02-18T17:02:00,,pressure coordinate is missing in the netCDF files.
+exclusion,GA01SUMO-RII11-02-PHSENE041,,2015-05-01T00:00:00,2016-11-08T00:00:00,Leila,2019-02-18T17:13:00,,suspect data
+annotation,GA01SUMO-RII11-02-PHSENE041,,,,Leila,2019-02-18T18:34:00,,"pH sensor stopped recording data long before the end of deployments:
+Deployment 1: 178 out of  257 are missing	
+Deployment 2: 356 out of 361 are missing
+Deployment 3: 429 out of 445 are missing
+
+The system is missing annotations to explain the data gaps.
+"
+comment,GA01SUMO-RII11-02-PHSENE042,,,,Leila,2019-02-18T21:35:00,,pressure coordinate is missing in the netCDF files
+comment,GA01SUMO-RII11-02-PHSENE042,2.0,,,Leila,2019-02-18T21:45:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GA/GA01SUMO/GA01SUMO-RII11-02-PHSENE042/method_compare_plots/recovered_host-recovered_inst/deployment0002_GA01SUMO-RII11-02-PHSENE042_pH_rmoutliers.png,There are more data in the recovered_host than recoverd_inst. Are data missing from recovered_inst? 
+comment,GA01SUMO-RII11-02-PHSENE042,2.0,,,Leila,2019-02-20T20:48:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GA/GA01SUMO/GA01SUMO-RII11-02-PHSENE042/method_compare_plots/recovered_host-recovered_inst/deployment0002_GA01SUMO-RII11-02-PHSENE042_Thermistor%20Temperature%20at%20End%20of%20Measurement_rmoutliers.png,"There is a problem with the thermistor temperature data between recovered_inst and recoverd_host. The difference between the tow records is between 2  and 4 units for all data. For the pH data, the difference can be around 1 unit."
+exclusion,GA01SUMO-RII11-02-PHSENE042,,2015-03-15T00:00:00,2016-11-08T00:00:00,Leila,2019-02-18T22:12:00,,suspect data
+annotation,GA01SUMO-RII11-02-PHSENE042,,,,Leila,2019-02-18T22:18:00,,"pH sensor records ended long before the deployments end dates:
+
+Deployment 1: 249 out of 257 are missing	
+Deployment 2: 351 out of 361 are missing	
+Deployment 3: 244 out of 445 are missing	
+
+There is no annotation in the system for the end of deployment gap."
+comment,GS01SUMO-RII11-02-PHSENE041,,,,Leila,2019-02-19T00:18:00,,pressure coordinate is missing in the netCDF files
+annotation,GS01SUMO-RII11-02-PHSENE041,,,,Leila,2019-02-19T00:23:00,,"No annotation in the system for pH records that ended long before the deployment end dates: 
+
+Deployment 1: 177 out of 313 are missing
+Deployment 2:  291 out of 365	are missing 
+
+"
+exclusion,GS01SUMO-RII11-02-PHSENE041,,2015-07-01T00:00:00,2016-12-15T00:00:00,Leila,2019-02-19T00:26:00,,suspect data
+annotation,GA01SUMO-RII11-02-DOSTAD031,,,,Lori,2019-02-19T15:09:00,,Annotation ID 783 should be removed - Redmine issue 13228 has been resolved.
+annotation,GA01SUMO-RII11-02-DOSTAD032,,,,Lori,2019-02-19T15:10:00,,Annotation ID 784 should be removed - Redmine issue 13228 has been resolved.
+annotation,GA01SUMO-RII11-02-DOSTAD033,,,,Lori,2019-02-19T15:10:00,,Annotation ID 785 should be removed - Redmine issue 13228 has been resolved.
+annotation,GA01SUMO-RII11-02-DOSTAD031,2.0,2016-04-28T17:23:00,2016-11-08T10:10:00,Lori,2019-02-19T15:26:00,,"The 6 day data gap at the beginning of the deployment should be annotated, and the 193 missing days at the end of the deployment should be annotated (the CTD to which this instrument was connected failed)."
+exclusion,GA01SUMO-RII11-02-DOSTAD031,3.0,2016-10-27T01:47:00,2018-01-14T10:24:00,Lori,2019-02-19T15:20:00,,"According to annotation ID 86, the data from this deployment are suspect due to a vendor calibration error. Excluding data from final statistics. When this issue is resolved the annotation should be updated."
+annotation,GA01SUMO-RII11-02-DOSTAD031,3.0,2017-03-11T00:00:00,2018-01-14T10:24:00,Lori,2019-02-19T15:26:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GA/GA01SUMO/GA01SUMO-RII11-02-DOSTAD031/deployment0003_issue/,"According to annotation ID 389, the cable to the CTD was severed. Looking at the data, this issue appeared to occur on or around 3/11/2017. The annotation should be updated."
+exclusion,GA01SUMO-RII11-02-DOSTAD032,3.0,2016-10-27T01:47:00,2018-01-14T10:24:00,Lori,2019-02-19T15:31:00,,"According to annotation ID 87, the data from this deployment are suspect due to a vendor calibration error. Excluding data from final statistics. When this issue is resolved the annotation should be updated.
+
+"
+comment,GA01SUMO-RII11-02-DOSTAD031,,,,Lori,2019-02-19T15:34:00,,The dissolved oxygen data product (dosta_analog_tc_oxygen) has no global ranges. These should be added to the system.
+comment,GA01SUMO-RII11-02-DOSTAD032,,,,Lori,2019-02-19T15:34:00,,The dissolved oxygen data product (dosta_analog_tc_oxygen) has no global ranges. These should be added to the system.
+comment,GA01SUMO-RII11-02-DOSTAD033,,,,Lori,2019-02-19T15:35:00,,The dissolved oxygen data product (dosta_analog_tc_oxygen) has no global ranges. These should be added to the system.
+annotation,GA01SUMO-RII11-02-DOSTAD032,,,,Lori,2019-02-19T15:39:00,,The missing data at the end of deployments 2 and 3 should be annotated (the CTD to which the instrument was connected failed).
+exclusion,GA01SUMO-RII11-02-DOSTAD032,2.0,2016-04-21T00:00:00,2016-06-04T04:01:00,Lori,2019-02-19T15:49:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GA/GA01SUMO/GA01SUMO-RII11-02-DOSTAD032/deployment0002_issue/,Optode temperature and dissolved oxygen values start to become unreasonable. Excluding from final statistics. This issue should be investigated and annotated.
+annotation,GA01SUMO-RII11-02-DOSTAD033,,,,Lori,2019-02-19T15:54:00,,The missing data at the end of deployments 2 and 3 should be annotated (the CTD to which the instrument was connected failed).
+comment,GS01SUMO-RII11-02-PHSENE042,,,,Leila,2019-02-20T21:24:00,,pressure coordinate is missing in the netCDF files
+annotation,GS01SUMO-RII11-02-PHSENE042,,,,Leila,2019-02-20T21:38:00,,"Annotation missing - The data record ended long before the deployment ended:
+228 out of 365 days are missing.
+"
+comment,CE09OSPM-WFP01-02-DOFSTK000,9.0,2019-02-21T00:00:00,,Leila,2019-02-21T14:28:00,,The data missing at the end of deployment in recovered_host are found in the telemetered stream. Are recovered_host data incomplete?
+exclusion,CE09OSPM-WFP01-02-DOFSTK000,7.0,2017-06-01T00:00:00,2017-10-03T21:00:00,Leila,2019-02-21T14:32:00,,suspect data 
+comment,CE09OSPM-WFP01-02-DOFSTK000,7.0,,,Leila,2019-02-21T14:40:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/CE/CE09OSPM/unreasonable_DO/deployment0007/deployment0007_CE09OSPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered_dofst_k_oxygen_l2_rmoutliers.png,Oxygen data after June 2017 look suspect data dropped below zero.
+comment,CE09OSPM-WFP01-02-DOFSTK000,2.0,,,Leila,2019-02-21T15:01:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/CE/CE09OSPM/unreasonable_Pressure/deployment0002/deployment0002_CE09OSPM-WFP01-02-DOFSTK000-telemetered-dofst_k_wfp_instrument_dofst_k_oxygen_l2.png,unreasonable pressure and DO in telemetered data at the end of Dec 2015 (negative values up to -8000 dbar) 
+exclusion,CE09OSPM-WFP01-02-DOFSTK000,3.0,2015-04-15T00:00:00,2015-04-20T00:00:00,Leila,2019-02-21T15:08:00,,suspect data - spikes in DO data exceeded global ranges after mid April 2014.
+annotation,CE09OSPM-WFP01-03-CTDPFK000,1.0,,,Leila,2019-02-22T15:51:00,,The data record ended long before the deployment end data. There is no annotation in the system to explain the gap.
+annotation,CE09OSPM-WFP01-03-CTDPFK000,6.0,,,Leila,2019-02-22T15:16:00,,"Update annotation ID # 925 to indicate that the profiler was lost at see and no recovered data are expected. 
+Two other issues with telemetered data need to be mentioned 
+(1) the gaps in the data.
+(2) the change in the sampling rate.
+
+Are the gaps in the data as a result of a change in the sampling rate?"
+comment,CE09OSPM-WFP01-03-CTDPFK000,9.0,,,Leila,2019-02-22T15:19:00,,Are recovered_host data incomplete? The data missing at the end of deployment in recovered_host are found in the telemetered stream. 
+annotation,GA01SUMO-SBD11-04-DOSTAD000,,,,Lori,2019-02-22T15:23:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GA/GA01SUMO/GA01SUMO-SBD11-04-DOSTAD000/data_issue/,"Deployments 2 and 3: Dissolved oxygen concentrations in the beginning of both deployments seem reasonable, then quickly decline. It appears that the biofouling of the surface buoy negatively impacted the quality of the data for both deployments. I compared the instrument data to shipboard data from D0002 (nbp1510_010.cnv) and R0003 (at3903007.cnv). The shipboard CTD data are not available for the GA3 cruise - R0002 and D0003 (these files should be uploaded to alfresco). From the comparisons I was able to do, it appears that the instrument was recording values within a reasonable range at the beginning of the deployment, and unreasonably low values at the end of the deployment (compared to the shipboard CTD data). These data should be annotated as suspect."
+exclusion,GA01SUMO-SBD11-04-DOSTAD000,2.0,2016-02-01T00:00:00,2016-11-08T10:10:00,Lori,2019-02-22T15:35:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GA/GA01SUMO/GA01SUMO-SBD11-04-DOSTAD000/data_issue/,"Data are unreasonable, likely due to biofouling (see other note). Excluding from final statistics."
+exclusion,GA01SUMO-SBD11-04-DOSTAD000,3.0,2016-10-27T01:47:00,2018-01-14T10:24:00,Lori,2019-02-22T15:35:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GA/GA01SUMO/GA01SUMO-SBD11-04-DOSTAD000/data_issue/,"Data are unreasonable, likely due to biofouling (see other note). Excluding from final statistics."
+comment,GA01SUMO-RID16-03-CTDBPF000,,,,Lori,2019-02-22T16:41:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/GA/GA01SUMO/GA01SUMO-RID16-06-DOSTAD000/cruise_compare/,"Dissolved oxygen recorded by the instrument is lower than dissolved oxygen recorded by the sensor on the shipboard CTD casts (where there is instrument data and data from a shipboard CTD cast in the same time range: D0001, R0001, D0002)."
+annotation,CP03ISSM-SBD11-06-METBKA000,2.0,,,Leila,2019-02-27T19:33:00,,"data gap not annotated in the system:
+'2015-09-18T18:30:55', '2015-09-29T10:35:57'
+"
+comment,CP03ISSM-SBD11-06-METBKA000,,,,Leila,2019-02-27T23:38:00,,"for all deployment met_netlirr data in the metbk_hourly stream have no valid data. Data in files are either nans, fill values, or outside global ranges [200.0, 500.0]."
+comment,CP03ISSM-SBD11-06-METBKA000,6.0,,,Leila,2019-02-28T14:29:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/CP/CP03ISSM/CP03ISSM-SBD11-06-METBKA000/method_compare_plots/deployment0006-telemetered-metbk_hourly%20recovered_host-metbk_hourly-2017-09-20to2017-10-10/deployment0006_CP03ISSM-SBD11-06-METBKA000_Air%20Temperature_rmoutliers.png,"Why are some telemetered data in the interval [2017-09-23 , 2017-09-27] missing from recovered_host? see example plot.
+
+"
+comment,CP03ISSM-SBD11-06-METBKA000,7.0,,,Leila,2019-02-28T14:32:00,https://marine.rutgers.edu/cool/ooi/data-eval/data_review/CP/CP03ISSM/CP03ISSM-SBD11-06-METBKA000/method_compare_plots/deployment0007-telemetered-metbk_hourly%20recovered_host-metbk_hourly-2018-03-07to2018-03-17/deployment0007_CP03ISSM-SBD11-06-METBKA000_Wind%20Velocity%20at%2010%20M_rmoutliers.png,Why are some telemetered data in March 2018 missing from recovered_host? see example plot.
+comment,CP03ISSM-SBD11-06-METBKA000,7.0,,,Leila,2019-02-28T15:34:00,,surface current direction data do not match when comparing recoverd and telemetered data.
