@@ -1,0 +1,7 @@
+deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
+deployment0001,recovered_host-parad_m_glider_recovered,telemetered-parad_m_glider_instrument,Photosynthetically Active Radiation,parad_m_par,µmol photons m-2 s-1,pass,211120,0,no missing data,4068,0.0,0.0,0,0.0
+deployment0002,recovered_host-parad_m_glider_recovered,telemetered-parad_m_glider_instrument,Photosynthetically Active Radiation,parad_m_par,µmol photons m-2 s-1,pass,459563,0,no missing data,7953,0.0,0.0,0,0.0
+deployment0003,recovered_host-parad_m_glider_recovered,telemetered-parad_m_glider_instrument,Photosynthetically Active Radiation,parad_m_par,µmol photons m-2 s-1,pass,1750777,0,no missing data,31450,0.0,0.0,0,0.0
+deployment0004,recovered_host-parad_m_glider_recovered,telemetered-parad_m_glider_instrument,Photosynthetically Active Radiation,parad_m_par,µmol photons m-2 s-1,pass,1995130,0,no missing data,41237,0.0,7.87634,1,0.0
+deployment0005,recovered_host-parad_m_glider_recovered,telemetered-parad_m_glider_instrument,Photosynthetically Active Radiation,parad_m_par,µmol photons m-2 s-1,pass,2907578,0,no missing data,52771,0.0,0.0,0,0.0
+deployment0006,recovered_host-parad_m_glider_recovered,telemetered-parad_m_glider_instrument,Photosynthetically Active Radiation,parad_m_par,µmol photons m-2 s-1,pass,2900737,0,no missing data,51018,0.0,0.000148993,0,0.0
