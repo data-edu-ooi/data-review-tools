@@ -1,0 +1,25 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_host,ctdgv_m_glider_instrument_recovered,practical_salinity,1,-9999999.0,"[0.0, 42.0]",1697681,4,0,0,1518,1696159,99.91,35.3557,33.0998,36.5786,0.4433
+deployment0001,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_cond,S m-1,nan,"[0.0, 6.0]",1697681,0,0,4,1518,1696159,99.91,4.1648,3.2019,5.5363,0.5035
+deployment0001,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_pressure,bar,nan,"[0.0, 6000.0]",1697681,0,0,0,0,1697681,100.0,18.5088,0.0,101.11,21.5955
+deployment0001,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_temp,ºC,nan,"[-2.0, 40.0]",1697681,0,0,0,0,1697681,100.0,13.0989,0.0,25.4908,4.8591
+deployment0001,recovered_host,ctdgv_m_glider_instrument_recovered,sci_seawater_density,kg m-3,nan,"[1000.0, 1100.0]",1697681,4,0,1518,0,1696159,99.91,1027.3765,1023.3115,1032.3609,1.6905
+deployment0001,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_pressure_dbar,dbar,nan,"[0.0, 6000.0]",1697681,0,0,0,0,1697681,100.0,185.0881,0.0,1011.1,215.9547
+deployment0002,recovered_host,ctdgv_m_glider_instrument_recovered,practical_salinity,1,-9999999.0,"[0.0, 42.0]",1876498,9,0,0,639,1875850,99.97,35.2059,31.5974,38.8005,0.3742
+deployment0002,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_cond,S m-1,nan,"[0.0, 6.0]",1876498,0,0,9,577,1875912,99.97,3.7036,3.3225,5.5537,0.4065
+deployment0002,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_pressure,bar,nan,"[0.0, 6000.0]",1876498,0,0,0,0,1876498,100.0,47.5734,0.0,98.627,28.2113
+deployment0002,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_temp,ºC,nan,"[-2.0, 40.0]",1876498,0,0,0,0,1876498,100.0,8.3477,0.0,26.0479,4.0622
+deployment0002,recovered_host,ctdgv_m_glider_instrument_recovered,sci_seawater_density,kg m-3,nan,"[1000.0, 1100.0]",1876498,9,0,577,0,1875912,99.97,1029.4759,1021.0847,1032.2592,1.7614
+deployment0002,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_pressure_dbar,dbar,nan,"[0.0, 6000.0]",1876498,0,0,0,0,1876498,100.0,475.7337,0.0,986.27,282.1129
+deployment0003,recovered_host,ctdgv_m_glider_instrument_recovered,practical_salinity,1,-9999999.0,"[0.0, 42.0]",3822788,0,0,0,1343,3821445,99.96,35.1847,33.3491,36.1406,0.306
+deployment0003,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_cond,S m-1,nan,"[0.0, 6.0]",3822788,0,0,0,1339,3821449,99.96,3.698,3.3161,4.5442,0.355
+deployment0003,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_pressure,bar,nan,"[0.0, 6000.0]",3822788,0,0,0,0,3822788,100.0,43.0017,0.0,96.127,27.3051
+deployment0003,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_temp,ºC,nan,"[-2.0, 40.0]",3822788,0,0,0,0,3822788,100.0,8.3505,0.0,16.4964,3.6128
+deployment0003,recovered_host,ctdgv_m_glider_instrument_recovered,sci_seawater_density,kg m-3,nan,"[1000.0, 1100.0]",3822788,0,0,1339,1,3821448,99.96,1029.2669,1023.2164,1032.1469,1.6572
+deployment0003,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_pressure_dbar,dbar,nan,"[0.0, 6000.0]",3822788,0,0,0,0,3822788,100.0,430.0173,0.0,961.27,273.0508
+deployment0004,telemetered,ctdgv_m_glider_instrument,practical_salinity,1,-9999999.0,"[0.0, 42.0]",212,0,0,0,0,212,100.0,31.6605,0.0,35.8872,11.0452
+deployment0004,telemetered,ctdgv_m_glider_instrument,sci_water_cond,S m-1,nan,"[0.0, 6.0]",212,0,0,0,0,212,100.0,3.8097,0.0,4.4162,1.3309
+deployment0004,telemetered,ctdgv_m_glider_instrument,sci_water_pressure,bar,nan,"[0.0, 6000.0]",212,0,0,0,0,212,100.0,5.8828,0.0,26.165,7.4923
+deployment0004,telemetered,ctdgv_m_glider_instrument,sci_water_temp,ºC,nan,"[-2.0, 40.0]",212,0,0,0,0,212,100.0,12.7058,0.0,15.256,4.4025
+deployment0004,telemetered,ctdgv_m_glider_instrument,sci_seawater_density,kg m-3,nan,"[1000.0, 1100.0]",212,0,0,23,0,189,89.15,1026.8335,1026.429,1028.2291,0.509
+deployment0004,telemetered,ctdgv_m_glider_instrument,sci_water_pressure_dbar,dbar,nan,"[0.0, 6000.0]",212,0,0,0,0,212,100.0,58.8284,0.0,261.65,74.9231

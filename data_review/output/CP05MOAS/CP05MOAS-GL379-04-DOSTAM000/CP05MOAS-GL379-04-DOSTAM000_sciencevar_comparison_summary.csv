@@ -1,0 +1,11 @@
+deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
+deployment0001,recovered_host-dosta_abcdjm_glider_recovered,telemetered-dosta_abcdjm_glider_instrument,DO,sci_oxy4_oxygen,µmol L-1,pass,1704085.0,0.0,no missing data,52518.0,0.0,0.0,0.0,0.0
+deployment0001,recovered_host-dosta_abcdjm_glider_recovered,telemetered-dosta_abcdjm_glider_instrument,Dissolved Oxygen Saturation,sci_oxy4_saturation,percent,pass,1704085.0,0.0,no missing data,52524.0,0.0,0.0,0.0,0.0
+deployment0001,recovered_host-dosta_abcdjm_glider_recovered,telemetered-dosta_abcdjm_glider_instrument,DO - Pressure Sal Corrected,sci_abs_oxygen,µmol kg-1,pass,1704085.0,5.0,no missing data,52450.0,0.0,0.5639694003,0.0,0.0
+deployment0002,recovered_host-dosta_abcdjm_glider_recovered,telemetered-dosta_abcdjm_glider_instrument,DO,sci_oxy4_oxygen,µmol L-1,pass,1885838.0,0.0,no missing data,32589.0,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-dosta_abcdjm_glider_recovered,telemetered-dosta_abcdjm_glider_instrument,Dissolved Oxygen Saturation,sci_oxy4_saturation,percent,pass,1885838.0,0.0,no missing data,32606.0,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-dosta_abcdjm_glider_recovered,telemetered-dosta_abcdjm_glider_instrument,DO - Pressure Sal Corrected,sci_abs_oxygen,µmol kg-1,pass,1885838.0,13.0,no missing data,32374.0,0.0,0.5996651563,0.0,0.0
+deployment0003,recovered_host-dosta_abcdjm_glider_recovered,telemetered-dosta_abcdjm_glider_instrument,DO,sci_oxy4_oxygen,µmol L-1,pass,3794658.0,0.0,no missing data,65904.0,0.0,0.8719940186,0.0,0.0
+deployment0003,recovered_host-dosta_abcdjm_glider_recovered,telemetered-dosta_abcdjm_glider_instrument,Dissolved Oxygen Saturation,sci_oxy4_saturation,percent,pass,3794658.0,0.0,no missing data,65938.0,0.0,0.4470024109,0.0,0.0
+deployment0003,recovered_host-dosta_abcdjm_glider_recovered,telemetered-dosta_abcdjm_glider_instrument,DO - Pressure Sal Corrected,sci_abs_oxygen,µmol kg-1,pass,3794658.0,0.0,no missing data,63356.0,0.0,0.676173188,0.0,0.0
+deployment0004,telemetered-dosta_abcdjm_glider_instrument,no other methods available for comparison,,,,,,,,,,,,
