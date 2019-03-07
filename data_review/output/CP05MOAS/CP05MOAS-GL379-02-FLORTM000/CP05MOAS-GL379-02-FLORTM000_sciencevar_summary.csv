@@ -1,0 +1,21 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_host,flort_m_sample,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",2890659,6,0,no global ranges,1518,2889135,99.95,0.0006,0.0006,0.0007,0.0
+deployment0001,recovered_host,flort_m_sample,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",2890659,6,0,1518,7700,2881435,99.68,0.0013,0.0004,0.008,0.0009
+deployment0001,recovered_host,flort_m_sample,sci_flbbcd_bb_units,m-1 sr-1,nan,"[0.0, 0.0079]",2890659,0,0,0,7704,2882955,99.73,0.0002,0.0,0.0012,0.0001
+deployment0001,recovered_host,flort_m_sample,sci_flbbcd_cdom_units,ppb,nan,"[0.0, 375.0]",2890659,0,0,3293,2309,2885057,99.81,1.6781,0.0,4.1676,0.4018
+deployment0001,recovered_host,flort_m_sample,sci_flbbcd_chlor_units,µg L-1,nan,"[0.0, 50.0]",2890659,0,0,166726,18340,2705593,93.6,0.4648,0.0,5.1538,0.7694
+deployment0002,recovered_host,flort_m_sample,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",3201067,15,0,no global ranges,576,3200476,99.98,0.0006,0.0006,0.0007,0.0
+deployment0002,recovered_host,flort_m_sample,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",3201067,15,0,572,38654,3161826,98.77,0.001,0.0003,0.0227,0.0022
+deployment0002,recovered_host,flort_m_sample,sci_flbbcd_bb_units,m-1 sr-1,nan,"[0.0, 0.0079]",3201067,0,0,0,38659,3162408,98.79,0.0001,0.0,0.0034,0.0003
+deployment0002,recovered_host,flort_m_sample,sci_flbbcd_cdom_units,ppb,nan,"[0.0, 375.0]",3201067,0,0,1393,431,3199243,99.94,1.323,0.0,3.8958,0.2869
+deployment0002,recovered_host,flort_m_sample,sci_flbbcd_chlor_units,µg L-1,nan,"[0.0, 50.0]",3201067,0,0,2720023,3934,477110,14.9,0.453,0.0,6.5189,0.7517
+deployment0003,recovered_host,flort_m_sample,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",3542316,0,0,no global ranges,1340,3540976,99.96,0.0006,0.0006,0.0007,0.0
+deployment0003,recovered_host,flort_m_sample,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",3542316,0,0,1346,16596,3524374,99.49,0.0007,0.0003,0.0113,0.0005
+deployment0003,recovered_host,flort_m_sample,sci_flbbcd_bb_units,m-1 sr-1,nan,"[0.0, 0.0079]",3542316,0,0,0,16601,3525715,99.53,0.0001,0.0,0.0017,0.0001
+deployment0003,recovered_host,flort_m_sample,sci_flbbcd_cdom_units,ppb,nan,"[0.0, 375.0]",3542316,0,0,927,867,3540522,99.95,1.5451,0.0,3.624,0.2566
+deployment0003,recovered_host,flort_m_sample,sci_flbbcd_chlor_units,µg L-1,nan,"[0.0, 50.0]",3542316,0,0,869824,20471,2652021,74.87,0.175,0.0,2.8105,0.4163
+deployment0004,telemetered,flort_m_sample,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",150,0,0,no global ranges,0,150,100.0,0.0006,0.0005,0.0006,0.0
+deployment0004,telemetered,flort_m_sample,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",150,0,0,21,2,127,84.67,0.0007,0.0005,0.0011,0.0001
+deployment0004,telemetered,flort_m_sample,sci_flbbcd_bb_units,m-1 sr-1,nan,"[0.0, 0.0079]",150,0,0,0,2,148,98.67,0.0001,0.0,0.0002,0.0
+deployment0004,telemetered,flort_m_sample,sci_flbbcd_cdom_units,ppb,nan,"[0.0, 375.0]",150,0,0,0,2,148,98.67,1.3939,0.0,2.0792,0.5915
+deployment0004,telemetered,flort_m_sample,sci_flbbcd_chlor_units,µg L-1,nan,"[0.0, 50.0]",150,0,0,0,2,148,98.67,0.3591,0.0,0.8979,0.2546
