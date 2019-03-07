@@ -2,7 +2,7 @@
 This is a collection of tools to facilitate the review of OOI 1.0 data.
 
 ## Folders
-### cruise_data
+### cruise\_data\_compare
 Contains tools for comparing OOI platform data with data collected on OOI maintenance cruises.
 
 ### data_review
