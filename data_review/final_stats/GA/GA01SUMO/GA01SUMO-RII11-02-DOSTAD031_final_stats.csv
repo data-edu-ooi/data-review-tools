@@ -1,2 +1,0 @@
-common_stream_name,preferred_methods_streams,deployments,long_name,units,t0,t1,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,define_stdev,n_outliers,n_stats,mean,min,max,stdev
-science_data_stream,['recovered_host-dosta_abcdjm_ctdbp_p_dcl_instrument_recovered'],[2],Dissolved Oxygen Concentration,['µmol L-1'],2015-11-21T05:23:21,2016-04-28T17:23:21,[-9999999.0],"[None, None]",3252,0,0,no global ranges,,,3252,318.4573,281.7654,351.5526,16.4175
