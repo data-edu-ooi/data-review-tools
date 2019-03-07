@@ -37,6 +37,12 @@ def get_deployment_information(data, deployment):
     else:
         return None
 
+def save_dir_path(ms_list):
+    ms_list_check = [s.split('-')[0] for s in ms_list]
+    n_ms = [ms_list_check.count(s) for s in np.unique(ms_list_check)]
+    ms_dict = dict({'ms_unique': ms_list_check, 'ms_count': n_ms})
+    return ms_dict
+
 def main(sDir, url_list):
     rd_list = []
     ms_list = []
@@ -79,13 +85,24 @@ def main(sDir, url_list):
         main_sensor = r.split('-')[-1]
         fdatasets = cf.filter_collocated_instruments(main_sensor, datasets)
         fdatasets = cf.filter_other_streams(r, ms_list, fdatasets)
+
         methodstream = []
         for f in fdatasets:
             methodstream.append('-'.join((f.split('/')[-2].split('-')[-2], f.split('/')[-2].split('-')[-1])))
 
+        ms_dict = save_dir_path(ms_list)
         for ms in np.unique(methodstream):
             fdatasets_sel = [x for x in fdatasets if ms in x]
-            save_dir = os.path.join(sDir, array, subsite, r, 'timeseries_yearly_plot', ms.split('-')[0])
+            check_ms = ms.split('-')[1]
+            if 'recovered' in check_ms:
+                check_ms = check_ms.split('_recovered')[0]
+
+            if ms_dict['ms_count'][ms_dict['ms_unique'] == ms.split('-')[0]] == 1:
+                save_dir = os.path.join(sDir, array, subsite, r, 'timeseries_yearly_plot',
+                                        ms.split('-')[0])
+            else:
+                save_dir = os.path.join(sDir, array, subsite, r, 'timeseries_yearly_plot',
+                                    ms.split('-')[0], check_ms)
             cf.create_dir(save_dir)
 
             stream_sci_vars_dict = dict()
@@ -104,19 +121,22 @@ def main(sDir, url_list):
             print('\nAppending data from files: {}'.format(ms))
             for fd in fdatasets_sel:
                 ds = xr.open_dataset(fd, mask_and_scale=False)
-                print('I am here', fd)
+                print(fd)
                 for var in list(sci_vars_dict[ms]['vars'].keys()):
                     sh = sci_vars_dict[ms]['vars'][var]
-                    if ds[var].units == sh['db_units']:
-                        if ds[var]._FillValue not in sh['fv']:
-                            sh['fv'].append(ds[var]._FillValue)
-                        if ds[var].units not in sh['units']:
-                            sh['units'].append(ds[var].units)
-                        tD = ds['time'].values
-                        varD = ds[var].values
-                        sh['t'] = np.append(sh['t'], tD)
-                        sh['values'] = np.append(sh['values'], varD)
-                        print('here: ', var)
+                    try:
+                        ds[var]
+                        if ds[var].units == sh['db_units']:
+                            if ds[var]._FillValue not in sh['fv']:
+                                sh['fv'].append(ds[var]._FillValue)
+                            if ds[var].units not in sh['units']:
+                                sh['units'].append(ds[var].units)
+                            tD = ds['time'].values
+                            varD = ds[var].values
+                            sh['t'] = np.append(sh['t'], tD)
+                            sh['values'] = np.append(sh['values'], varD)
+                    except KeyError:
+                        print('KeyError: ', var)
 
             print('\nPlotting data')
             for m, n in sci_vars_dict.items():
@@ -126,6 +146,7 @@ def main(sDir, url_list):
                         print('no variable data to plot')
                     else:
                         sv_units = vinfo['units'][0]
+                        fv = vinfo['fv'][0]
                         t0 = pd.to_datetime(min(vinfo['t'])).strftime('%Y-%m-%dT%H:%M:%S')
                         t1 = pd.to_datetime(max(vinfo['t'])).strftime('%Y-%m-%dT%H:%M:%S')
                         x = vinfo['t']
@@ -157,39 +178,39 @@ def main(sDir, url_list):
                             y_nonan_nofv_nE_nogr = y_nonan_nofv_nE
                             x_nonan_nofv_nE_nogr = x_nonan_nofv_nE
 
-                        title = ' '.join((r, ms.split('-')[0]))
-
-                        if len(y_nonan_nofv) > 0:
+                        if len(y_nonan_nofv_nE_nogr) > 0:
                             if m == 'common_stream_placeholder':
                                 sname = '-'.join((r, sv))
+                                print(var, 'empty array')
                             else:
                                 sname = '-'.join((r, m, sv))
 
                             # group data by year
-                            groups, g_data = gt.group_by_timerange(x_nonan_nofv_nE_nogr, y_nonan_nofv_nE_nogr, 'A')
+                            groups, g_data = gt.group_by_time_range(x_nonan_nofv_nE_nogr, y_nonan_nofv_nE_nogr, 'A')
 
                             # create bins
-                            groups_min = min(groups.describe()['DO']['min'])
-                            lower_bound = int(round(groups_min))
-                            groups_max = max(groups.describe()['DO']['max'])
-                            if groups_max < 1:
-                                upper_bound = 1
-                                step_bound = 1
-                            else:
-                                upper_bound = int(round(groups_max + (groups_max / 50)))
-                                step_bound = int(round((groups_max - groups_min) / 10))
-
-                            if step_bound == 0:
-                                step_bound += 1
-
-                            if (upper_bound - lower_bound) == step_bound:
-                                lower_bound -= 1
-                                upper_bound += 1
-                            if (upper_bound - lower_bound) < step_bound:
-                                step_bound = int(round(step_bound / 10))
-
-                            bin_range = list(range(lower_bound, upper_bound, step_bound))
-                            print(bin_range)
+                            # groups_min = min(groups.describe()['DO']['min'])
+                            # lower_bound = int(round(groups_min))
+                            # groups_max = max(groups.describe()['DO']['max'])
+                            # if groups_max < 1:
+                            #     upper_bound = 1
+                            #     step_bound = 1
+                            # else:
+                            #     upper_bound = int(round(groups_max + (groups_max / 50)))
+                            #     step_bound = int(round((groups_max - groups_min) / 10))
+                            #
+                            # if step_bound == 0:
+                            #     step_bound += 1
+                            #
+                            # if (upper_bound - lower_bound) == step_bound:
+                            #     lower_bound -= 1
+                            #     upper_bound += 1
+                            # if (upper_bound - lower_bound) < step_bound:
+                            #     print('<')
+                            #     step_bound = int(round(step_bound / 10))
+                            # print(lower_bound, upper_bound, step_bound)
+                            # bin_range = list(range(lower_bound, upper_bound, step_bound))
+                            # print(bin_range)
 
                             # preparing color palette
                             colors = color_names[:len(groups)]
@@ -212,7 +233,8 @@ def main(sDir, url_list):
 
                             # subplot for data
                             fig, ax = pyplot.subplots(nrows=len(groups), ncols=1, sharey=True)
-
+                            if len(groups) == 1:
+                                ax=[ax]
                             t = 1
                             for ny in range(len(groups)):
 
@@ -243,7 +265,6 @@ def main(sDir, url_list):
 
                                 # plot data
                                 serie_n.plot(ax=ax[ny], linestyle='None', marker='.', markersize=0.5, color=colors[ny])
-
                                 ax[ny].legend().set_visible(False)
 
                                 # plot Mean and Standard deviation
@@ -252,8 +273,8 @@ def main(sDir, url_list):
 
                                 ax[ny].plot(ma.index, ma[col_name].values, 'k', linewidth=0.15)
                                 ax[ny].fill_between(mstd.index, ma[col_name].values - 2 * mstd[col_name].values,
-                                                   ma[col_name].values + 2 * mstd[col_name].values,
-                                                   color='b', alpha=0.2)
+                                                    ma[col_name].values + 2 * mstd[col_name].values,
+                                                    color='b', alpha=0.2)
 
                                 # prepare the time axis parameters
                                 datemin = datetime.date(n_year, 1, 1)
@@ -304,17 +325,20 @@ def main(sDir, url_list):
                                 ymin, ymax = ax[ny].get_ylim()
                                 dep = 1
                                 for etimes in end_times:
-                                    # if etimes < x_time[len(x_time)-1]:
-                                    ax[ny].axvline(x=etimes, color='b', linestyle='--', linewidth=.6)
-                                    ax[ny].text(etimes, ymin, 'End' + str(dep), fontsize=6, style='italic',
-                                                bbox=dict(boxstyle='round',
-                                                          ec=(0., 0.5, 0.5),
-                                                          fc=(1., 1., 1.))
-                                                )
+                                    if etimes.year == n_year:
+                                        ax[ny].axvline(x=etimes, color='b', linestyle='--', linewidth=.6)
+                                        ax[ny].text(etimes, ymin, 'End' + str(dep), fontsize=6, style='italic',
+                                                    bbox=dict(boxstyle='round',
+                                                              ec=(0., 0.5, 0.5),
+                                                              fc=(1., 1., 1.))
+                                                    )
                                     dep += 1
 
+                                # ax[ny].set_ylim(5, 12)
+
                             # save figure to a file
-                            save_file = os.path.join(save_dir, sname)
+                            sfile = '_'.join(('all', sname))
+                            save_file = os.path.join(save_dir, sfile)
                             fig.savefig(str(save_file), dpi=150)
 
                             sfile = '_'.join(('Statistics', sname))
@@ -323,51 +347,19 @@ def main(sDir, url_list):
 
                             pyplot.close()
 
-
-
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list = [
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160530-CE06ISSM-RID16-05-PCO2WB000-recovered_host-pco2w_abc_dcl_instrument_recovered/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160550-CE06ISSM-RID16-05-PCO2WB000-telemetered-pco2w_abc_dcl_instrument/catalog.html',
-                ]
-    # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160513-CE06ISSM-RID16-05-PCO2WB000-recovered_host-pco2w_abc_dcl_instrument_blank_recovered/catalog.html',
-    # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160606-CE06ISSM-RID16-05-PCO2WB000-telemetered-pco2w_abc_dcl_instrument_blank/catalog.html'
-# ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160622-CE06ISSM-RID16-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html',
-#  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160645-CE06ISSM-RID16-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
-#  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160700-CE06ISSM-RID16-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html']
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235321-CP03ISSM-MFD37-03-CTDBPD000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235146-CP03ISSM-MFD37-03-CTDBPD000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235133-CP03ISSM-MFD37-03-CTDBPD000-recovered_host-ctdbp_cdef_dcl_instrument_recovered/catalog.html']
 
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T155131-CE06ISSM-RID16-02-FLORTD000-recovered_host-flort_sample/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T155144-CE06ISSM-RID16-02-FLORTD000-telemetered-flort_sample/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160252-CE06ISSM-RID16-04-VELPTA000-recovered_host-velpt_ab_instrument_recovered/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160441-CE06ISSM-RID16-04-VELPTA000-recovered_inst-velpt_ab_instrument_recovered/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160458-CE06ISSM-RID16-04-VELPTA000-telemetered-velpt_ab_dcl_instrument/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160715-CE06ISSM-RID16-07-NUTNRB000-recovered_host-nutnr_b_dcl_conc_instrument_recovered/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160735-CE06ISSM-RID16-07-NUTNRB000-recovered_host-nutnr_b_dcl_dark_conc_instrument_recovered/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160748-CE06ISSM-RID16-07-NUTNRB000-recovered_inst-nutnr_b_instrument_recovered/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160803-CE06ISSM-RID16-07-NUTNRB000-telemetered-nutnr_b_dcl_conc_instrument/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160819-CE06ISSM-RID16-07-NUTNRB000-telemetered-nutnr_b_dcl_dark_conc_instrument/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160837-CE06ISSM-RID16-07-NUTNRB000-telemetered-nutnr_b_dcl_full_instrument/catalog.html']
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235528-CP03ISSM-RID27-03-CTDBPC000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235509-CP03ISSM-RID27-03-CTDBPC000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235337-CP03ISSM-RID27-03-CTDBPC000-recovered_host-ctdbp_cdef_dcl_instrument_recovered/catalog.html']
 
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T161639-CE09OSSM-RID27-03-CTDBPC000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T161513-CE09OSSM-RID27-03-CTDBPC000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T161501-CE09OSSM-RID27-03-CTDBPC000-recovered_host-ctdbp_cdef_dcl_instrument_recovered/catalog.html']
-
-
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T154700-CE06ISSM-RID16-03-CTDBPC000-recovered_host-ctdbp_cdef_dcl_instrument_recovered/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T154713-CE06ISSM-RID16-03-CTDBPC000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T154849-CE06ISSM-RID16-03-CTDBPC000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html']
-
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163408-CE06ISSM-RID16-03-DOSTAD000-recovered_host-dosta_abcdjm_ctdbp_dcl_instrument_recovered/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163419-CE06ISSM-RID16-03-DOSTAD000-recovered_inst-dosta_abcdjm_ctdbp_instrument_recovered/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163558-CE06ISSM-RID16-03-DOSTAD000-telemetered-dosta_abcdjm_ctdbp_dcl_instrument/catalog.html']
-
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163845-CE09OSSM-RID27-04-DOSTAD000-recovered_host-dosta_abcdjm_dcl_instrument_recovered/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163907-CE09OSSM-RID27-04-DOSTAD000-telemetered-dosta_abcdjm_dcl_instrument/catalog.html']
-
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163751-CE09OSPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html',
-# 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163824-CE09OSPM-WFP01-02-DOFSTK000-telemetered-dofst_k_wfp_instrument/catalog.html',
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T000821-CP03ISSM-SBD11-06-METBKA000-telemetered-metbk_a_dcl_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T000115-CP03ISSM-SBD11-06-METBKA000-recovered_host-metbk_a_dcl_instrument_recovered/catalog.html']
 
 
     main(sDir, url_list)

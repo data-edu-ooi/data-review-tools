@@ -100,7 +100,9 @@ def exclude_time_ranges(time_data, variable_data, deploy_data, time_lst):
 
 def initialize_empty_arrays(dictionary, stream_name):
     for kk, vv in dictionary[stream_name]['vars'].items():
-        dictionary[stream_name]['vars'][kk].update({'t': np.array([], dtype='datetime64[ns]'), 'values': np.array([]),
+        dictionary[stream_name]['vars'][kk].update({'t': np.array([], dtype='datetime64[ns]'),
+                                                    'pressure': np.array([]),
+                                                    'values': np.array([]),
                                                     'fv': [], 'units': [], 'deployments': np.array([])})
     return dictionary
 

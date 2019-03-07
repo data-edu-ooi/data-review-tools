@@ -53,8 +53,7 @@ def compare_plot_datasets(df, r, start_time, end_time, sDir):
 
                                 if len(ds0['time'].values) == 0:
                                     print('No {} data to plot for specified time range: ({} to {})'.format(ds0_method,
-                                                                                                           start_time,
-                                                                                                           end_time))
+                                                                                                 start_time, end_time))
                                     continue
 
                             if len(f1) == 1:
@@ -94,10 +93,11 @@ def compare_plot_datasets(df, r, start_time, end_time, sDir):
                             if start_time is not None and end_time is not None:
                                 stime = start_time.strftime('%Y-%m-%d')
                                 etime = end_time.strftime('%Y-%m-%d')
-                                ext = '-'.join((ds0_method, ds1_method)) + '-' + stime + 'to' + etime
+                                ext = '-'.join((d, compare)) + '-' + stime + 'to' + etime #.join((ds0_method, ds1_method
                                 save_dir = os.path.join(sDir, array, subsite, r, 'method_compare_plots', ext)
                             else:
-                                save_dir = os.path.join(sDir, array, subsite, r, 'method_compare_plots', '-'.join((ds0_method, ds1_method)))
+                                save_dir = os.path.join(sDir, array, subsite, r, 'method_compare_plots',
+                                                        '-'.join((d, compare))) #.join((ds0_method, ds1_method
                             cf.create_dir(save_dir)
 
                             for rr in mapping.itertuples():
@@ -187,16 +187,19 @@ def main(sDir, url_list, start_time, end_time):
                         for dss in rdatasets:  # filter out collocated data files
                             if catalog_rms == dss.split('/')[-1].split('_20')[0][15:]:
                                 datasets.append(dss)
-                        file_ms_lst = []
-                        for dataset in datasets:
-                            splt = dataset.split('/')[-1].split('_20')[0].split('-')
-                            file_ms_lst.append('-'.join((splt[-2], splt[-1])))
-                        file_ms = np.unique(file_ms_lst).tolist()[0]
-                        try:
-                            dinfo[file_ms]
-                        except KeyError:
-                            dinfo[file_ms] = {}
-                        dinfo[file_ms].update({ud: datasets})
+                        if len(datasets) == 0:
+                            print('no data for ', ud)
+                        else:
+                            file_ms_lst = []
+                            for dataset in datasets:
+                                splt = dataset.split('/')[-1].split('_20')[0].split('-')
+                                file_ms_lst.append('-'.join((splt[-2], splt[-1])))
+                            file_ms = np.unique(file_ms_lst).tolist()[0]
+                            try:
+                                dinfo[file_ms]
+                            except KeyError:
+                                dinfo[file_ms] = {}
+                            dinfo[file_ms].update({ud: datasets})
 
         else:
             print('More than 3 methods provided. Please provide fewer datasets for analysis.')
@@ -227,13 +230,38 @@ def main(sDir, url_list, start_time, end_time):
 
 
 if __name__ == '__main__':
-    sDir = '/Users/lgarzio/Documents/OOI/DataReviews'
-    url_list = [
-        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/ooidatateam@gmail.com/20181026T123336-GP03FLMA-RIM01-02-CTDMOG040-recovered_inst-ctdmo_ghqr_instrument_recovered/catalog.html',
-        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/ooidatateam@gmail.com/20181026T123345-GP03FLMA-RIM01-02-CTDMOG040-recovered_host-ctdmo_ghqr_sio_mule_instrument/catalog.html',
-        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/ooidatateam@gmail.com/20181026T123354-GP03FLMA-RIM01-02-CTDMOG040-telemetered-ctdmo_ghqr_sio_mule_instrument/catalog.html']
+    sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235321-CP03ISSM-MFD37-03-CTDBPD000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235146-CP03ISSM-MFD37-03-CTDBPD000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235133-CP03ISSM-MFD37-03-CTDBPD000-recovered_host-ctdbp_cdef_dcl_instrument_recovered/catalog.html']
 
-    start_time = None  # dt.datetime(2015, 4, 20, 0, 0, 0)  # optional, set to None if plotting all data
-    end_time = None  # dt.datetime(2017, 5, 20, 0, 0, 0)  # optional, set to None if plotting all data
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235528-CP03ISSM-RID27-03-CTDBPC000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235509-CP03ISSM-RID27-03-CTDBPC000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235337-CP03ISSM-RID27-03-CTDBPC000-recovered_host-ctdbp_cdef_dcl_instrument_recovered/catalog.html']
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T000821-CP03ISSM-SBD11-06-METBKA000-telemetered-metbk_a_dcl_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T000115-CP03ISSM-SBD11-06-METBKA000-recovered_host-metbk_a_dcl_instrument_recovered/catalog.html']
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T000154-CP03ISSM-SBD11-06-METBKA000-telemetered-metbk_hourly/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T000135-CP03ISSM-SBD11-06-METBKA000-recovered_host-metbk_hourly/catalog.html']
+
+        #
+
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190112T020745-GS01SUMO-RII11-02-PHSENE041-telemetered-phsen_abcdef_imodem_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190112T020724-GS01SUMO-RII11-02-PHSENE041-recovered_host-phsen_abcdef_imodem_instrument_recovered/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190112T020706-GS01SUMO-RII11-02-PHSENE041-recovered_inst-phsen_abcdef_instrument/catalog.html']
+
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190112T003335-GA01SUMO-RII11-02-PHSENE042-telemetered-phsen_abcdef_imodem_instrument/catalog.html',
+        #  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190112T003322-GA01SUMO-RII11-02-PHSENE042-recovered_host-phsen_abcdef_imodem_instrument_recovered/catalog.html',
+        #  'httpss://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190112T003307-GA01SUMO-RII11-02-PHSENE042-recovered_inst-phsen_abcdef_instrument/catalog.html']
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/ooidatateam@gmail.com/20181026T123336-GP03FLMA-RIM01-02-CTDMOG040-recovered_inst-ctdmo_ghqr_instrument_recovered/catalog.html',
+        # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/ooidatateam@gmail.com/20181026T123345-GP03FLMA-RIM01-02-CTDMOG040-recovered_host-ctdmo_ghqr_sio_mule_instrument/catalog.html',
+        # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/ooidatateam@gmail.com/20181026T123354-GP03FLMA-RIM01-02-CTDMOG040-telemetered-ctdmo_ghqr_sio_mule_instrument/catalog.html']
+
+    start_time = dt.datetime(2016, 9, 3, 0, 0, 0)  # None  # optional, set to None if plotting all data
+    end_time = dt.datetime(2016, 9, 10, 0, 0, 0) # None  # dt.datetime(2017, 5, 20, 0, 0, 0)  # optional, set to None if plotting all data
 
     main(sDir, url_list, start_time, end_time)
