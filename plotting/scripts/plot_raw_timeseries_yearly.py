@@ -142,9 +142,13 @@ def main(sDir, url_list):
                         #
                         # # reject values outside global ranges:
                         global_min, global_max = cf.get_global_ranges(r, sv)
-                        # gr_ind = cf.reject_global_ranges(y_nonan_nofv_nE, global_min, global_max)
-                        # y_nonan_nofv_nE_nogr = y_nonan_nofv_nE[gr_ind]
-                        # x_nonan_nofv_nE_nogr = x_nonan_nofv_nE[gr_ind]
+                        # if global_min and global_max:
+                        #     gr_ind = cf.reject_global_ranges(y_nonan_nofv_nE, global_min, global_max)
+                        #     y_nonan_nofv_nE_nogr = y_nonan_nofv_nE[gr_ind]
+                        #     x_nonan_nofv_nE_nogr = x_nonan_nofv_nE[gr_ind]
+                        # else:
+                        #     y_nonan_nofv_nE_nogr = y_nonan_nofv_nE
+                        #     x_nonan_nofv_nE_nogr = x_nonan_nofv_nE
 
                         title = ' '.join((r, ms.split('-')[0]))
 
@@ -207,7 +211,7 @@ def main(sDir, url_list):
                                 x_time = g_data[ny + t][y_data.index]   #g_data[ny + t].dropna(axis=0)
                                 t += 1
                                 print(len(x_time), len(y_data))
-                                n_year = x_time[0].year
+                                n_year = x_time[x_time.index.values[0]].year
 
                                 col_name = str(n_year)
 
@@ -270,11 +274,25 @@ def main(sDir, url_list):
 
                                 ax[ny].set_ylabel(n_year, rotation=0, fontsize=8, color='b', labelpad=20)
 
+                                # if ny == 0:
+                                #     ax[ny].set_title(sv + '( ' + sv_units + ') -- Global Range: [' + str(int(global_min)) +
+                                #                      ',' + str(int(global_max)) + '] \n'
+                                #                      'Plotted: Data, Mean and 2STD (Method: One day rolling window calculations) \n',
+                                #                      fontsize=8)
                                 if ny == 0:
-                                    ax[ny].set_title(sv + '( '+ sv_units + ') -- Global Range: [' + str(int(global_min)) +
-                                                     ',' + str(int(global_max)) + '] \n'
-                                                     'Plotted: Data, Mean and 2STD (Method: One day rolling window calculations) \n',
-                                                     fontsize=8)
+                                    if global_min and global_max:
+
+                                        ax[ny].set_title(
+                                            sv + '( ' + sv_units + ') -- Global Range: [' + str(int(global_min)) +
+                                            ',' + str(int(global_max)) + '] \n'
+                                                                         'Plotted: Data, Mean and 2STD (Method: One day rolling window calculations) \n',
+                                            fontsize=8)
+                                    else:
+                                        ax[ny].set_title(
+                                            sv + '( ' + sv_units + ') -- Global Range: [] \n'
+                                                                   'Plotted: Data, Mean and 2STD (Method: One day rolling window calculations) \n',
+                                            fontsize=8)
+
                                 # plot global ranges
                                 # ax[ny].axhline(y=global_min, color='r', linestyle='--', linewidth=.6)
                                 # ax[ny].axhline(y=global_max, color='r', linestyle='--', linewidth=.6)
@@ -283,7 +301,10 @@ def main(sDir, url_list):
                                 ymin, ymax = ax[ny].get_ylim()
                                 dep = 1
                                 for etimes in end_times:
-                                    if etimes < x_time[len(x_time)-1]:
+                                    print(etimes)
+                                    print(len(x_time))
+                                    print(x_time.index.values[-1])
+                                    if etimes < x_time[x_time.index.values[-1]]:
                                         ax[ny].axvline(x=etimes, color='b', linestyle='--', linewidth=.6)
                                         ax[ny].text(etimes, ymin, 'End' + str(dep), fontsize=6, style='italic',
                                                     bbox=dict(boxstyle='round',
@@ -308,9 +329,12 @@ def main(sDir, url_list):
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T154700-CE06ISSM-RID16-03-CTDBPC000-recovered_host-ctdbp_cdef_dcl_instrument_recovered/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T154713-CE06ISSM-RID16-03-CTDBPC000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T154849-CE06ISSM-RID16-03-CTDBPC000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html']
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T145838-CE02SHBP-LJ01D-10-PHSEND103-streamed-phsen_data_record/catalog.html']
+
+
+# ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T154700-CE06ISSM-RID16-03-CTDBPC000-recovered_host-ctdbp_cdef_dcl_instrument_recovered/catalog.html',
+#         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T154713-CE06ISSM-RID16-03-CTDBPC000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
+#         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T154849-CE06ISSM-RID16-03-CTDBPC000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html']
 
     # [
     #     'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163408-CE06ISSM-RID16-03-DOSTAD000-recovered_host-dosta_abcdjm_ctdbp_dcl_instrument_recovered/catalog.html',

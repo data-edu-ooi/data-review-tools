@@ -243,7 +243,7 @@ def main(sDir, url_list):
                                 # plot Mean and Standard deviation
                                 ma = ydata.rolling('86400s').mean()
                                 mstd = ydata.rolling('86400s').std()
-                                m_mstd_min = [ycol].values - 2 * mstd[ycol].values
+                                m_mstd_min = ma[ycol].values - 2 * mstd[ycol].values
                                 m_mstd_max = ma[ycol].values + 2 * mstd[ycol].values
                                 ax[group].plot(ma.index.values, ma[ycol].values, 'k', linewidth=0.15)
                                 ax[group].fill_between(mstd.index.values, m_mstd_min, m_mstd_max, color='b', alpha=0.2)

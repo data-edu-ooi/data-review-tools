@@ -98,10 +98,23 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time):
 
                     sh['pressure'] = np.append(sh['pressure'], y)
 
-                    if ds[pressure].units not in y_unit:
-                        y_unit.append(ds[pressure].units)
-                    if ds[pressure].long_name not in y_name:
-                        y_name.append(ds[pressure].long_name)
+                    try:
+                        ds[pressure].units
+                        if ds[pressure].units not in y_unit:
+                            y_unit.append(ds[pressure].units)
+                    except AttributeError:
+                        print('pressure attributes missing units')
+                        if 'pressure unit missing' not in y_unit:
+                            y_unit.append('pressure unit missing')
+
+                    try:
+                        ds[pressure].long_name
+                        if ds[pressure].long_name not in y_name:
+                            y_name.append(ds[pressure].long_name)
+                    except AttributeError:
+                        print('pressure attributes missing long_name')
+                        if 'pressure long name missing' not in y_name:
+                            y_name.append('pressure long name missing')
 
             for m, n in sci_vars_dict.items():
                 for sv, vinfo in n['vars'].items():
@@ -157,6 +170,7 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time):
 
 
                     # Plot all data
+                    print(y_name)
                     clabel = sv + " (" + sv_units + ")"
                     ylabel = y_name[0] + " (" + y_unit[0] + ")"
                     print(clabel, ylabel)
@@ -174,12 +188,62 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time):
 
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
-    sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list = [
-        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T161432-CE09OSPM-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html']
-    # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T161444-CE09OSPM-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html'
     plot_type = 'xsection_plots'
-    start_time = None  # dt.datetime(2016, 6, 1, 0, 0, 0)  # optional, set to None if plotting all data
-    end_time = None    # dt.datetime(2017, 10, 1, 0, 0, 0)  # optional, set to None if plotting all data
-    deployment_num = 7
+    '''
+    time option: 
+    set to None if plotting all data
+    set to dt.datetime(yyyy, m, d, h, m, s) for specific dates
+    '''
+    start_time = None
+    end_time = None
+    deployment_num = None
+    sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140212-CP02PMCO-WFP01-04-FLORTK000-telemetered-flort_sample/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140046-CP02PMCO-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140032-CP02PMCO-WFP01-02-DOFSTK000-telemetered-dofst_k_wfp_instrument/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140015-CP02PMCO-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140002-CP02PMCO-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135948-CP02PMCO-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html']
+
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190306T174820-CP05MOAS-GL379-05-PARADM000-telemetered-parad_m_glider_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190306T174519-CP05MOAS-GL379-05-PARADM000-recovered_host-parad_m_glider_recovered/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190306T174505-CP05MOAS-GL379-04-DOSTAM000-telemetered-dosta_abcdjm_glider_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190306T174451-CP05MOAS-GL379-04-DOSTAM000-recovered_host-dosta_abcdjm_glider_recovered/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190306T174435-CP05MOAS-GL379-03-CTDGVM000-telemetered-ctdgv_m_glider_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190306T174413-CP05MOAS-GL379-03-CTDGVM000-recovered_host-ctdgv_m_glider_instrument_recovered/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190306T174400-CP05MOAS-GL379-02-FLORTM000-telemetered-flort_m_sample/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190306T174347-CP05MOAS-GL379-02-FLORTM000-recovered_host-flort_m_sample/catalog.html']
+
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190306T170946-CP05MOAS-GL387-04-DOSTAM000-telemetered-dosta_abcdjm_glider_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190306T170928-CP05MOAS-GL387-04-DOSTAM000-recovered_host-dosta_abcdjm_glider_recovered/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190306T170906-CP05MOAS-GL387-03-CTDGVM000-telemetered-ctdgv_m_glider_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190306T170839-CP05MOAS-GL387-03-CTDGVM000-recovered_host-ctdgv_m_glider_instrument_recovered/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190306T170703-CP05MOAS-GL387-02-FLORTM000-telemetered-flort_m_sample/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190306T170636-CP05MOAS-GL387-02-FLORTM000-recovered_host-flort_m_sample/catalog.html']
+
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T201111-CP02PMCI-WFP01-04-FLORTK000-telemetered-flort_sample/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T200946-CP02PMCI-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T200932-CP02PMCI-WFP01-02-DOFSTK000-telemetered-dofst_k_wfp_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T200915-CP02PMCI-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T200902-CP02PMCI-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T200848-CP02PMCI-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html']
+
+        #
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T161022-CP04OSPM-WFP01-04-FLORTK000-telemetered-flort_sample/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T161008-CP04OSPM-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html']
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T160941-CP04OSPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T160941-CP04OSPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html']
+        #
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T160929-CP04OSPM-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T160917-CP04OSPM-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html']
+
+        # [
+        # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T161432-CE09OSPM-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html']
+    # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T161444-CE09OSPM-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html'
+
     main(url_list, sDir, plot_type, deployment_num, start_time, end_time)

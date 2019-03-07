@@ -128,9 +128,13 @@ def main(sDir, url_list):
 
                         # reject values outside global ranges:
                         global_min, global_max = cf.get_global_ranges(r, sv)
-                        gr_ind = cf.reject_global_ranges(y_nonan_nofv_nE, global_min, global_max)
-                        y_nonan_nofv_nE_nogr = y_nonan_nofv_nE[gr_ind]
-                        x_nonan_nofv_nE_nogr = x_nonan_nofv_nE[gr_ind]
+                        if global_min is not None and global_max is not None:
+                            gr_ind = cf.reject_global_ranges(y_nonan_nofv_nE, global_min, global_max)
+                            y_nonan_nofv_nE_nogr = y_nonan_nofv_nE[gr_ind]
+                            x_nonan_nofv_nE_nogr = x_nonan_nofv_nE[gr_ind]
+                        else:
+                            y_nonan_nofv_nE_nogr = y_nonan_nofv_nE
+                            x_nonan_nofv_nE_nogr = x_nonan_nofv_nE
 
                         title = ' '.join((r, ms.split('-')[0]))
 
@@ -140,8 +144,6 @@ def main(sDir, url_list):
                             else:
                                 sname = '-'.join((r, m, sv))
 
-
-
                             # Plot all data
                             fig, ax = pf.plot_timeseries_all(x_nonan_nofv, y_nonan_nofv, sv, sv_units, stdev=None)
                             ax.set_title((title + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
@@ -149,9 +151,9 @@ def main(sDir, url_list):
                             for etimes in end_times:
                                 ax.axvline(x=etimes,  color='b', linestyle='--', linewidth=.6)
 
-
-                            ax.axhline(y=global_min, color='r', linestyle='--', linewidth=.6)
-                            ax.axhline(y=global_max, color='r', linestyle='--', linewidth=.6)
+                            if global_min is not None and global_max is not None:
+                                ax.axhline(y=global_min, color='r', linestyle='--', linewidth=.6)
+                                ax.axhline(y=global_max, color='r', linestyle='--', linewidth=.6)
 
                             pf.save_fig(save_dir, sname)
 
@@ -162,8 +164,9 @@ def main(sDir, url_list):
                             for etimes in end_times:
                                 ax.axvline(x=etimes,  color='b', linestyle='--', linewidth=.6)
 
-                            ax.axhline(y=global_min, color='r', linestyle='--', linewidth=.6)
-                            ax.axhline(y=global_max, color='r', linestyle='--', linewidth=.6)
+                            if global_min is not None and global_max is not None:
+                                ax.axhline(y=global_min, color='r', linestyle='--', linewidth=.6)
+                                ax.axhline(y=global_max, color='r', linestyle='--', linewidth=.6)
 
                             sfile = '_'.join((sname, 'rmoutliers'))
                             pf.save_fig(save_dir, sfile)
@@ -172,13 +175,24 @@ def main(sDir, url_list):
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list = [
-        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163408-CE06ISSM-RID16-03-DOSTAD000-recovered_host-dosta_abcdjm_ctdbp_dcl_instrument_recovered/catalog.html',
-        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163419-CE06ISSM-RID16-03-DOSTAD000-recovered_inst-dosta_abcdjm_ctdbp_instrument_recovered/catalog.html',
-        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163558-CE06ISSM-RID16-03-DOSTAD000-telemetered-dosta_abcdjm_ctdbp_dcl_instrument/catalog.html',
-        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163751-CE09OSPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html',
-        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163824-CE09OSPM-WFP01-02-DOFSTK000-telemetered-dofst_k_wfp_instrument/catalog.html',
-        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163845-CE09OSSM-RID27-04-DOSTAD000-recovered_host-dosta_abcdjm_dcl_instrument_recovered/catalog.html',
-        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163907-CE09OSSM-RID27-04-DOSTAD000-telemetered-dosta_abcdjm_dcl_instrument/catalog.html'
-    ]
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T145838-CE02SHBP-LJ01D-10-PHSEND103-streamed-phsen_data_record/catalog.html']
+
+        # [
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160622-CE06ISSM-RID16-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160645-CE06ISSM-RID16-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T160700-CE06ISSM-RID16-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html'
+        #         ]
+
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190114T145838-CE02SHBP-LJ01D-10-PHSEND103-streamed-phsen_data_record/catalog.html']
+
+    #     [
+    #     'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163408-CE06ISSM-RID16-03-DOSTAD000-recovered_host-dosta_abcdjm_ctdbp_dcl_instrument_recovered/catalog.html',
+    #     'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163419-CE06ISSM-RID16-03-DOSTAD000-recovered_inst-dosta_abcdjm_ctdbp_instrument_recovered/catalog.html',
+    #     'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163558-CE06ISSM-RID16-03-DOSTAD000-telemetered-dosta_abcdjm_ctdbp_dcl_instrument/catalog.html',
+    #     'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163751-CE09OSPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html',
+    #     'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163824-CE09OSPM-WFP01-02-DOFSTK000-telemetered-dofst_k_wfp_instrument/catalog.html',
+    #     'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163845-CE09OSSM-RID27-04-DOSTAD000-recovered_host-dosta_abcdjm_dcl_instrument_recovered/catalog.html',
+    #     'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181211T163907-CE09OSSM-RID27-04-DOSTAD000-telemetered-dosta_abcdjm_dcl_instrument/catalog.html'
+    # ]
     main(sDir, url_list)
