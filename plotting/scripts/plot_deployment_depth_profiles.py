@@ -16,6 +16,7 @@ import datetime as dt
 import functions.common as cf
 import functions.plotting as pf
 import functions.combine_datasets as cd
+import matplotlib.pyplot as plt
 
 
 def main(url_list, sDir, plot_type, deployment_num, start_time, end_time):
@@ -49,10 +50,7 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time):
                 if len(sci_vars) > 0:
                     stream_sci_vars_dict[dr_ms]['vars'] = sci_vars
 
-        # initialize an empty data array for science variables in dictionary
-        sci_vars_dict = cd.initialize_empty_arrays(stream_sci_vars_dict, ms)
-        y_unit = []
-        y_name = []
+
         for ii, d in enumerate(datasets_sel):
             print('\nDataset {} of {}: {}'.format(ii + 1, len(datasets_sel), d))
             with xr.open_dataset(d, mask_and_scale=False) as ds:
@@ -75,6 +73,10 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time):
             save_dir = os.path.join(sDir, array, subsite, refdes, plot_type, ms.split('-')[0], deployment)
             cf.create_dir(save_dir)
 
+            # initialize an empty data array for science variables in dictionary
+            sci_vars_dict = cd.initialize_empty_arrays(stream_sci_vars_dict, ms)
+            y_unit = []
+            y_name = []
             for var in list(sci_vars_dict[ms]['vars'].keys()):
                 sh = sci_vars_dict[ms]['vars'][var]
                 if ds[var].units == sh['db_units']:
@@ -83,7 +85,7 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time):
                     if ds[var].units not in sh['units']:
                         sh['units'].append(ds[var].units)
 
-                    sh['t'] = np.append(sh['t'], ds['time'].values) #t = ds['time'].values
+                    sh['t'] = np.append(sh['t'], ds['time'].values) # t = ds['time'].values
                     sh['values'] = np.append(sh['values'], ds[var].values)  # z = ds[var].values
 
                     if 'MOAS' in subsite:
@@ -99,11 +101,23 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time):
 
                     sh['pressure'] = np.append(sh['pressure'], y)
 
-                    if ds[pressure].units not in y_unit:
-                        y_unit.append(ds[pressure].units)
-                    if ds[pressure].long_name not in y_name:
-                        y_name.append(ds[pressure].long_name)
+                    try:
+                        ds[pressure].units
+                        if ds[pressure].units not in y_unit:
+                            y_unit.append(ds[pressure].units)
+                    except AttributeError:
+                        print('pressure attributes missing units')
+                        if 'pressure unit missing' not in y_unit:
+                            y_unit.append('pressure unit missing')
 
+                    try:
+                        ds[pressure].long_name
+                        if ds[pressure].long_name not in y_name:
+                            y_name.append(ds[pressure].long_name)
+                    except AttributeError:
+                        print('pressure attributes missing long_name')
+                        if 'pressure long name missing' not in y_name:
+                            y_name.append('pressure long name missing')
 
             for m, n in sci_vars_dict.items():
                 for sv, vinfo in n['vars'].items():
@@ -116,6 +130,7 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time):
                         t0 = pd.to_datetime(min(vinfo['t'])).strftime('%Y-%m-%dT%H:%M:%S')
                         t1 = pd.to_datetime(max(vinfo['t'])).strftime('%Y-%m-%dT%H:%M:%S')
                         colors = cm.rainbow(np.linspace(0, 1, len(vinfo['t'])))
+                        t = vinfo['t']
                         z = vinfo['values']
                         y = vinfo['pressure']
 
@@ -132,13 +147,15 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time):
                     else:
                         # reject fill values
                         fv_ind = z != fv
+                        t__nofv = t[fv_ind]
                         y_nofv = y[fv_ind]
                         c_nofv = colors[fv_ind]
                         z_nofv = z[fv_ind]
                         print(len(z) - len(fv_ind), ' fill values')
 
                         # reject NaNs
-                        nan_ind = ~np.isnan(z)
+                        nan_ind = ~np.isnan(z_nofv)
+                        t_nofv_nonan = t__nofv[nan_ind]
                         c_nofv_nonan = c_nofv[nan_ind]
                         y_nofv_nonan = y_nofv[nan_ind]
                         z_nofv_nonan = z_nofv[nan_ind]
@@ -146,6 +163,7 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time):
 
                         # reject extreme values
                         ev_ind = cf.reject_extreme_values(z_nofv_nonan)
+                        t_nofv_nonan_noev = t_nofv_nonan[ev_ind]
                         c_nofv_nonan_noev = c_nofv_nonan[ev_ind]
                         y_nofv_nonan_noev = y_nofv_nonan[ev_ind]
                         z_nofv_nonan_noev = z_nofv_nonan[ev_ind]
@@ -163,15 +181,15 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time):
                     ylabel = y_name[0] + " (" + y_unit[0] + ")"
                     clabel = 'Time'
 
-                    fig, ax = pf.plot_profiles(z_nofv_nonan_noev, y_nofv_nonan_noev, c_nofv_nonan_noev,
-                                               ylabel, xlabel, stdev=None)
+                    fig, ax = pf.plot_profiles(z_nofv_nonan_noev, y_nofv_nonan_noev, t_nofv_nonan_noev,
+                                               ylabel, xlabel, clabel, stdev=None)
 
                     ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
                     pf.save_fig(save_dir, sname)
 
                     # Plot data with outliers removed
-                    fig, ax = pf.plot_profiles(z_nofv_nonan_noev, y_nofv_nonan_noev, c_nofv_nonan_noev,
-                                               ylabel, xlabel, stdev=5)
+                    fig, ax = pf.plot_profiles(z_nofv_nonan_noev, y_nofv_nonan_noev, t_nofv_nonan_noev,
+                                               ylabel, xlabel, clabel, stdev=5)
                     ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
 
                     sfile = '_'.join((sname, 'rmoutliers'))
@@ -180,9 +198,22 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time):
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T160941-CP04OSPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T160941-CP04OSPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html']
-        #
+    url_list =  ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235321-CP03ISSM-MFD37-03-CTDBPD000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html',
+                 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235146-CP03ISSM-MFD37-03-CTDBPD000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
+                 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235133-CP03ISSM-MFD37-03-CTDBPD000-recovered_host-ctdbp_cdef_dcl_instrument_recovered/catalog.html']
+
+    # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235715-CP03ISSM-MFD37-04-DOSTAD000-telemetered-dosta_abcdjm_dcl_instrument/catalog.html',
+    #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235659-CP03ISSM-MFD37-04-DOSTAD000-recovered_host-dosta_abcdjm_dcl_instrument_recovered/catalog.html']
+
+    #
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T160941-CP04OSPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T160941-CP04OSPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html']
+        # #
+
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T160941-CP04OSPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T160941-CP04OSPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html']
+        # #
 
         # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135341-CP01CNPM-WFP01-01-VEL3DK000-telemetered-vel3d_k_wfp_stc_instrument/catalog.html',
         #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135328-CP01CNPM-WFP01-01-VEL3DK000-recovered_wfp-vel3d_k_wfp_instrument/catalog.html']
@@ -212,6 +243,6 @@ if __name__ == '__main__':
     plot_type = 'profile_plots'
     start_time = None  # dt.datetime(2016, 6, 1, 0, 0, 0)  # optional, set to None if plotting all data
     end_time = None    # dt.datetime(2017, 10, 1, 0, 0, 0)  # optional, set to None if plotting all data
-    deployment_num = 1
+    deployment_num = None
 
     main(url_list, sDir, plot_type, deployment_num, start_time, end_time)

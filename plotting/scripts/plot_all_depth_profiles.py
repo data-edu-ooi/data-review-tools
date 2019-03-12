@@ -160,12 +160,12 @@ def main(url_list, sDir, plot_type):
                         sh['pressure'] = np.append(sh['pressure'], y)
 
             if len(y_unit) != 1:
-                print('pressure unit varies UHHHHHHHHH')
+                print('pressure unit varies!')
             else:
                 y_unit = y_unit[0]
 
             if len(y_name) != 1:
-                print('pressure long name varies UHHHHHHHHH')
+                print('pressure long name varies!')
             else:
                 y_name = y_name[0]
 
@@ -226,7 +226,7 @@ def main(url_list, sDir, plot_type):
 
                     if sv != 'pressure':
                         columns = ['tsec', 'dbar', str(sv)]
-                        ranges = list(range(int(round(min(y_nofv_nonan_noev))), int(round(max(y_nofv_nonan_noev))), 1))
+                        ranges = list(range(int(round(min(y_nofv_nonan_noev)-1)), int(round(max(y_nofv_nonan_noev)+1)), 1))
                         print(t_nofv_nonan_noev.ndim, y_nofv_nonan_noev.ndim, x_nofv_nonan_noev.ndim)
                         print(len(ranges))
                         groups, d_groups = gt.group_by_depth_range(t_nofv_nonan_noev, y_nofv_nonan_noev,
@@ -255,25 +255,25 @@ def main(url_list, sDir, plot_type):
                     xlabel = sv + " (" + sv_units + ")"
                     clabel = 'Time'
 
-                    print('m here 4')
-                    fig, ax = pf.plot_profiles(x_nofv_nonan_noev, y_nofv_nonan_noev, t_nofv_nonan_noev,
-                                               xlabel, ylabel, stdev=None)
+                    fig, ax = pf.plot_profiles(x_nofv_nonan_noev, y_nofv_nonan_noev, c_nofv_nonan_noev,
+                                               ylabel, xlabel, stdev=None)
                     ax.set_title((title + '\n' + t0 + ' - ' + t1 + '\n' + '1m average and 3std shown'), fontsize=9)
 
                     ax.plot(n_avg, y_avg, '-k')
-                    # ax.plot(n_min, y_avg, '-b')
-                    # ax.plot(n_max, y_avg, '-b')
+                    ax.plot(n_avg, y_avg, 'om')
+                    ax.plot(n_min, y_avg, '-b')
+                    ax.plot(n_max, y_avg, '-b')
                     ax.fill_betweenx(y_avg, n0_std, n1_std, color='m', alpha=0.2)
                     pf.save_fig(save_dir, sname)
 
                     # Plot data with outliers removed
-                    print('m here 5')
                     fig, ax = pf.plot_profiles(x_nofv_nonan_noev, y_nofv_nonan_noev, c_nofv_nonan_noev,
                                                ylabel, xlabel, stdev=5)
                     ax.set_title((title + '\n' + t0 + ' - ' + t1 + '\n' + '1m average and 3std shown'), fontsize=9)
                     ax.plot(n_avg, y_avg, '-k')
-                    # ax.plot(n_min, y_avg, '-b')
-                    # ax.plot(n_max, y_avg, '-b')
+                    ax.plot(n_avg, y_avg, 'om')
+                    ax.plot(n_min, y_avg, '-b')
+                    ax.plot(n_max, y_avg, '-b')
                     ax.fill_betweenx(y_avg, n0_std, n1_std, color='m', alpha=0.2)
                     sfile = '_'.join((sname, 'rmoutliers'))
                     pf.save_fig(save_dir, sfile)
@@ -288,6 +288,6 @@ if __name__ == '__main__':
 
         # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T161432-CE09OSPM-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html']
         # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T161444-CE09OSPM-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html'
-    plot_type = 'xsection_plots'
+    plot_type = 'profile_plots'
 
     main(url_list, sDir, plot_type)

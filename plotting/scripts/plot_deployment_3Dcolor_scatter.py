@@ -49,10 +49,7 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time):
                 if len(sci_vars) > 0:
                     stream_sci_vars_dict[dr_ms]['vars'] = sci_vars
 
-        # initialize an empty data array for science variables in dictionary
-        sci_vars_dict = cd.initialize_empty_arrays(stream_sci_vars_dict, ms)
-        y_unit = []
-        y_name = []
+
         for ii, d in enumerate(datasets_sel):
             print('\nDataset {} of {}: {}'.format(ii + 1, len(datasets_sel), d))
             with xr.open_dataset(d, mask_and_scale=False) as ds:
@@ -65,14 +62,20 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time):
                     continue
 
             fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(d)
-            save_dir = os.path.join(sDir, array, subsite, refdes, plot_type, deployment)
+            # save_dir = os.path.join(sDir, array, subsite, refdes, plot_type, deployment)
 
             if deployment_num is not None:
                 if int(deployment.split('0')[-1]) is not deployment_num:
                     print(type(int(deployment.split('0')[-1])), type(deployment_num))
                     continue
 
+            save_dir = os.path.join(sDir, array, subsite, refdes, plot_type, ms.split('-')[0], deployment)
             cf.create_dir(save_dir)
+
+            # initialize an empty data array for science variables in dictionary
+            sci_vars_dict = cd.initialize_empty_arrays(stream_sci_vars_dict, ms)
+            y_unit = []
+            y_name = []
 
             for var in list(sci_vars_dict[ms]['vars'].keys()):
                 sh = sci_vars_dict[ms]['vars'][var]
@@ -132,58 +135,57 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time):
 
                         title = ' '.join((deployment, r, ms.split('-')[0]))
 
-                    # Check if the array is all NaNs
-                    if sum(np.isnan(z)) == len(z):
-                        print('Array of all NaNs - skipping plot.')
+                        # Check if the array is all NaNs
+                        if sum(np.isnan(z)) == len(z):
+                            print('Array of all NaNs - skipping plot.')
 
-                    # Check if the array is all fill values
-                    elif len(z[z != fv]) == 0:
-                        print('Array of all fill values - skipping plot.')
+                        # Check if the array is all fill values
+                        elif len(z[z != fv]) == 0:
+                            print('Array of all fill values - skipping plot.')
 
-                    else:
-                        # reject fill values
-                        fv_ind = z != fv
-                        y_nofv = y[fv_ind]
-                        t_nofv = t[fv_ind]
-                        z_nofv = z[fv_ind]
-                        print(len(z) - len(fv_ind), ' fill values')
-
-                        # reject NaNs
-                        nan_ind = ~np.isnan(z)
-                        t_nofv_nonan = t_nofv[nan_ind]
-                        y_nofv_nonan = y_nofv[nan_ind]
-                        z_nofv_nonan = z_nofv[nan_ind]
-                        print(len(z) - len(nan_ind), ' NaNs')
-
-                        # reject extreme values
-                        ev_ind = cf.reject_extreme_values(z_nofv_nonan)
-                        t_nofv_nonan_noev = t_nofv_nonan[ev_ind]
-                        y_nofv_nonan_noev = y_nofv_nonan[ev_ind]
-                        z_nofv_nonan_noev = z_nofv_nonan[ev_ind]
-                        print(len(z) - len(ev_ind), ' Extreme Values', '|1e7|')
-
-                    if len(y_nofv_nonan_noev) > 0:
-                        if m == 'common_stream_placeholder':
-                            sname = '-'.join((r, sv))
                         else:
-                            sname = '-'.join((r, m, sv))
+                            # reject fill values
+                            fv_ind = z != fv
+                            y_nofv = y[fv_ind]
+                            t_nofv = t[fv_ind]
+                            z_nofv = z[fv_ind]
+                            print(len(z) - len(fv_ind), ' fill values')
 
+                            # reject NaNs
+                            nan_ind = ~np.isnan(z_nofv)
+                            t_nofv_nonan = t_nofv[nan_ind]
+                            y_nofv_nonan = y_nofv[nan_ind]
+                            z_nofv_nonan = z_nofv[nan_ind]
+                            print(len(z) - len(nan_ind), ' NaNs')
 
-                    # Plot all data
-                    print(y_name)
-                    clabel = sv + " (" + sv_units + ")"
-                    ylabel = y_name[0] + " (" + y_unit[0] + ")"
-                    print(clabel, ylabel)
-                    fig, ax = pf.plot_xsection(subsite, t_nofv_nonan_noev, y_nofv_nonan_noev, z_nofv_nonan_noev,
-                                               clabel, ylabel, stdev=None)
-                    ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-                    pf.save_fig(save_dir, sname)
+                            # reject extreme values
+                            ev_ind = cf.reject_extreme_values(z_nofv_nonan)
+                            t_nofv_nonan_noev = t_nofv_nonan[ev_ind]
+                            y_nofv_nonan_noev = y_nofv_nonan[ev_ind]
+                            z_nofv_nonan_noev = z_nofv_nonan[ev_ind]
+                            print(len(z) - len(ev_ind), ' Extreme Values', '|1e7|')
 
-                    # Plot data with outliers removed
-                    fig, ax = pf.plot_xsection(subsite, t, y, z, clabel, ylabel, stdev=5)
-                    ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-                    sfile = '_'.join((sname, 'rmoutliers'))
-                    pf.save_fig(save_dir, sfile)
+                            if len(y_nofv_nonan_noev) > 0:
+                                if m == 'common_stream_placeholder':
+                                    sname = '-'.join((r, sv))
+                                else:
+                                    sname = '-'.join((r, m, sv))
+
+                            # Plot all data
+                            print(y_name)
+                            clabel = sv + " (" + sv_units + ")"
+                            ylabel = y_name[0] + " (" + y_unit[0] + ")"
+                            print(clabel, ylabel)
+                            fig, ax = pf.plot_xsection(subsite, t_nofv_nonan_noev, y_nofv_nonan_noev, z_nofv_nonan_noev,
+                                                       clabel, ylabel, stdev=None)
+                            ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+                            pf.save_fig(save_dir, sname)
+
+                            # Plot data with outliers removed
+                            fig, ax = pf.plot_xsection(subsite, t, y, z, clabel, ylabel, stdev=5)
+                            ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+                            sfile = '_'.join((sname, 'rmoutliers'))
+                            pf.save_fig(save_dir, sfile)
 
 
 if __name__ == '__main__':
@@ -198,12 +200,20 @@ if __name__ == '__main__':
     end_time = None
     deployment_num = None
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140212-CP02PMCO-WFP01-04-FLORTK000-telemetered-flort_sample/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140046-CP02PMCO-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140032-CP02PMCO-WFP01-02-DOFSTK000-telemetered-dofst_k_wfp_instrument/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140015-CP02PMCO-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140002-CP02PMCO-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135948-CP02PMCO-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html']
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235146-CP03ISSM-MFD37-03-CTDBPD000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235133-CP03ISSM-MFD37-03-CTDBPD000-recovered_host-ctdbp_cdef_dcl_instrument_recovered/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235321-CP03ISSM-MFD37-03-CTDBPD000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html']
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235715-CP03ISSM-MFD37-04-DOSTAD000-telemetered-dosta_abcdjm_dcl_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235659-CP03ISSM-MFD37-04-DOSTAD000-recovered_host-dosta_abcdjm_dcl_instrument_recovered/catalog.html']
+
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140212-CP02PMCO-WFP01-04-FLORTK000-telemetered-flort_sample/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140046-CP02PMCO-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140032-CP02PMCO-WFP01-02-DOFSTK000-telemetered-dofst_k_wfp_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140015-CP02PMCO-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140002-CP02PMCO-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135948-CP02PMCO-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html']
 
 
         # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190306T174820-CP05MOAS-GL379-05-PARADM000-telemetered-parad_m_glider_instrument/catalog.html',
