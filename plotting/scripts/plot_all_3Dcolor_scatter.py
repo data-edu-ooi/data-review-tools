@@ -85,7 +85,7 @@ def main(url_list, sDir, plot_type):
         fdatasets = cf.filter_other_streams(r, ms_list, fdatasets)
 
         '''
-        separate the data files by methods
+        separate data files by methods
         '''
         for ms in ms_list:
             fdatasets_sel = [x for x in fdatasets if ms in x]
@@ -93,6 +93,10 @@ def main(url_list, sDir, plot_type):
             # create a folder to save figures
             save_dir = os.path.join(sDir, array, subsite, r, plot_type, ms.split('-')[0])
             cf.create_dir(save_dir)
+
+            # create a folder to save variables statistics
+            save_dir_stat = os.path.join(sDir, array, subsite, r, 'variables_statistics', ms.split('-')[0])
+            cf.create_dir(save_dir_stat)
 
             # create a dictionary for science variables from analysis file
             stream_sci_vars_dict = dict()
@@ -153,134 +157,159 @@ def main(url_list, sDir, plot_type):
                         else:
                             pressure = pf.pressure_var(ds, ds.data_vars.keys())
                             y = ds[pressure].values
-                            if ds[pressure].units not in y_unit:
-                                y_unit.append(ds[pressure].units)
-                            if ds[pressure].long_name not in y_name:
-                                y_name.append(ds[pressure].long_name)
 
                         sh['pressure'] = np.append(sh['pressure'], y)
 
-            if len(y_unit) != 1:
-                print('pressure unit varies UHHHHHHHHH')
-            else:
-                y_unit = y_unit[0]
+                        try:
+                            ds[pressure].units
+                            if ds[pressure].units not in y_unit:
+                                y_unit.append(ds[pressure].units)
+                        except AttributeError:
+                            print('pressure attributes missing units')
+                            if 'pressure unit missing' not in y_unit:
+                                y_unit.append('pressure unit missing')
 
-            if len(y_name) != 1:
-                print('pressure long name varies UHHHHHHHHH')
-            else:
-                y_name = y_name[0]
+                        try:
+                            ds[pressure].long_name
+                            if ds[pressure].long_name not in y_name:
+                                y_name.append(ds[pressure].long_name)
+                        except AttributeError:
+                            print('pressure attributes missing long_name')
+                            if 'pressure long name missing' not in y_name:
+                                y_name.append('pressure long name missing')
 
-            for m, n in sci_vars_dict.items():
-                for sv, vinfo in n['vars'].items():
-                    print(sv)
-                    if len(vinfo['t']) < 1:
-                        print('no variable data to plot')
-                    else:
-                        sv_units = vinfo['units'][0]
-                        fv = vinfo['fv'][0]
-                        t0 = pd.to_datetime(min(vinfo['t'])).strftime('%Y-%m-%dT%H:%M:%S')
-                        t1 = pd.to_datetime(max(vinfo['t'])).strftime('%Y-%m-%dT%H:%M:%S')
-                        t = vinfo['t']
-                        z = vinfo['values']
-                        y = vinfo['pressure']
+            # create a csv file with diagnostic results:
 
-                        title = ' '.join((r, ms))
+                if len(y_unit) != 1:
+                    print('pressure unit varies')
+                    if 'dbar' in y_unit:
+                        y_unit = 'dbar'
+                    print(y_unit)
+                else:
+                    y_unit = y_unit[0]
 
-                    # Check if the array is all NaNs
-                    if sum(np.isnan(z)) == len(z):
-                        print('Array of all NaNs - skipping plot.')
+                if len(y_name) != 1:
+                    print('pressure long name varies')
+                    if 'Seawater Pressure' in y_name:
+                        y_name = 'Seawater Pressure'
+                    print(y_name)
+                else:
+                    y_name = y_name[0]
 
-                    # Check if the array is all fill values
-                    elif len(z[z != fv]) == 0:
-                        print('Array of all fill values - skipping plot.')
-
-                    else:
-                        # reject fill values
-                        fv_ind = z != fv
-                        y_nofv = y[fv_ind]
-                        t_nofv = t[fv_ind]
-                        z_nofv = z[fv_ind]
-                        print(len(z) - len(fv_ind), ' fill values')
-
-                        # reject NaNs
-                        nan_ind = ~np.isnan(z)
-                        t_nofv_nonan = t_nofv[nan_ind]
-                        y_nofv_nonan = y_nofv[nan_ind]
-                        z_nofv_nonan = z_nofv[nan_ind]
-                        print(len(z) - len(nan_ind), ' NaNs')
-
-                        # reject extreme values
-                        ev_ind = cf.reject_extreme_values(z_nofv_nonan)
-                        t_nofv_nonan_noev = t_nofv_nonan[ev_ind]
-                        y_nofv_nonan_noev = y_nofv_nonan[ev_ind]
-                        z_nofv_nonan_noev = z_nofv_nonan[ev_ind]
-                        print(len(z) - len(ev_ind), ' Extreme Values', '|1e7|')
-
-                    if len(y_nofv_nonan_noev) > 0:
-                        if m == 'common_stream_placeholder':
-                            sname = '-'.join((r, sv))
+                for m, n in sci_vars_dict.items():
+                    for sv, vinfo in n['vars'].items():
+                        print(sv)
+                        if len(vinfo['t']) < 1:
+                            print('no variable data to plot')
                         else:
-                            sname = '-'.join((r, m, sv))
+                            sv_units = vinfo['units'][0]
+                            fv = vinfo['fv'][0]
+                            t0 = pd.to_datetime(min(vinfo['t'])).strftime('%Y-%m-%dT%H:%M:%S')
+                            t1 = pd.to_datetime(max(vinfo['t'])).strftime('%Y-%m-%dT%H:%M:%S')
+                            t = vinfo['t']
+                            z = vinfo['values']
+                            y = vinfo['pressure']
 
-                    # group by depth range
-                    if sv != 'pressure':
-                        columns = ['tsec', 'dbar', str(sv)]
-                        ranges = list(range(int(round(min(y_nofv_nonan_noev))), int(round(max(y_nofv_nonan_noev))), 1))
-                        print(t_nofv_nonan_noev.ndim, y_nofv_nonan_noev.ndim, z_nofv_nonan_noev.ndim)
-                        print(len(ranges))
-                        groups, d_groups = gt.group_by_depth_range(t_nofv_nonan_noev, y_nofv_nonan_noev,
-                                                                   z_nofv_nonan_noev, columns, ranges)
+                            title = ' '.join((r, ms))
 
-                        describe_file = '_'.join((sname, 'statistics.csv'))
-                        # groups.describe().to_csv(save_dir + '/' + describe_file)
-                        groups.describe()[sv].to_csv('{}/{}_statistics.csv'.format(save_dir, sname), index=True)
+                        # Check if the array is all NaNs
+                        if sum(np.isnan(z)) == len(z):
+                            print('Array of all NaNs - skipping plot.')
 
+                        # Check if the array is all fill values
+                        elif len(z[z != fv]) == 0:
+                            print('Array of all fill values - skipping plot.')
 
-                    # Plot all data
-                    clabel = sv + " (" + sv_units + ")"
-                    ylabel = y_name + " (" + y_unit + ")"
-                    fig, ax = pf.plot_xsection(subsite, t_nofv_nonan_noev, y_nofv_nonan_noev, z_nofv_nonan_noev,
-                                               clabel, ylabel, stdev=None)
-                    ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-                    pf.save_fig(save_dir, sname)
+                        else:
+                            # reject fill values
+                            fv_ind = z != fv
+                            y_nofv = y[fv_ind]
+                            t_nofv = t[fv_ind]
+                            z_nofv = z[fv_ind]
+                            print(len(z) - len(fv_ind), ' fill values')
 
-                    # Plot data with outliers removed
-                    fig, ax = pf.plot_xsection(subsite, t, y, z, clabel, ylabel, stdev=5)
-                    ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-                    sfile = '_'.join((sname, 'rmoutliers'))
-                    pf.save_fig(save_dir, sfile)
+                            # reject NaNs
+                            nan_ind = ~np.isnan(z_nofv)
+                            t_nofv_nonan = t_nofv[nan_ind]
+                            y_nofv_nonan = y_nofv[nan_ind]
+                            z_nofv_nonan = z_nofv[nan_ind]
+                            print(len(z) - len(nan_ind), ' NaNs')
+
+                            # reject extreme values
+                            ev_ind = cf.reject_extreme_values(z_nofv_nonan)
+                            t_nofv_nonan_noev = t_nofv_nonan[ev_ind]
+                            y_nofv_nonan_noev = y_nofv_nonan[ev_ind]
+                            z_nofv_nonan_noev = z_nofv_nonan[ev_ind]
+                            print(len(z) - len(ev_ind), ' Extreme Values', '|1e7|')
+
+                        if len(y_nofv_nonan_noev) > 0:
+                            if m == 'common_stream_placeholder':
+                                sname = '-'.join((r, sv))
+                            else:
+                                sname = '-'.join((r, m, sv))
+
+                        # group by depth range
+                        sname = '_'.join((sname, sv_units))
+
+                        if sv != 'pressure':
+                            columns = ['tsec', 'dbar', str(sv)]
+                            ranges = list(range(int(round(min(y_nofv_nonan_noev))), int(round(max(y_nofv_nonan_noev))), 1))
+                            print(t_nofv_nonan_noev.ndim, y_nofv_nonan_noev.ndim, z_nofv_nonan_noev.ndim)
+                            print(len(ranges))
+                            groups, d_groups = gt.group_by_depth_range(t_nofv_nonan_noev, y_nofv_nonan_noev,
+                                                                       z_nofv_nonan_noev, columns, ranges)
+                            stat_data = groups.describe()[sv]
+                            stat_data['name'] = sv
+
+                            # groups.describe()[sv].to_csv('{}/{}_statistics.csv'.format(save_dir_stat, sname), index=True)
+                            stat_data.to_csv('{}/{}_statistics.csv'.format(save_dir_stat, sname), index=True)
+
+                        # Plot all data
+                        clabel = sv + " (" + sv_units + ")"
+                        ylabel = y_name + " (" + y_unit + ")"
+                        fig, ax = pf.plot_xsection(subsite, t_nofv_nonan_noev, y_nofv_nonan_noev, z_nofv_nonan_noev,
+                                                   clabel, ylabel, stdev=None)
+                        ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+
+                        pf.save_fig(save_dir, sname)
+
+                        # Plot data with outliers removed
+                        fig, ax = pf.plot_xsection(subsite, t, y, z, clabel, ylabel, stdev=5)
+                        ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+                        sfile = '_'.join((sname, 'rmoutliers'))
+                        pf.save_fig(save_dir, sfile)
 
 
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
     plot_type = 'xsection_plots'
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T160941-CP04OSPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T160941-CP04OSPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html']
-        #
-        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135341-CP01CNPM-WFP01-01-VEL3DK000-telemetered-vel3d_k_wfp_stc_instrument/catalog.html',
-        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135328-CP01CNPM-WFP01-01-VEL3DK000-recovered_wfp-vel3d_k_wfp_instrument/catalog.html']
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235715-CP03ISSM-MFD37-04-DOSTAD000-telemetered-dosta_abcdjm_dcl_instrument/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235659-CP03ISSM-MFD37-04-DOSTAD000-recovered_host-dosta_abcdjm_dcl_instrument_recovered/catalog.html']
 
-        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135314-CP01CNPM-WFP01-05-PARADK000-telemetered-parad_k__stc_imodem_instrument/catalog.html',
-        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135300-CP01CNPM-WFP01-05-PARADK000-recovered_wfp-parad_k__stc_imodem_instrument_recovered/catalog.html']
+    # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235321-CP03ISSM-MFD37-03-CTDBPD000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html',
+    #  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235146-CP03ISSM-MFD37-03-CTDBPD000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
+    #  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235133-CP03ISSM-MFD37-03-CTDBPD000-recovered_host-ctdbp_cdef_dcl_instrument_recovered/catalog.html']
 
+    # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T160941-CP04OSPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html',
+    #  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T160941-CP04OSPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html']
+    #
+    # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135341-CP01CNPM-WFP01-01-VEL3DK000-telemetered-vel3d_k_wfp_stc_instrument/catalog.html',
+    #  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135328-CP01CNPM-WFP01-01-VEL3DK000-recovered_wfp-vel3d_k_wfp_instrument/catalog.html']
 
-        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135248-CP01CNPM-WFP01-04-FLORTK000-telemetered-flort_sample/catalog.html',
-        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135235-CP01CNPM-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html']
+    # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135314-CP01CNPM-WFP01-05-PARADK000-telemetered-parad_k__stc_imodem_instrument/catalog.html',
+    #  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135300-CP01CNPM-WFP01-05-PARADK000-recovered_wfp-parad_k__stc_imodem_instrument_recovered/catalog.html']
 
-        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135223-CP01CNPM-WFP01-02-DOFSTK000-telemetered-dofst_k_wfp_instrument/catalog.html',
-        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135210-CP01CNPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html']
+    # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135248-CP01CNPM-WFP01-04-FLORTK000-telemetered-flort_sample/catalog.html',
+    #  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135235-CP01CNPM-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html']
 
-        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135158-CP01CNPM-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html',
-        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135146-CP01CNPM-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html']
+    # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135223-CP01CNPM-WFP01-02-DOFSTK000-telemetered-dofst_k_wfp_instrument/catalog.html',
+    #  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135210-CP01CNPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html']
 
+    # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135158-CP01CNPM-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html',
+    #  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135146-CP01CNPM-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html']
 
-        # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235321-CP03ISSM-MFD37-03-CTDBPD000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html',
-        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235146-CP03ISSM-MFD37-03-CTDBPD000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
-        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235133-CP03ISSM-MFD37-03-CTDBPD000-recovered_host-ctdbp_cdef_dcl_instrument_recovered/catalog.html']
-
-    # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T161432-CE09OSPM-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html']
-    # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T161444-CE09OSPM-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html'
-
+    # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T161432-CE09OSPM-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html'
+    # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T161444-CE09OSPM-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html']
 
     main(url_list, sDir, plot_type)

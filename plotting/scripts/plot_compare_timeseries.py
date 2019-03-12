@@ -97,7 +97,7 @@ def compare_plot_datasets(df, r, start_time, end_time, sDir):
                                 save_dir = os.path.join(sDir, array, subsite, r, 'method_compare_plots', ext)
                             else:
                                 save_dir = os.path.join(sDir, array, subsite, r, 'method_compare_plots',
-                                                        '-'.join((d, compare))) #.join((ds0_method, ds1_method
+                                                        '-'.join((ds0_method, ds1_method)))
                             cf.create_dir(save_dir)
 
                             for rr in mapping.itertuples():
@@ -117,13 +117,13 @@ def compare_plot_datasets(df, r, start_time, end_time, sDir):
                                 # only plot if both arrays have data
                                 if len(ds0_nonan) > 0 and len(ds1_nonan) > 0:
                                     # Plot all data
-                                    # fig, ax = pf.plot_timeseries_compare(t0, t1, ds0_var, ds1_var, ds0_method, ds1_method,
-                                    #                                      long_name, stdev=None)
-                                    #
-                                    # title = ' '.join((d, r, '{} vs {}'.format(ds0_method, ds1_method)))
-                                    # ax.set_title(title, fontsize=9)
-                                    # sfile = '_'.join((d, r, long_name))
-                                    # pf.save_fig(save_dir, sfile)
+                                    fig, ax = pf.plot_timeseries_compare(t0, t1, ds0_var, ds1_var, ds0_method, ds1_method,
+                                                                         long_name, stdev=None)
+
+                                    title = ' '.join((d, r, '{} vs {}'.format(ds0_method, ds1_method)))
+                                    ax.set_title(title, fontsize=9)
+                                    sfile = '_'.join((d, r, long_name))
+                                    pf.save_fig(save_dir, sfile)
 
                                     # Plot data with outliers removed
                                     fig, ax = pf.plot_timeseries_compare(t0, t1, ds0_var, ds1_var, ds0_method, ds1_method,
@@ -231,9 +231,17 @@ def main(sDir, url_list, start_time, end_time):
 
 if __name__ == '__main__':
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235321-CP03ISSM-MFD37-03-CTDBPD000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235146-CP03ISSM-MFD37-03-CTDBPD000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235133-CP03ISSM-MFD37-03-CTDBPD000-recovered_host-ctdbp_cdef_dcl_instrument_recovered/catalog.html']
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235715-CP03ISSM-MFD37-04-DOSTAD000-telemetered-dosta_abcdjm_dcl_instrument/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235659-CP03ISSM-MFD37-04-DOSTAD000-recovered_host-dosta_abcdjm_dcl_instrument_recovered/catalog.html']
+
+    start_time = dt.datetime(2017, 10, 31, 0, 0, 0)  # None  # optional, set to None if plotting all data
+    end_time =  dt.datetime(2017, 11, 4, 0, 0, 0)   # None # optional, set to None if plotting all data
+
+    main(sDir, url_list, start_time, end_time)
+
+    # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235321-CP03ISSM-MFD37-03-CTDBPD000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235146-CP03ISSM-MFD37-03-CTDBPD000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235133-CP03ISSM-MFD37-03-CTDBPD000-recovered_host-ctdbp_cdef_dcl_instrument_recovered/catalog.html']
 
         # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235528-CP03ISSM-RID27-03-CTDBPC000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html',
         #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235509-CP03ISSM-RID27-03-CTDBPC000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
@@ -261,7 +269,3 @@ if __name__ == '__main__':
         # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/ooidatateam@gmail.com/20181026T123345-GP03FLMA-RIM01-02-CTDMOG040-recovered_host-ctdmo_ghqr_sio_mule_instrument/catalog.html',
         # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/ooidatateam@gmail.com/20181026T123354-GP03FLMA-RIM01-02-CTDMOG040-telemetered-ctdmo_ghqr_sio_mule_instrument/catalog.html']
 
-    start_time = dt.datetime(2016, 9, 3, 0, 0, 0)  # None  # optional, set to None if plotting all data
-    end_time = dt.datetime(2016, 9, 10, 0, 0, 0) # None  # dt.datetime(2017, 5, 20, 0, 0, 0)  # optional, set to None if plotting all data
-
-    main(sDir, url_list, start_time, end_time)

@@ -9,6 +9,7 @@ import os
 import numpy as np
 import functions.common as cf
 import matplotlib.cm as cm
+import pandas as pd  # We need pandas for this
 
 def get_units(variable):
     try:
@@ -25,16 +26,16 @@ def format_date_axis(axis, figure):
     figure.autofmt_xdate()
 
 
-def plot_profiles(x, y, color, ylabel, xlabel, stdev=None):
+def plot_profiles(x, y, t, ylabel, xlabel, clabel, stdev=None):
     """
     Create a profile plot for mobile instruments
     :param x: .nc data array containing data for plotting variable of interest (e.g. density)
     :param y: .nc data array containing data for plotting on the y-axis (e.g. pressure)
-    :param colors: list of colors to be used for plotting
+    :param t: .nc data array containing time data to be used for coloring (x,y) data pairs
     :param stdev: desired standard deviation to exclude from plotting
     """
-    if type(color) is not np.ndarray:
-        z = color.values
+    if type(t) is not np.ndarray:
+        t = t.values
 
     if type(y) is not np.ndarray:
         y = y.values
@@ -45,20 +46,22 @@ def plot_profiles(x, y, color, ylabel, xlabel, stdev=None):
     if stdev is None:
         xD = x
         yD = y
-        nZ = color
+        tD = t
         leg_text = ()
     else:
         ind2 = cf.reject_outliers(x, stdev)
         xD = x[ind2]
         yD = y[ind2]
-        nZ = color[ind2]
+        tD = t[ind2]
         outliers = str(len(x) - len(xD))
         leg_text = ('removed {} outliers (SD={})'.format(outliers, stdev),)
 
     fig, ax = plt.subplots()
     plt.margins(y=.08, x=.02)
     plt.grid()
-    ax.scatter(xD, yD, c=nZ, s=2, edgecolor='None')
+    sct = ax.scatter(xD, yD, c=tD, s=2, edgecolor='None', cmap='rainbow')
+    cbar = plt.colorbar(sct, label=clabel)
+    cbar.ax.set_yticklabels(pd.to_datetime(cbar.get_ticks()).strftime(date_format='%Y-%m-%d'))
     ax.invert_yaxis()
     ax.set_xlabel(xlabel, fontsize=9)
     ax.set_ylabel(ylabel, fontsize=9)
