@@ -88,6 +88,24 @@ def filter_other_streams(r, stream_list, fdatasets):
 
     return datasets_filtered
 
+
+def get_deployment_information(data, deployment):
+    d_info = [x for x in data['instrument']['deployments'] if x['deployment_number'] == deployment]
+    if d_info:
+        return d_info[0]
+    else:
+        return None
+
+def get_url_content(url_address):
+    # get content of a url in a json format
+    r = requests.get(url_address)
+    if r.status_code is not 200:
+        print(r.reason)
+        print('Problem wi chatth', url_address)
+    else:
+        url_content = r.json()
+    return url_content
+
 def get_global_ranges(refdes, variable, api_user=None, api_token=None):
     port = '12578'
     spl = refdes.split('-')
@@ -215,6 +233,20 @@ def reject_outliers(data, m=3):
 
     return ind
 
+def return_array_subsites_standard_loc(array):
+    DBurl= 'https://datareview.marine.rutgers.edu/regions/view/{}.json'.format(array)
+    url_ct = get_url_content(DBurl)['region']['sites']
+    loc_df = pd.DataFrame()
+    for ii in range(len(url_ct)):
+        if url_ct[ii]['reference_designator'] != 'CP05MOAS':
+            data = {
+                    'lat': url_ct[ii]['latitude'],
+                    'lon': url_ct[ii]['longitude'],
+                    'max_z': url_ct[ii]['max_depth']
+                    }
+            new_r = pd.DataFrame(data, columns=['lat', 'lon', 'max_z'], index=[url_ct[ii]['reference_designator']])
+            loc_df = loc_df.append(new_r)
+    return loc_df
 
 def return_stream_vars(stream):
     # return all variables that should be found in a stream (from the data review database)
