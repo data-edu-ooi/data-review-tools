@@ -196,6 +196,11 @@ def main(url_list, sDir, plot_type):
                 else:
                     y_name = y_name[0]
 
+                # create a folder to save variables statistics
+                mDir = '/Users/leila/Documents/NSFEduSupport/github/data-review-tools/data_review/final_stats'
+                save_dir_stat = os.path.join(mDir, array, subsite)
+                cf.create_dir(save_dir_stat)
+                stat_df = pd.DataFrame()
                 for m, n in sci_vars_dict.items():
                     for sv, vinfo in n['vars'].items():
                         print(sv)
@@ -254,21 +259,19 @@ def main(url_list, sDir, plot_type):
                         if sv != 'pressure':
                             columns = ['tsec', 'dbar', str(sv)]
                             ranges = list(range(int(round(min(y_nofv_nonan_noev))), int(round(max(y_nofv_nonan_noev))), 1))
-                            print(t_nofv_nonan_noev.ndim, y_nofv_nonan_noev.ndim, z_nofv_nonan_noev.ndim)
-                            print(len(ranges))
                             groups, d_groups = gt.group_by_depth_range(t_nofv_nonan_noev, y_nofv_nonan_noev,
                                                                        z_nofv_nonan_noev, columns, ranges)
-                            stat_data = groups.describe()[sv]
-                            stat_data.index.name = '-'.join((sv, stat_data.index.name))
-
                             if (ms.split('-')[0]) == (ps_df[0].values[0].split('-')[0]):
-                               # create a folder to save variables statistics
-                               mDir = '/Users/leila/Documents/NSFEduSupport/github/previous_data-review-tools/data_review/final_stats'
-                               save_dir_stat = os.path.join(mDir, array, subsite, r, 'variables_statistics', sv,
-                                                             ms.split('-')[0])
-                               cf.create_dir(save_dir_stat)
-                               # groups.describe()[sv].to_csv('{}/{}_statistics.csv'.format(save_dir_stat, sname), index=True)
-                               stat_data.to_csv('{}/{}_final_stats.csv'.format(save_dir_stat, sname), index=True, float_format='%11.6f')
+                                if 'pressure' not in sv:
+                                    print('final_stats_{}-{}-{}-{}'.format(r,
+                                                                           ms.split('-')[0],
+                                                                           ps_df[0].values[0].split('-')[0],
+                                                                           sv))
+                                    stat_data = groups.describe()[sv]
+                                    stat_data.insert(loc=0, column='parameter', value=sv, allow_duplicates=False)
+                                    stat_df = stat_df.append(stat_data)
+
+
 
                         # Plot all data
                         clabel = sv + " (" + sv_units + ")"
@@ -285,13 +288,20 @@ def main(url_list, sDir, plot_type):
                         sfile = '_'.join((sname, 'rmoutliers'))
                         pf.save_fig(save_dir, sfile)
 
+                # write stat file
+                stat_df.to_csv('{}/{}_final_stats.csv'.format(save_dir_stat, r), index=True, float_format='%11.6f')
+
 
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
     plot_type = 'xsection_plots'
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135223-CP01CNPM-WFP01-02-DOFSTK000-telemetered-dofst_k_wfp_instrument/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135210-CP01CNPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html']
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135158-CP01CNPM-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135146-CP01CNPM-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html']
+
+
+    # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135223-CP01CNPM-WFP01-02-DOFSTK000-telemetered-dofst_k_wfp_instrument/catalog.html',
+    #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135210-CP01CNPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html']
 
     # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235715-CP03ISSM-MFD37-04-DOSTAD000-telemetered-dosta_abcdjm_dcl_instrument/catalog.html',
     #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235659-CP03ISSM-MFD37-04-DOSTAD000-recovered_host-dosta_abcdjm_dcl_instrument_recovered/catalog.html']
