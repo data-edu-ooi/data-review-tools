@@ -1,11 +1,7 @@
 deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
 deployment0001,recovered_host,dosta_abcdjm_dcl_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",226204,0,67697,0,0,158507,70.07,281.3671,276.4543,304.5259,5.0697
 deployment0001,recovered_host,dosta_abcdjm_dcl_instrument_recovered,estimated_oxygen_concentration,µmol L-1,-9999999.0,"[0.0, 400.0]",226204,0,0,0,0,226204,100.0,359.0747,350.383,391.435,6.7286
-deployment0001,recovered_host,dosta_abcdjm_dcl_instrument_recovered,estimated_oxygen_saturation,percent,-9999999.0,"[0.0, 110.0]",226204,0,0,0,0,226204,100.0,94.3119,90.868,101.293,1.8393
-deployment0001,recovered_host,dosta_abcdjm_dcl_instrument_recovered,optode_temperature,ºC,-9999999.0,"[-2.0, 40.0]",226204,0,0,0,0,226204,100.0,6.8404,5.313,7.971,0.8294
 deployment0001,recovered_host,dosta_abcdjm_dcl_instrument_recovered,dosta_abcdjm_cspp_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",226204,0,0,0,0,226204,100.0,359.0748,350.388,391.4451,6.7286
 deployment0002,recovered_host,dosta_abcdjm_dcl_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",2649677,0,38,0,154,2649485,99.99,0.3753,0.3451,0.4411,0.0131
 deployment0002,recovered_host,dosta_abcdjm_dcl_instrument_recovered,estimated_oxygen_concentration,µmol L-1,-9999999.0,"[0.0, 400.0]",2649677,0,0,511,228,2648938,99.97,358.3762,344.117,396.271,7.57
-deployment0002,recovered_host,dosta_abcdjm_dcl_instrument_recovered,estimated_oxygen_saturation,percent,-9999999.0,"[0.0, 110.0]",2649677,0,0,185,343,2649149,99.98,94.5752,88.576,106.232,2.3278
-deployment0002,recovered_host,dosta_abcdjm_dcl_instrument_recovered,optode_temperature,ºC,-9999999.0,"[-2.0, 40.0]",2649677,0,0,0,0,2649677,100.0,7.0273,5.928,9.517,0.8087
 deployment0002,recovered_host,dosta_abcdjm_dcl_instrument_recovered,dosta_abcdjm_cspp_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",2649677,0,0,0,210,2649467,99.99,0.4814,0.4435,0.5629,0.0163

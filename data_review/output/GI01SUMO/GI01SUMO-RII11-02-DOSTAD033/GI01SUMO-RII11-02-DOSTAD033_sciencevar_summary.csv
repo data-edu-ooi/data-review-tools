@@ -1,4 +1,4 @@
 deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
-deployment0002,recovered_host,dosta_abcdjm_ctdbp_p_dcl_instrument_recovered,dosta_analog_tc_oxygen,µmol L-1,-9999999.0,"[None, None]",5248,0,5248,no global ranges,,0,0.0,,,,
-deployment0003,recovered_host,dosta_abcdjm_ctdbp_p_dcl_instrument_recovered,dosta_analog_tc_oxygen,µmol L-1,-9999999.0,"[None, None]",4812,0,4812,no global ranges,,0,0.0,,,,
-deployment0004,telemetered,dosta_abcdjm_ctdbp_p_dcl_instrument,dosta_analog_tc_oxygen,µmol L-1,-9999999.0,"[None, None]",1613,0,1613,no global ranges,,0,0.0,,,,
+deployment0002,recovered_host,dosta_abcdjm_ctdbp_p_dcl_instrument_recovered,dosta_analog_tc_oxygen,µmol L-1,-9999999.0,"[None, None]",5248,0,0,no global ranges,91,5157,98.27,363.2466,345.056,385.2664,8.9305
+deployment0003,recovered_host,dosta_abcdjm_ctdbp_p_dcl_instrument_recovered,dosta_analog_tc_oxygen,µmol L-1,-9999999.0,"[None, None]",4812,0,0,no global ranges,10,4802,99.79,-3366.8599,-213210.0568,115869.3884,10737.1522
+deployment0004,telemetered,dosta_abcdjm_ctdbp_p_dcl_instrument,dosta_analog_tc_oxygen,µmol L-1,-9999999.0,"[None, None]",1613,0,0,no global ranges,0,1613,100.0,40.7321,39.4657,41.7482,0.3649
