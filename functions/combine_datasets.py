@@ -38,7 +38,7 @@ def append_science_data(preferred_stream_df, n_streams, refdes, dataset_list, sc
 
 
 def append_variable_data(ds, variable_dict, common_stream_name, exclude_times):
-    ds_vars = cf.return_raw_vars(list(ds.data_vars.keys()))
+    ds_vars = cf.return_raw_vars(list(ds.data_vars.keys()) + list(ds.coords))
     vars_dict = variable_dict[common_stream_name]['vars']
     for var in ds_vars:
         try:
