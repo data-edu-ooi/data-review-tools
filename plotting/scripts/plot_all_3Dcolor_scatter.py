@@ -61,6 +61,9 @@ def main(url_list, sDir, plot_type):
         # read in the analysis file
         dr_data = cf.refdes_datareview_json(r)
 
+        # get preferred stream
+        ps_df, n_streams = cf.get_preferred_stream_info(r)
+
         # get end times of deployments
         deployments = []
         end_times = []
@@ -70,7 +73,7 @@ def main(url_list, sDir, plot_type):
             deployments.append(int(deploy[-4:]))
             end_times.append(pd.to_datetime(deploy_info['stop_date']))
 
-        # get the list of data files and filter out collocated instruments and other streams chat
+        # get the list of data files and filter out collocated instruments and other streams
         datasets = []
         for u in url_list:
             print(u)
@@ -94,9 +97,6 @@ def main(url_list, sDir, plot_type):
             save_dir = os.path.join(sDir, array, subsite, r, plot_type, ms.split('-')[0])
             cf.create_dir(save_dir)
 
-            # create a folder to save variables statistics
-            save_dir_stat = os.path.join(sDir, array, subsite, r, 'variables_statistics', ms.split('-')[0])
-            cf.create_dir(save_dir_stat)
 
             # create a dictionary for science variables from analysis file
             stream_sci_vars_dict = dict()
@@ -259,10 +259,16 @@ def main(url_list, sDir, plot_type):
                             groups, d_groups = gt.group_by_depth_range(t_nofv_nonan_noev, y_nofv_nonan_noev,
                                                                        z_nofv_nonan_noev, columns, ranges)
                             stat_data = groups.describe()[sv]
-                            stat_data['name'] = sv
+                            stat_data.index.name = '-'.join((sv, stat_data.index.name))
 
-                            # groups.describe()[sv].to_csv('{}/{}_statistics.csv'.format(save_dir_stat, sname), index=True)
-                            stat_data.to_csv('{}/{}_statistics.csv'.format(save_dir_stat, sname), index=True)
+                            if (ms.split('-')[0]) == (ps_df[0].values[0].split('-')[0]):
+                               # create a folder to save variables statistics
+                               mDir = '/Users/leila/Documents/NSFEduSupport/github/previous_data-review-tools/data_review/final_stats'
+                               save_dir_stat = os.path.join(mDir, array, subsite, r, 'variables_statistics', sv,
+                                                             ms.split('-')[0])
+                               cf.create_dir(save_dir_stat)
+                               # groups.describe()[sv].to_csv('{}/{}_statistics.csv'.format(save_dir_stat, sname), index=True)
+                               stat_data.to_csv('{}/{}_final_stats.csv'.format(save_dir_stat, sname), index=True, float_format='%11.6f')
 
                         # Plot all data
                         clabel = sv + " (" + sv_units + ")"
@@ -284,8 +290,11 @@ if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
     plot_type = 'xsection_plots'
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235715-CP03ISSM-MFD37-04-DOSTAD000-telemetered-dosta_abcdjm_dcl_instrument/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235659-CP03ISSM-MFD37-04-DOSTAD000-recovered_host-dosta_abcdjm_dcl_instrument_recovered/catalog.html']
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135223-CP01CNPM-WFP01-02-DOFSTK000-telemetered-dofst_k_wfp_instrument/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135210-CP01CNPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html']
+
+    # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235715-CP03ISSM-MFD37-04-DOSTAD000-telemetered-dosta_abcdjm_dcl_instrument/catalog.html',
+    #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235659-CP03ISSM-MFD37-04-DOSTAD000-recovered_host-dosta_abcdjm_dcl_instrument_recovered/catalog.html']
 
     # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235321-CP03ISSM-MFD37-03-CTDBPD000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html',
     #  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235146-CP03ISSM-MFD37-03-CTDBPD000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
@@ -303,8 +312,6 @@ if __name__ == '__main__':
     # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135248-CP01CNPM-WFP01-04-FLORTK000-telemetered-flort_sample/catalog.html',
     #  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135235-CP01CNPM-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html']
 
-    # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135223-CP01CNPM-WFP01-02-DOFSTK000-telemetered-dofst_k_wfp_instrument/catalog.html',
-    #  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135210-CP01CNPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html']
 
     # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135158-CP01CNPM-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html',
     #  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135146-CP01CNPM-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html']
