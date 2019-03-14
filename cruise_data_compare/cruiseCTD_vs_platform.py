@@ -42,9 +42,8 @@ def calculate_lat_lon(sline, coord):
 
 sDir = '/Users/lgarzio/Documents/OOI/DataReviews'
 CTD_dir = '/Users/lgarzio/Documents/OOI/DataReviews/CP/shipboard_ctd_files'
-platform = 'CP04OSSM'
-urls = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T162623-CP04OSSM-MFD37-04-DOSTAD000-recovered_host-dosta_abcdjm_dcl_instrument_recovered/catalog.html',
-        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T162658-CP04OSSM-RID27-04-DOSTAD000-recovered_host-dosta_abcdjm_dcl_instrument_recovered/catalog.html']
+platform = 'CP05MOAS'
+urls = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190301T140319-CP05MOAS-GL388-03-CTDGVM000-recovered_host-ctdgv_m_glider_instrument_recovered/catalog.html']
 uframe_windows = [dt.timedelta(days=1), dt.timedelta(hours=6)]  # dt.timedelta(hours=12)
 #uframe_windows = [dt.timedelta(days=1)]
 
@@ -145,9 +144,10 @@ for uframe_window in uframe_windows:
                             #     press = np.empty(np.shape(ds['time']))
                             #     press[:] = 30
                             else:
-                                press = pf.pressure_var(ds, list(ds.coords.keys()))
-                                if press is None:
-                                    press = pf.pressure_var(ds, list(ds.data_vars.keys()))
+                                press = pf.pressure_var(ds, list(ds.data_vars.keys()))
+                                # press = pf.pressure_var(ds, list(ds.coords.keys()))
+                                # if press is None:
+                                #     press = pf.pressure_var(ds, list(ds.data_vars.keys()))
                                 press = ds[press].values
 
                             if 'CTD' in ds.sensor:
@@ -212,6 +212,7 @@ for uframe_window in uframe_windows:
                                         pvar = ds[pvarname]
 
                                         pvar[pvar <= 0.0] = np.nan  # get rid of zeros and negative numbers
+                                        #pvar[pvar <= 3.0] = np.nan  # get rid of zeros and negative numbers
                                         if 'density' in pvarname:
                                             pvar[pvar <= 1000.0] = np.nan  # get rid of zeros and negative numbers
                                         # reject nans and fill values
@@ -239,11 +240,6 @@ for uframe_window in uframe_windows:
                                             print('No platform data available for Shipboard CTD time frame')
 
                             if 'FLOR' in ds.sensor:
-                                fig, ax = plt.subplots()
-                                ctd_chl = np.squeeze(np.array(df['flECO-AFL']))
-                                ctd_chl[ctd_chl <= 0.0] = np.nan
-                                ax.plot(ctd_chl, ctd_pressure, 'b.', markersize=3.5, label='flECO-AFL (Ship CTD)')
-
                                 if 'MOAS' in ds.subsite:
                                     if 'FLORTM' in ds.sensor:
                                         chlname = 'sci_flbbcd_chlor_units'
@@ -254,28 +250,46 @@ for uframe_window in uframe_windows:
                                 pchla = ds[chlname]
 
                                 pchla[pchla <= 0.0] = np.nan  # get rid of zeros and negative numbers
+                                #pchla[pchla > 10] = np.nan
 
                                 # reject nans and fill values
                                 ind = (~np.isnan(pchla.values)) & (pchla.values != pchla._FillValue)
+                                mode = ['reg', 'zoomed']
                                 if len(pchla.values[ind]) > 0:
-                                    ax.plot(pchla.values[ind], press[ind], 'r.', markersize=4,
-                                            label='{} (Platform)'.format(chlname))
-                                    ax.set_ylabel('Pressure (dbar)')
-                                    ax.set_xlabel('{} ({})'.format(pchla.long_name, pchla.units))
-                                    # plt.ylim([0, 50])
-                                    ax.invert_yaxis()
-                                    ax.legend(loc='best', fontsize=7)
-                                    ax.grid()
-                                    title1 = '{} vs. Shipboard CTD (Distance: {} km)'.format(refdes, diff_loc)
-                                    title2 = 'Cruise CTD file: {} Date: {}'.format(CTDfile.split('/')[-1],
-                                                                                   dt.datetime.strftime(cast_start,
-                                                                                                        '%Y-%m-%dT%H:%M:%S'))
-                                    title3 = 'Platform: from {} to {}'.format(str(ds['time'].values[0])[:19],
-                                                                              str(ds['time'].values[-1])[:19])
-                                    fig.suptitle((title1 + '\n' + title2 + '\n' + title3), fontsize=8.5)
-                                    sfile = '{}_{}_shipCTDcompare_{}'.format(refdes, deployment, chlname)
-                                    pf.save_fig(save_dir, sfile)
-                                    plt.close()
+                                    for md in mode:
+                                        fig, ax = plt.subplots()
+
+                                        # plot shipboard data
+                                        ctd_chl = np.squeeze(np.array(df['flECO-AFL']))
+                                        ctd_chl[ctd_chl <= 0.0] = np.nan
+                                        if md == 'reg':
+                                            ax.plot(ctd_chl, ctd_pressure, 'b.', markersize=3.5,
+                                                    label='flECO-AFL (Ship CTD)')
+                                            sfile = '{}_{}_shipCTDcompare_{}'.format(refdes, deployment, chlname)
+                                        else:
+                                            press_ind = (np.min(press) - 50 < ctd_pressure) & (ctd_pressure < np.max(press) + 50)
+                                            ax.plot(ctd_chl[press_ind], ctd_pressure[press_ind], 'b.', markersize=3.5,
+                                                    label='flECO-AFL (Ship CTD)')
+                                            sfile = '{}_{}_shipCTDcompare_{}_zoomed'.format(refdes, deployment, chlname)
+
+                                        # plot platform data
+                                        ax.plot(pchla.values[ind], press[ind], 'r.', markersize=4,
+                                                label='{} (Platform)'.format(chlname))
+                                        ax.set_ylabel('Pressure (dbar)')
+                                        ax.set_xlabel('{} ({})'.format(pchla.long_name, pchla.units))
+                                        # plt.ylim([0, 50])
+                                        ax.invert_yaxis()
+                                        ax.legend(loc='best', fontsize=7)
+                                        ax.grid()
+                                        title1 = '{} vs. Shipboard CTD (Distance: {} km)'.format(refdes, diff_loc)
+                                        title2 = 'Cruise CTD file: {} Date: {}'.format(CTDfile.split('/')[-1],
+                                                                                       dt.datetime.strftime(cast_start,
+                                                                                                            '%Y-%m-%dT%H:%M:%S'))
+                                        title3 = 'Platform: from {} to {}'.format(str(ds['time'].values[0])[:19],
+                                                                                  str(ds['time'].values[-1])[:19])
+                                        fig.suptitle((title1 + '\n' + title2 + '\n' + title3), fontsize=8.5)
+                                        pf.save_fig(save_dir, sfile)
+                                        plt.close()
                                 else:
                                     print('No platform data available for Shipboard CTD time frame')
 
