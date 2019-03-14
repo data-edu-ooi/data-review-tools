@@ -26,7 +26,7 @@ def format_date_axis(axis, figure):
     figure.autofmt_xdate()
 
 
-def plot_profiles(x, y, t, ylabel, xlabel, clabel, stdev=None):
+def plot_profiles(x, y, t, ylabel, xlabel, clabel, end_times, deployments, stdev=None):
     """
     Create a profile plot for mobile instruments
     :param x: .nc data array containing data for plotting variable of interest (e.g. density)
@@ -62,6 +62,11 @@ def plot_profiles(x, y, t, ylabel, xlabel, clabel, stdev=None):
     sct = ax.scatter(xD, yD, c=tD, s=2, edgecolor='None', cmap='rainbow')
     cbar = plt.colorbar(sct, label=clabel)
     cbar.ax.set_yticklabels(pd.to_datetime(cbar.get_ticks()).strftime(date_format='%Y-%m-%d'))
+    cbar.ax.set_yticklabels(pd.to_datetime(end_times).strftime(date_format='%Y-%m-%d'))
+    # cbar.ax.set_yticks(end_times)
+    # cbar.ax.plot([0, 1], [end_times[0], end_times[0]], 'w')
+
+
     ax.invert_yaxis()
     ax.set_xlabel(xlabel, fontsize=9)
     ax.set_ylabel(ylabel, fontsize=9)
