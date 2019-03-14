@@ -363,11 +363,15 @@ def pressure_var(dataset, vars):
             print('More than 1 pressure variable found in the file')
         elif len(pvars) == 1:
             pvar = str(pvars[0])
-            return pvar
+        else:
+            pvar = None
     else:
-        x = [x for x in list(dataset.coords.keys()) if 'pressure' in x]
-        pvar = str(x[0])
-        return pvar
+        y = [x for x in list(dataset.coords.keys()) if 'pressure' in x]
+        if len(y) > 0:
+            pvar = str(y[0])
+        else:
+            pvar = None
+    return pvar
 
 
 def save_fig(save_dir, file_name, res=150):
