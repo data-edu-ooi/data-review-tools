@@ -82,7 +82,7 @@ def main(url_list, sDir, plot_type, start_time, end_time, deployment_num):
 
         fig, ax = pf.plot_profiles(xD, yD, tD, ylabel, xlabel, clabel, end_times, deployments, stdev=None)
         ax.invert_yaxis()
-        ax.set_title('Glider Track - ' + r, fontsize=9)
+        ax.set_title('Glider Track - ' + r + '\n'+ 'x: platform location', fontsize=9)
         ax.set_xlim(-71.75, -69.75)
         ax.set_ylim(38.75, 40.75)
         #cbar.ax.set_yticklabels(end_times)
@@ -90,6 +90,8 @@ def main(url_list, sDir, plot_type, start_time, end_time, deployment_num):
 
         # add Pioneer glider sampling area
         ax.add_patch(Rectangle((-71.5, 39.0), 1.58, 1.67, linewidth=3, edgecolor='b', facecolor='none'))
+        ax.text(-71, 40.6, 'Pioneer Glider Sampling Area',
+                color='blue', fontsize=8)
         # add Pioneer AUV sampling area
         # ax.add_patch(Rectangle((-71.17, 39.67), 0.92, 1.0, linewidth=3, edgecolor='m', facecolor='none'))
 
@@ -97,8 +99,6 @@ def main(url_list, sDir, plot_type, start_time, end_time, deployment_num):
 
         ax.scatter(array_loc.lon, array_loc.lat, s=40, marker='x', color='k', alpha=0.3)
         #ax.legend(legn, array_loc.index, scatterpoints=1, loc='lower left', ncol=4, fontsize=8)
-
-        plt.show()
 
         pf.save_fig(save_dir, sname)
 
