@@ -248,6 +248,10 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                         t0 = pd.to_datetime(min(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
                         t1 = pd.to_datetime(max(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
                         data_final = data[dataind]
+                        # if sv == 'Seawater Pressure':
+                        #     xx = data_final < 150
+                        #     data_final = data_final[xx]
+                        #     t_final = t_final[xx]
                         deploy_final = vinfo['deployments'][dataind]
                         deploy = list(np.unique(deploy_final))
                         deployments = [int(dd) for dd in deploy]
@@ -276,7 +280,7 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
 
                     if len(t) > 0:
                         # plot data used for stats
-                        psave_dir = os.path.join(plotting_sDir, array, subsite, r, 'timeseries_plots_stats')
+                        psave_dir = os.path.join(plotting_sDir, array, subsite, r, 'timeseries_reviewed_datarange')
                         cf.create_dir(psave_dir)
 
                         dr_data = cf.refdes_datareview_json(r)
