@@ -109,12 +109,12 @@ def main(url_list, sDir, plot_type):
             # initialize an empty data array for science variables in dictionary
             sci_vars_dict = cd.initialize_empty_arrays(stream_sci_vars_dict, ms)
 
-            print('\nAppending data from files: {}'.format(ms))
+
             y_unit = []
             y_name = []
             for fd in fdatasets_sel:
                 ds = xr.open_dataset(fd, mask_and_scale=False)
-                print(fd)
+                print('\nAppending data file: {}'.format(fd.split('/')[-1]))
                 for var in list(sci_vars_dict[ms]['vars'].keys()):
                     sh = sci_vars_dict[ms]['vars'][var]
                     if ds[var].units == sh['db_units']:
@@ -171,7 +171,7 @@ def main(url_list, sDir, plot_type):
 
             for m, n in sci_vars_dict.items():
                 for sv, vinfo in n['vars'].items():
-                    print(sv)
+                    print('\nWorking on variable: {}'.format(sv))
                     if len(vinfo['t']) < 1:
                         print('no variable data to plot')
                     else:
@@ -197,23 +197,23 @@ def main(url_list, sDir, plot_type):
                         # reject fill values
                         fv_ind = x != fv
                         y_nofv = y[fv_ind]
-                        c_nofv = cm.rainbow(np.linspace(0, 1, len(t[fv_ind])))
                         t_nofv = t[fv_ind]
+                        c_nofv = cm.rainbow(np.linspace(0, 1, len(t[fv_ind])))
                         x_nofv = x[fv_ind]
                         print(len(x) - len(fv_ind), ' fill values')
 
                         # reject NaNs
                         nan_ind = ~np.isnan(x)
-                        c_nofv_nonan = c_nofv[nan_ind]
                         t_nofv_nonan = t_nofv[nan_ind]
+                        c_nofv_nonan = c_nofv[nan_ind]
                         y_nofv_nonan = y_nofv[nan_ind]
                         x_nofv_nonan = x_nofv[nan_ind]
                         print(len(x) - len(nan_ind), ' NaNs')
 
                         # reject extreme values
                         ev_ind = cf.reject_extreme_values(x_nofv_nonan)
-                        c_nofv_nonan_noev = c_nofv_nonan[ev_ind]
                         t_nofv_nonan_noev = t_nofv_nonan[ev_ind]
+                        c_nofv_nonan_noev = c_nofv_nonan[ev_ind]
                         y_nofv_nonan_noev = y_nofv_nonan[ev_ind]
                         x_nofv_nonan_noev = x_nofv_nonan[ev_ind]
                         print(len(z) - len(ev_ind), ' Extreme Values', '|1e7|')
@@ -227,8 +227,6 @@ def main(url_list, sDir, plot_type):
                     if sv != 'pressure':
                         columns = ['tsec', 'dbar', str(sv)]
                         ranges = list(range(int(round(min(y_nofv_nonan_noev)-1)), int(round(max(y_nofv_nonan_noev)+1)), 1))
-                        print(t_nofv_nonan_noev.ndim, y_nofv_nonan_noev.ndim, x_nofv_nonan_noev.ndim)
-                        print(len(ranges))
                         groups, d_groups = gt.group_by_depth_range(t_nofv_nonan_noev, y_nofv_nonan_noev,
                                                                    x_nofv_nonan_noev, columns, ranges)
 
@@ -255,36 +253,39 @@ def main(url_list, sDir, plot_type):
                     xlabel = sv + " (" + sv_units + ")"
                     clabel = 'Time'
 
-                    fig, ax = pf.plot_profiles(x_nofv_nonan_noev, y_nofv_nonan_noev, c_nofv_nonan_noev,
-                                               ylabel, xlabel, stdev=None)
+                    fig, ax = pf.plot_profiles(x_nofv_nonan_noev, y_nofv_nonan_noev, t_nofv_nonan_noev,
+                                               ylabel, xlabel, clabel, end_times, deployments, stdev=None)
                     ax.set_title((title + '\n' + t0 + ' - ' + t1 + '\n' + '1m average and 3std shown'), fontsize=9)
-
                     ax.plot(n_avg, y_avg, '-k')
-                    ax.plot(n_avg, y_avg, 'om')
-                    ax.plot(n_min, y_avg, '-b')
-                    ax.plot(n_max, y_avg, '-b')
+
                     ax.fill_betweenx(y_avg, n0_std, n1_std, color='m', alpha=0.2)
                     pf.save_fig(save_dir, sname)
 
                     # Plot data with outliers removed
-                    fig, ax = pf.plot_profiles(x_nofv_nonan_noev, y_nofv_nonan_noev, c_nofv_nonan_noev,
-                                               ylabel, xlabel, stdev=5)
+                    fig, ax = pf.plot_profiles(x_nofv_nonan_noev, y_nofv_nonan_noev, t_nofv_nonan_noev,
+                                               ylabel, xlabel, clabel, end_times, deployments, stdev=5)
                     ax.set_title((title + '\n' + t0 + ' - ' + t1 + '\n' + '1m average and 3std shown'), fontsize=9)
                     ax.plot(n_avg, y_avg, '-k')
-                    ax.plot(n_avg, y_avg, 'om')
-                    ax.plot(n_min, y_avg, '-b')
-                    ax.plot(n_max, y_avg, '-b')
+
                     ax.fill_betweenx(y_avg, n0_std, n1_std, color='m', alpha=0.2)
                     sfile = '_'.join((sname, 'rmoutliers'))
                     pf.save_fig(save_dir, sfile)
-                    print('m here 6')
+
 
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235321-CP03ISSM-MFD37-03-CTDBPD000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235146-CP03ISSM-MFD37-03-CTDBPD000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235133-CP03ISSM-MFD37-03-CTDBPD000-recovered_host-ctdbp_cdef_dcl_instrument_recovered/catalog.html']
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135223-CP01CNPM-WFP01-02-DOFSTK000-telemetered-dofst_k_wfp_instrument/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135210-CP01CNPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html']
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135158-CP01CNPM-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135146-CP01CNPM-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html']
+
+
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235321-CP03ISSM-MFD37-03-CTDBPD000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235146-CP03ISSM-MFD37-03-CTDBPD000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235133-CP03ISSM-MFD37-03-CTDBPD000-recovered_host-ctdbp_cdef_dcl_instrument_recovered/catalog.html']
 
         # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T161432-CE09OSPM-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html']
         # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T161444-CE09OSPM-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html'
