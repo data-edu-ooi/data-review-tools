@@ -345,8 +345,9 @@ def main(f, ps, mc):
     fdf = pd.DataFrame(fsummary_rows, columns=fsummary_headers)
     fdf.to_csv('{}/{}_file_summary.csv'.format(os.path.dirname(f), refdes), index=False)
 
-    cdf = pd.DataFrame(csummary_rows, columns=csummary_headers)
-    cdf.to_csv('{}/{}_sciencevar_comparison_summary.csv'.format(os.path.dirname(f), refdes), index=False, encoding='utf-8')
+    if 'streamed' not in ps[list(ps.keys())[0]][0]:
+        cdf = pd.DataFrame(csummary_rows, columns=csummary_headers)
+        cdf.to_csv('{}/{}_sciencevar_comparison_summary.csv'.format(os.path.dirname(f), refdes), index=False, encoding='utf-8')
 
     vdf = pd.DataFrame(vsummary_rows, columns=vsummary_headers)
     vdf.to_csv('{}/{}_sciencevar_summary.csv'.format(os.path.dirname(f), refdes), index=False, encoding='utf-8')
