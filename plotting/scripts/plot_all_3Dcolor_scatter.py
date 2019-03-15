@@ -247,7 +247,25 @@ def main(url_list, sDir, plot_type):
                             z_nofv_nonan_noev = z_nofv_nonan[ev_ind]
                             print(len(z) - len(ev_ind), ' Extreme Values', '|1e7|')
 
-                        if len(y_nofv_nonan_noev) > 0:
+
+                            # reject values outside global ranges:
+                            global_min, global_max = cf.get_global_ranges(r, sv)
+                            # platform not in qc-table (parad_k_par)
+                            global_min = 0
+                            global_max = 2500
+                            print('global ranges for : {}-{}  {} - {}'.format(r, sv, global_min, global_max))
+                            if isinstance(global_min, (int, float)) and isinstance(global_max, (int, float)):
+                                gr_ind = cf.reject_global_ranges(z_nofv_nonan_noev, global_min, global_max)
+                                t_nofv_nonan_noev_nogr = t_nofv_nonan_noev[gr_ind]
+                                y_nofv_nonan_noev_nogr = y_nofv_nonan_noev[gr_ind]
+                                z_nofv_nonan_noev_nogr = z_nofv_nonan_noev[gr_ind]
+                            else:
+                                t_nofv_nonan_noev_nogr = t_nofv_nonan_noev
+                                y_nofv_nonan_noev_nogr = y_nofv_nonan_noev
+                                z_nofv_nonan_noev_nogr = z_nofv_nonan_noev
+
+
+                        if len(z_nofv_nonan_noev) > 0:
                             if m == 'common_stream_placeholder':
                                 sname = '-'.join((r, sv))
                             else:
@@ -258,9 +276,14 @@ def main(url_list, sDir, plot_type):
 
                         if sv != 'pressure':
                             columns = ['tsec', 'dbar', str(sv)]
-                            ranges = list(range(int(round(min(y_nofv_nonan_noev))), int(round(max(y_nofv_nonan_noev))), 1))
-                            groups, d_groups = gt.group_by_depth_range(t_nofv_nonan_noev, y_nofv_nonan_noev,
-                                                                       z_nofv_nonan_noev, columns, ranges)
+
+                            # select depth bin size for the data group function
+                            bin_size = 10
+                            min_r = int(round(min(y_nofv_nonan_noev) - bin_size))
+                            max_r = int(round(max(y_nofv_nonan_noev) + bin_size))
+                            ranges = list(range(min_r, max_r, bin_size))
+                            groups, d_groups = gt.group_by_depth_range(t_nofv_nonan_noev_nogr, y_nofv_nonan_noev_nogr,
+                                                                       z_nofv_nonan_noev_nogr, columns, ranges)
                             if (ms.split('-')[0]) == (ps_df[0].values[0].split('-')[0]):
                                 if 'pressure' not in sv:
                                     print('final_stats_{}-{}-{}-{}'.format(r,
@@ -276,14 +299,16 @@ def main(url_list, sDir, plot_type):
                         # Plot all data
                         clabel = sv + " (" + sv_units + ")"
                         ylabel = y_name + " (" + y_unit + ")"
-                        fig, ax = pf.plot_xsection(subsite, t_nofv_nonan_noev, y_nofv_nonan_noev, z_nofv_nonan_noev,
-                                                   clabel, ylabel, stdev=None)
+                        fig, ax = pf.plot_xsection(subsite, t_nofv_nonan_noev, y_nofv_nonan_noev,
+                                                            z_nofv_nonan_noev, clabel, ylabel, stdev=None)
+
                         ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
 
                         pf.save_fig(save_dir, sname)
 
                         # Plot data with outliers removed
-                        fig, ax = pf.plot_xsection(subsite, t, y, z, clabel, ylabel, stdev=5)
+                        fig, ax = pf.plot_xsection(subsite, t_nofv_nonan_noev_nogr, y_nofv_nonan_noev_nogr,
+                                                            z_nofv_nonan_noev_nogr, clabel, ylabel, stdev=5)
                         ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
                         sfile = '_'.join((sname, 'rmoutliers'))
                         pf.save_fig(save_dir, sfile)
@@ -296,8 +321,11 @@ if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
     plot_type = 'xsection_plots'
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135223-CP01CNPM-WFP01-02-DOFSTK000-telemetered-dofst_k_wfp_instrument/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135210-CP01CNPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html']
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135314-CP01CNPM-WFP01-05-PARADK000-telemetered-parad_k__stc_imodem_instrument/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135300-CP01CNPM-WFP01-05-PARADK000-recovered_wfp-parad_k__stc_imodem_instrument_recovered/catalog.html']
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135223-CP01CNPM-WFP01-02-DOFSTK000-telemetered-dofst_k_wfp_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135210-CP01CNPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html']
 
         # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135158-CP01CNPM-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html',
         #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135146-CP01CNPM-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html']
@@ -316,9 +344,7 @@ if __name__ == '__main__':
     # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135341-CP01CNPM-WFP01-01-VEL3DK000-telemetered-vel3d_k_wfp_stc_instrument/catalog.html',
     #  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135328-CP01CNPM-WFP01-01-VEL3DK000-recovered_wfp-vel3d_k_wfp_instrument/catalog.html']
 
-    # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135314-CP01CNPM-WFP01-05-PARADK000-telemetered-parad_k__stc_imodem_instrument/catalog.html',
-    #  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135300-CP01CNPM-WFP01-05-PARADK000-recovered_wfp-parad_k__stc_imodem_instrument_recovered/catalog.html']
-
+    #
     # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135248-CP01CNPM-WFP01-04-FLORTK000-telemetered-flort_sample/catalog.html',
     #  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135235-CP01CNPM-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html']
 
