@@ -109,7 +109,6 @@ def main(url_list, sDir, plot_type):
             # initialize an empty data array for science variables in dictionary
             sci_vars_dict = cd.initialize_empty_arrays(stream_sci_vars_dict, ms)
 
-
             y_unit = []
             y_name = []
             for fd in fdatasets_sel:
@@ -186,10 +185,12 @@ def main(url_list, sDir, plot_type):
                     # Check if the array is all NaNs
                     if sum(np.isnan(x)) == len(x):
                         print('Array of all NaNs - skipping plot.')
+                        continue
 
                     # Check if the array is all fill values
                     elif len(x[x != fv]) == 0:
                         print('Array of all fill values - skipping plot.')
+                        continue
 
                     else:
                         # reject fill values
@@ -219,8 +220,8 @@ def main(url_list, sDir, plot_type):
                         # reject values outside global ranges:
                         global_min, global_max = cf.get_global_ranges(r, sv)
                         # platform not in qc-table (parad_k_par)
-                        global_min = 0
-                        global_max = 2500
+                        # global_min = 0
+                        # global_max = 2500
                         print('global ranges for : {}-{}  {} - {}'.format(r, sv, global_min, global_max))
                         if isinstance(global_min, (int, float)) and isinstance(global_max, (int, float)):
                             gr_ind = cf.reject_global_ranges(x_nofv_nonan_noev, global_min, global_max)
@@ -298,8 +299,12 @@ def main(url_list, sDir, plot_type):
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135314-CP01CNPM-WFP01-05-PARADK000-telemetered-parad_k__stc_imodem_instrument/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135300-CP01CNPM-WFP01-05-PARADK000-recovered_wfp-parad_k__stc_imodem_instrument_recovered/catalog.html']
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135248-CP01CNPM-WFP01-04-FLORTK000-telemetered-flort_sample/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135235-CP01CNPM-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html']
+
+
+    # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135314-CP01CNPM-WFP01-05-PARADK000-telemetered-parad_k__stc_imodem_instrument/catalog.html',
+                # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135300-CP01CNPM-WFP01-05-PARADK000-recovered_wfp-parad_k__stc_imodem_instrument_recovered/catalog.html']
 
         # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135223-CP01CNPM-WFP01-02-DOFSTK000-telemetered-dofst_k_wfp_instrument/catalog.html',
         #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135210-CP01CNPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html']
