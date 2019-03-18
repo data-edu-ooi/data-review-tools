@@ -38,7 +38,6 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                 datasets.append(udatasets)
         datasets = list(itertools.chain(*datasets))
         fdatasets = []
-        fdeployments = []
         if preferred_only == 'yes':
             # get the preferred stream information
             ps_df, n_streams = cf.get_preferred_stream_info(r)
@@ -51,18 +50,12 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                         fdeploy = dd.split('/')[-1].split('_')[0]
                         if rms == catalog_rms and fdeploy == row['deployment']:
                             fdatasets.append(dd)
-                            if fdeploy not in fdeployments:
-                                fdeployments.append(fdeploy)
         else:
             fdatasets = datasets
 
         fdatasets = np.unique(fdatasets).tolist()
-        for fdm in fdeployments:
-            fdm_datasets = [f for f in fdatasets if fdm in f]
-            if len(fdm_datasets) > 1:
-                ds = xr.open_mfdataset(fdm_datasets, mask_and_scale=False)
-            else:
-                ds = xr.open_datasets(fdm_datasets[0], mask_and_scale=False)
+        for fd in fdatasets:
+            ds = xr.open_dataset(fd, mask_and_scale=False)
             ds = ds.swap_dims({'obs': 'time'})
             ds_vars = list(ds.data_vars.keys()) + [x for x in ds.coords.keys() if 'pressure' in x]  # get pressure variable from coordinates
             raw_vars = cf.return_raw_vars(ds_vars)
@@ -73,7 +66,7 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                     print('No data to plot for specified time range: ({} to {})'.format(start_time, end_time))
                     continue
 
-            fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(fdm_datasets[0])
+            fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(fd)
             print('\nPlotting {} {}'.format(r, deployment))
             array = subsite[0:2]
             filename = '_'.join(fname.split('_')[:-1])
@@ -107,13 +100,13 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                     # Plot all data
                     fig, ax = pf.plot_timeseries(t, y, stdev=None)
                     ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-                    sfile = '-'.join((filename, y.name))
+                    sfile = '-'.join((filename, y.name, t0[:10]))
                     pf.save_fig(save_dir, sfile)
 
                     # Plot data with outliers removed
                     fig, ax = pf.plot_timeseries(t, y, stdev=5)
                     ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-                    sfile = '-'.join((filename, y.name)) + '_rmoutliers'
+                    sfile = '-'.join((filename, y.name, t0[:10])) + '_rmoutliers'
                     pf.save_fig(save_dir, sfile)
 
 

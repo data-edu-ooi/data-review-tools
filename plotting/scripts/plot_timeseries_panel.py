@@ -87,7 +87,7 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                     fig, ax = pf.plot_timeseries_panel(ds, t, sci_vars, colors, 5)
                     plt.xticks(fontsize=7)
                     ax[0].set_title((title + '\n' + t0 + ' - ' + t1), fontsize=7)
-                    sfile = '-'.join((filename, 'timeseries_panel'))
+                    sfile = '-'.join((filename, 'timeseries_panel', t0[:10]))
                     pf.save_fig(save_dir, sfile)
                 else:
                     print('Only one science variable in file, no panel plots necessary')

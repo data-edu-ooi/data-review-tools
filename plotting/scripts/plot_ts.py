@@ -86,7 +86,6 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                 fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(fd)
                 print('\nPlotting {} {}'.format(r, deployment))
                 array = subsite[0:2]
-                filename = '-'.join(('_'.join(fname.split('_')[:-1]), 'ts'))
                 save_dir = os.path.join(sDir, array, subsite, refdes, 'ts_plots')
                 cf.create_dir(save_dir)
 
@@ -94,6 +93,7 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                 t0 = pd.to_datetime(tme.min()).strftime('%Y-%m-%dT%H:%M:%S')
                 t1 = pd.to_datetime(tme.max()).strftime('%Y-%m-%dT%H:%M:%S')
                 title = ' '.join((deployment, refdes, method))
+                filename = '-'.join(('_'.join(fname.split('_')[:-1]), 'ts', t0[:10]))
 
                 ds_vars = list(ds.data_vars.keys())
                 raw_vars = cf.return_raw_vars(ds_vars)
