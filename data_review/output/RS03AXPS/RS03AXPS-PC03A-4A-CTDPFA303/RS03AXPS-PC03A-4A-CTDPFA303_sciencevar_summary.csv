@@ -1,0 +1,29 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,streamed,ctdpf_optode_sample,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",22456600,0,0,0,916,22455684,100.0,1027.2888,1027.0647,1027.4439,0.0465
+deployment0001,streamed,ctdpf_optode_sample,practical_salinity,1,-9999999.0,"[0.0, 42.0]",22456600,0,0,0,920,22455680,100.0,33.8021,33.5576,33.9238,0.051
+deployment0001,streamed,ctdpf_optode_sample,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",22456600,0,0,1,0,22456599,100.0,144.8873,87.8363,190.7779,20.7362
+deployment0001,streamed,ctdpf_optode_sample,seawater_temperature,ºC,-9999999.0,"[-2.0, 40.0]",22456600,0,0,0,0,22456600,100.0,7.4681,7.0072,8.1086,0.2007
+deployment0001,streamed,ctdpf_optode_sample,seawater_pressure,dbar,-9999999.0,"[0.0, 6000.0]",22456600,0,0,0,0,22456600,100.0,190.8025,188.7169,193.7674,0.7504
+deployment0001,streamed,ctdpf_optode_sample,seawater_conductivity,S m-1,-9999999.0,"[0.0, 6.0]",22456600,0,0,0,1,22456599,100.0,3.4701,3.3862,3.5241,0.0193
+deployment0001,streamed,ctdpf_optode_sample,ctd_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",22456600,0,0,1,0,22456599,100.0,184.1628,111.6862,242.0427,26.3612
+deployment0002,streamed,ctdpf_optode_sample,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",31579790,0,0,0,4,31579786,100.0,1027.2303,1026.1428,1027.4665,0.2223
+deployment0002,streamed,ctdpf_optode_sample,practical_salinity,1,-9999999.0,"[0.0, 42.0]",31579790,0,0,0,4,31579786,100.0,33.7012,32.3076,33.8994,0.2889
+deployment0002,streamed,ctdpf_optode_sample,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",31579790,0,0,1,1,31579788,100.0,145.6064,86.6805,205.7629,17.8072
+deployment0002,streamed,ctdpf_optode_sample,seawater_temperature,ºC,-9999999.0,"[-2.0, 40.0]",31579790,0,0,0,0,31579790,100.0,7.5004,6.8371,8.0969,0.186
+deployment0002,streamed,ctdpf_optode_sample,seawater_pressure,dbar,-9999999.0,"[0.0, 6000.0]",31579790,0,0,0,0,31579790,100.0,196.3362,194.2048,198.6205,0.7188
+deployment0002,streamed,ctdpf_optode_sample,seawater_conductivity,S m-1,-9999999.0,"[0.0, 6.0]",31579790,0,0,0,2,31579788,100.0,3.4639,3.3142,3.5269,0.0346
+deployment0002,streamed,ctdpf_optode_sample,ctd_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",31579790,0,0,1,1,31579788,100.0,184.8888,110.2527,261.163,22.5582
+deployment0003,streamed,ctdpf_optode_sample,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",32686192,0,0,0,24814,32661378,99.92,1027.3751,1027.1144,1027.4961,0.045
+deployment0003,streamed,ctdpf_optode_sample,practical_salinity,1,-9999999.0,"[0.0, 42.0]",32686192,0,0,0,44639,32641553,99.86,33.882,33.6791,33.9891,0.0227
+deployment0003,streamed,ctdpf_optode_sample,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",32686192,0,0,1,1,32686190,100.0,147.2031,76.2389,188.5689,18.6243
+deployment0003,streamed,ctdpf_optode_sample,seawater_temperature,ºC,-9999999.0,"[-2.0, 40.0]",32686192,0,0,0,0,32686192,100.0,7.2904,6.5914,8.0502,0.2091
+deployment0003,streamed,ctdpf_optode_sample,seawater_pressure,dbar,-9999999.0,"[0.0, 6000.0]",32686192,0,0,0,0,32686192,100.0,190.3429,188.189,192.5316,0.6992
+deployment0003,streamed,ctdpf_optode_sample,seawater_conductivity,S m-1,-9999999.0,"[0.0, 6.0]",32686192,0,0,0,7156,32679036,99.98,3.4614,3.3732,3.5227,0.0174
+deployment0003,streamed,ctdpf_optode_sample,ctd_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",32686192,0,0,2,0,32686190,100.0,187.2723,97.047,239.617,23.642
+deployment0004,streamed,ctdpf_optode_sample,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",28276778,0,0,0,222,28276556,100.0,1027.3812,1027.217,1027.5299,0.0335
+deployment0004,streamed,ctdpf_optode_sample,practical_salinity,1,-9999999.0,"[0.0, 42.0]",28276778,0,0,0,3362,28273416,99.99,33.8983,33.8204,33.9762,0.0155
+deployment0004,streamed,ctdpf_optode_sample,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",28276778,0,0,1,2,28276775,100.0,136.1478,70.8267,174.8297,23.4395
+deployment0004,streamed,ctdpf_optode_sample,seawater_temperature,ºC,-9999999.0,"[-2.0, 40.0]",28276778,0,0,0,0,28276778,100.0,7.3309,6.7182,8.0218,0.2056
+deployment0004,streamed,ctdpf_optode_sample,seawater_pressure,dbar,-9999999.0,"[0.0, 6000.0]",28276778,0,0,0,0,28276778,100.0,190.1572,187.325,193.775,0.7816
+deployment0004,streamed,ctdpf_optode_sample,seawater_conductivity,S m-1,-9999999.0,"[0.0, 6.0]",28276778,0,0,0,8,28276770,100.0,3.4666,3.3795,3.5286,0.0185
+deployment0004,streamed,ctdpf_optode_sample,ctd_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",28276778,0,0,3,0,28276775,100.0,173.2168,90.216,222.154,29.7875
