@@ -18,7 +18,7 @@ import functions.plotting as pf
 import functions.combine_datasets as cd
 
 
-def main(url_list, sDir, plot_type, deployment_num, start_time, end_time):
+def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method_num):
 
     for i, u in enumerate(url_list):
         print('\nUrl {} of {}: {}'.format(i + 1, len(url_list), u))
@@ -55,21 +55,30 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time):
             with xr.open_dataset(d, mask_and_scale=False) as ds:
                 ds = ds.swap_dims({'obs': 'time'})
 
-            if start_time is not None and end_time is not None:
-                ds = ds.sel(time=slice(start_time, end_time))
-                if len(ds['time'].values) == 0:
-                    print('No data to plot for specified time range: ({} to {})'.format(start_time, end_time))
-                    continue
-
             fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(d)
-            # save_dir = os.path.join(sDir, array, subsite, refdes, plot_type, deployment)
+
+            if method_num is not None:
+                if method != method_num:
+                    print(method_num, method)
+                    continue
 
             if deployment_num is not None:
                 if int(deployment.split('0')[-1]) is not deployment_num:
                     print(type(int(deployment.split('0')[-1])), type(deployment_num))
                     continue
 
-            save_dir = os.path.join(sDir, array, subsite, refdes, plot_type, ms.split('-')[0], deployment)
+            if start_time is not None and end_time is not None:
+                ds = ds.sel(time=slice(start_time, end_time))
+                if len(ds['time'].values) == 0:
+                    print('No data to plot for specified time range: ({} to {})'.format(start_time, end_time))
+                    continue
+                stime = start_time.strftime('%Y-%m-%d')
+                etime = end_time.strftime('%Y-%m-%d')
+                ext = stime + 'to' + etime  # .join((ds0_method, ds1_method
+                save_dir = os.path.join(sDir, array, subsite, refdes, plot_type, ms.split('-')[0], deployment, ext)
+            else:
+                save_dir = os.path.join(sDir, array, subsite, refdes, plot_type, ms.split('-')[0], deployment)
+
             cf.create_dir(save_dir)
 
             # initialize an empty data array for science variables in dictionary
@@ -98,6 +107,11 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time):
                     else:
                         pressure = pf.pressure_var(ds, ds.data_vars.keys())
                         y = ds[pressure].values
+
+                    if len(y[y != 0]) == 0 or sum(np.isnan(y)) == len(y) or en(y[y != ds[pressure]._FillValue]) == 0:
+                        print('Pressure Array of all zeros or NaNs or fill values - using pressure coordinate')
+                        pressure = [pressure for pressure in ds.coords.keys() if 'pressure' in ds.coords[pressure].name]
+                        y = ds.coords[pressure[0]].values
 
                     sh['pressure'] = np.append(sh['pressure'], y)
 
@@ -196,14 +210,24 @@ if __name__ == '__main__':
     set to None if plotting all data
     set to dt.datetime(yyyy, m, d, h, m, s) for specific dates
     '''
-    start_time = None
-    end_time = None
-    deployment_num = None
+    start_time = dt.datetime(2014, 12, 1)
+    end_time = dt.datetime(2015, 5, 2)
+    method_num = 'recovered_wfp'
+    deployment_num = 2
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235146-CP03ISSM-MFD37-03-CTDBPD000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235133-CP03ISSM-MFD37-03-CTDBPD000-recovered_host-ctdbp_cdef_dcl_instrument_recovered/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235321-CP03ISSM-MFD37-03-CTDBPD000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html']
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140613-CP02PMCO-WFP01-01-VEL3DK000-telemetered-vel3d_k_wfp_stc_instrument/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140547-CP02PMCO-WFP01-01-VEL3DK000-recovered_wfp-vel3d_k_wfp_instrument/catalog.html']
 
+        #
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135948-CP02PMCO-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140002-CP02PMCO-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html']
+
+    main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method_num)
+
+    # [
+    #     'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235146-CP03ISSM-MFD37-03-CTDBPD000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
+    #     'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235133-CP03ISSM-MFD37-03-CTDBPD000-recovered_host-ctdbp_cdef_dcl_instrument_recovered/catalog.html',
+        # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235321-CP03ISSM-MFD37-03-CTDBPD000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html']
         # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235715-CP03ISSM-MFD37-04-DOSTAD000-telemetered-dosta_abcdjm_dcl_instrument/catalog.html',
         #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235659-CP03ISSM-MFD37-04-DOSTAD000-recovered_host-dosta_abcdjm_dcl_instrument_recovered/catalog.html']
 
@@ -256,4 +280,3 @@ if __name__ == '__main__':
         # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T161432-CE09OSPM-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html']
     # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T161444-CE09OSPM-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html'
 
-    main(url_list, sDir, plot_type, deployment_num, start_time, end_time)

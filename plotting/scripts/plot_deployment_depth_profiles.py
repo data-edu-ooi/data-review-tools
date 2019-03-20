@@ -19,7 +19,7 @@ import functions.combine_datasets as cd
 import matplotlib.pyplot as plt
 
 
-def main(url_list, sDir, plot_type, deployment_num, start_time, end_time):
+def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method_num):
 
     for i, u in enumerate(url_list):
         print('\nUrl {} of {}: {}'.format(i + 1, len(url_list), u))
@@ -37,6 +37,17 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time):
         # get sci data review list
         dr_data = cf.refdes_datareview_json(r)
 
+        ps_df, n_streams = cf.get_preferred_stream_info(r)
+
+        # get end times of deployments
+        deployments = []
+        end_times = []
+        for index, row in ps_df.iterrows():
+            deploy = row['deployment']
+            deploy_info = cf.get_deployment_information(dr_data, int(deploy[-4:]))
+            deployments.append(int(deploy[-4:]))
+            end_times.append(pd.to_datetime(deploy_info['stop_date']))
+
         # create a dictionary for science variables from analysis file
         stream_sci_vars_dict = dict()
         for x in dr_data['instrument']['data_streams']:
@@ -50,19 +61,17 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time):
                 if len(sci_vars) > 0:
                     stream_sci_vars_dict[dr_ms]['vars'] = sci_vars
 
-
         for ii, d in enumerate(datasets_sel):
             print('\nDataset {} of {}: {}'.format(ii + 1, len(datasets_sel), d))
             with xr.open_dataset(d, mask_and_scale=False) as ds:
                 ds = ds.swap_dims({'obs': 'time'})
 
-            if start_time is not None and end_time is not None:
-                ds = ds.sel(time=slice(start_time, end_time))
-                if len(ds['time'].values) == 0:
-                    print('No data to plot for specified time range: ({} to {})'.format(start_time, end_time))
-                    continue
-
             fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(d)
+
+            if method_num is not None:
+                if method != method_num:
+                    print(method_num, method)
+                    continue
 
 
             if deployment_num is not None:
@@ -70,7 +79,18 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time):
                     print(type(int(deployment.split('0')[-1])), type(deployment_num))
                     continue
 
-            save_dir = os.path.join(sDir, array, subsite, refdes, plot_type, ms.split('-')[0], deployment)
+            if start_time is not None and end_time is not None:
+                ds = ds.sel(time=slice(start_time, end_time))
+                if len(ds['time'].values) == 0:
+                    print('No data to plot for specified time range: ({} to {})'.format(start_time, end_time))
+                    continue
+                stime = start_time.strftime('%Y-%m-%d')
+                etime = end_time.strftime('%Y-%m-%d')
+                ext = stime + 'to' + etime  # .join((ds0_method, ds1_method
+                save_dir = os.path.join(sDir, array, subsite, refdes, plot_type, ms.split('-')[0], deployment, ext)
+            else:
+                save_dir = os.path.join(sDir, array, subsite, refdes, plot_type, ms.split('-')[0], deployment)
+
             cf.create_dir(save_dir)
 
             # initialize an empty data array for science variables in dictionary
@@ -98,6 +118,11 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time):
                     else:
                         pressure = pf.pressure_var(ds, ds.data_vars.keys())
                         y = ds[pressure].values
+
+                    if len(y[y != 0]) == 0 or sum(np.isnan(y)) == len(y) or en(y[y != ds[pressure]._FillValue]) == 0:
+                        print('Pressure Array of all zeros or NaNs or fill values - using pressure coordinate')
+                        pressure = [pressure for pressure in ds.coords.keys() if 'pressure' in ds.coords[pressure].name]
+                        y = ds.coords[pressure[0]].values
 
                     sh['pressure'] = np.append(sh['pressure'], y)
 
@@ -139,10 +164,12 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time):
                     # Check if the array is all NaNs
                     if sum(np.isnan(z)) == len(z):
                         print('Array of all NaNs - skipping plot.')
+                        continue
 
                     # Check if the array is all fill values
                     elif len(z[z != fv]) == 0:
                         print('Array of all fill values - skipping plot.')
+                        continue
 
                     else:
                         # reject fill values
@@ -182,14 +209,14 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time):
                     clabel = 'Time'
 
                     fig, ax = pf.plot_profiles(z_nofv_nonan_noev, y_nofv_nonan_noev, t_nofv_nonan_noev,
-                                               ylabel, xlabel, clabel, stdev=None)
+                                               ylabel, xlabel, clabel, end_times, deployments, stdev=None)
 
                     ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
                     pf.save_fig(save_dir, sname)
 
                     # Plot data with outliers removed
                     fig, ax = pf.plot_profiles(z_nofv_nonan_noev, y_nofv_nonan_noev, t_nofv_nonan_noev,
-                                               ylabel, xlabel, clabel, stdev=5)
+                                               ylabel, xlabel, clabel, end_times, deployments, stdev=5)
                     ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
 
                     sfile = '_'.join((sname, 'rmoutliers'))
@@ -198,9 +225,36 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time):
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list =  ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235321-CP03ISSM-MFD37-03-CTDBPD000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html',
-                 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235146-CP03ISSM-MFD37-03-CTDBPD000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
-                 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235133-CP03ISSM-MFD37-03-CTDBPD000-recovered_host-ctdbp_cdef_dcl_instrument_recovered/catalog.html']
+    plot_type = 'profile_plots'
+    '''
+        time option: 
+        set to None if plotting all data
+        set to dt.datetime(yyyy, m, d, h, m, s) for specific dates
+    '''
+    start_time = dt.datetime(2014, 12, 1)
+    end_time = dt.datetime(2015, 5, 2)
+    method_num = 'recovered_wfp'
+    deployment_num = 2
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140613-CP02PMCO-WFP01-01-VEL3DK000-telemetered-vel3d_k_wfp_stc_instrument/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140547-CP02PMCO-WFP01-01-VEL3DK000-recovered_wfp-vel3d_k_wfp_instrument/catalog.html']
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140212-CP02PMCO-WFP01-04-FLORTK000-telemetered-flort_sample/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140046-CP02PMCO-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html']
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140522-CP02PMCO-WFP01-05-PARADK000-telemetered-parad_k__stc_imodem_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140453-CP02PMCO-WFP01-05-PARADK000-recovered_wfp-parad_k__stc_imodem_instrument_recovered/catalog.html']
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140015-CP02PMCO-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140032-CP02PMCO-WFP01-02-DOFSTK000-telemetered-dofst_k_wfp_instrument/catalog.html']
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135948-CP02PMCO-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140002-CP02PMCO-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html']
+
+    main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method_num)
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235321-CP03ISSM-MFD37-03-CTDBPD000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html',
+        #          'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235146-CP03ISSM-MFD37-03-CTDBPD000-recovered_inst-ctdbp_cdef_instrument_recovered/catalog.html',
+        #          'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235133-CP03ISSM-MFD37-03-CTDBPD000-recovered_host-ctdbp_cdef_dcl_instrument_recovered/catalog.html']
 
     # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235715-CP03ISSM-MFD37-04-DOSTAD000-telemetered-dosta_abcdjm_dcl_instrument/catalog.html',
     #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235659-CP03ISSM-MFD37-04-DOSTAD000-recovered_host-dosta_abcdjm_dcl_instrument_recovered/catalog.html']
@@ -240,9 +294,5 @@ if __name__ == '__main__':
         # [
         # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T161432-CE09OSPM-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html']
     # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20181217T161444-CE09OSPM-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html'
-    plot_type = 'profile_plots'
-    start_time = None  # dt.datetime(2016, 6, 1, 0, 0, 0)  # optional, set to None if plotting all data
-    end_time = None    # dt.datetime(2017, 10, 1, 0, 0, 0)  # optional, set to None if plotting all data
-    deployment_num = None
 
-    main(url_list, sDir, plot_type, deployment_num, start_time, end_time)
+
