@@ -19,15 +19,6 @@ import xarray as xr
 import datetime
 
 
-
-def get_deployment_information(data, deployment):
-    d_info = [x for x in data['instrument']['deployments'] if x['deployment_number'] == deployment]
-    if d_info:
-        return d_info[0]
-    else:
-        return None
-
-
 def main(url_list, sDir, plot_type):
 
     """""
@@ -69,7 +60,7 @@ def main(url_list, sDir, plot_type):
         end_times = []
         for index, row in ps_df.iterrows():
             deploy = row['deployment']
-            deploy_info = get_deployment_information(dr_data, int(deploy[-4:]))
+            deploy_info = cf.get_deployment_information(dr_data, int(deploy[-4:]))
             deployments.append(int(deploy[-4:]))
             end_times.append(pd.to_datetime(deploy_info['stop_date']))
 
@@ -119,7 +110,7 @@ def main(url_list, sDir, plot_type):
             y_name = []
             for fd in fdatasets_sel:
                 ds = xr.open_dataset(fd, mask_and_scale=False)
-                print(fd)
+                print('\nAppending data file: {}'.format(fd.split('/')[-1]))
                 for var in list(sci_vars_dict[ms]['vars'].keys()):
                     sh = sci_vars_dict[ms]['vars'][var]
                     if ds[var].units == sh['db_units']:
@@ -273,34 +264,39 @@ def main(url_list, sDir, plot_type):
                             else:
                                 sname = '-'.join((r, m, sv))
 
+
                         # group by depth range
                         sname = '_'.join((sname, sv_units))
 
-                        if sv != 'pressure':
-                            columns = ['tsec', 'dbar', str(sv)]
+                        # if sv != 'pressure':
+                        #     columns = ['tsec', 'dbar', str(sv)]
+                        #
+                        #     # select depth bin size for the data group function
+                        #     bin_size = 10
+                        #     min_r = int(round(min(y_nofv_nonan_noev) - bin_size))
+                        #     max_r = int(round(max(y_nofv_nonan_noev) + bin_size))
+                        #     ranges = list(range(min_r, max_r, bin_size))
+                        #     groups, d_groups = gt.group_by_depth_range(t_nofv_nonan_noev_nogr, y_nofv_nonan_noev_nogr,
+                        #                                                z_nofv_nonan_noev_nogr, columns, ranges)
+                        #
 
-                            # select depth bin size for the data group function
-                            bin_size = 10
-                            min_r = int(round(min(y_nofv_nonan_noev) - bin_size))
-                            max_r = int(round(max(y_nofv_nonan_noev) + bin_size))
-                            ranges = list(range(min_r, max_r, bin_size))
-                            groups, d_groups = gt.group_by_depth_range(t_nofv_nonan_noev_nogr, y_nofv_nonan_noev_nogr,
-                                                                       z_nofv_nonan_noev_nogr, columns, ranges)
-                            if (ms.split('-')[0]) == (ps_df[0].values[0].split('-')[0]):
-                                if 'pressure' not in sv:
-                                    print('final_stats_{}-{}-{}-{}'.format(r,
-                                                                           ms.split('-')[0],
-                                                                           ps_df[0].values[0].split('-')[0],
-                                                                           sv))
-                                    stat_data = groups.describe()[sv]
-                                    stat_data.insert(loc=0, column='parameter', value=sv, allow_duplicates=False)
-                                    stat_df = stat_df.append(stat_data)
+                            # if (ms.split('-')[0]) == (ps_df[0].values[0].split('-')[0]):
+                            #     if 'pressure' not in sv:
+                            #         print('final_stats_{}-{}-{}-{}'.format(r,
+                            #                                                ms.split('-')[0],
+                            #                                                ps_df[0].values[0].split('-')[0],
+                            #                                                sv))
+                            #         stat_data = groups.describe()[sv]
+                            #         stat_data.insert(loc=0, column='parameter', value=sv, allow_duplicates=False)
+                            #         stat_df = stat_df.append(stat_data)
 
-                        if sv == 'optical_backscatter':
-                            less_ind = z_nofv_nonan_noev < 0.0004
-                            print(sv, ' < 0.0004', len(less_ind))
-                            more_ind = z_nofv_nonan_noev > 0.01
-                            print(sv, ' > 0.01', len(more_ind))
+
+
+                        # if sv == 'optical_backscatter':
+                        #     less_ind = z_nofv_nonan_noev < 0.0004
+                        #     print(sv, ' < 0.0004', len(less_ind))
+                        #     more_ind = z_nofv_nonan_noev > 0.01
+                        #     print(sv, ' > 0.01', len(more_ind))
 
                         # Plot all data
                         clabel = sv + " (" + sv_units + ")"
@@ -320,16 +316,47 @@ def main(url_list, sDir, plot_type):
                         sfile = '_'.join((sname, 'rmoutliers'))
                         pf.save_fig(save_dir, sfile)
 
+                        # plot data with excluded time range removed
+                        dr = pd.read_csv('https://datareview.marine.rutgers.edu/notes/export')
+                        drn = dr.loc[dr.type == 'exclusion']
+                        if len(drn) != 0:
+                            subsite_node = '-'.join((subsite, r.split('-')[1]))
+                            drne = drn.loc[drn.reference_designator.isin([subsite, subsite_node, r])]
+
+                            t_ex = t_nofv_nonan_noev_nogr
+                            y_ex = y_nofv_nonan_noev_nogr
+                            z_ex = z_nofv_nonan_noev_nogr
+                            for i, row in drne.iterrows():
+                                sdate = cf.format_dates(row.start_date)
+                                edate = cf.format_dates(row.end_date)
+                                ts = np.datetime64(sdate)
+                                te = np.datetime64(edate)
+                                ind = np.where((t_ex < ts) | (t_ex > te), True, False)
+                                if len(ind) != 0:
+                                    t_ex = t_ex[ind]
+                                    z_ex = z_ex[ind]
+                                    y_ex = y_ex[ind]
+
+                            fig, ax = pf.plot_xsection(subsite, t_ex, y_ex, z_ex, clabel, ylabel, stdev=None)
+                            ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+
+                            sfile = '_'.join((sname, 'rmsuspectdata'))
+                            pf.save_fig(save_dir, sfile)
+
                 # write stat file
-                stat_df.to_csv('{}/{}_final_stats.csv'.format(save_dir_stat, r), index=True, float_format='%11.6f')
+                # stat_df.to_csv('{}/{}_final_stats.csv'.format(save_dir_stat, r), index=True, float_format='%11.6f')
 
 
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
     plot_type = 'xsection_plots'
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135248-CP01CNPM-WFP01-04-FLORTK000-telemetered-flort_sample/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135235-CP01CNPM-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html']
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135948-CP02PMCO-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140002-CP02PMCO-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html']
+
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135248-CP01CNPM-WFP01-04-FLORTK000-telemetered-flort_sample/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135235-CP01CNPM-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html']
 
 
         # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135314-CP01CNPM-WFP01-05-PARADK000-telemetered-parad_k__stc_imodem_instrument/catalog.html',
@@ -354,9 +381,6 @@ if __name__ == '__main__':
     #
     # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135341-CP01CNPM-WFP01-01-VEL3DK000-telemetered-vel3d_k_wfp_stc_instrument/catalog.html',
     #  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135328-CP01CNPM-WFP01-01-VEL3DK000-recovered_wfp-vel3d_k_wfp_instrument/catalog.html']
-
-    #
-    #
 
     # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135158-CP01CNPM-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html',
     #  'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135146-CP01CNPM-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html']
