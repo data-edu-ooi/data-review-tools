@@ -231,21 +231,30 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                         [dataind, g_min, g_max, n_nan, n_fv, n_grange] = index_dataset(r, vinfo['var_name'], data, fill_value)
 
                         t_final = t[dataind]
-                        t0 = pd.to_datetime(min(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
-                        t1 = pd.to_datetime(max(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
-                        data_final = data[dataind]
-                        # if sv == 'Seawater Pressure':
-                        #     xx = data_final < 150
-                        #     data_final = data_final[xx]
-                        #     t_final = t_final[xx]
-                        deploy_final = vinfo['deployments'][dataind]
-                        deploy = list(np.unique(deploy_final))
-                        deployments = [int(dd) for dd in deploy]
+                        if len(t_final) > 0:
+                            t0 = pd.to_datetime(min(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
+                            t1 = pd.to_datetime(max(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
+                            data_final = data[dataind]
+                            # if sv == 'Dissolved Oxygen Concentration':
+                            #     xx = (data_final > 0) & (data_final < 400)
+                            #     data_final = data_final[xx]
+                            #     t_final = t_final[xx]
+                            deploy_final = vinfo['deployments'][dataind]
+                            deploy = list(np.unique(deploy_final))
+                            deployments = [int(dd) for dd in deploy]
 
-                        if len(data_final) > 1:
-                            [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(data_final, sd_calc)
+                            if len(data_final) > 1:
+                                [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(data_final, sd_calc)
+                            else:
+                                sdcalc = None
+                                num_outliers = None
+                                mean = None
+                                vmin = None
+                                vmax = None
+                                sd = None
+                                n_stats = None
                         else:
-                            sd_calc = None
+                            sdcalc = None
                             num_outliers = None
                             mean = None
                             vmin = None
@@ -253,7 +262,7 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                             sd = None
                             n_stats = None
                     else:
-                        sd_calc = None
+                        sdcalc = None
                         num_outliers = None
                         mean = None
                         vmin = None
@@ -261,10 +270,14 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                         sd = None
                         n_stats = None
 
+                    if sd_calc:
+                        print_sd = sd_calc
+                    else:
+                        print_sd = sdcalc
                     rows.append([m, list(np.unique(pms)), deployments, sv, lunits, t0, t1, fv_lst, [g_min, g_max],
-                                 n_all, n_nan, n_fv, n_grange, sd_calc, num_outliers, n_stats, mean, vmin, vmax, sd])
+                                 n_all, n_nan, n_fv, n_grange, print_sd, num_outliers, n_stats, mean, vmin, vmax, sd])
 
-                    if len(t) > 0:
+                    if len(t_final) > 0:
                         # plot data used for stats
                         psave_dir = os.path.join(plotting_sDir, array, subsite, r, 'timeseries_reviewed_datarange')
                         cf.create_dir(psave_dir)
