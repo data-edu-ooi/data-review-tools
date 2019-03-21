@@ -119,7 +119,7 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                         pressure = pf.pressure_var(ds, ds.data_vars.keys())
                         y = ds[pressure].values
 
-                    if len(y[y != 0]) == 0 or sum(np.isnan(y)) == len(y) or en(y[y != ds[pressure]._FillValue]) == 0:
+                    if len(y[y != 0]) == 0 or sum(np.isnan(y)) == len(y) or len(y[y != ds[pressure]._FillValue]) == 0:
                         print('Pressure Array of all zeros or NaNs or fill values - using pressure coordinate')
                         pressure = [pressure for pressure in ds.coords.keys() if 'pressure' in ds.coords[pressure].name]
                         y = ds.coords[pressure[0]].values
@@ -202,12 +202,11 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                         else:
                             sname = '-'.join((r, m, sv))
 
-
-                    # Plot all data
                     xlabel = sv + " (" + sv_units + ")"
                     ylabel = y_name[0] + " (" + y_unit[0] + ")"
                     clabel = 'Time'
 
+                    # Plot all data
                     fig, ax = pf.plot_profiles(z_nofv_nonan_noev, y_nofv_nonan_noev, t_nofv_nonan_noev,
                                                ylabel, xlabel, clabel, end_times, deployments, stdev=None)
 
@@ -222,6 +221,34 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                     sfile = '_'.join((sname, 'rmoutliers'))
                     pf.save_fig(save_dir, sfile)
 
+                    # plot data with excluded time range removed
+                    dr = pd.read_csv('https://datareview.marine.rutgers.edu/notes/export')
+                    drn = dr.loc[dr.type == 'exclusion']
+                    if len(drn) != 0:
+                        subsite_node = '-'.join((subsite, r.split('-')[1]))
+                        drne = drn.loc[drn.reference_designator.isin([subsite, subsite_node, r])]
+
+                        t_ex = t_nofv_nonan_noev
+                        y_ex = y_nofv_nonan_noev
+                        z_ex = z_nofv_nonan_noev
+                        for i, row in drne.iterrows():
+                            sdate = cf.format_dates(row.start_date)
+                            edate = cf.format_dates(row.end_date)
+                            ts = np.datetime64(sdate)
+                            te = np.datetime64(edate)
+                            ind = np.where((t_ex < ts) | (t_ex > te), True, False)
+                            if len(ind) != 0:
+                                t_ex = t_ex[ind]
+                                z_ex = z_ex[ind]
+                                y_ex = y_ex[ind]
+
+                        fig, ax = pf.plot_profiles(z_ex, y_ex, t_ex,
+                                                   ylabel, xlabel, clabel, end_times, deployments, stdev=None)
+                        ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+
+                        sfile = '_'.join((sname, 'rmsuspectdata'))
+                        pf.save_fig(save_dir, sfile)
+
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
@@ -231,25 +258,14 @@ if __name__ == '__main__':
         set to None if plotting all data
         set to dt.datetime(yyyy, m, d, h, m, s) for specific dates
     '''
-    start_time = dt.datetime(2014, 12, 1)
-    end_time = dt.datetime(2015, 5, 2)
+    start_time = None #dt.datetime(2014, 12, 1)
+    end_time = None #dt.datetime(2015, 5, 2)
     method_num = 'recovered_wfp'
     deployment_num = 2
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140613-CP02PMCO-WFP01-01-VEL3DK000-telemetered-vel3d_k_wfp_stc_instrument/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140547-CP02PMCO-WFP01-01-VEL3DK000-recovered_wfp-vel3d_k_wfp_instrument/catalog.html']
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135948-CP02PMCO-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140002-CP02PMCO-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html']
 
-        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140212-CP02PMCO-WFP01-04-FLORTK000-telemetered-flort_sample/catalog.html',
-        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140046-CP02PMCO-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html']
-
-        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140522-CP02PMCO-WFP01-05-PARADK000-telemetered-parad_k__stc_imodem_instrument/catalog.html',
-        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140453-CP02PMCO-WFP01-05-PARADK000-recovered_wfp-parad_k__stc_imodem_instrument_recovered/catalog.html']
-
-        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140015-CP02PMCO-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html',
-        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140032-CP02PMCO-WFP01-02-DOFSTK000-telemetered-dofst_k_wfp_instrument/catalog.html']
-
-        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135948-CP02PMCO-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html',
-        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140002-CP02PMCO-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html']
-
+ 
     main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method_num)
 
         # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T235321-CP03ISSM-MFD37-03-CTDBPD000-telemetered-ctdbp_cdef_dcl_instrument/catalog.html',

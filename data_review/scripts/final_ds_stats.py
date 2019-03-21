@@ -18,20 +18,6 @@ import functions.plotting as pf
 import functions.combine_datasets as cd
 
 
-def format_dates(dd):
-    fd = dt.datetime.strptime(dd.replace(',', ''), '%m/%d/%y %I:%M %p')
-    fd2 = dt.datetime.strftime(fd, '%Y-%m-%dT%H:%M:%S')
-    return fd2
-
-
-def get_deployment_information(data, deployment):
-    d_info = [x for x in data['instrument']['deployments'] if x['deployment_number'] == deployment]
-    if d_info:
-        return d_info[0]
-    else:
-        return None
-
-
 def index_dataset(refdes, var_name, var_data, fv):
     n_nan = np.sum(np.isnan(var_data))
     n_fv = np.sum(var_data == fv)
@@ -92,8 +78,8 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
         drne = drn.loc[drn.reference_designator.isin([subsite, subsite_node, r])]
         et = []
         for i, row in drne.iterrows():
-            sdate = format_dates(row.start_date)
-            edate = format_dates(row.end_date)
+            sdate = cf.format_dates(row.start_date)
+            edate = cf.format_dates(row.end_date)
             et.append([sdate, edate])
 
         # get science variable long names from the Data Review Database
@@ -200,7 +186,7 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                     end_times = []
                     for index, row in ps_df.iterrows():
                         deploy = row['deployment']
-                        deploy_info = get_deployment_information(dr_data, int(deploy[-4:]))
+                        deploy_info = cf.get_deployment_information(dr_data, int(deploy[-4:]))
                         deployments.append(int(deploy[-4:]))
                         end_times.append(pd.to_datetime(deploy_info['stop_date']))
 

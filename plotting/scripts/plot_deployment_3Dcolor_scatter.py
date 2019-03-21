@@ -196,10 +196,39 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                             pf.save_fig(save_dir, sname)
 
                             # Plot data with outliers removed
-                            fig, ax = pf.plot_xsection(subsite, t, y, z, clabel, ylabel, stdev=5)
+                            fig, ax = pf.plot_xsection(subsite, t_nofv_nonan_noev, y_nofv_nonan_noev, z_nofv_nonan_noev,
+                                                       clabel, ylabel, stdev=5)
                             ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
                             sfile = '_'.join((sname, 'rmoutliers'))
                             pf.save_fig(save_dir, sfile)
+
+                            # plot data with excluded time range removed
+                            dr = pd.read_csv('https://datareview.marine.rutgers.edu/notes/export')
+                            drn = dr.loc[dr.type == 'exclusion']
+                            if len(drn) != 0:
+                                subsite_node = '-'.join((subsite, r.split('-')[1]))
+                                drne = drn.loc[drn.reference_designator.isin([subsite, subsite_node, r])]
+
+                                t_ex = t_nofv_nonan_noev
+                                y_ex = y_nofv_nonan_noev
+                                z_ex = z_nofv_nonan_noev
+                                for i, row in drne.iterrows():
+                                    sdate = cf.format_dates(row.start_date)
+                                    edate = cf.format_dates(row.end_date)
+                                    ts = np.datetime64(sdate)
+                                    te = np.datetime64(edate)
+                                    ind = np.where((t_ex < ts) | (t_ex > te), True, False)
+                                    if len(ind) != 0:
+                                        t_ex = t_ex[ind]
+                                        z_ex = z_ex[ind]
+                                        y_ex = y_ex[ind]
+
+                                fig, ax = pf.plot_profiles(z_ex, y_ex, t_ex,
+                                                           ylabel, xlabel, clabel, end_times, deployments, stdev=None)
+                                ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+
+                                sfile = '_'.join((sname, 'rmsuspectdata'))
+                                pf.save_fig(save_dir, sfile)
 
 
 if __name__ == '__main__':

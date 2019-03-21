@@ -7,6 +7,7 @@ import itertools
 import time
 import xarray as xr
 import numpy as np
+import datetime as dt
 from urllib.request import urlopen
 import json
 from geopy.distance import geodesic
@@ -346,3 +347,8 @@ def variable_statistics(var_data, stdev=None):
     n = len(varD)
 
     return [num_outliers, mean, min, max, sd, n]
+
+def format_dates(dd):
+    fd = dt.datetime.strptime(dd.replace(',', ''), '%m/%d/%y %I:%M %p')
+    fd2 = dt.datetime.strftime(fd, '%Y-%m-%dT%H:%M:%S')
+    return fd2
