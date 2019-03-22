@@ -212,6 +212,8 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                            't1', 'fill_value', 'global_ranges', 'n_all', 'n_nans', 'n_fillvalues', 'n_grange',
                            'define_stdev', 'n_outliers', 'n_stats', 'mean', 'min', 'max', 'stdev']
                 rows = []
+                if not sd_calc:
+                    sdcalc = None
                 for sv, vinfo in n['vars'].items():
                     print(sv)
 
@@ -287,7 +289,7 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                         end_times = []
                         for index, row in ps_df.iterrows():
                             deploy = row['deployment']
-                            deploy_info = get_deployment_information(dr_data, int(deploy[-4:]))
+                            deploy_info = cf.get_deployment_information(dr_data, int(deploy[-4:]))
                             deployments.append(int(deploy[-4:]))
                             end_times.append(pd.to_datetime(deploy_info['stop_date']))
 
