@@ -108,7 +108,7 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                         pressure = pf.pressure_var(ds, ds.data_vars.keys())
                         y = ds[pressure].values
 
-                    if len(y[y != 0]) == 0 or sum(np.isnan(y)) == len(y) or en(y[y != ds[pressure]._FillValue]) == 0:
+                    if len(y[y != 0]) == 0 or sum(np.isnan(y)) == len(y) or len(y[y != ds[pressure]._FillValue]) == 0:
                         print('Pressure Array of all zeros or NaNs or fill values - using pressure coordinate')
                         pressure = [pressure for pressure in ds.coords.keys() if 'pressure' in ds.coords[pressure].name]
                         y = ds.coords[pressure[0]].values
@@ -223,8 +223,7 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                                         z_ex = z_ex[ind]
                                         y_ex = y_ex[ind]
 
-                                fig, ax = pf.plot_profiles(z_ex, y_ex, t_ex,
-                                                           ylabel, xlabel, clabel, end_times, deployments, stdev=None)
+                                fig, ax = pf.plot_xsection(subsite, t_ex, y_ex, z_ex, clabel, ylabel, stdev=None)
                                 ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
 
                                 sfile = '_'.join((sname, 'rmsuspectdata'))
@@ -239,10 +238,12 @@ if __name__ == '__main__':
     set to None if plotting all data
     set to dt.datetime(yyyy, m, d, h, m, s) for specific dates
     '''
-    start_time = dt.datetime(2014, 12, 1)
-    end_time = dt.datetime(2015, 5, 2)
+    start_time = None #dt.datetime(2014, 12, 1)
+    end_time = None #dt.datetime(2015, 5, 2)
     method_num = 'recovered_wfp'
     deployment_num = 2
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list = []
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135948-CP02PMCO-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html',
+ 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140002-CP02PMCO-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html']
+
     main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method_num)
