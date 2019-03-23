@@ -304,9 +304,6 @@ if __name__ == '__main__':
     sDir = '/Users/lgarzio/Documents/repo/OOI/ooi-data-lab/data-review-tools/data_review/final_stats'
     plotting_sDir = '/Users/lgarzio/Documents/OOI/DataReviews'
     sd_calc = None  # number of standard deviations for outlier calculation. options: int or None
-    url_list = [
-        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181127T022407-GI03FLMA-RIM01-02-CTDMOG040-recovered_inst-ctdmo_ghqr_instrument_recovered/catalog.html',
-        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181127T022421-GI03FLMA-RIM01-02-CTDMOG040-recovered_host-ctdmo_ghqr_sio_mule_instrument/catalog.html',
-        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181127T022434-GI03FLMA-RIM01-02-CTDMOG040-telemetered-ctdmo_ghqr_sio_mule_instrument/catalog.html']
+    url_list = []
 
     main(sDir, plotting_sDir, url_list, sd_calc)
