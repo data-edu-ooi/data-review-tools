@@ -179,6 +179,24 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                             z_nofv_nonan_noev = z_nofv_nonan[ev_ind]
                             print(len(z) - len(ev_ind), ' Extreme Values', '|1e7|')
 
+                            # reject values outside global ranges:
+                            global_min, global_max = cf.get_global_ranges(r, sv)
+                            # platform not in qc-table (parad_k_par)
+                            # global_min = 0
+                            # global_max = 2500
+                            if isinstance(global_min, (int, float)) and isinstance(global_max, (int, float)):
+                                gr_ind = cf.reject_global_ranges(z_nofv_nonan_noev, global_min, global_max)
+                                t_nofv_nonan_noev_nogr = t_nofv_nonan_noev[gr_ind]
+                                y_nofv_nonan_noev_nogr = y_nofv_nonan_noev[gr_ind]
+                                z_nofv_nonan_noev_nogr = z_nofv_nonan_noev[gr_ind]
+                                print(len(z_nofv_nonan_noev) - len(gr_ind),
+                                      ' Global ranges for : {} - {}'.format(global_min, global_max))
+                            else:
+                                t_nofv_nonan_noev_nogr = t_nofv_nonan_noev
+                                y_nofv_nonan_noev_nogr = y_nofv_nonan_noev
+                                z_nofv_nonan_noev_nogr = z_nofv_nonan_noev
+                                print('No global ranges: {} - {}'.format(global_min, global_max))
+
                             if len(y_nofv_nonan_noev) > 0:
                                 if m == 'common_stream_placeholder':
                                     sname = '-'.join((r, sv))
@@ -190,13 +208,15 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                             clabel = sv + " (" + sv_units + ")"
                             ylabel = y_name[0] + " (" + y_unit[0] + ")"
                             print(clabel, ylabel)
-                            fig, ax = pf.plot_xsection(subsite, t_nofv_nonan_noev, y_nofv_nonan_noev, z_nofv_nonan_noev,
+                            fig, ax = pf.plot_xsection(subsite, t_nofv_nonan_noev_nogr,
+                                                       y_nofv_nonan_noev_nogr, z_nofv_nonan_noev_nogr,
                                                        clabel, ylabel, stdev=None)
                             ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
                             pf.save_fig(save_dir, sname)
 
                             # Plot data with outliers removed
-                            fig, ax = pf.plot_xsection(subsite, t_nofv_nonan_noev, y_nofv_nonan_noev, z_nofv_nonan_noev,
+                            fig, ax = pf.plot_xsection(subsite, t_nofv_nonan_noev_nogr,
+                                                       y_nofv_nonan_noev_nogr, z_nofv_nonan_noev_nogr,
                                                        clabel, ylabel, stdev=5)
                             ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
                             sfile = '_'.join((sname, 'rmoutliers'))
@@ -209,9 +229,9 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                                 subsite_node = '-'.join((subsite, r.split('-')[1]))
                                 drne = drn.loc[drn.reference_designator.isin([subsite, subsite_node, r])]
 
-                                t_ex = t_nofv_nonan_noev
-                                y_ex = y_nofv_nonan_noev
-                                z_ex = z_nofv_nonan_noev
+                                t_ex = t_nofv_nonan_noev_nogr
+                                y_ex = y_nofv_nonan_noev_nogr
+                                z_ex = z_nofv_nonan_noev_nogr
                                 for i, row in drne.iterrows():
                                     sdate = cf.format_dates(row.start_date)
                                     edate = cf.format_dates(row.end_date)
@@ -241,9 +261,9 @@ if __name__ == '__main__':
     start_time = None #dt.datetime(2014, 12, 1)
     end_time = None #dt.datetime(2015, 5, 2)
     method_num = 'recovered_wfp'
-    deployment_num = 2
+    deployment_num = 9
+
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135948-CP02PMCO-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html',
- 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140002-CP02PMCO-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html']
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140046-CP02PMCO-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html']
 
     main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method_num)
