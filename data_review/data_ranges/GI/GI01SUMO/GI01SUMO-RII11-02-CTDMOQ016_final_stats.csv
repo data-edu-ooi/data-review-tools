@@ -1,6 +1,0 @@
-common_stream_name,preferred_methods_streams,deployments,long_name,units,t0,t1,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,define_stdev,n_outliers,n_stats,mean,min,max,stdev
-ctdmo_ghqr_instrument,['recovered_inst-ctdmo_ghqr_instrument_recovered'],"[1, 3, 4]",Practical Salinity,['1'],2014-09-10T18:52:31,2017-10-11T23:52:31,[-9999999.0],"[0.0, 42.0]",153150,0,0,0,9,0,153150,34.9096,34.7801,34.9749,0.0156
-ctdmo_ghqr_instrument,['recovered_inst-ctdmo_ghqr_instrument_recovered'],"[1, 3, 4]",Seawater Conductivity,['S m-1'],2014-09-10T18:52:31,2017-10-11T23:52:31,[-9999999.0],"[0.0, 6.0]",153150,0,0,0,9,0,153150,3.2598,3.2099,3.3365,0.0213
-ctdmo_ghqr_instrument,['recovered_inst-ctdmo_ghqr_instrument_recovered'],"[1, 3, 4]",Seawater Density,['kg m-3'],2014-09-10T18:52:31,2017-10-11T23:52:31,[-9999999.0],"[1000.0, 1100.0]",153150,0,0,0,9,3,153147,1029.3498,1029.1685,1029.4044,0.0226
-ctdmo_ghqr_instrument,['recovered_inst-ctdmo_ghqr_instrument_recovered'],"[1, 3, 4]",Seawater Pressure,['dbar'],2014-09-10T18:52:31,2017-10-11T23:52:31,[-9999.0],"[0.0, 6000.0]",153150,0,0,0,9,8,153142,350.9318,327.4041,357.6288,2.6764
-ctdmo_ghqr_instrument,['recovered_inst-ctdmo_ghqr_instrument_recovered'],"[1, 3, 4]",Seawater Temperature,['ºC'],2014-09-10T18:52:31,2017-10-11T23:52:31,[-9999999.0],"[-2.0, 40.0]",153150,0,0,0,9,0,153150,3.9546,3.4442,4.7769,0.226
