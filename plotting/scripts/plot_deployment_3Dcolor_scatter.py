@@ -18,7 +18,7 @@ import functions.plotting as pf
 import functions.combine_datasets as cd
 
 
-def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method_num):
+def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method_num, zdbar):
 
     for i, u in enumerate(url_list):
         print('\nUrl {} of {}: {}'.format(i + 1, len(url_list), u))
@@ -222,6 +222,19 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                             sfile = '_'.join((sname, 'rmoutliers'))
                             pf.save_fig(save_dir, sfile)
 
+                            # Plot data for a selected depth range
+                            if zdbar is not None:
+                                y_ind = y_nofv_nonan_noev_nogr < zdbar
+                                t_y = t_nofv_nonan_noev_nogr[y_ind]
+                                y_y = y_nofv_nonan_noev_nogr[y_ind]
+                                z_y = z_nofv_nonan_noev_nogr[y_ind]
+
+                                fig, ax = pf.plot_xsection(subsite, t_y, y_y, z_y, clabel, ylabel, stdev=None)
+                                ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+
+                                sfile = '_'.join((sname, 'rmdepthrange'))
+                                pf.save_fig(save_dir, sfile)
+
                             # plot data with excluded time range removed
                             dr = pd.read_csv('https://datareview.marine.rutgers.edu/notes/export')
                             drn = dr.loc[dr.type == 'exclusion']
@@ -260,10 +273,11 @@ if __name__ == '__main__':
     '''
     start_time = None #dt.datetime(2014, 12, 1)
     end_time = None #dt.datetime(2015, 5, 2)
-    method_num = 'recovered_wfp'
-    deployment_num = 9
+    method_num = 'recovered_cspp'
+    deployment_num = 4
+    zdbar = None
 
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140046-CP02PMCO-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html']
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135537-CP01CNSP-SP001-10-PARADJ000-recovered_cspp-parad_j_cspp_instrument_recovered/catalog.html']
 
-    main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method_num)
+    main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method_num, zdbar)

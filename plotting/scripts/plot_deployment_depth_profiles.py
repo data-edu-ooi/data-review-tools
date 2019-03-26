@@ -19,7 +19,7 @@ import functions.combine_datasets as cd
 import matplotlib.pyplot as plt
 
 
-def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method_num):
+def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method_num, zdbar):
 
     for i, u in enumerate(url_list):
         print('\nUrl {} of {}: {}'.format(i + 1, len(url_list), u))
@@ -224,6 +224,7 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                     ylabel = y_name[0] + " (" + y_unit[0] + ")"
                     clabel = 'Time'
 
+
                     # Plot all data
                     fig, ax = pf.plot_profiles(z_nofv_nonan_noev_nogr, y_nofv_nonan_noev_nogr, t_nofv_nonan_noev_nogr,
                                                ylabel, xlabel, clabel, end_times, deployments, stdev=None)
@@ -239,33 +240,49 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                     sfile = '_'.join((sname, 'rmoutliers'))
                     pf.save_fig(save_dir, sfile)
 
+                    # Plot data for a selected depth range
+                    if zdbar is not None:
+                        y_ind = y_nofv_nonan_noev_nogr < zdbar
+                        t_y = t_nofv_nonan_noev_nogr[y_ind]
+                        y_y = y_nofv_nonan_noev_nogr[y_ind]
+                        z_y = z_nofv_nonan_noev_nogr[y_ind]
+
+                        fig, ax = pf.plot_profiles(z_y, y_y, t_y,
+                                                   ylabel, xlabel, clabel, end_times, deployments, stdev=None)
+                        ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+
+                        sfile = '_'.join((sname, 'rmdepthrange'))
+                        pf.save_fig(save_dir, sfile)
+
                     # plot data with excluded time range removed
                     dr = pd.read_csv('https://datareview.marine.rutgers.edu/notes/export')
                     drn = dr.loc[dr.type == 'exclusion']
+
                     if len(drn) != 0:
                         subsite_node = '-'.join((subsite, r.split('-')[1]))
                         drne = drn.loc[drn.reference_designator.isin([subsite, subsite_node, r])]
 
-                        t_ex = t_nofv_nonan_noev_nogr
-                        y_ex = y_nofv_nonan_noev_nogr
-                        z_ex = z_nofv_nonan_noev_nogr
-                        for i, row in drne.iterrows():
-                            sdate = cf.format_dates(row.start_date)
-                            edate = cf.format_dates(row.end_date)
-                            ts = np.datetime64(sdate)
-                            te = np.datetime64(edate)
-                            ind = np.where((t_ex < ts) | (t_ex > te), True, False)
-                            if len(ind) != 0:
-                                t_ex = t_ex[ind]
-                                z_ex = z_ex[ind]
-                                y_ex = y_ex[ind]
+                        if len(drne) != 0:
+                            t_ex = t_nofv_nonan_noev_nogr
+                            y_ex = y_nofv_nonan_noev_nogr
+                            z_ex = z_nofv_nonan_noev_nogr
+                            for i, row in drne.iterrows():
+                                sdate = cf.format_dates(row.start_date)
+                                edate = cf.format_dates(row.end_date)
+                                ts = np.datetime64(sdate)
+                                te = np.datetime64(edate)
+                                ind = np.where((t_ex < ts) | (t_ex > te), True, False)
+                                if len(ind) != 0:
+                                    t_ex = t_ex[ind]
+                                    z_ex = z_ex[ind]
+                                    y_ex = y_ex[ind]
 
-                        fig, ax = pf.plot_profiles(z_ex, y_ex, t_ex,
-                                                   ylabel, xlabel, clabel, end_times, deployments, stdev=None)
-                        ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+                            fig, ax = pf.plot_profiles(z_ex, y_ex, t_ex,
+                                                       ylabel, xlabel, clabel, end_times, deployments, stdev=None)
+                            ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
 
-                        sfile = '_'.join((sname, 'rmsuspectdata'))
-                        pf.save_fig(save_dir, sfile)
+                            sfile = '_'.join((sname, 'rmsuspectdata'))
+                            pf.save_fig(save_dir, sfile)
 
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
@@ -278,7 +295,9 @@ if __name__ == '__main__':
     '''
     start_time = None
     end_time = None
-    method_num = 'recovered_wfp'
-    deployment_num = 9
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140046-CP02PMCO-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html']
-    main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method_num)
+    method_num = 'recovered_cspp'
+    deployment_num = 4
+    zdbar = None
+
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135537-CP01CNSP-SP001-10-PARADJ000-recovered_cspp-parad_j_cspp_instrument_recovered/catalog.html']
+    main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method_num, zdbar)
