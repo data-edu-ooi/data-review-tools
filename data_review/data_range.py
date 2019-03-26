@@ -19,7 +19,7 @@ import xarray as xr
 import datetime
 
 
-def main(url_list, mDir, bin_size):
+def main(url_list, mDir, bin_size, zdbar):
     """""
     URL : path to instrument data by methods
     sDir : path to the directory on your machine to save files
@@ -241,17 +241,28 @@ def main(url_list, mDir, bin_size):
                             else:
                                 print(len(z_ex), 'no time ranges excluded -  Empty Array', drn)
 
+                            # Plot data for a selected depth range
+                            if zdbar is not None:
+                                y_ind = y_ex < zdbar
+                                t_y = t_ex[y_ind]
+                                y_y = y_ex[y_ind]
+                                z_y = z_ex[y_ind]
+                            else:
+                                t_y = t_ex
+                                y_y = y_ex
+                                z_y = z_ex
+
                         # create data ranges for non - pressure data only
                         if 'pressure' not in sv:
                             columns = ['tsec', 'dbar', str(sv)]
                             # create depth ranges
-                            min_r = int(round(min(y_ex) - bin_size))
-                            max_r = int(round(max(y_ex) + bin_size))
+                            min_r = int(round(min(y_y) - bin_size))
+                            max_r = int(round(max(y_y) + bin_size))
                             ranges = list(range(min_r, max_r, bin_size))
 
                             # group data by depth
-                            groups, d_groups = gt.group_by_depth_range(t_ex, y_ex,
-                                                                       z_ex, columns, ranges)
+                            groups, d_groups = gt.group_by_depth_range(t_y, y_y,
+                                                                       z_y, columns, ranges)
 
                             print('writing data ranges for {}'.format(sv))
                             stat_data = groups.describe()[sv]
@@ -263,24 +274,6 @@ def main(url_list, mDir, bin_size):
                             stat_data.insert(loc=1, column='deployments', value=t_deploy, allow_duplicates=False)
                             stat_df = stat_df.append(stat_data)
 
-                            # # Plot all data
-                            # ylabel = y_name + " (" + y_unit + ")"
-                            # xlabel = sv + " (" + sv_units + ")"
-                            # clabel = 'Time'
-                            # t0 = pd.to_datetime(t_ex.min()).strftime('%Y-%m-%dT%H:%M:%S')
-                            # t1 = pd.to_datetime(t_ex.max()).strftime('%Y-%m-%dT%H:%M:%S')
-                            #
-                            # fig, ax = pf.plot_profiles(z_ex, y_ex, t_ex,
-                            #                            ylabel, xlabel, clabel, end_times, deployments, stdev=None)
-                            #
-                            # title_text = ' '.join((r, ms.split('-')[-1])) + '\n' + t0 + ' - ' + t1
-                            #
-                            # ax.set_title(title_text, fontsize=9)
-                            #
-                            # plt.show()
-
-                            # sfile = '_'.join((sname, 'rmsuspectdata'))
-                            # pf.save_fig(save_dir, sfile)
 
                     # write stat file
                     stat_df.to_csv('{}/{}_data_ranges.csv'.format(save_dir_stat, r), index=True, float_format='%11.6f')
@@ -288,9 +281,7 @@ def main(url_list, mDir, bin_size):
 
 if __name__ == '__main__':
     bin_size = 10
-    mDir = '/Users/leila/Documents/NSFEduSupport/github/data-review-tools/data_review/final_stats'
-    url_list = [
-        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135948-CP02PMCO-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html',
-        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T140002-CP02PMCO-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html']
-
-    main(url_list, mDir, bin_size)
+    zdbar = None
+    mDir = '/Users/leila/Documents/NSFEduSupport/github/data-review-tools/data_review/data_ranges'
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135500-CP01CNSP-SP001-06-DOSTAJ000-recovered_cspp-dosta_abcdjm_cspp_instrument_recovered/catalog.html']
+    main(url_list, mDir, bin_size, zdbar)
