@@ -241,6 +241,10 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                             #     xx = (data_final > 0) & (data_final < 400)
                             #     data_final = data_final[xx]
                             #     t_final = t_final[xx]
+                            # if sv == 'Seawater Conductivity':
+                            #     xx = (data_final > 1) & (data_final < 400)
+                            #     data_final = data_final[xx]
+                            #     t_final = t_final[xx]
                             deploy_final = vinfo['deployments'][dataind]
                             deploy = list(np.unique(deploy_final))
                             deployments = [int(dd) for dd in deploy]
@@ -311,12 +315,12 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                             pf.save_fig(psave_dir, sname)
 
         fsum = pd.DataFrame(rows, columns=headers)
-        fsum.to_csv('{}/{}_final_stats.csv'.format(save_dir, r), index=False)
+        fsum.to_csv('{}/{}_data_ranges.csv'.format(save_dir, r), index=False)
 
 
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
-    sDir = '/Users/lgarzio/Documents/repo/OOI/ooi-data-lab/data-review-tools/data_review/final_stats'
+    sDir = '/Users/lgarzio/Documents/repo/OOI/ooi-data-lab/data-review-tools/data_review/data_ranges'
     plotting_sDir = '/Users/lgarzio/Documents/OOI/DataReviews'
     sd_calc = None  # number of standard deviations for outlier calculation. options: int or None
     url_list = []
