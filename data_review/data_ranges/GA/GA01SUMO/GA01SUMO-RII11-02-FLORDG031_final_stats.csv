@@ -1,3 +1,0 @@
-common_stream_name,preferred_methods_streams,deployments,long_name,units,t0,t1,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,define_stdev,n_outliers,n_stats,mean,min,max,stdev
-science_data_stream,['recovered_host-flord_g_ctdbp_p_dcl_instrument_recovered'],"[2, 3]",Chlorophyll-a Concentration,['µg L-1'],2015-11-21T05:23:21,2017-03-03T23:41:22,[-9999999.0],"[0.0, 50.0]",6303,0,0,0,,,6303,1.6834,0.201,4.9614,0.685
-science_data_stream,['recovered_host-flord_g_ctdbp_p_dcl_instrument_recovered'],"[2, 3]",Total Volume Scattering Coefficient,['m-1 sr-1'],2015-11-21T05:23:21,2017-03-03T23:41:22,[-9999999.0],"[0.0, 0.0079]",6303,0,0,0,,,6303,0.0006,0.0003,0.0025,0.0003
