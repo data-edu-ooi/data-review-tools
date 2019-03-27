@@ -1,0 +1,17 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_inst,dosta_abcdjm_ctdbp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",13383,0,0,58,0,13325,99.57,219.1738,125.3612,259.9884,22.29
+deployment0001,recovered_inst,dosta_abcdjm_ctdbp_instrument_recovered,ctd_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",13383,0,0,58,0,13325,99.57,268.2161,155.758,317.985,26.028
+deployment0002,recovered_inst,dosta_abcdjm_ctdbp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",17933,0,0,0,0,17933,100.0,75.7731,1.8559,327.5446,51.3123
+deployment0002,recovered_inst,dosta_abcdjm_ctdbp_instrument_recovered,ctd_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",17933,0,0,0,0,17933,100.0,95.3242,2.341,337.45,64.1674
+deployment0003,recovered_inst,dosta_abcdjm_ctdbp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",19744,0,0,0,0,19744,100.0,224.0701,67.9712,314.5972,49.8996
+deployment0003,recovered_inst,dosta_abcdjm_ctdbp_instrument_recovered,ctd_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",19744,0,0,0,0,19744,100.0,266.9636,80.36,365.144,56.5617
+deployment0004,recovered_inst,dosta_abcdjm_ctdbp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",13589,0,0,0,0,13589,100.0,46.1101,1.3645,252.3423,51.837
+deployment0004,recovered_inst,dosta_abcdjm_ctdbp_instrument_recovered,ctd_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",13589,0,0,0,0,13589,100.0,58.3821,1.734,316.183,65.3393
+deployment0005,recovered_inst,dosta_abcdjm_ctdbp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",8972,0,0,529,0,8443,94.1,227.6378,37.7684,301.1439,45.9561
+deployment0005,recovered_inst,dosta_abcdjm_ctdbp_instrument_recovered,ctd_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",8972,0,0,529,0,8443,94.1,281.3142,48.107,373.295,55.969
+deployment0006,recovered_inst,dosta_abcdjm_ctdbp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",12955,0,0,1058,0,11897,91.83,120.7932,0.0008,280.6117,85.9097
+deployment0006,recovered_inst,dosta_abcdjm_ctdbp_instrument_recovered,ctd_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",12955,0,0,1058,0,11897,91.83,152.1167,0.001,338.481,107.5889
+deployment0007,recovered_inst,dosta_abcdjm_ctdbp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",16674,0,0,0,0,16674,100.0,200.0261,12.2082,289.5523,68.2343
+deployment0007,recovered_inst,dosta_abcdjm_ctdbp_instrument_recovered,ctd_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",16674,0,0,0,0,16674,100.0,246.7492,15.086,355.388,83.56
+deployment0008,recovered_host,dosta_abcdjm_ctdbp_dcl_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",2093,0,0,0,0,2093,100.0,100.2148,2.137,301.9446,90.4222
+deployment0008,recovered_host,dosta_abcdjm_ctdbp_dcl_instrument_recovered,dosta_ln_optode_oxygen,uM,-9999999.0,"[0.0, 410.0]",2093,0,0,0,0,2093,100.0,124.7751,2.686,362.099,111.9605
