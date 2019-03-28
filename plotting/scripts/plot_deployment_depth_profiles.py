@@ -17,6 +17,7 @@ import functions.common as cf
 import functions.plotting as pf
 import functions.combine_datasets as cd
 import matplotlib.pyplot as plt
+import functions.group_by_timerange as gt
 
 
 def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method_num, zdbar):
@@ -214,6 +215,50 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                             z_nofv_nonan_noev_nogr = z_nofv_nonan_noev
                             print('No global ranges: {} - {}'.format(global_min, global_max))
 
+                        # reject values outside 3 STD in data groups
+                        columns = ['tsec', 'dbar', str(sv)]
+                        bin_size = 10
+                        min_r = int(round(min(y_nofv_nonan_noev_nogr) - bin_size))
+                        max_r = int(round(max(y_nofv_nonan_noev_nogr) + bin_size))
+                        ranges = list(range(min_r, max_r, bin_size))
+                        groups, d_groups = gt.group_by_depth_range(t_nofv_nonan_noev_nogr, y_nofv_nonan_noev_nogr,
+                                                                   z_nofv_nonan_noev_nogr, columns, ranges)
+
+
+                        y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr , time_exclude= [], [], [], [], [], [], [], []
+                        tm = 1
+                        for ii in range(len(groups)):
+                            nan_ind = d_groups[ii + tm].notnull()
+                            xtime = d_groups[ii + tm][nan_ind]
+                            colors = cm.rainbow(np.linspace(0, 1, len(xtime)))
+                            ypres = d_groups[ii + tm + 1][nan_ind]
+                            nval = d_groups[ii + tm + 2][nan_ind]
+                            tm += 2
+
+                            l_arr.append(len(nval))  # count of data to filter out small groups
+                            y_avg.append(ypres.mean())
+                            n_avg.append(nval.mean())
+                            n_min.append(nval.min())
+                            n_max.append(nval.max())
+                            n_std = 3
+                            n0_std.append(nval.mean() + n_std * nval.std())
+                            n1_std.append(nval.mean() - n_std * nval.std())
+
+                            indg = nval > (nval.mean() + (3 * nval.std()))
+                            gtime = xtime[indg]
+                            if len(gtime) != 0:
+                                time_exclude.append(pd.to_datetime(gtime.min()).strftime('%Y-%m-%d'))
+                                time_exclude.append(pd.to_datetime(gtime.max()).strftime('%Y-%m-%d'))
+
+                            indl = nval < (nval.mean() - (3 * nval.std()))
+                            ltime = xtime[indl]
+                            if len(ltime) != 0:
+                                time_exclude.append(pd.to_datetime(ltime.min()).strftime('%Y-%m-%d'))
+                                time_exclude.append(pd.to_datetime(ltime.max()).strftime('%Y-%m-%d'))
+
+
+                        print(np.unique(time_exclude))
+
                     if len(z_nofv_nonan_noev) > 0:
                         if m == 'common_stream_placeholder':
                             sname = '-'.join((r, sv))
@@ -230,15 +275,11 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                                                ylabel, xlabel, clabel, end_times, deployments, stdev=None)
 
                     ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+                    ax.plot(n_avg, y_avg, '-k')
+                    ax.fill_betweenx(y_avg, n0_std, n1_std, color='m', alpha=0.2)
+
                     pf.save_fig(save_dir, sname)
 
-                    # Plot data with outliers removed
-                    fig, ax = pf.plot_profiles(z_nofv_nonan_noev_nogr, y_nofv_nonan_noev_nogr, t_nofv_nonan_noev_nogr,
-                                               ylabel, xlabel, clabel, end_times, deployments, stdev=5)
-                    ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-
-                    sfile = '_'.join((sname, 'rmoutliers'))
-                    pf.save_fig(save_dir, sfile)
 
                     # Plot data for a selected depth range
                     if zdbar is not None:
@@ -266,23 +307,33 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                             t_ex = t_nofv_nonan_noev_nogr
                             y_ex = y_nofv_nonan_noev_nogr
                             z_ex = z_nofv_nonan_noev_nogr
-                            for i, row in drne.iterrows():
+                            for ij, row in drne.iterrows():
                                 sdate = cf.format_dates(row.start_date)
                                 edate = cf.format_dates(row.end_date)
                                 ts = np.datetime64(sdate)
                                 te = np.datetime64(edate)
-                                ind = np.where((t_ex < ts) | (t_ex > te), True, False)
-                                if len(ind) != 0:
-                                    t_ex = t_ex[ind]
-                                    z_ex = z_ex[ind]
-                                    y_ex = y_ex[ind]
+                                if t_ex.max() < ts:
+                                    continue
+                                elif t_ex.min() > te:
+                                    continue
+                                else:
+                                    ind = np.where((t_ex < ts) | (t_ex > te), True, False)
+                                    if len(ind) != 0:
+                                        t_ex = t_ex[ind]
+                                        z_ex = z_ex[ind]
+                                        y_ex = y_ex[ind]
+                                        print(len(ind), 'timestamps in: {} - {}'.format(sdate, edate))
 
                             fig, ax = pf.plot_profiles(z_ex, y_ex, t_ex,
                                                        ylabel, xlabel, clabel, end_times, deployments, stdev=None)
                             ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+                            leg_text = ('excluded suspect data',)
+                            ax.legend(leg_text, loc='best', fontsize=6)
 
                             sfile = '_'.join((sname, 'rmsuspectdata'))
                             pf.save_fig(save_dir, sfile)
+                    else:
+                        print(len(z_ex), 'no time ranges excluded -  Empty Array', drn)
 
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
@@ -295,9 +346,11 @@ if __name__ == '__main__':
     '''
     start_time = None
     end_time = None
-    method_num = 'recovered_cspp'
-    deployment_num = 4
+    method_num = 'recovered_wfp' #telemetered'
+    deployment_num = 7
     zdbar = None
-
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135537-CP01CNSP-SP001-10-PARADJ000-recovered_cspp-parad_j_cspp_instrument_recovered/catalog.html']
+    # url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021208-CE09OSPM-WFP01-02-DOFSTK000-telemetered-dofst_k_wfp_instrument/catalog.html']
+    # url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021154-CE09OSPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html']
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021635-CE09OSPM-WFP01-05-PARADK000-recovered_wfp-parad_k__stc_imodem_instrument_recovered/catalog.html']
+    # url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021122-CE09OSPM-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html']
     main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method_num, zdbar)
