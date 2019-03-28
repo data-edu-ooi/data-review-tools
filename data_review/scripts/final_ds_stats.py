@@ -319,15 +319,6 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                                 ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
                             pf.save_fig(psave_dir, sname)
 
-                            if sd_calc:
-                                sname = '-'.join((r, sv, 'hourlyavg-rmoutliers'))
-                                fig, ax = pf.plot_timeseries_all(dfr.index, dfr['dfy'], sv, lunits[0], stdev=sd_calc)
-                                ax.set_title(
-                                    (r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
-                                    fontsize=8)
-                                for etimes in end_times:
-                                    ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
-                                pf.save_fig(psave_dir, sname)
                         else:  # plot all data if not streamed
                             fig, ax = pf.plot_timeseries_all(t_final, data_final, sv, lunits[0], stdev=None)
                             ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
