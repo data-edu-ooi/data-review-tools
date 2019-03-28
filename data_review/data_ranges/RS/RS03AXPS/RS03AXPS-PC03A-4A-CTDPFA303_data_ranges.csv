@@ -1,0 +1,8 @@
+common_stream_name,preferred_methods_streams,deployments,long_name,units,t0,t1,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,define_stdev,n_outliers,n_stats,mean,min,max,stdev
+ctdpf_optode_sample,['streamed-ctdpf_optode_sample'],"[1, 3, 4]",DO,['µmol L-1'],2014-10-02T20:42:53,2018-07-02T20:29:59,[-9999999.0],"[0.0, 400.0]",83160478,0,0,0,10,0,83160472,181.6106,90.216,242.0427,27.3138
+ctdpf_optode_sample,['streamed-ctdpf_optode_sample'],"[1, 3, 4]",DO - Pressure Temp Sal Corrected,['µmol kg-1'],2014-10-02T20:42:53,2018-07-02T20:29:59,[-9999999.0],"[0.0, 400.0]",83160478,0,0,0,10,3,83160472,142.7848,70.8267,190.7779,21.5009
+ctdpf_optode_sample,['streamed-ctdpf_optode_sample'],"[1, 3, 4]",Practical Salinity,['1'],2014-10-02T20:42:53,2018-07-02T20:29:59,[-9999999.0],"[0.0, 42.0]",83160478,0,0,0,10,15111,83145367,33.8659,33.3443,34.0219,0.0507
+ctdpf_optode_sample,['streamed-ctdpf_optode_sample'],"[1, 3, 4]",Seawater Conductivity,['S m-1'],2014-10-02T20:42:53,2018-07-02T20:29:59,[-9999999.0],"[0.0, 6.0]",83160478,0,0,0,10,17,83160461,3.4655,3.2792,3.5286,0.0187
+ctdpf_optode_sample,['streamed-ctdpf_optode_sample'],"[1, 3, 4]",Seawater Density,['kg m-3'],2014-10-02T20:42:53,2018-07-02T20:29:59,[-9999999.0],"[1000.0, 1100.0]",83160478,0,0,0,10,3491,83156987,1027.3538,1026.7676,1027.5299,0.0581
+ctdpf_optode_sample,['streamed-ctdpf_optode_sample'],"[1, 3, 4]",Seawater Pressure,['dbar'],2014-10-02T20:42:53,2018-07-02T20:29:59,[-9999999.0],"[0.0, 6000.0]",83160478,0,0,0,10,0,83160478,190.404,187.325,193.775,0.7847
+ctdpf_optode_sample,['streamed-ctdpf_optode_sample'],"[1, 3, 4]",Seawater Temperature,['ºC'],2014-10-02T20:42:53,2018-07-02T20:29:59,[-9999999.0],"[-2.0, 40.0]",83160478,0,0,0,10,0,83160478,7.3519,6.5914,8.1086,0.2183
