@@ -267,6 +267,9 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                             vmax = None
                             sd = None
                             n_stats = None
+                            deployments = None
+                            t0 = None
+                            t1 = None
                     else:
                         sdcalc = None
                         num_outliers = None
@@ -275,6 +278,9 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                         vmax = None
                         sd = None
                         n_stats = None
+                        deployments = None
+                        t0 = None
+                        t1 = None
 
                     if sd_calc:
                         print_sd = sd_calc
@@ -298,21 +304,46 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                             end_times.append(pd.to_datetime(deploy_info['stop_date']))
 
                         sname = '-'.join((r, sv))
-                        fig, ax = pf.plot_timeseries_all(t_final, data_final, sv, lunits[0], stdev=None)
-                        ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
-                                     fontsize=8)
-                        for etimes in end_times:
-                            ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
-                        pf.save_fig(psave_dir, sname)
 
-                        if sd_calc:
-                            sname = '-'.join((r, sv, 'rmoutliers'))
-                            fig, ax = pf.plot_timeseries_all(t_final, data_final, sv, lunits[0], stdev=sd_calc)
+                        # plot hourly averages for streaming data
+                        if 'streamed' in sci_vars_dict[list(sci_vars_dict.keys())[0]]['ms'][0]:
+                            sname = '-'.join((sname, 'hourlyavg'))
+                            df = pd.DataFrame({'dfx': t_final, 'dfy': data_final})
+                            dfr = df.resample('H', on='dfx').mean()
+
+                            # Plot all data
+                            fig, ax = pf.plot_timeseries_all(dfr.index, dfr['dfy'], sv, lunits[0], stdev=None)
                             ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
                                          fontsize=8)
                             for etimes in end_times:
                                 ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
                             pf.save_fig(psave_dir, sname)
+
+                            if sd_calc:
+                                sname = '-'.join((r, sv, 'hourlyavg-rmoutliers'))
+                                fig, ax = pf.plot_timeseries_all(dfr.index, dfr['dfy'], sv, lunits[0], stdev=sd_calc)
+                                ax.set_title(
+                                    (r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
+                                    fontsize=8)
+                                for etimes in end_times:
+                                    ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
+                                pf.save_fig(psave_dir, sname)
+                        else:  # plot all data if not streamed
+                            fig, ax = pf.plot_timeseries_all(t_final, data_final, sv, lunits[0], stdev=None)
+                            ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
+                                         fontsize=8)
+                            for etimes in end_times:
+                                ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
+                            pf.save_fig(psave_dir, sname)
+
+                            if sd_calc:
+                                sname = '-'.join((r, sv, 'rmoutliers'))
+                                fig, ax = pf.plot_timeseries_all(t_final, data_final, sv, lunits[0], stdev=sd_calc)
+                                ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
+                                             fontsize=8)
+                                for etimes in end_times:
+                                    ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
+                                pf.save_fig(psave_dir, sname)
 
         fsum = pd.DataFrame(rows, columns=headers)
         fsum.to_csv('{}/{}_data_ranges.csv'.format(save_dir, r), index=False)
