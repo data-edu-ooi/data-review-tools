@@ -150,38 +150,52 @@ def main(sDir, url_list, start_time, end_time):
                         else:
                             sname = '-'.join((r, m, sv))
 
-                        # Plot all data
-                        fig, ax = pf.plot_timeseries_all(x_nonan_nofv, y_nonan_nofv, sv, sv_units, stdev=None)
-                        ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
-                                     fontsize=8)
-                        for etimes in end_times:
-                            ax.axvline(x=etimes,  color='b', linestyle='--', linewidth=.6)
-                        # if not any(e is None for e in [global_min, global_max]):
-                        #     ax.axhline(y=global_min, color='r', linestyle='--', linewidth=.6)
-                        #     ax.axhline(y=global_max, color='r', linestyle='--', linewidth=.6)
-                        # else:
-                        #     maxpoint = x[np.argmax(y_nonan_nofv)], max(y_nonan_nofv)
-                        #     ax.annotate('No Global Ranges', size=8,
-                        #                 xy=maxpoint, xytext=(5, 5), textcoords='offset points')
-                        pf.save_fig(save_dir, sname)
+                        # plot hourly averages for streaming data
+                        if 'streamed' in sci_vars_dict[list(sci_vars_dict.keys())[0]]['ms'][0]:
+                            sname = '-'.join((sname, 'hourlyavg'))
+                            df = pd.DataFrame({'dfx': x_nonan_nofv_nE_nogr, 'dfy': y_nonan_nofv_nE_nogr})
+                            dfr = df.resample('H', on='dfx').mean()
 
-                        # Plot data with outliers removed
-                        fig, ax = pf.plot_timeseries_all(x_nonan_nofv_nE_nogr, y_nonan_nofv_nE_nogr, sv, sv_units,
-                                                         stdev=5)
-                        ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
-                                     fontsize=8)
-                        for etimes in end_times:
-                            ax.axvline(x=etimes,  color='b', linestyle='--', linewidth=.6)
-                        # if not any(e is None for e in [global_min, global_max]):
-                        #     ax.axhline(y=global_min, color='r', linestyle='--', linewidth=.6)
-                        #     ax.axhline(y=global_max, color='r', linestyle='--', linewidth=.6)
-                        # else:
-                        #     maxpoint = x[np.argmax(y_nonan_nofv_nE_nogr)], max(y_nonan_nofv_nE_nogr)
-                        #     ax.annotate('No Global Ranges', size=8,
-                        #                 xy=maxpoint, xytext=(5, 5), textcoords='offset points')
+                            # Plot all data
+                            fig, ax = pf.plot_timeseries_all(dfr.index, dfr['dfy'], sv, sv_units, stdev=None)
+                            ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
+                                         fontsize=8)
+                            for etimes in end_times:
+                                ax.axvline(x=etimes, color='b', linestyle='--', linewidth=.6)
+                            pf.save_fig(save_dir, sname)
+                        else:
+                            # Plot all data
+                            fig, ax = pf.plot_timeseries_all(x_nonan_nofv, y_nonan_nofv, sv, sv_units, stdev=None)
+                            ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
+                                         fontsize=8)
+                            for etimes in end_times:
+                                ax.axvline(x=etimes,  color='b', linestyle='--', linewidth=.6)
+                            # if not any(e is None for e in [global_min, global_max]):
+                            #     ax.axhline(y=global_min, color='r', linestyle='--', linewidth=.6)
+                            #     ax.axhline(y=global_max, color='r', linestyle='--', linewidth=.6)
+                            # else:
+                            #     maxpoint = x[np.argmax(y_nonan_nofv)], max(y_nonan_nofv)
+                            #     ax.annotate('No Global Ranges', size=8,
+                            #                 xy=maxpoint, xytext=(5, 5), textcoords='offset points')
+                            pf.save_fig(save_dir, sname)
 
-                        sfile = '_'.join((sname, 'rmoutliers'))
-                        pf.save_fig(save_dir, sfile)
+                            # Plot data with outliers removed
+                            fig, ax = pf.plot_timeseries_all(x_nonan_nofv_nE_nogr, y_nonan_nofv_nE_nogr, sv, sv_units,
+                                                             stdev=5)
+                            ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
+                                         fontsize=8)
+                            for etimes in end_times:
+                                ax.axvline(x=etimes,  color='b', linestyle='--', linewidth=.6)
+                            # if not any(e is None for e in [global_min, global_max]):
+                            #     ax.axhline(y=global_min, color='r', linestyle='--', linewidth=.6)
+                            #     ax.axhline(y=global_max, color='r', linestyle='--', linewidth=.6)
+                            # else:
+                            #     maxpoint = x[np.argmax(y_nonan_nofv_nE_nogr)], max(y_nonan_nofv_nE_nogr)
+                            #     ax.annotate('No Global Ranges', size=8,
+                            #                 xy=maxpoint, xytext=(5, 5), textcoords='offset points')
+
+                            sfile = '_'.join((sname, 'rmoutliers'))
+                            pf.save_fig(save_dir, sfile)
 
 
 
