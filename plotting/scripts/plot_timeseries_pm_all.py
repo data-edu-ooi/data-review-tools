@@ -13,6 +13,7 @@ import os
 import pandas as pd
 import itertools
 import numpy as np
+import datetime as dt
 import functions.common as cf
 import functions.plotting as pf
 import functions.combine_datasets as cd
@@ -93,12 +94,12 @@ def main(sDir, url_list, start_time, end_time):
         # get end times of deployments
         dr_data = cf.refdes_datareview_json(r)
         deployments = []
-        end_times = []
+        dend_times = []
         for index, row in ps_df.iterrows():
             deploy = row['deployment']
             deploy_info = get_deployment_information(dr_data, int(deploy[-4:]))
             deployments.append(int(deploy[-4:]))
-            end_times.append(pd.to_datetime(deploy_info['stop_date']))
+            dend_times.append(pd.to_datetime(deploy_info['stop_date']))
 
         subsite = r.split('-')[0]
         array = subsite[0:2]
@@ -150,6 +151,8 @@ def main(sDir, url_list, start_time, end_time):
                         else:
                             sname = '-'.join((r, m, sv))
 
+                        plt_deploy = [int(x) for x in list(np.unique(vinfo['deployments']))]
+
                         # plot hourly averages for streaming data
                         if 'streamed' in sci_vars_dict[list(sci_vars_dict.keys())[0]]['ms'][0]:
                             sname = '-'.join((sname, 'hourlyavg'))
@@ -158,18 +161,34 @@ def main(sDir, url_list, start_time, end_time):
 
                             # Plot all data
                             fig, ax = pf.plot_timeseries_all(dfr.index, dfr['dfy'], sv, sv_units, stdev=None)
-                            ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
+                            ax.set_title((r + '\nDeployments: ' + str(plt_deploy) + '\n' + t0 + ' - ' + t1),
                                          fontsize=8)
-                            for etimes in end_times:
-                                ax.axvline(x=etimes, color='b', linestyle='--', linewidth=.6)
+
+                            # if plotting a specific time range, plot deployment lines only for those deployments
+                            if type(start_time) == dt.datetime:
+                                for e in list(np.unique(vinfo['deployments'])):
+                                    etime = dend_times[int(e) - 1]
+                                    ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
+                            else:
+                                for etime in dend_times:
+                                    ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
                             pf.save_fig(save_dir, sname)
                         else:
                             # Plot all data
                             fig, ax = pf.plot_timeseries_all(x_nonan_nofv, y_nonan_nofv, sv, sv_units, stdev=None)
-                            ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
+                            ax.set_title((r + '\nDeployments: ' + str(plt_deploy) + '\n' + t0 + ' - ' + t1),
                                          fontsize=8)
-                            for etimes in end_times:
-                                ax.axvline(x=etimes,  color='b', linestyle='--', linewidth=.6)
+
+                            # if plotting a specific time range, plot deployment lines only for those deployments
+                            if type(start_time) == dt.datetime:
+                                for e in list(np.unique(vinfo['deployments'])):
+                                    etime = dend_times[int(e) - 1]
+                                    ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
+                                # etime = dend_times[int(list(np.unique(vinfo['deployments']))[0]) - 1]
+                                # ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
+                            else:
+                                for etime in dend_times:
+                                    ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
                             # if not any(e is None for e in [global_min, global_max]):
                             #     ax.axhline(y=global_min, color='r', linestyle='--', linewidth=.6)
                             #     ax.axhline(y=global_max, color='r', linestyle='--', linewidth=.6)
@@ -182,10 +201,19 @@ def main(sDir, url_list, start_time, end_time):
                             # Plot data with outliers removed
                             fig, ax = pf.plot_timeseries_all(x_nonan_nofv_nE_nogr, y_nonan_nofv_nE_nogr, sv, sv_units,
                                                              stdev=5)
-                            ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
+                            ax.set_title((r + '\nDeployments: ' + str(plt_deploy) + '\n' + t0 + ' - ' + t1),
                                          fontsize=8)
-                            for etimes in end_times:
-                                ax.axvline(x=etimes,  color='b', linestyle='--', linewidth=.6)
+
+                            # if plotting a specific time range, plot deployment lines only for those deployments
+                            if type(start_time) == dt.datetime:
+                                for e in list(np.unique(vinfo['deployments'])):
+                                    etime = dend_times[int(e) - 1]
+                                    ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
+                                # etime = dend_times[int(list(np.unique(vinfo['deployments']))[0]) - 1]
+                                # ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
+                            else:
+                                for etime in dend_times:
+                                    ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
                             # if not any(e is None for e in [global_min, global_max]):
                             #     ax.axhline(y=global_min, color='r', linestyle='--', linewidth=.6)
                             #     ax.axhline(y=global_max, color='r', linestyle='--', linewidth=.6)
