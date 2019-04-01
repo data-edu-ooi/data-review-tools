@@ -11,13 +11,11 @@ import os
 import pandas as pd
 import xarray as xr
 import numpy as np
-import matplotlib.cm as cm
 import datetime as dt
 import functions.common as cf
 import functions.plotting as pf
 import functions.combine_datasets as cd
 import functions.group_by_timerange as gt
-
 
 def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method_num, zdbar, n_std):
 
@@ -211,68 +209,25 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                                                                        z_nofv_nonan_noev_nogr, columns, ranges)
 
                             # reject values outside 3 STD in data groups
+                            y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, \
+                                time_ex, t_std, z_std, y_std = cf.time_exclude_std(groups, d_groups, n_std,
+                                                 t_nofv_nonan_noev_nogr, y_nofv_nonan_noev_nogr, z_nofv_nonan_noev_nogr)
 
-                            y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_ex = cf.time_exclude(groups,
-                                                                                                         d_groups, n_std)
-
-                            # y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr = [], [], [], [], [], [], []
-                            # stat_df = pd.DataFrame()
-                            #
-                            # time_exclude = []
-                            # tm = 1
-                            # for ii in range(len(groups)):
-                            #     nan_ind = d_groups[ii + tm].notnull()
-                            #     xtime = d_groups[ii + tm][nan_ind]
-                            #     colors = cm.rainbow(np.linspace(0, 1, len(xtime)))
-                            #     ypres = d_groups[ii + tm + 1][nan_ind]
-                            #     nval = d_groups[ii + tm + 2][nan_ind]
-                            #     tm += 2
-                            #
-                            #     l_arr.append(len(nval))  # count of data to filter out small groups
-                            #     y_avg.append(ypres.mean())
-                            #     n_avg.append(nval.mean())
-                            #     n_min.append(nval.min())
-                            #     n_max.append(nval.max())
-                            #     n0_std.append(nval.mean() + n_std * nval.std())
-                            #     n1_std.append(nval.mean() - n_std * nval.std())
-                            #
-                            #     indg = nval > (nval.mean() + (n_std * nval.std()))
-                            #     gtime = xtime[indg]
-                            #     if len(gtime) != 0:
-                            #         time_exclude.append(pd.to_datetime(gtime.min()).strftime('%Y-%m-%d'))
-                            #         time_exclude.append(pd.to_datetime(gtime.max()).strftime('%Y-%m-%d'))
-                            #
-                            #     indl = nval < (nval.mean() - (n_std * nval.std()))
-                            #     ltime = xtime[indl]
-                            #     if len(ltime) != 0:
-                            #         time_exclude.append(pd.to_datetime(ltime.min()).strftime('%Y-%m-%d'))
-                            #         time_exclude.append(pd.to_datetime(ltime.max()).strftime('%Y-%m-%d'))
-
-                            print(time_ex)
-
-                            # if len(np.unique(time_exclude)) != 0:
-                            #     t_exclude = time_exclude[0]
-                            #     for i in range(len(time_exclude))[1:len(time_exclude)]:
-                            #         t_exclude = '{}, {}'.format(t_exclude, time_exclude[i])
-                            #
-                            #     stat_data = pd.DataFrame({'deployments': deployment,
-                            #                               'time_to_exclude': t_exclude}, index=[sv])
-
-                            #     stat_data.to_csv(file_exclude, index=True, mode='a', header=False)
-
+                        # Plot data
                         if len(y_nofv_nonan_noev) > 0:
                             if m == 'common_stream_placeholder':
-                                sname = '-'.join((r, sv))
+                                sname = '-'.join((sv, r))
                             else:
-                                sname = '-'.join((r, m, sv))
+                                sname = '-'.join((sv, r, m))
 
-                        # Plot all data
+
                         clabel = sv + " (" + sv_units + ")"
                         ylabel = y_name[0] + " (" + y_unit[0] + ")"
 
-                        fig, ax = pf.plot_xsection(subsite, t_nofv_nonan_noev_nogr,
-                                                   y_nofv_nonan_noev_nogr, z_nofv_nonan_noev_nogr,
-                                                   clabel, ylabel, stdev=None)
+
+                        # plot non-erroneous data
+                        fig, ax, bar = pf.plot_xsection(subsite, t_nofv_nonan_noev_nogr, y_nofv_nonan_noev_nogr,
+                                                        z_nofv_nonan_noev_nogr, clabel, ylabel, stdev=None)
                         ax.set_title((title +
                                       '\n' + 'excluded : fill values, nans, |1e7| values, non-global ranges values'),
                                      fontsize=9)
@@ -280,90 +235,41 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                         sfile = '_'.join(('rm_erroneous_data', sname))
                         pf.save_fig(save_dir, sfile)
 
-                        # Plot data for a selected depth range
+                        # Plot data excluding a depth range
                         if zdbar is not None:
                             y_ind = y_nofv_nonan_noev_nogr < zdbar
                             t_y = t_nofv_nonan_noev_nogr[y_ind]
                             y_y = y_nofv_nonan_noev_nogr[y_ind]
                             z_y = z_nofv_nonan_noev_nogr[y_ind]
 
-                            fig, ax = pf.plot_xsection(subsite, t_y, y_y, z_y, clabel, ylabel, stdev=None)
+                            fig, ax, bar = pf.plot_xsection(subsite, t_y, y_y, z_y, clabel, ylabel, stdev=None)
                             ax.set_title((title +
                                           '\n' + 'excluded : fill values, nans, |1e7| values, non-global ranges values' +
                                           '\n' + 'removed data below ' + str(zdbar) + ' dbar'), fontsize=9)
-
-                            sfile = '_'.join(('rm_depth_range', sname))
                             pf.save_fig(save_dir, sfile)
 
-                        # plot data for excluded time ranges - STD analysis
-                        print(time_ex)
-                        if len(time_ex) != 0:
-                            t_ex = t_nofv_nonan_noev_nogr
-                            y_ex = y_nofv_nonan_noev_nogr
-                            z_ex = z_nofv_nonan_noev_nogr
-                            count = 0
-                            for row in time_ex:
-                                ntime = pd.to_datetime(row)
-                                stime = ntime - pd.Timedelta(days=1)
-                                etime = ntime + pd.Timedelta(days=1)
-                                ts = np.datetime64(stime)
-                                te = np.datetime64(etime)
+                        # plot data excluding time ranges using the STD analysis
+                        if len(t_std) != 0:
+                            fig, ax, bar = pf.plot_xsection(subsite, t_std, y_std, z_std, clabel, ylabel, stdev=None)
+                            ax.set_title((title + '\n' +
+                                          'excluded suspect data using a ' +
+                                          str(n_std) + ' STD filter on a bin-depth = ' + str(bin_size) + ' dbar'),
+                                         fontsize=9)
+                            leg_text = ('excluded suspect data',)
+                            ax.legend(leg_text, loc='best', fontsize=6)
+                            sfile = '_'.join(('rm_suspect_data', sname))
+                            pf.save_fig(save_dir, sfile)
 
-                                ind = np.where((t_ex < ts) | (t_ex > te), True, False)
-                                if len(ind) != 0:
-                                    count += 1
-                                    t_ex = t_ex[ind]
-                                    z_ex = z_ex[ind]
-                                    y_ex = y_ex[ind]
-                                    # print(len(ind), 'timestamps in: {} - {}'.format(stime, etime))
-
-
-                            if len(t_ex) != 0:
-                                fig, ax = pf.plot_xsection(subsite, t_ex, y_ex, z_ex, clabel, ylabel, stdev=None)
-                                ax.set_title((title + '\n' +
-                                              'excluded suspect data using a ' +
-                                              str(n_std) + ' STD filter on a bin-depth = ' + str(bin_size) + ' dbar'),
-                                             fontsize=9)
-                                leg_text = ('excluded suspect data',)
-                                ax.legend(leg_text, loc='best', fontsize=6)
-                                sfile = '_'.join(('rm_suspect_data', sname))
-                                pf.save_fig(save_dir, sfile)
-
-                        # plot data with excluded time range removed
-                        # dr = pd.read_csv('https://datareview.marine.rutgers.edu/notes/export')
-                        # drn = dr.loc[dr.type == 'exclusion']
-                        # if len(drn) != 0:
-                        #     subsite_node = '-'.join((subsite, r.split('-')[1]))
-                        #     drne = drn.loc[drn.reference_designator.isin([subsite, subsite_node, r])]
-                        #     if len(drne) != 0:
-                        #         t_ex = t_nofv_nonan_noev_nogr
-                        #         y_ex = y_nofv_nonan_noev_nogr
-                        #         z_ex = z_nofv_nonan_noev_nogr
-                        #         for i, row in drne.iterrows():
-                        #             sdate = cf.format_dates(row.start_date)
-                        #             edate = cf.format_dates(row.end_date)
-                        #             ts = np.datetime64(sdate)
-                        #             te = np.datetime64(edate)
-                        #             if t_ex.max() < ts:
-                        #                 continue
-                        #             elif t_ex.min() > te:
-                        #                 continue
-                        #             else:
-                        #                 ind = np.where((t_ex < ts) | (t_ex > te), True, False)
-                        #                 if len(ind) != 0:
-                        #                     t_ex = t_ex[ind]
-                        #                     z_ex = z_ex[ind]
-                        #                     y_ex = y_ex[ind]
-                        #                     print(len(ind), 'timestamps in: {} - {}'.format(sdate, edate))
-                        #
-                        #         fig, ax = pf.plot_xsection(subsite, t_ex, y_ex, z_ex, clabel, ylabel, stdev=None)
-                        #         ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-                        #         leg_text = ('excluded suspect data',)
-                        #         ax.legend(leg_text, loc='best', fontsize=6)
-                        #         sfile = '_'.join((sname, 'rmsuspectdata'))
-                        #         pf.save_fig(save_dir, sfile)
-                        # else:
-                        #     print(len(z_ex), 'no time ranges excluded -  Empty Array', drn)
+                        # plot data excluding time range using file export from the data review portal
+                        t_ex, z_ex, y_ex = cf.time_exclude_portal(subsite, r, t_nofv_nonan_noev_nogr,
+                                                                         y_nofv_nonan_noev_nogr, z_nofv_nonan_noev_nogr)
+                        if t_ex is not None:
+                            fig, ax = pf.plot_xsection(subsite, t_ex, y_ex, z_ex, clabel, ylabel, stdev=None)
+                            ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+                            leg_text = ('excluded suspect data',)
+                            ax.legend(leg_text, loc='best', fontsize=6)
+                            sfile = '_'.join((sname, 'rmsuspectdata'))
+                            pf.save_fig(save_dir, sfile)
 
 
 if __name__ == '__main__':
@@ -376,10 +282,11 @@ if __name__ == '__main__':
     '''
     start_time = None #dt.datetime(2014, 12, 1)
     end_time = None #dt.datetime(2015, 5, 2)
-    method_num = 'telemetered'#'recovered_wfp'
-    deployment_num = 6
-    zdbar = None
     n_std = 3
+    method_num = 'recovered_wfp'
+    deployment_num = 3
+    zdbar = None
+
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
     url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021222-CE09OSPM-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html']
 

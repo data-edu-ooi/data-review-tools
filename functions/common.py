@@ -8,7 +8,6 @@ import time
 import xarray as xr
 import numpy as np
 import datetime as dt
-import matplotlib.cm as cm
 from urllib.request import urlopen
 import json
 from geopy.distance import geodesic
@@ -356,14 +355,13 @@ def format_dates(dd):
     return fd2
 
 
-def time_exclude(groups, d_groups, n_std):
+def time_exclude_std(groups, d_groups, n_std, tt, yy, zz):
     y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_exclude = [], [], [], [], [], [], [], []
 
     tm = 1
     for ii in range(len(groups)):
         nan_ind = d_groups[ii + tm].notnull()
         xtime = d_groups[ii + tm][nan_ind]
-        colors = cm.rainbow(np.linspace(0, 1, len(xtime)))
         ypres = d_groups[ii + tm + 1][nan_ind]
         nval = d_groups[ii + tm + 2][nan_ind]
         tm += 2
@@ -389,5 +387,61 @@ def time_exclude(groups, d_groups, n_std):
             time_exclude.append(pd.to_datetime(ltime.max()).strftime('%Y-%m-%d'))
 
     time_to_exclude = np.unique(time_exclude)
-    return y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_to_exclude
 
+    if len(time_to_exclude) != 0:
+        t_ex = tt
+        y_ex = yy
+        z_ex = zz
+
+        for row in time_to_exclude:
+            ntime = pd.to_datetime(row)
+            stime = ntime - pd.Timedelta(days=1)
+            etime = ntime + pd.Timedelta(days=1)
+            ts = np.datetime64(stime)
+            te = np.datetime64(etime)
+
+            ind = np.where((t_ex < ts) | (t_ex > te), True, False)
+            if len(ind) != 0:
+                t_ex = t_ex[ind]
+                z_ex = z_ex[ind]
+                y_ex = y_ex[ind]
+                # print(len(ind), 'timestamps in: {} - {}'.format(stime, etime))
+
+    return y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_to_exclude, t_ex, z_ex, y_ex
+
+
+def time_exclude_portal(subsite, r, tt, yy, zz):
+
+    dr = pd.read_csv('https://datareview.marine.rutgers.edu/notes/export')
+    drn = dr.loc[dr.type == 'exclusion']
+
+    if len(drn) != 0:
+        subsite_node = '-'.join((subsite, r.split('-')[1]))
+        drne = drn.loc[drn.reference_designator.isin([subsite, subsite_node, r])]
+        if len(drne['reference_designator']) != 0:
+            t_ex = tt
+            y_ex = yy
+            z_ex = zz
+            for ij, row in drne.iterrows():
+                sdate = cf.format_dates(row.start_date)
+                edate = cf.format_dates(row.end_date)
+                ts = np.datetime64(sdate)
+                te = np.datetime64(edate)
+                if t_ex.max() < ts:
+                    continue
+                elif t_ex.min() > te:
+                    continue
+                else:
+                    ind = np.where((t_ex < ts) | (t_ex > te), True, False)
+                    if len(ind) != 0:
+                        t_ex = t_ex[ind]
+                        z_ex = z_ex[ind]
+                        y_ex = y_ex[ind]
+                        print(len(ind), 'timestamps in: {} - {}'.format(sdate, edate))
+        else:
+            t_ex, z_ex, y_ex = None, None, None
+    else:
+        print('no time ranges excluded in Review Portal - Empty Array', drn)
+        t_ex, z_ex, y_ex = None, None, None
+
+    return t_ex, z_ex, y_ex
