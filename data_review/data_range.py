@@ -12,6 +12,8 @@ import functions.common as cf
 import functions.combine_datasets as cd
 import functions.group_by_timerange as gt
 import os
+from os import listdir
+from os.path import isfile, join
 import pandas as pd
 import itertools
 import numpy as np
@@ -19,7 +21,7 @@ import xarray as xr
 import datetime
 
 
-def main(url_list, mDir, bin_size, zdbar):
+def main(url_list, mDir, bin_size, zdbar, pfname):
     """""
     URL : path to instrument data by methods
     sDir : path to the directory on your machine to save files
@@ -100,12 +102,15 @@ def main(url_list, mDir, bin_size, zdbar):
 
                 # initialize an empty data array for science variables in dictionary
                 sci_vars_dict = cd.initialize_empty_arrays(stream_sci_vars_dict, ms)
+                y_unit = []
+                y_name = []
 
                 print('\nAppending data from files: {}'.format(ms))
 
                 for fd in fdatasets_sel:
                     ds = xr.open_dataset(fd, mask_and_scale=False)
                     print('\nAppending data file: {}'.format(fd.split('/')[-1]))
+                    fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(fd)
                     for var in list(sci_vars_dict[ms]['vars'].keys()):
                         sh = sci_vars_dict[ms]['vars'][var]
                         if ds[var].units == sh['db_units']:
@@ -149,12 +154,31 @@ def main(url_list, mDir, bin_size, zdbar):
                                 y = ds.coords[pressure[0]].values
 
                             sh['pressure'] = np.append(sh['pressure'], y)
+                            try:
+                                ds[pressure].units
+                                if ds[pressure].units not in y_unit:
+                                    y_unit.append(ds[pressure].units)
+                            except AttributeError:
+                                print('pressure attributes missing units')
+                                if 'pressure unit missing' not in y_unit:
+                                    y_unit.append('pressure unit missing')
 
+                            try:
+                                ds[pressure].long_name
+                                if ds[pressure].long_name not in y_name:
+                                    y_name.append(ds[pressure].long_name)
+                            except AttributeError:
+                                print('pressure attributes missing long_name')
+                                if 'pressure long name missing' not in y_name:
+                                    y_name.append('pressure long name missing')
 
                 # analyse data
                 # create a folder to save data ranges
                 save_dir_stat = os.path.join(mDir, array, subsite)
                 cf.create_dir(save_dir_stat)
+
+                save_fdir = os.path.join(sDir, array, subsite, refdes, 'data_range')
+                cf.create_dir(save_fdir)
                 stat_df = pd.DataFrame()
 
                 for m, n in sci_vars_dict.items():
@@ -163,6 +187,7 @@ def main(url_list, mDir, bin_size, zdbar):
                         if len(vinfo['t']) < 1:
                             print('no variable data to plot')
                         else:
+                            sv_units = vinfo['units'][0]
                             fv = vinfo['fv'][0]
                             t = vinfo['t']
                             z = vinfo['values']
@@ -216,32 +241,68 @@ def main(url_list, mDir, bin_size, zdbar):
                                 z_nofv_nonan_noev_nogr = z_nofv_nonan_noev
                                 print('No global ranges: {} - {}'.format(global_min, global_max))
 
-
                             #reject excluded time ranges
-                            dr = pd.read_csv('https://datareview.marine.rutgers.edu/notes/export')
-                            drn = dr.loc[dr.type == 'exclusion']
-                            if len(drn) != 0:
-                                subsite_node = '-'.join((subsite, r.split('-')[1]))
-                                drne = drn.loc[drn.reference_designator.isin([subsite, subsite_node, r])]
+                            Dpath = '{}/{}/{}/{}/{}'.format(pfname, array, subsite, r, 'time_to_exclude')
 
+                            onlyfiles = []
+                            for item in os.listdir(Dpath):
+                                if not item.startswith('.') and os.path.isfile(os.path.join(Dpath, item)):
+                                    onlyfiles.append(join(Dpath, item))
+
+                            dre = pd.DataFrame()
+                            for nn in onlyfiles:
+                                dr = pd.read_csv(nn)
+                                dre = dre.append(dr, ignore_index=True)
+
+                            drn = dre.loc[dre['Unnamed: 0'] == sv]
+                            list_time = []
+                            for itime in drn.time_to_exclude:
+                                ntime = itime.split(', ')
+                                list_time.extend(ntime)
+
+                            u_time_list = np.unique(list_time)
+                            if len(u_time_list) != 0:
                                 t_ex = t_nofv_nonan_noev_nogr
                                 y_ex = y_nofv_nonan_noev_nogr
                                 z_ex = z_nofv_nonan_noev_nogr
-                                for i, row in drne.iterrows():
-                                    sdate = cf.format_dates(row.start_date)
-                                    edate = cf.format_dates(row.end_date)
-                                    ts = np.datetime64(sdate)
-                                    te = np.datetime64(edate)
+                                for row in u_time_list:
+                                    ntime = pd.to_datetime(row)
+                                    stime = ntime - pd.Timedelta(days=1)
+                                    etime = ntime + pd.Timedelta(days=1)
+                                    ts = np.datetime64(stime)
+                                    te = np.datetime64(etime)
+
                                     ind = np.where((t_ex < ts) | (t_ex > te), True, False)
                                     if len(ind) != 0:
                                         t_ex = t_ex[ind]
                                         z_ex = z_ex[ind]
                                         y_ex = y_ex[ind]
-                                        print(len(ind), 'timestamps in: {} - {}'.format(sdate, edate))
-                            else:
-                                print(len(z_ex), 'no time ranges excluded -  Empty Array', drn)
+                                        # print(len(ind), 'timestamps in: {} - {}'.format(stime, etime))
 
-                            # Plot data for a selected depth range
+                            # dr = pd.read_csv('https://datareview.marine.rutgers.edu/notes/export')
+                            # drn = dr.loc[dr.type == 'exclusion']
+                            # if len(drn) != 0:
+                            #     subsite_node = '-'.join((subsite, r.split('-')[1]))
+                            #     drne = drn.loc[drn.reference_designator.isin([subsite, subsite_node, r])]
+                            #
+                            #     t_ex = t_nofv_nonan_noev_nogr
+                            #     y_ex = y_nofv_nonan_noev_nogr
+                            #     z_ex = z_nofv_nonan_noev_nogr
+                            #     for i, row in drne.iterrows():
+                            #         sdate = cf.format_dates(row.start_date)
+                            #         edate = cf.format_dates(row.end_date)
+                            #         ts = np.datetime64(sdate)
+                            #         te = np.datetime64(edate)
+                            #         ind = np.where((t_ex < ts) | (t_ex > te), True, False)
+                            #         if len(ind) != 0:
+                            #             t_ex = t_ex[ind]
+                            #             z_ex = z_ex[ind]
+                            #             y_ex = y_ex[ind]
+                            #             print(len(ind), 'timestamps in: {} - {}'.format(sdate, edate))
+                            # else:
+                            #     print(len(z_ex), 'no time ranges excluded -  Empty Array', drn)
+
+                            # reject excluded depth range
                             if zdbar is not None:
                                 y_ind = y_ex < zdbar
                                 t_y = t_ex[y_ind]
@@ -270,9 +331,28 @@ def main(url_list, mDir, bin_size, zdbar):
                             t_deploy = deployments[0]
                             for i in range(len(deployments))[1:len(deployments)]:
                                 t_deploy = '{}, {}'.format(t_deploy, deployments[i])
-
                             stat_data.insert(loc=1, column='deployments', value=t_deploy, allow_duplicates=False)
-                            stat_df = stat_df.append(stat_data)
+
+                        stat_df = stat_df.append(stat_data, ignore_index=True)
+
+                        print('stat_df 338')
+
+                        if len(y_y) > 0:
+                            if m == 'common_stream_placeholder':
+                                sname = '-'.join((r, sv))
+                            else:
+                                sname = '-'.join((sv, r, m))
+
+                        clabel = sv + " (" + sv_units + ")"
+                        ylabel = y_name[0] + " (" + y_unit[0] + ")"
+                        title = ' '.join((deployment, refdes, ms.split('-')[0]))
+                        print(clabel, ylabel)
+                        fig, ax = pf.plot_xsection(subsite, t_y, y_y, z_y, clabel, ylabel, stdev=None)
+                        ax.set_title((title + '\n' +
+                                  'excluded : fill values, nans, |1e7| values, non-global ranges values, suspect data'),
+                                     fontsize=9)
+                        sfile = '_'.join(('data_range', sname))
+                        pf.save_fig(save_fdir, sfile)
 
 
                     # write stat file
@@ -282,6 +362,10 @@ def main(url_list, mDir, bin_size, zdbar):
 if __name__ == '__main__':
     bin_size = 10
     zdbar = None
-    mDir = '/Users/leila/Documents/NSFEduSupport/github/data-review-tools/data_review/data_ranges'
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T135500-CP01CNSP-SP001-06-DOSTAJ000-recovered_cspp-dosta_abcdjm_cspp_instrument_recovered/catalog.html']
-    main(url_list, mDir, bin_size, zdbar)
+    mainP = '/Users/leila/Documents/NSFEduSupport/'
+    mDir = mainP + 'github/data-review-tools/data_review/data_ranges'
+    sDir = sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
+    pfname = mainP + 'review/figures'
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021222-CE09OSPM-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html']
+
+    main(url_list, mDir, bin_size, zdbar, pfname)

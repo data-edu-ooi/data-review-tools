@@ -8,6 +8,7 @@ import time
 import xarray as xr
 import numpy as np
 import datetime as dt
+import matplotlib.cm as cm
 from urllib.request import urlopen
 import json
 from geopy.distance import geodesic
@@ -137,6 +138,7 @@ def get_global_ranges(refdes, variable, api_user=None, api_token=None):
             global_max = None
     else:
         raise Exception('uFrame is not responding to request for global ranges. Try again later.')
+
     return [global_min, global_max]
 
 
@@ -352,3 +354,40 @@ def format_dates(dd):
     fd = dt.datetime.strptime(dd.replace(',', ''), '%m/%d/%y %I:%M %p')
     fd2 = dt.datetime.strftime(fd, '%Y-%m-%dT%H:%M:%S')
     return fd2
+
+
+def time_exclude(groups, d_groups, n_std):
+    y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_exclude = [], [], [], [], [], [], [], []
+
+    tm = 1
+    for ii in range(len(groups)):
+        nan_ind = d_groups[ii + tm].notnull()
+        xtime = d_groups[ii + tm][nan_ind]
+        colors = cm.rainbow(np.linspace(0, 1, len(xtime)))
+        ypres = d_groups[ii + tm + 1][nan_ind]
+        nval = d_groups[ii + tm + 2][nan_ind]
+        tm += 2
+
+        l_arr.append(len(nval))  # count of data to filter out small groups
+        y_avg.append(ypres.mean())
+        n_avg.append(nval.mean())
+        n_min.append(nval.min())
+        n_max.append(nval.max())
+        n0_std.append(nval.mean() + n_std * nval.std())
+        n1_std.append(nval.mean() - n_std * nval.std())
+
+        indg = nval > (nval.mean() + (n_std * nval.std()))
+        gtime = xtime[indg]
+        if len(gtime) != 0:
+            time_exclude.append(pd.to_datetime(gtime.min()).strftime('%Y-%m-%d'))
+            time_exclude.append(pd.to_datetime(gtime.max()).strftime('%Y-%m-%d'))
+
+        indl = nval < (nval.mean() - (n_std * nval.std()))
+        ltime = xtime[indl]
+        if len(ltime) != 0:
+            time_exclude.append(pd.to_datetime(ltime.min()).strftime('%Y-%m-%d'))
+            time_exclude.append(pd.to_datetime(ltime.max()).strftime('%Y-%m-%d'))
+
+    time_to_exclude = np.unique(time_exclude)
+    return y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_to_exclude
+
