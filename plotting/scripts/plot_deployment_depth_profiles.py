@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 import functions.group_by_timerange as gt
 
 
-def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method_num, zdbar):
+def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method_num, zdbar, n_std):
 
     for i, u in enumerate(url_list):
         print('\nUrl {} of {}: {}'.format(i + 1, len(url_list), u))
@@ -63,7 +63,8 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                     stream_sci_vars_dict[dr_ms]['vars'] = sci_vars
 
         for ii, d in enumerate(datasets_sel):
-            print('\nDataset {} of {}: {}'.format(ii + 1, len(datasets_sel), d))
+            part_d = d.split('/')[-1]
+            print('\nDataset {} of {}: {}'.format(ii + 1, len(datasets_sel), part_d))
             with xr.open_dataset(d, mask_and_scale=False) as ds:
                 ds = ds.swap_dims({'obs': 'time'})
 
@@ -93,6 +94,9 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                 save_dir = os.path.join(sDir, array, subsite, refdes, plot_type, ms.split('-')[0], deployment)
 
             cf.create_dir(save_dir)
+
+            texclude_dir = os.path.join(sDir, array, subsite, refdes, 'time_to_exclude')
+            cf.create_dir(texclude_dir)
 
             # initialize an empty data array for science variables in dictionary
             sci_vars_dict = cd.initialize_empty_arrays(stream_sci_vars_dict, ms)
@@ -145,6 +149,10 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                         if 'pressure long name missing' not in y_name:
                             y_name.append('pressure long name missing')
 
+            stat_data = pd.DataFrame(columns=['deployments', 'time_to_exclude'])
+            file_exclude = '{}/{}_{}_{}_time_to_exclude_w_{}STD_filter.csv'.format(texclude_dir,
+                                                                                   deployment, refdes, method, n_std)
+            stat_data.to_csv(file_exclude, index=True)
             for m, n in sci_vars_dict.items():
                 for sv, vinfo in n['vars'].items():
                     print(sv)
@@ -208,14 +216,14 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                             y_nofv_nonan_noev_nogr = y_nofv_nonan_noev[gr_ind]
                             z_nofv_nonan_noev_nogr = z_nofv_nonan_noev[gr_ind]
                             print(len(z_nofv_nonan_noev) - len(gr_ind),
-                                  ' Global ranges for : {} - {}'.format(global_min, global_max))
+                                  ' Global ranges: [{} - {}]'.format(global_min, global_max))
                         else:
                             t_nofv_nonan_noev_nogr = t_nofv_nonan_noev
                             y_nofv_nonan_noev_nogr = y_nofv_nonan_noev
                             z_nofv_nonan_noev_nogr = z_nofv_nonan_noev
-                            print('No global ranges: {} - {}'.format(global_min, global_max))
+                            print('No global ranges: [{} - {}]'.format(global_min, global_max))
 
-                        # reject values outside 3 STD in data groups
+                        # group data by depth reject values outside 3 STD in data groups
                         columns = ['tsec', 'dbar', str(sv)]
                         bin_size = 10
                         min_r = int(round(min(y_nofv_nonan_noev_nogr) - bin_size))
@@ -223,62 +231,74 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                         ranges = list(range(min_r, max_r, bin_size))
                         groups, d_groups = gt.group_by_depth_range(t_nofv_nonan_noev_nogr, y_nofv_nonan_noev_nogr,
                                                                    z_nofv_nonan_noev_nogr, columns, ranges)
+                        y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_ex = cf.time_exclude(groups, d_groups, n_std)
+                        # y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_exclude = [], [], [], [], [], [], [], []
+                        # time_exclude = []
+                        # tm = 1
+                        # for ii in range(len(groups)):
+                        #     nan_ind = d_groups[ii + tm].notnull()
+                        #     xtime = d_groups[ii + tm][nan_ind]
+                        #     colors = cm.rainbow(np.linspace(0, 1, len(xtime)))
+                        #     ypres = d_groups[ii + tm + 1][nan_ind]
+                        #     nval = d_groups[ii + tm + 2][nan_ind]
+                        #     tm += 2
+                        #
+                        #     l_arr.append(len(nval))  # count of data to filter out small groups
+                        #     y_avg.append(ypres.mean())
+                        #     n_avg.append(nval.mean())
+                        #     n_min.append(nval.min())
+                        #     n_max.append(nval.max())
+                        #     n0_std.append(nval.mean() + n_std * nval.std())
+                        #     n1_std.append(nval.mean() - n_std * nval.std())
+                        #
+                        #     indg = nval > (nval.mean() + (n_std * nval.std()))
+                        #     gtime = xtime[indg]
+                        #     if len(gtime) != 0:
+                        #         time_exclude.append(pd.to_datetime(gtime.min()).strftime('%Y-%m-%d'))
+                        #         time_exclude.append(pd.to_datetime(gtime.max()).strftime('%Y-%m-%d'))
+                        #
+                        #     indl = nval < (nval.mean() - (n_std * nval.std()))
+                        #     ltime = xtime[indl]
+                        #     if len(ltime) != 0:
+                        #         time_exclude.append(pd.to_datetime(ltime.min()).strftime('%Y-%m-%d'))
+                        #         time_exclude.append(pd.to_datetime(ltime.max()).strftime('%Y-%m-%d'))
+                        #
+                        # time_ex = np.unique(time_exclude)
+                        print(time_ex)
+                        if len(time_ex) != 0:
+                            t_exclude = time_ex[0]
+                            for i in range(len(time_ex))[1:len(time_ex)]:
+                                t_exclude = '{}, {}'.format(t_exclude, time_ex[i])
 
-
-                        y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr , time_exclude= [], [], [], [], [], [], [], []
-                        tm = 1
-                        for ii in range(len(groups)):
-                            nan_ind = d_groups[ii + tm].notnull()
-                            xtime = d_groups[ii + tm][nan_ind]
-                            colors = cm.rainbow(np.linspace(0, 1, len(xtime)))
-                            ypres = d_groups[ii + tm + 1][nan_ind]
-                            nval = d_groups[ii + tm + 2][nan_ind]
-                            tm += 2
-
-                            l_arr.append(len(nval))  # count of data to filter out small groups
-                            y_avg.append(ypres.mean())
-                            n_avg.append(nval.mean())
-                            n_min.append(nval.min())
-                            n_max.append(nval.max())
-                            n_std = 3
-                            n0_std.append(nval.mean() + n_std * nval.std())
-                            n1_std.append(nval.mean() - n_std * nval.std())
-
-                            indg = nval > (nval.mean() + (3 * nval.std()))
-                            gtime = xtime[indg]
-                            if len(gtime) != 0:
-                                time_exclude.append(pd.to_datetime(gtime.min()).strftime('%Y-%m-%d'))
-                                time_exclude.append(pd.to_datetime(gtime.max()).strftime('%Y-%m-%d'))
-
-                            indl = nval < (nval.mean() - (3 * nval.std()))
-                            ltime = xtime[indl]
-                            if len(ltime) != 0:
-                                time_exclude.append(pd.to_datetime(ltime.min()).strftime('%Y-%m-%d'))
-                                time_exclude.append(pd.to_datetime(ltime.max()).strftime('%Y-%m-%d'))
-
-
-                        print(np.unique(time_exclude))
+                            stat_data = pd.DataFrame({'deployments': deployment,
+                                                      'time_to_exclude': t_exclude}, index=[sv])
+                            stat_data.to_csv(file_exclude, index=True, mode='a', header=False)
 
                     if len(z_nofv_nonan_noev) > 0:
                         if m == 'common_stream_placeholder':
-                            sname = '-'.join((r, sv))
+                            sname = '-'.join((sv, r))
                         else:
-                            sname = '-'.join((r, m, sv))
+                            sname = '-'.join((sv, r, m))
 
                     xlabel = sv + " (" + sv_units + ")"
                     ylabel = y_name[0] + " (" + y_unit[0] + ")"
                     clabel = 'Time'
 
 
-                    # Plot all data
+                    # Plot error free  data
                     fig, ax = pf.plot_profiles(z_nofv_nonan_noev_nogr, y_nofv_nonan_noev_nogr, t_nofv_nonan_noev_nogr,
                                                ylabel, xlabel, clabel, end_times, deployments, stdev=None)
 
-                    ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+                    ax.set_title((title +
+                                  '\n' + 'excluded : fill values, nans, |1e7| values, non-global ranges values' +
+                                  '\n' + 'mean (black) and ' + str(n_std) +
+                                  ' std (magenta) calculated for bin-depth = ' +
+                                 str(bin_size) + ' dbar'), fontsize=9)
+
                     ax.plot(n_avg, y_avg, '-k')
                     ax.fill_betweenx(y_avg, n0_std, n1_std, color='m', alpha=0.2)
-
-                    pf.save_fig(save_dir, sname)
+                    sfile = '_'.join(('rm_erroneous_data', sname))
+                    pf.save_fig(save_dir, sfile)
 
 
                     # Plot data for a selected depth range
@@ -292,48 +312,82 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                                                    ylabel, xlabel, clabel, end_times, deployments, stdev=None)
                         ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
 
-                        sfile = '_'.join((sname, 'rmdepthrange'))
+                        sfile = '_'.join(('rm_depth_range', sname))
                         pf.save_fig(save_dir, sfile)
 
-                    # plot data with excluded time range removed
-                    dr = pd.read_csv('https://datareview.marine.rutgers.edu/notes/export')
-                    drn = dr.loc[dr.type == 'exclusion']
 
-                    if len(drn) != 0:
-                        subsite_node = '-'.join((subsite, r.split('-')[1]))
-                        drne = drn.loc[drn.reference_designator.isin([subsite, subsite_node, r])]
+                    # plot data for excluded time ranges - STD analysis
+                    if len(time_ex) != 0:
+                        t_ex = t_nofv_nonan_noev_nogr
+                        y_ex = y_nofv_nonan_noev_nogr
+                        z_ex = z_nofv_nonan_noev_nogr
+                        for row in time_ex:
+                            ntime = pd.to_datetime(row)
+                            stime = ntime - pd.Timedelta(days=1)
+                            etime = ntime + pd.Timedelta(days=1)
+                            ts = np.datetime64(stime)
+                            te = np.datetime64(etime)
 
-                        if len(drne) != 0:
-                            t_ex = t_nofv_nonan_noev_nogr
-                            y_ex = y_nofv_nonan_noev_nogr
-                            z_ex = z_nofv_nonan_noev_nogr
-                            for ij, row in drne.iterrows():
-                                sdate = cf.format_dates(row.start_date)
-                                edate = cf.format_dates(row.end_date)
-                                ts = np.datetime64(sdate)
-                                te = np.datetime64(edate)
-                                if t_ex.max() < ts:
-                                    continue
-                                elif t_ex.min() > te:
-                                    continue
-                                else:
-                                    ind = np.where((t_ex < ts) | (t_ex > te), True, False)
-                                    if len(ind) != 0:
-                                        t_ex = t_ex[ind]
-                                        z_ex = z_ex[ind]
-                                        y_ex = y_ex[ind]
-                                        print(len(ind), 'timestamps in: {} - {}'.format(sdate, edate))
+                            ind = np.where((t_ex < ts) | (t_ex > te), True, False)
+                            if len(ind) != 0:
+                                t_ex = t_ex[ind]
+                                z_ex = z_ex[ind]
+                                y_ex = y_ex[ind]
+                                # print(len(ind), 'timestamps in: {} - {}'.format(stime, etime))
 
+                        if len(t_ex) != 0:
                             fig, ax = pf.plot_profiles(z_ex, y_ex, t_ex,
                                                        ylabel, xlabel, clabel, end_times, deployments, stdev=None)
-                            ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-                            leg_text = ('excluded suspect data',)
-                            ax.legend(leg_text, loc='best', fontsize=6)
+                            ax.set_title((title + '\n' +
+                                          'excluded suspect data using a ' +
+                                          str(n_std) + ' STD filter on a bin-depth = ' + str(bin_size) + ' dbar'),
+                                         fontsize=9)
 
-                            sfile = '_'.join((sname, 'rmsuspectdata'))
+                            sfile = '_'.join(('rm_suspect_data', sname))
                             pf.save_fig(save_dir, sfile)
-                    else:
-                        print(len(z_ex), 'no time ranges excluded -  Empty Array', drn)
+
+                        # # plot data with excluded time range removed - database import
+                        # dr = pd.read_csv('https://datareview.marine.rutgers.edu/notes/export')
+                        # drn = dr.loc[dr.type == 'exclusion']
+                        #
+                        # if len(drn) != 0:
+                        #     subsite_node = '-'.join((subsite, r.split('-')[1]))
+                        #     drne = drn.loc[drn.reference_designator.isin([subsite, subsite_node, r])]
+                        #
+                        #     if len(drne) != 0:
+                        #         t_ex = t_nofv_nonan_noev_nogr
+                        #         y_ex = y_nofv_nonan_noev_nogr
+                        #         z_ex = z_nofv_nonan_noev_nogr
+                        #         count = 0
+                        #         for ij, row in drne.iterrows():
+                        #             sdate = cf.format_dates(row.start_date)
+                        #             edate = cf.format_dates(row.end_date)
+                        #             ts = np.datetime64(sdate)
+                        #             te = np.datetime64(edate)
+                        #             if t_ex.max() < ts:
+                        #                 continue
+                        #             elif t_ex.min() > te:
+                        #                 continue
+                        #             else:
+                        #                 ind = np.where((t_ex < ts) | (t_ex > te), True, False)
+                        #                 if len(ind) != 0:
+                        #                     count += 1
+                        #                     t_ex = t_ex[ind]
+                        #                     z_ex = z_ex[ind]
+                        #                     y_ex = y_ex[ind]
+                        #                     print(len(ind), 'timestamps in: {} - {}'.format(sdate, edate))
+                        #
+                        #         if count != 0:
+                        #             fig, ax = pf.plot_profiles(z_ex, y_ex, t_ex,
+                        #                                        ylabel, xlabel, clabel, end_times, deployments, stdev=None)
+                        #             ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+                        #             leg_text = ('excluded suspect data',)
+                        #             ax.legend(leg_text, loc='best', fontsize=6)
+                        #
+                        #             sfile = '_'.join((sname, 'rmsuspectdata'))
+                        #             pf.save_fig(save_dir, sfile)
+                        # else:
+                        #     print(len(z_ex), 'no time ranges excluded in Review Portal-  Empty Array', drn)
 
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
@@ -346,11 +400,10 @@ if __name__ == '__main__':
     '''
     start_time = None
     end_time = None
-    method_num = 'recovered_wfp' #telemetered'
-    deployment_num = 7
     zdbar = None
-    # url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021208-CE09OSPM-WFP01-02-DOFSTK000-telemetered-dofst_k_wfp_instrument/catalog.html']
-    # url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021154-CE09OSPM-WFP01-02-DOFSTK000-recovered_wfp-dofst_k_wfp_instrument_recovered/catalog.html']
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021635-CE09OSPM-WFP01-05-PARADK000-recovered_wfp-parad_k__stc_imodem_instrument_recovered/catalog.html']
-    # url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021122-CE09OSPM-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html']
-    main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method_num, zdbar)
+    n_std = 3
+    method_num = 'recovered_wfp'
+    deployment_num = 1
+
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021222-CE09OSPM-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html']
+    main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method_num, zdbar, n_std)
