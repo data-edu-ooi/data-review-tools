@@ -314,9 +314,13 @@ def plot_xsection(subsite, x, y, z, clabel, ylabel, stdev=None):
     ax.invert_yaxis()
 
     # add color bar
-    bar = fig.colorbar(xc, ax=ax, label=clabel)
+    bar = fig.colorbar(xc, ax=ax, label=clabel, extend='both')
     bar.formatter.set_useOffset(False)
-
+    upper_lim = np.percentile(zD, 95)
+    lower_lim = np.percentile(zD, 5)
+    bar.set_clim(lower_lim, upper_lim)
+    bar.set_ticks([lower_lim, upper_lim])
+    bar.ax.tick_params(labelsize=8)
     ax.set_ylabel(ylabel, fontsize=9)
     format_date_axis(ax, fig)
 
@@ -329,7 +333,7 @@ def plot_xsection(subsite, x, y, z, clabel, ylabel, stdev=None):
     if type(zeros) is str and type(outliers) is str:
         leg = ('rm: {} values <=0.0, rm: {} outliers (SD={})'.format(zeros, outliers, stdev),)
         ax.legend(leg, loc=1, fontsize=6)
-    return fig, ax
+    return fig, ax, bar
 
 
 def pressure_var(dataset, vars):
