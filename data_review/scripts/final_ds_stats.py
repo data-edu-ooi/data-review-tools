@@ -106,6 +106,8 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
             print(m)
             if m == 'common_stream_placeholder':
                 m = 'science_data_stream'
+            if m == 'metbk_hourly':  # don't calculate ranges for metbk_hourly
+                continue
 
             if ('FLM' in r) and ('CTDMO' in r):  # calculate Flanking Mooring CTDMO stats based on pressure
                 headers = ['common_stream_name', 'preferred_methods_streams', 'deployments', 'long_name', 'units', 't0',
