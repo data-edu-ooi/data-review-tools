@@ -65,7 +65,10 @@ def main(sDir, url_list, start_time, end_time):
         ps_df, n_streams = cf.get_preferred_stream_info(r)
         for index, row in ps_df.iterrows():
             for ii in range(n_streams):
-                rms = '-'.join((r, row[ii]))
+                try:
+                    rms = '-'.join((r, row[ii]))
+                except TypeError:
+                    continue
                 for dd in datasets:
                     spl = dd.split('/')[-2].split('-')
                     catalog_rms = '-'.join((spl[1], spl[2], spl[3], spl[4], spl[5], spl[6]))
@@ -110,6 +113,7 @@ def main(sDir, url_list, start_time, end_time):
         for m, n in sci_vars_dict.items():
             for sv, vinfo in n['vars'].items():
                 print(sv)
+                #if 'Shortwave' in sv:
                 if len(vinfo['t']) < 1:
                     print('no variable data to plot')
                 else:
@@ -181,11 +185,11 @@ def main(sDir, url_list, start_time, end_time):
 
                             # if plotting a specific time range, plot deployment lines only for those deployments
                             if type(start_time) == dt.datetime:
-                                for e in list(np.unique(vinfo['deployments'])):
-                                    etime = dend_times[int(e) - 1]
-                                    ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
-                                # etime = dend_times[int(list(np.unique(vinfo['deployments']))[0]) - 1]
-                                # ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
+                                # for e in list(np.unique(vinfo['deployments'])):
+                                #     etime = dend_times[int(e) - 1]
+                                #     ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
+                                etime = dend_times[int(list(np.unique(vinfo['deployments']))[0]) - 1]
+                                ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
                             else:
                                 for etime in dend_times:
                                     ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
@@ -206,11 +210,11 @@ def main(sDir, url_list, start_time, end_time):
 
                             # if plotting a specific time range, plot deployment lines only for those deployments
                             if type(start_time) == dt.datetime:
-                                for e in list(np.unique(vinfo['deployments'])):
-                                    etime = dend_times[int(e) - 1]
-                                    ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
-                                # etime = dend_times[int(list(np.unique(vinfo['deployments']))[0]) - 1]
-                                # ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
+                                # for e in list(np.unique(vinfo['deployments'])):
+                                #     etime = dend_times[int(e) - 1]
+                                #     ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
+                                etime = dend_times[int(list(np.unique(vinfo['deployments']))[0]) - 1]
+                                ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
                             else:
                                 for etime in dend_times:
                                     ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)

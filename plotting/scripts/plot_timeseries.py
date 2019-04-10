@@ -43,7 +43,10 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
             ps_df, n_streams = cf.get_preferred_stream_info(r)
             for index, row in ps_df.iterrows():
                 for ii in range(n_streams):
-                    rms = '-'.join((r, row[ii]))
+                    try:
+                        rms = '-'.join((r, row[ii]))
+                    except TypeError:
+                        continue
                     for dd in datasets:
                         spl = dd.split('/')[-2].split('-')
                         catalog_rms = '-'.join((spl[1], spl[2], spl[3], spl[4], spl[5], spl[6]))

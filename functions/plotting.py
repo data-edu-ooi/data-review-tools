@@ -103,6 +103,8 @@ def plot_timeseries_all(x, y, y_name, y_units, stdev=None):
     plt.grid()
     plt.plot(xD, yD, '.', markersize=2)
 
+    #plt.ylim([-10, 50])
+
     ax.set_ylabel((y_name + " (" + y_units + ")"), fontsize=9)
     format_date_axis(ax, fig)
     y_axis_disable_offset(ax)
@@ -169,7 +171,7 @@ def plot_timeseries_compare(t0, t1, var0, var1, m0, m1, long_name, stdev=None):
         ind02 = cf.reject_outliers(var0i.values, stdev)
         t0_data = t0i[ind02].values
         var0_data = var0i[ind02].values
-        var0_data[var0_data <= 0.0] = np.nan  # get rid of zeros and negative numbers
+        #var0_data[var0_data <= 0.0] = np.nan  # get rid of zeros and negative numbers
         outliers0 = str((len(var0) - len(var0_data)) + (len(t0_data) - np.count_nonzero(~np.isnan(var0_data))))
         leg_text = ('{}: removed {} outliers (SD={})'.format(m0, outliers0, stdev),)
 
@@ -180,7 +182,7 @@ def plot_timeseries_compare(t0, t1, var0, var1, m0, m1, long_name, stdev=None):
         ind12 = cf.reject_outliers(var1i.values, stdev)
         t1_data = t1i[ind12].values
         var1_data = var1i[ind12].values
-        var1_data[var1_data <= 0.0] = np.nan  # get rid of zeros and negative numbers
+        #var1_data[var1_data <= 0.0] = np.nan  # get rid of zeros and negative numbers
         outliers1 = str((len(var1) - len(var1_data)) + (len(t1_data) - np.count_nonzero(~np.isnan(var1_data))))
         leg_text += ('{}: removed {} outliers (SD={})'.format(m1, outliers1, stdev),)
 
