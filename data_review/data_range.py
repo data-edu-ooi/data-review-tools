@@ -21,7 +21,7 @@ import xarray as xr
 import datetime
 
 
-def main(url_list, mDir, bin_size, zdbar, pfname):
+def main(url_list, sDir, mDir, zcell_size, zdbar):
     """""
     URL : path to instrument data by methods
     sDir : path to the directory on your machine to save files
@@ -172,7 +172,9 @@ def main(url_list, mDir, bin_size, zdbar, pfname):
                                 if 'pressure long name missing' not in y_name:
                                     y_name.append('pressure long name missing')
 
-                # analyse data
+                '''
+                create a data-ranges table and figure for full data time range
+                '''
                 # create a folder to save data ranges
                 save_dir_stat = os.path.join(mDir, array, subsite)
                 cf.create_dir(save_dir_stat)
@@ -186,6 +188,7 @@ def main(url_list, mDir, bin_size, zdbar, pfname):
                         print(sv)
                         if len(vinfo['t']) < 1:
                             print('no variable data to plot')
+                            continue
                         else:
                             sv_units = vinfo['units'][0]
                             fv = vinfo['fv'][0]
@@ -233,16 +236,18 @@ def main(url_list, mDir, bin_size, zdbar, pfname):
                                 t_nofv_nonan_noev_nogr = t_nofv_nonan_noev[gr_ind]
                                 y_nofv_nonan_noev_nogr = y_nofv_nonan_noev[gr_ind]
                                 z_nofv_nonan_noev_nogr = z_nofv_nonan_noev[gr_ind]
-                                print(len(z_nofv_nonan_noev) - len(gr_ind),
-                                      ' Global ranges for : {} - {}'.format(global_min, global_max))
+                                print('{} Global ranges [{} - {}]'.format(len(z_nofv_nonan_noev) - len(gr_ind),
+                                                                          global_min, global_max))
                             else:
+                                gr_ind = []
                                 t_nofv_nonan_noev_nogr = t_nofv_nonan_noev
                                 y_nofv_nonan_noev_nogr = y_nofv_nonan_noev
                                 z_nofv_nonan_noev_nogr = z_nofv_nonan_noev
-                                print('No global ranges: {} - {}'.format(global_min, global_max))
+                                print('{} global ranges [{} - {}]'.format(len(gr_ind), global_min, global_max))
 
-                            #reject excluded time ranges
-                            Dpath = '{}/{}/{}/{}/{}'.format(pfname, array, subsite, r, 'time_to_exclude')
+
+                            # reject suspect data using timestamps
+                            Dpath = '{}/{}/{}/{}/{}'.format(sDir, array, subsite, r, 'time_to_exclude')
 
                             onlyfiles = []
                             for item in os.listdir(Dpath):
@@ -262,64 +267,51 @@ def main(url_list, mDir, bin_size, zdbar, pfname):
 
                             u_time_list = np.unique(list_time)
                             if len(u_time_list) != 0:
-                                t_ex = t_nofv_nonan_noev_nogr
-                                y_ex = y_nofv_nonan_noev_nogr
-                                z_ex = z_nofv_nonan_noev_nogr
+                                t_nofv_nonan_noev_nogr_nospct = t_nofv_nonan_noev_nogr
+                                y_nofv_nonan_noev_nogr_nospct = y_nofv_nonan_noev_nogr
+                                z_nofv_nonan_noev_nogr_nospct = z_nofv_nonan_noev_nogr
                                 for row in u_time_list:
                                     ntime = pd.to_datetime(row)
-                                    stime = ntime - pd.Timedelta(days=1)
-                                    etime = ntime + pd.Timedelta(days=1)
-                                    ts = np.datetime64(stime)
-                                    te = np.datetime64(etime)
+                                    ne = np.datetime64(ntime)
+                                    ind = np.where((t_nofv_nonan_noev_nogr_nospct != ne), True, False)
+                                    if not ind.any():
+                                        print('{} {}'.format(row, 'is not in data'))
+                                        print(np.unique(ind))
+                                    else:
+                                        t_nofv_nonan_noev_nogr_nospct = t_nofv_nonan_noev_nogr_nospct[ind]
+                                        z_nofv_nonan_noev_nogr_nospct = z_nofv_nonan_noev_nogr_nospct[ind]
+                                        y_nofv_nonan_noev_nogr_nospct = y_nofv_nonan_noev_nogr_nospct[ind]
 
-                                    ind = np.where((t_ex < ts) | (t_ex > te), True, False)
-                                    if len(ind) != 0:
-                                        t_ex = t_ex[ind]
-                                        z_ex = z_ex[ind]
-                                        y_ex = y_ex[ind]
-                                        # print(len(ind), 'timestamps in: {} - {}'.format(stime, etime))
+                            # reject data using portal export
+                            t_fnofv_nonan_noev_nogr_nospct_nomore, \
+                            y_nofv_nonan_noev_nogr_nospct_nomore, \
+                            z_nofv_nonan_noev_nogr_nospct_nomore = \
+                                cf.time_exclude_portal(subsite, r,
+                                                       t_nofv_nonan_noev_nogr_nospct,
+                                                       y_nofv_nonan_noev_nogr_nospct,
+                                                       z_nofv_nonan_noev_nogr_nospct)
 
-                            # dr = pd.read_csv('https://datareview.marine.rutgers.edu/notes/export')
-                            # drn = dr.loc[dr.type == 'exclusion']
-                            # if len(drn) != 0:
-                            #     subsite_node = '-'.join((subsite, r.split('-')[1]))
-                            #     drne = drn.loc[drn.reference_designator.isin([subsite, subsite_node, r])]
-                            #
-                            #     t_ex = t_nofv_nonan_noev_nogr
-                            #     y_ex = y_nofv_nonan_noev_nogr
-                            #     z_ex = z_nofv_nonan_noev_nogr
-                            #     for i, row in drne.iterrows():
-                            #         sdate = cf.format_dates(row.start_date)
-                            #         edate = cf.format_dates(row.end_date)
-                            #         ts = np.datetime64(sdate)
-                            #         te = np.datetime64(edate)
-                            #         ind = np.where((t_ex < ts) | (t_ex > te), True, False)
-                            #         if len(ind) != 0:
-                            #             t_ex = t_ex[ind]
-                            #             z_ex = z_ex[ind]
-                            #             y_ex = y_ex[ind]
-                            #             print(len(ind), 'timestamps in: {} - {}'.format(sdate, edate))
-                            # else:
-                            #     print(len(z_ex), 'no time ranges excluded -  Empty Array', drn)
-
-                            # reject excluded depth range
+                            # reject an excluded depth range
                             if zdbar is not None:
-                                y_ind = y_ex < zdbar
-                                t_y = t_ex[y_ind]
-                                y_y = y_ex[y_ind]
-                                z_y = z_ex[y_ind]
+                                y_ind = y_nofv_nonan_noev_nogr_nospct_nomore < zdbar
+                                t_y = t_nofv_nonan_noev_nogr_nospct_nomore[y_ind]
+                                y_y = y_nofv_nonan_noev_nogr_nospct_nomore[y_ind]
+                                z_y = z_nofv_nonan_noev_nogr_nospct_nomore[y_ind]
                             else:
-                                t_y = t_ex
-                                y_y = y_ex
-                                z_y = z_ex
+                                t_y = t_nofv_nonan_noev_nogr_nospct_nomore
+                                y_y = y_nofv_nonan_noev_nogr_nospct_nomore
+                                z_y = z_nofv_nonan_noev_nogr_nospct_nomore
 
-                        # create data ranges for non - pressure data only
+                        '''
+                        create data ranges for non - pressure data only
+                        '''
+
                         if 'pressure' not in sv:
                             columns = ['tsec', 'dbar', str(sv)]
                             # create depth ranges
-                            min_r = int(round(min(y_y) - bin_size))
-                            max_r = int(round(max(y_y) + bin_size))
-                            ranges = list(range(min_r, max_r, bin_size))
+                            min_r = int(round(min(y_y) - zcell_size))
+                            max_r = int(round(max(y_y) + zcell_size))
+                            ranges = list(range(min_r, max_r, zcell_size))
 
                             # group data by depth
                             groups, d_groups = gt.group_by_depth_range(t_y, y_y,
@@ -335,37 +327,75 @@ def main(url_list, mDir, bin_size, zdbar, pfname):
 
                         stat_df = stat_df.append(stat_data, ignore_index=True)
 
-                        print('stat_df 338')
-
+                        ''''
+                        plot full time range
+                        '''''
                         if len(y_y) > 0:
                             if m == 'common_stream_placeholder':
-                                sname = '-'.join((r, sv))
+                                sname = '-'.join((sv, r))
                             else:
                                 sname = '-'.join((sv, r, m))
 
                         clabel = sv + " (" + sv_units + ")"
                         ylabel = y_name[0] + " (" + y_unit[0] + ")"
                         title = ' '.join((deployment, refdes, ms.split('-')[0]))
-                        print(clabel, ylabel)
-                        fig, ax = pf.plot_xsection(subsite, t_y, y_y, z_y, clabel, ylabel, stdev=None)
-                        ax.set_title((title + '\n' +
-                                  'excluded : fill values, nans, |1e7| values, non-global ranges values, suspect data'),
-                                     fontsize=9)
+
+
+                        # plot non-erroneous non-suspect data
+                        fig, ax, bar = pf.plot_xsection(subsite, t_y, y_y, z_y, clabel, ylabel, inpercentile=None, stdev=None)
+
+                        ax.set_title(title, fontsize=9)
+                        leg_text = (
+                            'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}]'.format(
+                                len(z) - len(fv_ind),
+                                len(z) - len(nan_ind),
+                                len(z) - len(ev_ind),
+                                len(gr_ind),
+                                global_min, global_max) + '\n' +
+                            ('(black) data average in {} dbar segments'.format(zcell_size)) + '\n' +
+                            ('(magenta) upper and lower {} percentile envelope in {} dbar segments'.format(inpercentile,
+                                                                                                           zcell_size))
+                            + '\n' +
+                            ('removed {} in the upper and lower {} percentile of data grouped in {} dbar segments'.format(
+                                len(z_nofv_nonan_noev_nogr) - len(z_std), inpercentile, zcell_size)),)
+
+                        ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
+                        fig.tight_layout()
                         sfile = '_'.join(('data_range', sname))
                         pf.save_fig(save_fdir, sfile)
-
 
                     # write stat file
                     stat_df.to_csv('{}/{}_data_ranges.csv'.format(save_dir_stat, r), index=True, float_format='%11.6f')
 
 
 if __name__ == '__main__':
-    bin_size = 10
+    '''
+        define time range: 
+        set to None if plotting all data
+        set to dt.datetime(yyyy, m, d, h, m, s) for specific dates
+        '''
+    start_time = None  # dt.datetime(2014, 12, 1)
+    end_time = None  # dt.datetime(2015, 5, 2)
+
+    '''
+    define filters standard deviation, percentile, depth range
+    '''
+    n_std = None
+    inpercentile = 5
     zdbar = None
+
+    '''
+    define the depth cell_size for data grouping 
+    '''
+    zcell_size = 10
+
+    '''
+        define plot type, save-directory name and URL where data files live 
+    '''
     mainP = '/Users/leila/Documents/NSFEduSupport/'
     mDir = mainP + 'github/data-review-tools/data_review/data_ranges'
-    sDir = sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    pfname = mainP + 'review/figures'
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021222-CE09OSPM-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html']
+    sDir = mainP + 'review/figures'
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021222-CE09OSPM-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021350-CE09OSPM-WFP01-04-FLORTK000-telemetered-flort_sample/catalog.html']
 
-    main(url_list, mDir, bin_size, zdbar, pfname)
+    main(url_list, sDir, mDir, zcell_size, zdbar)
