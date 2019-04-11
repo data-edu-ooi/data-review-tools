@@ -355,12 +355,16 @@ def format_dates(dd):
     return fd2
 
 
-def time_exclude_std(groups, d_groups, n_std, tt, yy, zz):
+def time_exclude_std(groups, d_groups, n_std, tt, yy, zz, inpercentile):
     y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_exclude = [], [], [], [], [], [], [], []
 
     tm = 1
     for ii in range(len(groups)):
         nan_ind = d_groups[ii + tm].notnull()
+        if not nan_ind.any():
+            print('{} {} {}'.format('group', ii, 'is all NaNs'))
+            tm += 2
+            continue
         xtime = d_groups[ii + tm][nan_ind]
         ypres = d_groups[ii + tm + 1][nan_ind]
         nval = d_groups[ii + tm + 2][nan_ind]
@@ -371,41 +375,44 @@ def time_exclude_std(groups, d_groups, n_std, tt, yy, zz):
         n_avg.append(nval.mean())
         n_min.append(nval.min())
         n_max.append(nval.max())
-        n0_std.append(nval.mean() + n_std * nval.std())
-        n1_std.append(nval.mean() - n_std * nval.std())
 
-        indg = nval > (nval.mean() + (n_std * nval.std()))
-        gtime = xtime[indg]
-        if len(gtime) != 0:
-            time_exclude.append(pd.to_datetime(gtime.min()).strftime('%Y-%m-%d'))
-            time_exclude.append(pd.to_datetime(gtime.max()).strftime('%Y-%m-%d'))
+        if n_std is not None:
+            upper_l = nval.mean() + n_std * nval.std()
+            lower_l = nval.mean() - n_std * nval.std()
+            n0_std.append(upper_l)
+            n1_std.append(lower_l)
+            t_ind = np.where((nval < lower_l) | (nval > upper_l), True, False)
+            # d_ind = np.where((nval > lower_l) & (nval < upper_l), True, False)
+        else:
+            upper_l = np.percentile(nval, 100 - inpercentile)
+            lower_l = np.percentile(nval, inpercentile)
+            n0_std.append(upper_l)
+            n1_std.append(lower_l)
+            t_ind = np.where((nval < lower_l) | (nval > upper_l), True, False)
+            # d_ind = np.where((nval > lower_l) & (nval < upper_l), True, False)
 
-        indl = nval < (nval.mean() - (n_std * nval.std()))
-        ltime = xtime[indl]
-        if len(ltime) != 0:
-            time_exclude.append(pd.to_datetime(ltime.min()).strftime('%Y-%m-%d'))
-            time_exclude.append(pd.to_datetime(ltime.max()).strftime('%Y-%m-%d'))
+        time_exclude = np.append(time_exclude, xtime[t_ind].values)
+        # n_data = np.append(n_data, nval[d_ind].values)
+        # n_time = np.append(n_time, xtime[d_ind].values)
+        # n_pres = np.append(n_pres, ypres[d_ind].values)
 
     time_to_exclude = np.unique(time_exclude)
-
     if len(time_to_exclude) != 0:
         t_ex = tt
         y_ex = yy
         z_ex = zz
-
         for row in time_to_exclude:
             ntime = pd.to_datetime(row)
-            stime = ntime - pd.Timedelta(days=1)
-            etime = ntime + pd.Timedelta(days=1)
-            ts = np.datetime64(stime)
-            te = np.datetime64(etime)
+            ne = np.datetime64(ntime)
 
-            ind = np.where((t_ex < ts) | (t_ex > te), True, False)
-            if len(ind) != 0:
+            ind = np.where((t_ex != ne), True, False)
+            if not ind.any():
+                print('{} {}'.format(row, 'is not in data'))
+                print(np.unique(ind))
+            else:
                 t_ex = t_ex[ind]
                 z_ex = z_ex[ind]
                 y_ex = y_ex[ind]
-                # print(len(ind), 'timestamps in: {} - {}'.format(stime, etime))
 
     return y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_to_exclude, t_ex, z_ex, y_ex
 
@@ -423,8 +430,8 @@ def time_exclude_portal(subsite, r, tt, yy, zz):
             y_ex = yy
             z_ex = zz
             for ij, row in drne.iterrows():
-                sdate = cf.format_dates(row.start_date)
-                edate = cf.format_dates(row.end_date)
+                sdate = format_dates(row.start_date)
+                edate = format_dates(row.end_date)
                 ts = np.datetime64(sdate)
                 te = np.datetime64(edate)
                 if t_ex.max() < ts:
@@ -437,11 +444,6 @@ def time_exclude_portal(subsite, r, tt, yy, zz):
                         t_ex = t_ex[ind]
                         z_ex = z_ex[ind]
                         y_ex = y_ex[ind]
-                        print(len(ind), 'timestamps in: {} - {}'.format(sdate, edate))
-        else:
-            t_ex, z_ex, y_ex = None, None, None
-    else:
-        print('no time ranges excluded in Review Portal - Empty Array', drn)
-        t_ex, z_ex, y_ex = None, None, None
+                        print('excluding {} timestamps [{} - {}]'.format(len(ind), sdate, edate))
 
     return t_ex, z_ex, y_ex
