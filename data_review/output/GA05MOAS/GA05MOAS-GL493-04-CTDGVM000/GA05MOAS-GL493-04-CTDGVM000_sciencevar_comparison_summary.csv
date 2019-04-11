@@ -1,0 +1,6 @@
+deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
+deployment0001,recovered_host-ctdgv_m_glider_instrument_recovered,telemetered-ctdgv_m_glider_instrument,Practical Salinity,practical_salinity,1,pass,2538348,0,no missing data,45167,0.0,0.0210974465,0,0.0
+deployment0001,recovered_host-ctdgv_m_glider_instrument_recovered,telemetered-ctdgv_m_glider_instrument,Seawater Conductivity,sci_water_cond,S m-1,pass,2538348,0,no missing data,45287,0.0,0.0227100849,0,0.0
+deployment0001,recovered_host-ctdgv_m_glider_instrument_recovered,telemetered-ctdgv_m_glider_instrument,Seawater Pressure,sci_water_pressure_dbar,dbar,pass,2538348,0,no missing data,45283,0.0,8.1199951172,477,1.05
+deployment0001,recovered_host-ctdgv_m_glider_instrument_recovered,telemetered-ctdgv_m_glider_instrument,Seawater Temperature,sci_water_temp,ºC,pass,2538348,0,no missing data,45279,0.0,0.2265005112,0,0.0
+deployment0001,recovered_host-ctdgv_m_glider_instrument_recovered,telemetered-ctdgv_m_glider_instrument,Seawater Density,sci_seawater_density,kg m-3,pass,2538348,0,no missing data,45167,0.0,0.0437776782,0,0.0

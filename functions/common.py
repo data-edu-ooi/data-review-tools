@@ -263,7 +263,7 @@ def return_stream_vars(stream):
 
 def return_raw_vars(ds_variables):
     # return a list of raw variables (eliminating engineering, qc, and timestamps)
-    misc_vars = ['quality', 'string', 'timestamp', 'deployment', 'provenance', 'qc', 'time', 'mission', 'obs', 'id',
+    misc_vars = ['quality', 'string', 'timestamp', 'deployment', 'provenance', 'qc', 'time', 'mission', 'obs',
                  'serial_number', 'volt', 'ref', 'sig', 'amp', 'rph', 'calphase', 'phase', 'checksum', 'description',
                  'product_number']
     reg_ex = re.compile('|'.join(misc_vars))

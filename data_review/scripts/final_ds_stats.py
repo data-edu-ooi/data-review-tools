@@ -59,8 +59,11 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
         pms = []
         for index, row in ps_df.iterrows():
             for ii in range(n_streams):
-                rms = '-'.join((r, row[ii]))
-                pms.append(row[ii])
+                try:
+                    rms = '-'.join((r, row[ii]))
+                    pms.append(row[ii])
+                except TypeError:
+                    continue
                 for dd in datasets:
                     spl = dd.split('/')[-2].split('-')
                     catalog_rms = '-'.join((spl[1], spl[2], spl[3], spl[4], spl[5], spl[6]))
@@ -106,6 +109,8 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
             print(m)
             if m == 'common_stream_placeholder':
                 m = 'science_data_stream'
+            if m == 'metbk_hourly':  # don't calculate ranges for metbk_hourly
+                continue
 
             if ('FLM' in r) and ('CTDMO' in r):  # calculate Flanking Mooring CTDMO stats based on pressure
                 headers = ['common_stream_name', 'preferred_methods_streams', 'deployments', 'long_name', 'units', 't0',

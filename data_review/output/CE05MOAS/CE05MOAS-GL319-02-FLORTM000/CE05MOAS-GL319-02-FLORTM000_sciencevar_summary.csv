@@ -1,0 +1,26 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_host,flort_m_sample,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",1834712,0,0,no global ranges,3696,1831016,99.8,0.0006,0.0006,0.0006,0.0
+deployment0001,recovered_host,flort_m_sample,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",1834712,0,0,1127,4707,1828878,99.68,0.0027,0.0005,0.0146,0.002
+deployment0001,recovered_host,flort_m_sample,sci_flbbcd_bb_units,m-1 sr-1,nan,"[0.0, 0.0079]",1834712,0,0,1,4707,1830004,99.74,0.0004,0.0,0.0022,0.0003
+deployment0001,recovered_host,flort_m_sample,sci_flbbcd_cdom_units,ppb,nan,"[0.0, 375.0]",1834712,0,0,3,1944,1832765,99.89,0.1439,0.0219,0.2628,0.0209
+deployment0001,recovered_host,flort_m_sample,sci_flbbcd_chlor_units,µg L-1,nan,"[0.0, 50.0]",1834712,0,0,23417,0,1811295,98.72,8.47,0.0,49.94,9.9115
+deployment0003,recovered_host,flort_m_sample,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",751265,26,0,no global ranges,1188,750051,99.84,0.0006,0.0006,0.0006,0.0
+deployment0003,recovered_host,flort_m_sample,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",751265,26,0,1151,2128,747960,99.56,0.0012,0.0004,0.008,0.0008
+deployment0003,recovered_host,flort_m_sample,sci_flbbcd_bb_units,m-1 sr-1,nan,"[0.0, 0.0079]",751265,0,0,0,2091,749174,99.72,0.0002,0.0,0.0012,0.0001
+deployment0003,recovered_host,flort_m_sample,sci_flbbcd_cdom_units,ppb,nan,"[0.0, 375.0]",751265,0,0,5,1224,750036,99.84,2.3589,0.5454,3.7269,0.2301
+deployment0003,recovered_host,flort_m_sample,sci_flbbcd_chlor_units,µg L-1,nan,"[0.0, 50.0]",751265,0,0,5,2236,749024,99.7,0.3414,0.0,2.9736,0.4793
+deployment0004,recovered_host,flort_m_sample,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",163517,64,0,no global ranges,0,163453,99.96,0.0006,0.0005,0.0006,0.0
+deployment0004,recovered_host,flort_m_sample,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",163517,64,0,285,0,163168,99.79,0.0052,0.0005,0.044,0.0084
+deployment0004,recovered_host,flort_m_sample,sci_flbbcd_bb_units,m-1 sr-1,nan,"[0.0, 0.0079]",163517,0,0,0,0,163517,100.0,0.0008,0.0,0.0065,0.0012
+deployment0004,recovered_host,flort_m_sample,sci_flbbcd_cdom_units,ppb,nan,"[0.0, 375.0]",163517,0,0,29,289,163199,99.81,2.3138,0.0,14.3622,0.6046
+deployment0004,recovered_host,flort_m_sample,sci_flbbcd_chlor_units,µg L-1,nan,"[0.0, 50.0]",163517,0,0,10,1729,161778,98.94,1.053,0.0,17.2368,1.9384
+deployment0005,recovered_host,flort_m_sample,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",1428874,0,0,no global ranges,1279,1427595,99.91,0.0006,0.0006,0.0006,0.0
+deployment0005,recovered_host,flort_m_sample,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",1428874,0,0,1238,5319,1422317,99.54,0.0029,0.0008,0.0173,0.0023
+deployment0005,recovered_host,flort_m_sample,sci_flbbcd_bb_units,m-1 sr-1,nan,"[0.0, 0.0079]",1428874,0,0,0,5330,1423544,99.63,0.0004,0.0,0.0026,0.0003
+deployment0005,recovered_host,flort_m_sample,sci_flbbcd_cdom_units,ppb,nan,"[0.0, 375.0]",1428874,0,0,10,2462,1426402,99.83,1.5916,0.2724,2.9056,0.2641
+deployment0005,recovered_host,flort_m_sample,sci_flbbcd_chlor_units,µg L-1,nan,"[0.0, 50.0]",1428874,0,0,11,7893,1420970,99.45,0.6427,0.0,5.6232,0.8361
+deployment0006,recovered_host,flort_m_sample,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",318898,0,0,no global ranges,446,318452,99.86,0.0006,0.0006,0.0006,0.0
+deployment0006,recovered_host,flort_m_sample,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",318898,0,0,446,3931,314521,98.63,0.0016,0.0007,0.0299,0.0015
+deployment0006,recovered_host,flort_m_sample,sci_flbbcd_bb_units,m-1 sr-1,nan,"[0.0, 0.0079]",318898,0,0,0,3931,314967,98.77,0.0002,0.0,0.0044,0.0002
+deployment0006,recovered_host,flort_m_sample,sci_flbbcd_cdom_units,ppb,nan,"[0.0, 375.0]",318898,0,0,0,379,318519,99.88,1.1486,0.0,2.3258,0.2377
+deployment0006,recovered_host,flort_m_sample,sci_flbbcd_chlor_units,µg L-1,nan,"[0.0, 50.0]",318898,0,0,0,1628,317270,99.49,0.3723,0.0,3.4293,0.4416

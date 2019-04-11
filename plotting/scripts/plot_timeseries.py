@@ -43,7 +43,10 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
             ps_df, n_streams = cf.get_preferred_stream_info(r)
             for index, row in ps_df.iterrows():
                 for ii in range(n_streams):
-                    rms = '-'.join((r, row[ii]))
+                    try:
+                        rms = '-'.join((r, row[ii]))
+                    except TypeError:
+                        continue
                     for dd in datasets:
                         spl = dd.split('/')[-2].split('-')
                         catalog_rms = '-'.join((spl[1], spl[2], spl[3], spl[4], spl[5], spl[6]))
@@ -80,34 +83,35 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
 
             for var in raw_vars:
                 print(var)
-                y = ds[var]
-                fv = y._FillValue
+                if var != 'id':
+                    y = ds[var]
+                    fv = y._FillValue
 
-                # Check if the array is all NaNs
-                if sum(np.isnan(y.values)) == len(y.values):
-                    print('Array of all NaNs - skipping plot.')
+                    # Check if the array is all NaNs
+                    if sum(np.isnan(y.values)) == len(y.values):
+                        print('Array of all NaNs - skipping plot.')
 
-                # Check if the array is all fill values
-                elif len(y[y != fv]) == 0:
-                    print('Array of all fill values - skipping plot.')
+                    # Check if the array is all fill values
+                    elif len(y[y != fv]) == 0:
+                        print('Array of all fill values - skipping plot.')
 
-                else:
-                    # reject fill values
-                    ind = y.values != fv
-                    t = tm[ind]
-                    y = y[ind]
+                    else:
+                        # reject fill values
+                        ind = y.values != fv
+                        t = tm[ind]
+                        y = y[ind]
 
-                    # Plot all data
-                    fig, ax = pf.plot_timeseries(t, y, stdev=None)
-                    ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-                    sfile = '-'.join((filename, y.name, t0[:10]))
-                    pf.save_fig(save_dir, sfile)
+                        # Plot all data
+                        fig, ax = pf.plot_timeseries(t, y, stdev=None)
+                        ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+                        sfile = '-'.join((filename, y.name, t0[:10]))
+                        pf.save_fig(save_dir, sfile)
 
-                    # Plot data with outliers removed
-                    fig, ax = pf.plot_timeseries(t, y, stdev=5)
-                    ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-                    sfile = '-'.join((filename, y.name, t0[:10])) + '_rmoutliers'
-                    pf.save_fig(save_dir, sfile)
+                        # Plot data with outliers removed
+                        fig, ax = pf.plot_timeseries(t, y, stdev=5)
+                        ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+                        sfile = '-'.join((filename, y.name, t0[:10])) + '_rmoutliers'
+                        pf.save_fig(save_dir, sfile)
 
 
 if __name__ == '__main__':

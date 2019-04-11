@@ -9,9 +9,12 @@ def append_science_data(preferred_stream_df, n_streams, refdes, dataset_list, sc
     # build dictionary of science data from the preferred dataset for each deployment
     for index, row in preferred_stream_df.iterrows():
         for ii in range(n_streams):
-            rms = '-'.join((refdes, row[ii]))
-            drms = '_'.join((row['deployment'], rms))
-            print(drms)
+            try:
+                rms = '-'.join((refdes, row[ii]))
+                drms = '_'.join((row['deployment'], rms))
+                print(drms)
+            except TypeError:
+                continue
 
             for d in dataset_list:
                 ds_drms = d.split('/')[-1].split('_20')[0]

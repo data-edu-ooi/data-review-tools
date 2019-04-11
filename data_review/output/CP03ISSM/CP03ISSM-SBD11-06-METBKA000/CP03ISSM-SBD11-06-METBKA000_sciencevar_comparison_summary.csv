@@ -22,21 +22,21 @@ deployment0002,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk
 deployment0002,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Latent Heat Flux,met_latnflx_minute,W m-2,pass,223312,41963,no missing data,181303,0.0,0.6405589092,0,0.0
 deployment0002,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Net Longwave Radiation,met_netlirr_minute,W m-2,pass,223312,41963,no missing data,181303,0.0,0.0057088096,0,0.0
 deployment0002,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Sensible Heat Flux,met_sensflx_minute,W m-2,pass,223312,41963,no missing data,181303,0.0,0.0392105207,0,0.0
-deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Rain Rate,met_rainrte,mm hr-1,pass,3724,0,no missing data,3724,0.0,0.0336863793,0,0.0
-deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Sonic Buoyancy Flux,met_buoyfls,W m-2,pass,3724,1421,no missing data,2303,0.0,0.4189694621,0,0.0
-deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Buoyancy Flux,met_buoyflx,W m-2,pass,3724,1421,no missing data,2303,0.0,0.4285829851,0,0.0
-deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Freshwater Flux,met_frshflx,mm hr-1,pass,3724,1421,no missing data,2303,0.0,0.0322957171,0,0.0
-deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Net Heat Flux,met_heatflx,W m-2,pass,3724,1421,no missing data,2303,0.0,35.1140460866,2,0.09
-deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Latent Heat Flux,met_latnflx,W m-2,pass,3724,1421,no missing data,2303,0.0,0.9502216973,0,0.0
-deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Momentum Flux,met_mommflx,N m-2,pass,3724,1421,no missing data,2303,0.0,0.0024570091,0,0.0
-deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Net Longwave Radiation,met_netlirr,W m-2,pass,3724,1421,no missing data,2303,0.0,0.0807902295,0,0.0
-deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Rain Heat Flux,met_rainflx,W m-2,pass,3724,1421,no missing data,2303,0.0,0.1030700049,0,0.0
-deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Sensible Heat Flux,met_sensflx,W m-2,pass,3724,1421,no missing data,2303,0.0,0.3699404944,0,0.0
-deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Specific Humidity,met_sphum2m,g kg-1,pass,3724,1421,no missing data,2303,0.0,0.0378499621,0,0.0
-deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Air Temperature,met_tempa2m,ºC,pass,3724,1421,no missing data,2303,0.0,0.0310623148,0,0.0
-deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Skin Seawater Temperature,met_tempskn,ºC,pass,3724,1421,no missing data,2303,0.0,0.0008595623,0,0.0
-deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Wind Velocity at 10 M,met_wind10m,m s-1,pass,3724,1421,no missing data,2303,0.0,0.2374662556,0,0.0
-deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Net Shortwave Irradiance,met_netsirr_hourly,W m-2,pass,3724,0,no missing data,3724,0.0,35.9024349243,1,0.03
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Rain Rate,met_rainrte,mm hr-1,pass,3724,0,no missing data,3676,0.0,0.0336863793,0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Sonic Buoyancy Flux,met_buoyfls,W m-2,pass,3724,1421,no missing data,2260,0.0,0.4189694621,0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Buoyancy Flux,met_buoyflx,W m-2,pass,3724,1421,no missing data,2260,0.0,0.4285829851,0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Freshwater Flux,met_frshflx,mm hr-1,pass,3724,1421,no missing data,2260,0.0,0.0322957171,0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Net Heat Flux,met_heatflx,W m-2,pass,3724,1421,no missing data,2260,0.0,35.1140460866,2,0.09
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Latent Heat Flux,met_latnflx,W m-2,pass,3724,1421,no missing data,2260,0.0,0.9502216973,0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Momentum Flux,met_mommflx,N m-2,pass,3724,1421,no missing data,2260,0.0,0.0024570091,0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Net Longwave Radiation,met_netlirr,W m-2,pass,3724,1421,no missing data,2260,0.0,0.0807902295,0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Rain Heat Flux,met_rainflx,W m-2,pass,3724,1421,no missing data,2260,0.0,0.1030700049,0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Sensible Heat Flux,met_sensflx,W m-2,pass,3724,1421,no missing data,2260,0.0,0.3699404944,0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Specific Humidity,met_sphum2m,g kg-1,pass,3724,1421,no missing data,2260,0.0,0.0378499621,0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Air Temperature,met_tempa2m,ºC,pass,3724,1421,no missing data,2260,0.0,0.0310623148,0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Skin Seawater Temperature,met_tempskn,ºC,pass,3724,1421,no missing data,2260,0.0,0.0008595623,0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Wind Velocity at 10 M,met_wind10m,m s-1,pass,3724,1421,no missing data,2260,0.0,0.2374662556,0,0.0
+deployment0002,recovered_host-metbk_hourly,telemetered-metbk_hourly,Net Shortwave Irradiance,met_netsirr_hourly,W m-2,pass,3724,0,no missing data,3676,0.0,35.9024349243,1,0.03
 deployment0003,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Barometric Pressure,met_barpres,Pa,pass,292631,0,no missing data,292532,0.0,0.0,0,0.0
 deployment0003,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Relative Humidity,relative_humidity,%,pass,292631,0,no missing data,292532,0.0,0.0,0,0.0
 deployment0003,recovered_host-metbk_a_dcl_instrument_recovered,telemetered-metbk_a_dcl_instrument,Air Temperature,air_temperature,ºC,pass,292631,0,no missing data,292532,0.0,0.0,0,0.0

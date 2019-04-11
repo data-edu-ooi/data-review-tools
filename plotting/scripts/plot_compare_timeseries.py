@@ -17,24 +17,23 @@ import functions.common as cf
 import functions.plotting as pf
 
 
-def compare_plot_datasets(df, r, start_time, end_time, sDir):
+def compare_plot_datasets(df, r, start_time, end_time, sDir, strm=None):
     names = df.columns
     for d, row in df.iterrows():
+        #if '0001' not in d:
         print('\n{}'.format(d))
         for i, n in enumerate(names):
             ii = i + 1
             if ii > 1:
                 f1 = row[n]
-                try:
-                    if np.isnan(f1) is True:
-                        continue
-                except TypeError:
+                if type(f1) == float:
+                    continue
+                elif type(f1) == list:
                     for x in range(ii - 1):
                         f0 = row[names[x]]
-                        try:
-                            if np.isnan(f0) is True:
-                                continue
-                        except TypeError:
+                        if type(f0) == float:
+                            continue
+                        elif type(f0) == list:
                             compare = '{} {}'.format(names[x], n)
 
                             if len(f0) == 1:
@@ -122,7 +121,10 @@ def compare_plot_datasets(df, r, start_time, end_time, sDir):
 
                                     title = ' '.join((d, r, '{} vs {}'.format(ds0_method, ds1_method)))
                                     ax.set_title(title, fontsize=9)
-                                    sfile = '_'.join((d, r, long_name))
+                                    if strm:
+                                        sfile = '_'.join((d, r, long_name, strm))
+                                    else:
+                                        sfile = '_'.join((d, r, long_name))
                                     pf.save_fig(save_dir, sfile)
 
                                     # Plot data with outliers removed
@@ -131,7 +133,10 @@ def compare_plot_datasets(df, r, start_time, end_time, sDir):
 
                                     title = ' '.join((d, r, '{} vs {}'.format(ds0_method, ds1_method)))
                                     ax.set_title(title, fontsize=9)
-                                    sfile = '_'.join((d, r, long_name, 'rmoutliers'))
+                                    if strm:
+                                        sfile = '_'.join((d, r, long_name, strm, 'rmoutliers'))
+                                    else:
+                                        sfile = '_'.join((d, r, long_name, 'rmoutliers'))
                                     pf.save_fig(save_dir, sfile)
 
 
@@ -215,7 +220,8 @@ def main(sDir, url_list, start_time, end_time):
 
         if len(np.unique(ustreams)) > len(np.unique(umethods)):  # if there is more than 1 stream per delivery method
             method_stream_df = cf.stream_word_check(dinfo)
-            for cs in (np.unique(method_stream_df['stream_name_compare'])).tolist():
+            streamlst = (np.unique(method_stream_df['stream_name_compare'])).tolist()
+            for cs in streamlst:
                 print('Common stream_name: {}'.format(cs))
                 method_stream_list = []
                 for row in method_stream_df.itertuples():
@@ -223,7 +229,7 @@ def main(sDir, url_list, start_time, end_time):
                     if stream_name_compare == cs:
                         method_stream_list.append('-'.join((method, stream_name)))
                 dinfo_df_filtered = dinfo_df[method_stream_list]
-                compare_plot_datasets(dinfo_df_filtered, r, start_time, end_time, sDir)
+                compare_plot_datasets(dinfo_df_filtered, r, start_time, end_time, sDir, cs)
 
         else:
             compare_plot_datasets(dinfo_df, r, start_time, end_time, sDir)

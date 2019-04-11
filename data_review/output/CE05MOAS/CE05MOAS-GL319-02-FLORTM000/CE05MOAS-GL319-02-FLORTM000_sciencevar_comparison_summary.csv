@@ -1,0 +1,26 @@
+deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
+deployment0001,recovered_host-flort_m_sample,telemetered-flort_m_sample,Total Scattering Coefficient of Pure Seawater,seawater_scattering_coefficient,m-1,pass,1834712,0,no missing data,22667,0.0,2.1206e-06,0,0.0
+deployment0001,recovered_host-flort_m_sample,telemetered-flort_m_sample,Optical Backscatter,optical_backscatter,m-1,pass,1834712,0,no missing data,22667,0.0,6.39e-08,0,0.0
+deployment0001,recovered_host-flort_m_sample,telemetered-flort_m_sample,Total Volume Scattering Coefficient,sci_flbbcd_bb_units,m-1 sr-1,pass,1834712,0,no missing data,22842,0.0,0.0,0,0.0
+deployment0001,recovered_host-flort_m_sample,telemetered-flort_m_sample,CDOM Concentration,sci_flbbcd_cdom_units,ppb,pass,1834712,0,no missing data,22843,0.0,0.0,0,0.0
+deployment0001,recovered_host-flort_m_sample,telemetered-flort_m_sample,Chlorophyll-a Concentration,sci_flbbcd_chlor_units,µg L-1,pass,1834712,0,no missing data,22843,0.0,0.0,0,0.0
+deployment0003,recovered_host-flort_m_sample,telemetered-flort_m_sample,Total Scattering Coefficient of Pure Seawater,seawater_scattering_coefficient,m-1,pass,751265,26,no missing data,21818,0.0,0.0001067101,0,0.0
+deployment0003,recovered_host-flort_m_sample,telemetered-flort_m_sample,Optical Backscatter,optical_backscatter,m-1,pass,751265,26,no missing data,21818,0.0,0.000431308,0,0.0
+deployment0003,recovered_host-flort_m_sample,telemetered-flort_m_sample,Total Volume Scattering Coefficient,sci_flbbcd_bb_units,m-1 sr-1,pass,751265,0,no missing data,21950,0.0,6.38e-05,0,0.0
+deployment0003,recovered_host-flort_m_sample,telemetered-flort_m_sample,CDOM Concentration,sci_flbbcd_cdom_units,ppb,pass,751265,0,no missing data,21950,0.0,0.181800127,0,0.0
+deployment0003,recovered_host-flort_m_sample,telemetered-flort_m_sample,Chlorophyll-a Concentration,sci_flbbcd_chlor_units,µg L-1,pass,751265,0,no missing data,21950,0.0,0.0288000107,0,0.0
+deployment0004,recovered_host-flort_m_sample,telemetered-flort_m_sample,Total Scattering Coefficient of Pure Seawater,seawater_scattering_coefficient,m-1,pass,163517,64,no missing data,2703,0.0,1.8004e-06,0,0.0
+deployment0004,recovered_host-flort_m_sample,telemetered-flort_m_sample,Optical Backscatter,optical_backscatter,m-1,pass,163517,64,no missing data,2703,0.0,5.43e-08,0,0.0
+deployment0004,recovered_host-flort_m_sample,telemetered-flort_m_sample,Total Volume Scattering Coefficient,sci_flbbcd_bb_units,m-1 sr-1,pass,163517,0,no missing data,2708,0.0,0.0,0,0.0
+deployment0004,recovered_host-flort_m_sample,telemetered-flort_m_sample,CDOM Concentration,sci_flbbcd_cdom_units,ppb,pass,163517,0,no missing data,2708,0.0,0.0,0,0.0
+deployment0004,recovered_host-flort_m_sample,telemetered-flort_m_sample,Chlorophyll-a Concentration,sci_flbbcd_chlor_units,µg L-1,pass,163517,0,no missing data,2708,0.0,0.0,0,0.0
+deployment0005,recovered_host-flort_m_sample,telemetered-flort_m_sample,Total Scattering Coefficient of Pure Seawater,seawater_scattering_coefficient,m-1,pass,1428874,0,no missing data,25319,0.0,3.6377e-06,0,0.0
+deployment0005,recovered_host-flort_m_sample,telemetered-flort_m_sample,Optical Backscatter,optical_backscatter,m-1,pass,1428874,0,no missing data,25319,0.0,1.097e-07,0,0.0
+deployment0005,recovered_host-flort_m_sample,telemetered-flort_m_sample,Total Volume Scattering Coefficient,sci_flbbcd_bb_units,m-1 sr-1,pass,1428874,0,no missing data,25523,0.0,0.0,0,0.0
+deployment0005,recovered_host-flort_m_sample,telemetered-flort_m_sample,CDOM Concentration,sci_flbbcd_cdom_units,ppb,pass,1428874,0,no missing data,25523,0.0,0.0,0,0.0
+deployment0005,recovered_host-flort_m_sample,telemetered-flort_m_sample,Chlorophyll-a Concentration,sci_flbbcd_chlor_units,µg L-1,pass,1428874,0,no missing data,25523,0.0,0.0,0,0.0
+deployment0006,recovered_host-flort_m_sample,telemetered-flort_m_sample,Total Scattering Coefficient of Pure Seawater,seawater_scattering_coefficient,m-1,pass,318898,0,no missing data,5869,0.0,1.698e-06,0,0.0
+deployment0006,recovered_host-flort_m_sample,telemetered-flort_m_sample,Optical Backscatter,optical_backscatter,m-1,pass,318898,0,no missing data,5869,0.0,5.12e-08,0,0.0
+deployment0006,recovered_host-flort_m_sample,telemetered-flort_m_sample,Total Volume Scattering Coefficient,sci_flbbcd_bb_units,m-1 sr-1,pass,318898,0,no missing data,5930,0.0,0.0,0,0.0
+deployment0006,recovered_host-flort_m_sample,telemetered-flort_m_sample,CDOM Concentration,sci_flbbcd_cdom_units,ppb,pass,318898,0,no missing data,5930,0.0,0.0,0,0.0
+deployment0006,recovered_host-flort_m_sample,telemetered-flort_m_sample,Chlorophyll-a Concentration,sci_flbbcd_chlor_units,µg L-1,pass,318898,0,no missing data,5930,0.0,0.0,0,0.0
