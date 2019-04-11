@@ -1,3 +1,4 @@
+from . import map_gliders
 from . import plot_compare_timeseries
 from . import plot_profiles
 from . import plot_timeseries
