@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 import functions.group_by_timerange as gt
 
 
-def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method_num, zdbar, n_std):
+def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method_num, zdbar, n_std, inpercentile, zcell_size):
 
     for i, u in enumerate(url_list):
         print('\nUrl {} of {}: {}'.format(i + 1, len(url_list), u))
@@ -150,8 +150,8 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                             y_name.append('pressure long name missing')
 
             stat_data = pd.DataFrame(columns=['deployments', 'time_to_exclude'])
-            file_exclude = '{}/{}_{}_{}_time_to_exclude_w_{}STD_filter.csv'.format(texclude_dir,
-                                                                                   deployment, refdes, method, n_std)
+            file_exclude = '{}/{}_{}_{}_excluded_timestamps.csv'.format(texclude_dir,
+                                                                                   deployment, refdes, method)
             stat_data.to_csv(file_exclude, index=True)
             for m, n in sci_vars_dict.items():
                 for sv, vinfo in n['vars'].items():
@@ -168,7 +168,6 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                         z = vinfo['values']
                         y = vinfo['pressure']
 
-                        title = ' '.join((deployment, r, ms.split('-')[0]))
 
                     # Check if the array is all NaNs
                     if sum(np.isnan(z)) == len(z):
@@ -218,27 +217,38 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                             print(len(z_nofv_nonan_noev) - len(gr_ind),
                                   ' Global ranges: [{} - {}]'.format(global_min, global_max))
                         else:
+                            gr_ind = []
                             t_nofv_nonan_noev_nogr = t_nofv_nonan_noev
                             y_nofv_nonan_noev_nogr = y_nofv_nonan_noev
                             z_nofv_nonan_noev_nogr = z_nofv_nonan_noev
                             print('No global ranges: [{} - {}]'.format(global_min, global_max))
 
-                        # group data by depth and reject values outside 3 STD in each group
+                        # reject suspect data
                         columns = ['tsec', 'dbar', str(sv)]
-                        bin_size = 10
-                        min_r = int(round(min(y_nofv_nonan_noev_nogr) - bin_size))
-                        max_r = int(round(max(y_nofv_nonan_noev_nogr) + bin_size))
-                        ranges = list(range(min_r, max_r, bin_size))
-                        # ... grouping by depth
+                        min_r = int(round(min(y_nofv_nonan_noev_nogr) - zcell_size))
+                        max_r = int(round(max(y_nofv_nonan_noev_nogr) + zcell_size))
+                        ranges = list(range(min_r, max_r, zcell_size))
+                        #     ... grouping by depth
                         groups, d_groups = gt.group_by_depth_range(t_nofv_nonan_noev_nogr, y_nofv_nonan_noev_nogr,
                                                                    z_nofv_nonan_noev_nogr, columns, ranges)
-                        # ... excluding time ranges
-                        y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, \
-                        time_ex, t_std, z_std, y_std = cf.time_exclude_std(groups, d_groups, n_std,
-                                                                           t_nofv_nonan_noev_nogr,
-                                                                           y_nofv_nonan_noev_nogr,
-                                                                           z_nofv_nonan_noev_nogr)
+                        #     ... excluding timestamps
+                        if 'scatter' in sv:
+                            n_std = None #to use percentile
+                        else:
+                            n_std = n_std
 
+                        y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_ex, \
+                        t_nofv_nonan_noev_nogr_nospct, z_nofv_nonan_noev_nogr_nospct, y_nofv_nonan_noev_nogr_nospct = \
+                            cf.time_exclude_std(
+                                                groups, d_groups, n_std,
+                                                t_nofv_nonan_noev_nogr,
+                                                y_nofv_nonan_noev_nogr,
+                                                z_nofv_nonan_noev_nogr,
+                                                inpercentile)
+                        print('{} using {} percentile of data grouped in {} dbar segments'.format(
+                            len(z_nofv_nonan_noev_nogr) - len(z_nofv_nonan_noev_nogr_nospct), inpercentile, zcell_size))
+
+                        # writing timestamps to .csv file to use with data_range.py script
                         if len(time_ex) != 0:
                             t_exclude = time_ex[0]
                             for i in range(len(time_ex))[1:len(time_ex)]:
@@ -248,8 +258,30 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                                                       'time_to_exclude': t_exclude}, index=[sv])
                             stat_data.to_csv(file_exclude, index=True, mode='a', header=False)
 
+                        # reject time ranges from data portal file export
+                        t_nofv_nonan_noev_nogr_nospct_nomore, \
+                        z_nofv_nonan_noev_nogr_nospct_nomore, \
+                        y_nofv_nonan_noev_nogr_nospct_nomore = \
+                            cf.time_exclude_portal(subsite, r, t_nofv_nonan_noev_nogr_nospct,
+                                                        y_nofv_nonan_noev_nogr_nospct, z_nofv_nonan_noev_nogr_nospct)
+
+                        print('{} using visual inspection of data'.format(
+                        len(t_nofv_nonan_noev_nogr_nospct) - len(t_nofv_nonan_noev_nogr_nospct_nomore), inpercentile,
+                        zcell_size))
+
+                    # reject data in a depth range
+                    if zdbar is not None:
+                        y_ind = y_nofv_nonan_noev_nogr_nospct_nomore < zdbar
+                        t_noy = t_nofv_nonan_noev_nogr_nospct_nomore[y_ind]
+                        y_noy = y_nofv_nonan_noev_nogr_nospct_nomore[y_ind]
+                        z_noy = z_nofv_nonan_noev_nogr_nospct_nomore[y_ind]
+
+                    print('{} using visual inspection of data'.format(
+                        len(t_nofv_nonan_noev_nogr_nospct) - len(t_nofv_nonan_noev_nogr_nospct_nomore),
+                        inpercentile,
+                        zcell_size))
                     # plot data
-                    if len(z_nofv_nonan_noev) > 0:
+                    if len(z_nofv_nonan_noev_nogr_nospct) > 0:
                         if m == 'common_stream_placeholder':
                             sname = '-'.join((sv, r))
                         else:
@@ -258,78 +290,107 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                     xlabel = sv + " (" + sv_units + ")"
                     ylabel = y_name[0] + " (" + y_unit[0] + ")"
                     clabel = 'Time'
-
+                    title = ' '.join((deployment, r, m))
 
                     # Plot error free  data
                     fig, ax = pf.plot_profiles(z_nofv_nonan_noev_nogr, y_nofv_nonan_noev_nogr, t_nofv_nonan_noev_nogr,
                                                ylabel, xlabel, clabel, end_times, deployments, stdev=None)
-
-                    ax.set_title((title +
-                                  '\n' + 'excluded : fill values, nans, |1e7| values, non-global ranges values' +
-                                  '\n' + 'mean (black) and ' + str(n_std) +
-                                  ' std (magenta) calculated for bin-depth = ' +
-                                 str(bin_size) + ' dbar'), fontsize=9)
-
+                    ax.set_title(title, fontsize=9)
                     ax.plot(n_avg, y_avg, '-k')
                     ax.fill_betweenx(y_avg, n0_std, n1_std, color='m', alpha=0.2)
+                    leg_text = (
+                        'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}]'.format(
+                                                                len(z) - len(fv_ind),
+                                                                len(z) - len(nan_ind),
+                                                                len(z) - len(ev_ind),
+                                                                len(gr_ind),
+                                                            global_min, global_max) + '\n' +
+                        ('(black) data average in {} dbar segments'.format(zcell_size)) + '\n' +
+                        ('(magenta) upper and lower {} percentile envelope in {} dbar segments'.format(inpercentile, zcell_size)),)
+                    ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
+                    fig.tight_layout()
                     sfile = '_'.join(('rm_erroneous_data', sname))
                     pf.save_fig(save_dir, sfile)
 
-
-                    # Plot excluding a selected depth value
-                    if zdbar is not None:
-                        y_ind = y_nofv_nonan_noev_nogr < zdbar
-                        t_y = t_nofv_nonan_noev_nogr[y_ind]
-                        y_y = y_nofv_nonan_noev_nogr[y_ind]
-                        z_y = z_nofv_nonan_noev_nogr[y_ind]
-
-                        fig, ax = pf.plot_profiles(z_y, y_y, t_y,
+                    # plot excluding time ranges for suspect data
+                    if len(t_nofv_nonan_noev_nogr_nospct) != len(t_nofv_nonan_noev_nogr):
+                        fig, ax = pf.plot_profiles(z_nofv_nonan_noev_nogr_nospct, y_nofv_nonan_noev_nogr_nospct,
+                                                   t_nofv_nonan_noev_nogr_nospct,
                                                    ylabel, xlabel, clabel, end_times, deployments, stdev=None)
-                        ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
 
-                        sfile = '_'.join(('rm_depth_range', sname))
-                        pf.save_fig(save_dir, sfile)
-
-
-                    # plot excluding time ranges from STD analysis
-                    if len(t_std) != 0:
-                        fig, ax = pf.plot_profiles(z_std, y_std, t_std,
-                                                   ylabel, xlabel, clabel, end_times, deployments, stdev=None)
-                        ax.set_title((title + '\n' +
-                                      'excluded suspect data using a ' +
-                                      str(n_std) + ' STD filter on a bin-depth = ' + str(bin_size) + ' dbar'),
-                                     fontsize=9)
-
+                        ax.set_title(title, fontsize=9)
+                        leg_text = (
+                        'removed {} in the upper and lower {} percentile of data grouped in {} dbar segments'.format(
+                        len(z_nofv_nonan_noev_nogr) - len(z_nofv_nonan_noev_nogr_nospct), inpercentile, zcell_size),)
+                        ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
+                        fig.tight_layout()
                         sfile = '_'.join(('rm_suspect_data', sname))
                         pf.save_fig(save_dir, sfile)
 
-                    # plot excluding time ranges in exported file from data review portal
-                    t_ex, z_ex, y_ex = cf.time_exclude_portal(subsite, r, t_nofv_nonan_noev_nogr, y_nofv_nonan_noev_nogr, z_nofv_nonan_noev_nogr)
-                    if t_ex is not None:
-                        fig, ax = pf.plot_profiles(z_ex, y_ex, t_ex,
+                    # plot excluding time ranges from data portal for suspect data
+                    if len(t_nofv_nonan_noev_nogr_nospct_nomore) != len(t_nofv_nonan_noev_nogr_nospct):
+                        fig, ax = pf.plot_profiles(z_nofv_nonan_noev_nogr_nospct_nomore,
+                                                   y_nofv_nonan_noev_nogr_nospct_nomore,
+                                                   t_nofv_nonan_noev_nogr_nospct_nomore,
                                                    ylabel, xlabel, clabel, end_times, deployments, stdev=None)
-                        ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-                        leg_text = ('excluded suspect data',)
-                        ax.legend(leg_text, loc='best', fontsize=6)
+                        ax.set_title(title, fontsize=9)
+                        leg_text = ('excluded suspect data using visual inspection of the data',)
+                        ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
+                        fig.tight_layout()
+                        sfile = '_'.join(('rm_v_suspect_data', sname))
+                        pf.save_fig(save_dir, sfile)
 
-                        sfile = '_'.join((sname, 'rmsuspectdata'))
+
+                    # Plot excluding a selected depth value
+                    if len(t) != len(t):
+                        fig, ax = pf.plot_profiles(z_noy, y_noy, t_noy,
+                                                   ylabel, xlabel, clabel, end_times, deployments, stdev=None)
+
+                        ax.set_title(title, fontsize=9)
+                        leg_text = ('removed data in range {} dbar'.format(zcell_size),)
+                        ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
+                        fig.tight_layout()
+                        sfile = '_'.join(('rm_depth_range', sname))
                         pf.save_fig(save_dir, sfile)
 
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
-    sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    plot_type = 'profile_plots'
-    '''
-        time option: 
-        set to None if plotting all data
-        set to dt.datetime(yyyy, m, d, h, m, s) for specific dates
-    '''
-    start_time = None
-    end_time = None
-    zdbar = None
-    n_std = 3
-    method_num = 'recovered_wfp'
-    deployment_num = 3
 
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021222-CE09OSPM-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html']
-    main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method_num, zdbar, n_std)
+    '''
+    define time range: 
+    set to None if plotting all data
+    set to dt.datetime(yyyy, m, d, h, m, s) for specific dates
+    '''
+    start_time = None  # dt.datetime(2014, 12, 1)
+    end_time = None  # dt.datetime(2015, 5, 2)
+
+    '''
+    define filters standard deviation, percentile, depth range
+    '''
+    n_std = None
+    inpercentile = 5
+    zdbar = None
+
+    '''
+    define the depth cell_size for data grouping 
+    '''
+    zcell_size = 10
+
+    ''''
+    define deployment number and method
+    '''
+    method_num = 'telemetered'  # 'recovered_wfp'
+    deployment_num = 6
+
+    '''
+    define plot type, save-director y name and URL where data files live 
+    '''
+    plot_type = 'profile_plots'
+    sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
+    # url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021222-CE09OSPM-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html']
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021350-CE09OSPM-WFP01-04-FLORTK000-telemetered-flort_sample/catalog.html']
+
+    '''
+        call in main function with the above attributes
+    '''
+    main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method_num, zdbar, n_std, inpercentile, zcell_size)
