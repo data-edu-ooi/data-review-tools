@@ -34,13 +34,13 @@ def plot_profiles(x, y, t, ylabel, xlabel, clabel, end_times, deployments, stdev
     :param t: .nc data array containing time data to be used for coloring (x,y) data pairs
     :param stdev: desired standard deviation to exclude from plotting
     """
-    if type(t) is not np.ndarray:
+    if type(t) is not np.ndarray and type(t) is not list:
         t = t.values
 
-    if type(y) is not np.ndarray:
+    if type(y) is not np.ndarray and type(t) is not list:
         y = y.values
 
-    if type(x) is not np.ndarray:
+    if type(x) is not np.ndarray and type(t) is not list:
         x = x.values
 
     if stdev is None:
@@ -261,7 +261,7 @@ def plot_ts(sal_vector, temp_vector, dens, salinity, temperature, cbar):
     return fig, ax
 
 
-def plot_xsection(subsite, x, y, z, clabel, ylabel, stdev=None):
+def plot_xsection(subsite, x, y, z, clabel, ylabel, inpercentile=None, stdev=None):
     """
     Create a cross-section plot for mobile instruments
     :param subsite: subsite part of reference designator to plot
@@ -318,11 +318,17 @@ def plot_xsection(subsite, x, y, z, clabel, ylabel, stdev=None):
     # add color bar
     bar = fig.colorbar(xc, ax=ax, label=clabel, extend='both')
     bar.formatter.set_useOffset(False)
-    upper_lim = np.percentile(zD, 95)
-    lower_lim = np.percentile(zD, 5)
-    bar.set_clim(lower_lim, upper_lim)
-    bar.set_ticks([lower_lim, upper_lim])
     bar.ax.tick_params(labelsize=8)
+
+
+    if inpercentile is not None:
+        upper_lim = np.percentile(zD, 100 - inpercentile)
+        # upper_mid = np.percentile(zD, 100 - 15*inpercentile)
+        # lower_mid = np.percentile(zD, 100 - 10*inpercentile)
+        lower_lim = np.percentile(zD, inpercentile)
+        bar.set_clim(lower_lim, upper_lim)
+        bar.set_ticks([lower_lim, upper_lim], update_ticks=True) #lower_mid, upper_mid,
+
     ax.set_ylabel(ylabel, fontsize=9)
     format_date_axis(ax, fig)
 
