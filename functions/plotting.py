@@ -8,8 +8,8 @@ import matplotlib.dates as mdates
 import os
 import numpy as np
 import functions.common as cf
-import matplotlib.cm as cm
-import pandas as pd  # We need pandas for this
+import pandas as pd
+
 
 def get_units(variable):
     try:
@@ -61,8 +61,9 @@ def plot_profiles(x, y, t, ylabel, xlabel, clabel, end_times, deployments, stdev
     plt.grid()
     sct = ax.scatter(xD, yD, c=tD, s=2, edgecolor='None', cmap='rainbow')
     cbar = plt.colorbar(sct, label=clabel)
-    # cbar.ax.set_yticklabels(pd.to_datetime(end_times).strftime(date_format='%Y-%m-%d'), update_ticks=True)
-    cbar.ax.set_yticklabels(pd.to_datetime(cbar.get_ticks()).strftime(date_format='%Y-%m-%d'))
+    #cbar.ax.set_yticklabels(pd.to_datetime(end_times).strftime(date_format='%Y-%m-%d'), update_ticks=True)
+    #cbar.ax.set_yticklabels(pd.to_datetime(cbar.get_ticks()).strftime(date_format='%Y-%m-%d'))
+    cbar.ax.set_yticklabels(pd.to_datetime(cbar.ax.get_yticks()).strftime(date_format='%Y-%m-%d'))
 
     ax.invert_yaxis()
     ax.set_xlabel(xlabel, fontsize=9)
@@ -91,7 +92,6 @@ def plot_timeseries_all(x, y, y_name, y_units, stdev=None):
         ind2 = cf.reject_outliers(ydata, stdev)
         yD = ydata[ind2]
         xD = xdata[ind2]
-
 
         # ind2 = cf.reject_outliers(y, stdev)
         # yD = y[ind2]
@@ -319,7 +319,6 @@ def plot_xsection(subsite, x, y, z, clabel, ylabel, inpercentile=None, stdev=Non
     bar = fig.colorbar(xc, ax=ax, label=clabel, extend='both')
     bar.formatter.set_useOffset(False)
     bar.ax.tick_params(labelsize=8)
-
 
     if inpercentile is not None:
         upper_lim = np.percentile(zD, 100 - inpercentile)
