@@ -3,6 +3,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
+  - python==3.7.2
   - geopy==1.17.0
   - gsw==3.2.1
   - matplotlib==3.0.1
