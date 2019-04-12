@@ -113,41 +113,42 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                     sh['t'] = np.append(sh['t'], ds['time'].values) # t = ds['time'].values
                     sh['values'] = np.append(sh['values'], ds[var].values)  # z = ds[var].values
 
-                    if 'MOAS' in subsite:
-                        if 'CTD' in main_sensor:  # for glider CTDs, pressure is a coordinate
-                            pressure = 'sci_water_pressure_dbar'
-                            y = ds[pressure].values
-                        else:
-                            pressure = 'int_ctd_pressure'
-                            y = ds[pressure].values
-                    else:
-                        pressure = pf.pressure_var(ds, ds.data_vars.keys())
-                        y = ds[pressure].values
-
-                    if len(y[y != 0]) == 0 or sum(np.isnan(y)) == len(y) or len(y[y != ds[pressure]._FillValue]) == 0:
-                        print('Pressure Array of all zeros or NaNs or fill values - using pressure coordinate')
-                        pressure = [pressure for pressure in ds.coords.keys() if 'pressure' in ds.coords[pressure].name]
-                        y = ds.coords[pressure[0]].values
+                    y, y_unit, y_name = cf.add_pressure_to_dictionary_of_sci_vars(ds)
+                    # if 'MOAS' in subsite:
+                    #     if 'CTD' in main_sensor:  # for glider CTDs, pressure is a coordinate
+                    #         pressure = 'sci_water_pressure_dbar'
+                    #         y = ds[pressure].values
+                    #     else:
+                    #         pressure = 'int_ctd_pressure'
+                    #         y = ds[pressure].values
+                    # else:
+                    #     pressure = pf.pressure_var(ds, ds.data_vars.keys())
+                    #     y = ds[pressure].values
+                    #
+                    # if len(y[y != 0]) == 0 or sum(np.isnan(y)) == len(y) or len(y[y != ds[pressure]._FillValue]) == 0:
+                    #     print('Pressure Array of all zeros or NaNs or fill values - using pressure coordinate')
+                    #     pressure = [pressure for pressure in ds.coords.keys() if 'pressure' in ds.coords[pressure].name]
+                    #     y = ds.coords[pressure[0]].values
 
                     sh['pressure'] = np.append(sh['pressure'], y)
 
-                    try:
-                        ds[pressure].units
-                        if ds[pressure].units not in y_unit:
-                            y_unit.append(ds[pressure].units)
-                    except AttributeError:
-                        print('pressure attributes missing units')
-                        if 'pressure unit missing' not in y_unit:
-                            y_unit.append('pressure unit missing')
-
-                    try:
-                        ds[pressure].long_name
-                        if ds[pressure].long_name not in y_name:
-                            y_name.append(ds[pressure].long_name)
-                    except AttributeError:
-                        print('pressure attributes missing long_name')
-                        if 'pressure long name missing' not in y_name:
-                            y_name.append('pressure long name missing')
+                    # try:
+                    #     ds[pressure].units
+                    #     if ds[pressure].units not in y_unit:
+                    #         y_unit.append(ds[pressure].units)
+                    # except AttributeError:
+                    #     print('pressure attributes missing units')
+                    #     if 'pressure unit missing' not in y_unit:
+                    #         y_unit.append('pressure unit missing')
+                    #
+                    # try:
+                    #     ds[pressure].long_name
+                    #     if ds[pressure].long_name not in y_name:
+                    #         y_name.append(ds[pressure].long_name)
+                    # except AttributeError:
+                    #     print('pressure attributes missing long_name')
+                    #     if 'pressure long name missing' not in y_name:
+                    #         y_name.append('pressure long name missing')
 
             stat_data = pd.DataFrame(columns=['deployments', 'time_to_exclude'])
             file_exclude = '{}/{}_{}_{}_excluded_timestamps.csv'.format(texclude_dir,

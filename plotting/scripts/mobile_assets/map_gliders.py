@@ -145,7 +145,7 @@ if __name__ == '__main__':
     start_time = None
     end_time = None
     plot_type = 'glider_track'
-    deployment_num = None
+    deployment_num = 1
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
     url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190306T174451-CP05MOAS-GL379-04-DOSTAM000-recovered_host-dosta_abcdjm_glider_recovered/catalog.html']
     main(url_list, sDir, plot_type, start_time, end_time, deployment_num)
