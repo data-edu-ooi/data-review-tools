@@ -94,45 +94,10 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                     if ds[var].units not in sh['units']:
                         sh['units'].append(ds[var].units)
 
-                    sh['t'] = np.append(sh['t'], ds['time'].values) #t = ds['time'].values
-                    sh['values'] = np.append(sh['values'], ds[var].values)  # z = ds[var].values
+                    sh['t'] = np.append(sh['t'], ds['time'].values)
+                    sh['values'] = np.append(sh['values'], ds[var].values)
 
                     y, y_unit, y_name = cf.add_pressure_to_dictionary_of_sci_vars(ds)
-                    # if 'MOAS' in subsite:
-                    #     if 'CTD' in main_sensor:  # for glider CTDs, pressure is a coordinate
-                    #         pressure = 'sci_water_pressure_dbar'
-                    #         y = ds[pressure].values
-                    #     else:
-                    #         pressure = 'int_ctd_pressure'
-                    #         y = ds[pressure].values
-                    # else:
-                    #     pressure = pf.pressure_var(ds, ds.data_vars.keys())
-                    #     y = ds[pressure].values
-                    #
-                    # if len(y[y != 0]) == 0 or sum(np.isnan(y)) == len(y) or len(y[y != ds[pressure]._FillValue]) == 0:
-                    #     print('Pressure Array of all zeros or NaNs or fill values - using pressure coordinate')
-                    #     pressure = [pressure for pressure in ds.coords.keys() if 'pressure' in ds.coords[pressure].name]
-                    #     y = ds.coords[pressure[0]].values
-                    #
-                    sh['pressure'] = np.append(sh['pressure'], y)
-                    #
-                    # try:
-                    #     ds[pressure].units
-                    #     if ds[pressure].units not in y_unit:
-                    #         y_unit.append(ds[pressure].units)
-                    # except AttributeError:
-                    #     print('pressure attributes missing units')
-                    #     if 'pressure unit missing' not in y_unit:
-                    #         y_unit.append('pressure unit missing')
-                    #
-                    # try:
-                    #     ds[pressure].long_name
-                    #     if ds[pressure].long_name not in y_name:
-                    #         y_name.append(ds[pressure].long_name)
-                    # except AttributeError:
-                    #     print('pressure attributes missing long_name')
-                    #     if 'pressure long name missing' not in y_name:
-                    #         y_name.append('pressure long name missing')
 
 
             for m, n in sci_vars_dict.items():
@@ -160,143 +125,84 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                             print('Array of all fill values - skipping plot.')
 
                         else:
-                            # reject fill values
-                            fv_ind = z != fv
-                            y_nofv = y[fv_ind]
-                            t_nofv = t[fv_ind]
-                            z_nofv = z[fv_ind]
-                            print(len(z) - len(fv_ind), ' fill values')
+                            # reject erroneous data
+                            dtime, zpressure, ndata, lenfv, lennan, lenev, lengr, global_min, global_max = \
+                                                                            cf.reject_erroneous_data(r, sv, t, y, z, fv)
 
-                            # reject NaNs
-                            nan_ind = ~np.isnan(z_nofv)
-                            t_nofv_nonan = t_nofv[nan_ind]
-                            y_nofv_nonan = y_nofv[nan_ind]
-                            z_nofv_nonan = z_nofv[nan_ind]
-                            print(len(z) - len(nan_ind), ' NaNs')
-
-                            # reject extreme values
-                            ev_ind = cf.reject_extreme_values(z_nofv_nonan)
-                            t_nofv_nonan_noev = t_nofv_nonan[ev_ind]
-                            y_nofv_nonan_noev = y_nofv_nonan[ev_ind]
-                            z_nofv_nonan_noev = z_nofv_nonan[ev_ind]
-                            print(len(z) - len(ev_ind), ' Extreme Values', '|1e7|')
-
-                            # reject values outside global ranges:
-                            global_min, global_max = cf.get_global_ranges(r, sv)
-                            # platform not in qc-table (parad_k_par)
-                            # global_min = 0
-                            # global_max = 2500
-                            if isinstance(global_min, (int, float)) and isinstance(global_max, (int, float)):
-                                gr_ind = cf.reject_global_ranges(z_nofv_nonan_noev, global_min, global_max)
-                                t_nofv_nonan_noev_nogr = t_nofv_nonan_noev[gr_ind]
-                                y_nofv_nonan_noev_nogr = y_nofv_nonan_noev[gr_ind]
-                                z_nofv_nonan_noev_nogr = z_nofv_nonan_noev[gr_ind]
-                                print('{} Global Ranges [{} - {}]'.format(len(z_nofv_nonan_noev) - len(gr_ind),
-                                                                          global_min, global_max))
-                            else:
-                                gr_ind = []
-                                t_nofv_nonan_noev_nogr = t_nofv_nonan_noev
-                                y_nofv_nonan_noev_nogr = y_nofv_nonan_noev
-                                z_nofv_nonan_noev_nogr = z_nofv_nonan_noev
-                                print('{} global ranges: {} - {}'.format(len(gr_ind), global_min, global_max))
-
-                            # reject suspect data
+                            # creating data groups
                             columns = ['tsec', 'dbar', str(sv)]
-                            min_r = int(round(min(y_nofv_nonan_noev_nogr) - zcell_size))
-                            max_r = int(round(max(y_nofv_nonan_noev_nogr) + zcell_size))
+                            min_r = int(round(min(zpressure) - zcell_size))
+                            max_r = int(round(max(zpressure) + zcell_size))
                             ranges = list(range(min_r, max_r, zcell_size))
-                            #     ... grouping by depth
-                            groups, d_groups = gt.group_by_depth_range(t_nofv_nonan_noev_nogr,
-                                                                       y_nofv_nonan_noev_nogr,
-                                                                       z_nofv_nonan_noev_nogr, columns, ranges)
-                            #     ... excluding timestamps
-                            if 'scatter' in sv:
-                                n_std = None  # to use percentile
-                            else:
-                                n_std = n_std
 
+                            groups, d_groups = gt.group_by_depth_range(dtime,  zpressure, ndata, columns, ranges)
+
+                            #  rejecting timestamps from percentile analysis
                             y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_ex, \
-                            t_nofv_nonan_noev_nogr_nospct, \
-                            z_nofv_nonan_noev_nogr_nospct, \
-                            y_nofv_nonan_noev_nogr_nospct = \
-                                                            cf.time_exclude_std(groups, d_groups, n_std,
-                                                                                t_nofv_nonan_noev_nogr,
-                                                                                y_nofv_nonan_noev_nogr,
-                                                                                z_nofv_nonan_noev_nogr,
-                                                                                inpercentile)
+                            t_nospct, z_nospct, y_nospct = cf.reject_timestamps_in_groups(groups, d_groups, n_std,
+                                                                                           dtime, zpressure, ndata,
+                                                                                           inpercentile)
                             print('{} using {} percentile of data grouped in {} dbar segments'.format(
-                             len(z_nofv_nonan_noev_nogr) - len(z_nofv_nonan_noev_nogr_nospct), inpercentile, zcell_size))
+                                                        len(zpressure) - len(z_nospct), inpercentile, zcell_size))
 
-                            # reject time ranges from data portal file export
-                            t_nofv_nonan_noev_nogr_nospct_nomore, \
-                            z_nofv_nonan_noev_nogr_nospct_nomore, \
-                            y_nofv_nonan_noev_nogr_nospct_nomore = \
-                                cf.time_exclude_portal(subsite, r, t_nofv_nonan_noev_nogr_nospct,
-                                                       y_nofv_nonan_noev_nogr_nospct, z_nofv_nonan_noev_nogr_nospct)
-
-                            print('{} using visual inspection of data'.format(
-                                len(t_nofv_nonan_noev_nogr_nospct) - len(t_nofv_nonan_noev_nogr_nospct_nomore), inpercentile,
-                                zcell_size))
+                            # reject time range from data portal file export
+                            t_portal, z_portal, y_portal = cf.reject_timestamps_dataportal(subsite, r,
+                                                                                        t_nospct, z_nospct, y_nospct)
+                            print('{} using visual inspection of data'.format(len(z_nospct) - len(z_portal),
+                                                                              inpercentile, zcell_size))
 
                         ''''
                         Plot data
                         '''''
 
-                        if len(t_nofv_nonan_noev_nogr_nospct_nomore) > 0:
+                        if len(t_portal) > 0:
                             if m == 'common_stream_placeholder':
                                 sname = '-'.join((sv, r))
                             else:
                                 sname = '-'.join((sv, r, m))
-
 
                         clabel = sv + " (" + sv_units + ")"
                         ylabel = y_name[0] + " (" + y_unit[0] + ")"
 
 
                         # plot non-erroneous data
-                        fig, ax, bar = pf.plot_xsection(subsite, t_nofv_nonan_noev_nogr, y_nofv_nonan_noev_nogr,
-                                                        z_nofv_nonan_noev_nogr, clabel, ylabel, inpercentile, stdev=None)
+                        fig, ax, bar = pf.plot_xsection(subsite, dtime, zpressure, ndata,
+                                                        clabel, ylabel, inpercentile, stdev=None)
                         ax.set_title(title, fontsize=9)
                         leg_text = (
-                            'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}]'.format(
-                                len(z) - len(fv_ind),
-                                len(z) - len(nan_ind),
-                                len(z) - len(ev_ind),
-                                len(gr_ind),
-                                global_min, global_max) + '\n' +
-                            ('(black) data average in {} dbar segments'.format(zcell_size)) + '\n' +
-                            ('(magenta) upper and lower {} percentile envelope in {} dbar segments'.format(inpercentile,
-                                                                                                         zcell_size)),)
+                            'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}]'.format
+                                (
+                                len(z) - lenfv, len(z) - lennan, len(z) - lenev, lengr, global_min, global_max) + '\n' +
+                                ('(black) data average in {} dbar segments'.format(zcell_size)) + '\n' +
+                                ('(magenta) upper and lower {} percentile envelope in {} dbar segments'.format(
+                                                                                            inpercentile, zcell_size)),
+                                )
                         ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
                         fig.tight_layout()
                         sfile = '_'.join(('rm_erroneous_data', sname))
                         pf.save_fig(save_dir, sfile)
 
                         # plot excluding timestamps for suspect data
-                        if len(t_nofv_nonan_noev_nogr_nospct) != len(t_nofv_nonan_noev_nogr):
-                            fig, ax, bar = pf.plot_xsection(subsite, t_nofv_nonan_noev_nogr_nospct,
-                                                            y_nofv_nonan_noev_nogr_nospct,
-                                                            z_nofv_nonan_noev_nogr_nospct,
+                        if len(z_nospct) != len(zpressure):
+                            fig, ax, bar = pf.plot_xsection(subsite, t_nospct, y_nospct, z_nospct,
                                                             clabel, ylabel, inpercentile=None, stdev=None)
 
                             ax.set_title(title, fontsize=9)
                             leg_text = (
                             'removed {} in the upper and lower {} percentile of data grouped in {} dbar segments'.format(
-                            len(z_nofv_nonan_noev_nogr) - len(z_nofv_nonan_noev_nogr_nospct), inpercentile, zcell_size),)
+                            len(zpressure) - len(z_nospct), inpercentile, zcell_size),)
                             ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
                             fig.tight_layout()
                             sfile = '_'.join(('rm_suspect_data', sname))
                             pf.save_fig(save_dir, sfile)
 
                         # plot excluding time ranges from data portal export
-                        if len(t_nofv_nonan_noev_nogr_nospct_nomore) != len(t_nofv_nonan_noev_nogr_nospct):
+                        if len(z_nospct) - len(z_portal) > 0:
 
-                            fig, ax, bar = pf.plot_xsection(subsite, t_nofv_nonan_noev_nogr_nospct_nomore,
-                                                            y_nofv_nonan_noev_nogr_nospct_nomore,
-                                                            z_nofv_nonan_noev_nogr_nospct_nomore,
+                            fig, ax, bar = pf.plot_xsection(subsite, t_portal, y_portal, z_portal,
                                                             clabel, ylabel, inpercentile=None, stdev=None)
                             ax.set_title(title, fontsize=9)
-                            leg_text = ('excluded suspect data using visual inspection of the data',)
+                            leg_text = ('excluded {} suspect data when inspected visually'.format(len(z_nospct) - len(z_portal)),)
                             ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
                             fig.tight_layout()
                             sfile = '_'.join(('rm_v_suspect_data', sname))
@@ -304,12 +210,12 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
 
                         # Plot data excluding a depth range
                         if zdbar is not None:
-                            y_ind = y_nofv_nonan_noev_nogr_nospct_nomore < zdbar
-                            t_noy = t_nofv_nonan_noev_nogr_nospct_nomore[y_ind]
-                            y_noy = y_nofv_nonan_noev_nogr_nospct_nomore[y_ind]
-                            z_noy = z_nofv_nonan_noev_nogr_nospct_nomore[y_ind]
+                            y_ind = y_portal < zdbar
+                            t_zrange = t_portal[y_ind]
+                            y_zrange = y_portal[y_ind]
+                            z_zrange = z_portal[y_ind]
 
-                            fig, ax, bar = pf.plot_xsection(subsite, t_noy, y_noy, z_noy,
+                            fig, ax, bar = pf.plot_xsection(subsite, t_zrange, y_zrange, z_zrange,
                                                             clabel, ylabel, inpercentile, stdev=None)
                             ax.set_title(title, fontsize=9)
                             leg_text = ('removed data in range {} dbar'.format(zcell_size),)
@@ -322,21 +228,21 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
 
-
-    '''
+    """
     define time range: 
     set to None if plotting all data
     set to dt.datetime(yyyy, m, d, h, m, s) for specific dates
-    '''
+    """
     start_time = None #dt.datetime(2014, 12, 1)
     end_time = None #dt.datetime(2015, 5, 2)
 
     '''
     define filters standard deviation, percentile, depth range
     '''
+
+    zdbar = None
     n_std = None
     inpercentile = 5
-    zdbar = None
 
     '''
     define the depth cell_size for data grouping 
@@ -344,18 +250,19 @@ if __name__ == '__main__':
     zcell_size = 10
 
     ''''
-    define deployment number and method
+    define deployment number and collection method
     '''
-    method_num = 'telemetered' #'recovered_wfp'
-    deployment_num = 6
+    method_num = 'recovered_wfp'
+    #method_num = 'telemetered'
+    deployment_num = 1
 
     '''
-    define plot type, save-directory name and URL where data files live 
+    define plot type, output directory, and data files URL 
     '''
     plot_type = 'xsection_plots'
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    #url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021222-CE09OSPM-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html']
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021350-CE09OSPM-WFP01-04-FLORTK000-telemetered-flort_sample/catalog.html']
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021222-CE09OSPM-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html']
+    #url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021350-CE09OSPM-WFP01-04-FLORTK000-telemetered-flort_sample/catalog.html']
 
     '''
     call in main function with the above attributes
