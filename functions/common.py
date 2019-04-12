@@ -12,6 +12,7 @@ from urllib.request import urlopen
 import json
 from geopy.distance import geodesic
 import urllib3
+import functions.plotting as pf
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
@@ -355,7 +356,7 @@ def format_dates(dd):
     return fd2
 
 
-def time_exclude_std(groups, d_groups, n_std, tt, yy, zz, inpercentile):
+def reject_timestamps_in_groups(groups, d_groups, n_std, tt, yy, zz, inpercentile):
     y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_exclude = [], [], [], [], [], [], [], []
 
     tm = 1
@@ -397,27 +398,28 @@ def time_exclude_std(groups, d_groups, n_std, tt, yy, zz, inpercentile):
         # n_pres = np.append(n_pres, ypres[d_ind].values)
 
     time_to_exclude = np.unique(time_exclude)
-    if len(time_to_exclude) != 0:
-        t_ex = tt
-        y_ex = yy
-        z_ex = zz
-        for row in time_to_exclude:
-            ntime = pd.to_datetime(row)
-            ne = np.datetime64(ntime)
-
-            ind = np.where((t_ex != ne), True, False)
-            if not ind.any():
-                print('{} {}'.format(row, 'is not in data'))
-                print(np.unique(ind))
-            else:
-                t_ex = t_ex[ind]
-                z_ex = z_ex[ind]
-                y_ex = y_ex[ind]
+    t_ex, z_ex, y_ex = reject_suspect_data(tt, yy, zz, time_to_exclude)
+    # if len(time_to_exclude) != 0:
+    #     t_ex = tt
+    #     y_ex = yy
+    #     z_ex = zz
+    #     for row in time_to_exclude:
+    #         ntime = pd.to_datetime(row)
+    #         ne = np.datetime64(ntime)
+    #
+    #         ind = np.where((t_ex != ne), True, False)
+    #         if not ind.any():
+    #             print('{} {}'.format(row, 'is not in data'))
+    #             print(np.unique(ind))
+    #         else:
+    #             t_ex = t_ex[ind]
+    #             z_ex = z_ex[ind]
+    #             y_ex = y_ex[ind]
 
     return y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_to_exclude, t_ex, z_ex, y_ex
 
 
-def time_exclude_portal(subsite, r, tt, yy, zz):
+def reject_timestamps_portal(subsite, r, tt, yy, zz):
 
     dr = pd.read_csv('https://datareview.marine.rutgers.edu/notes/export')
     drn = dr.loc[dr.type == 'exclusion']
@@ -447,3 +449,121 @@ def time_exclude_portal(subsite, r, tt, yy, zz):
                         print('excluding {} timestamps [{} - {}]'.format(len(ind), sdate, edate))
 
     return t_ex, z_ex, y_ex
+
+
+def add_pressure_to_dictionary_of_sci_vars(ds):
+    y_unit = []
+    y_name = []
+    if 'MOAS' in ds.subsite:
+        if 'CTD' in ds.sensor:  # for glider CTDs, pressure is a coordinate
+            pressure = 'sci_water_pressure_dbar'
+            y = ds[pressure].values
+            if ds[pressure].units not in y_unit:
+                y_unit.append(ds[pressure].units)
+            if ds[pressure].long_name not in y_name:
+                y_name.append(ds[pressure].long_name)
+        else:
+            pressure = 'int_ctd_pressure'
+            y = ds[pressure].values
+            if ds[pressure].units not in y_unit:
+                y_unit.append(ds[pressure].units)
+            if ds[pressure].long_name not in y_name:
+                y_name.append(ds[pressure].long_name)
+    else:
+        pressure = pf.pressure_var(ds, ds.data_vars.keys())
+        y = ds[pressure].values
+
+    if len(y[y != 0]) == 0 or sum(np.isnan(y)) == len(y) or len(y[y != ds[pressure]._FillValue]) == 0:
+        print('Pressure Array of all zeros or NaNs or fill values - ... using pressure coordinate')
+        pressure = [pressure for pressure in ds.coords.keys() if 'pressure' in ds.coords[pressure].name]
+        y = ds.coords[pressure[0]].values
+
+    try:
+        ds[pressure].units
+        if ds[pressure].units not in y_unit:
+            y_unit.append(ds[pressure].units)
+    except AttributeError:
+        print('pressure attributes missing units')
+        if 'pressure unit missing' not in y_unit:
+            y_unit.append('pressure unit missing')
+
+    try:
+        ds[pressure].long_name
+        if ds[pressure].long_name not in y_name:
+            y_name.append(ds[pressure].long_name)
+    except AttributeError:
+        print('pressure attributes missing long_name')
+        if 'pressure long name missing' not in y_name:
+            y_name.append('pressure long name missing')
+
+    return y, y_unit, y_name
+
+
+def reject_erroneous_data(t, y, z, fill_value):
+
+    '''
+
+    :param t: time array
+    :param y: pressure array
+    :param z: data values
+    :param fill_value: fill values defined in the data file
+    :return: filtered data from fill values, NaNs, extreme values '|1e7|' and data outside global ranges
+    '''
+
+    # reject fill values
+    fv_ind = z != fill_value
+    y_nofv = y[fv_ind]
+    t_nofv = t[fv_ind]
+    z_nofv = z[fv_ind]
+    print(len(z) - len(fv_ind), ' fill values')
+
+    # reject NaNs
+    nan_ind = ~np.isnan(z_nofv)
+    t_nofv_nonan = t_nofv[nan_ind]
+    y_nofv_nonan = y_nofv[nan_ind]
+    z_nofv_nonan = z_nofv[nan_ind]
+    print(len(z_nofv) - len(nan_ind), ' NaNs')
+
+    # reject extreme values
+    ev_ind = cf.reject_extreme_values(z_nofv_nonan)
+    t_nofv_nonan_noev = t_nofv_nonan[ev_ind]
+    y_nofv_nonan_noev = y_nofv_nonan[ev_ind]
+    z_nofv_nonan_noev = z_nofv_nonan[ev_ind]
+    print(len(z_nofv_nonan) - len(ev_ind), ' Extreme Values', '|1e7|')
+
+    # reject values outside global ranges:
+    global_min, global_max = cf.get_global_ranges(r, vinfo['var_name'])
+    if isinstance(global_min, (int, float)) and isinstance(global_max, (int, float)):
+        gr_ind = cf.reject_global_ranges(z_nofv_nonan_noev, global_min, global_max)
+        t_nofv_nonan_noev_nogr = t_nofv_nonan_noev[gr_ind]
+        y_nofv_nonan_noev_nogr = y_nofv_nonan_noev[gr_ind]
+        z_nofv_nonan_noev_nogr = z_nofv_nonan_noev[gr_ind]
+        print('{} Global ranges [{} - {}]'.format(len(z_nofv_nonan_noev) - len(gr_ind),
+                                                  global_min, global_max))
+    else:
+        gr_ind = []
+        t_nofv_nonan_noev_nogr = t_nofv_nonan_noev
+        y_nofv_nonan_noev_nogr = y_nofv_nonan_noev
+        z_nofv_nonan_noev_nogr = z_nofv_nonan_noev
+        print('{} global ranges [{} - {}]'.format(len(gr_ind), global_min, global_max))
+
+    return t_nofv_nonan_noev_nogr, y_nofv_nonan_noev_nogr, z_nofv_nonan_noev_nogr
+
+
+def reject_suspect_data(t, y, z, timestamps):
+    tt = t
+    yy = y
+    zz = z
+    for row in timestamps:
+        ntime = pd.to_datetime(row)
+        ne = np.datetime64(ntime)
+        ind = np.where((tt != ne), True, False)
+        if not ind.any():
+            print('{} {}'.format(row, 'is not in data'))
+            print(np.unique(ind))
+        else:
+            tt = tt[ind]
+            zz = zz[ind]
+            yy = yy[ind]
+
+    return tt, yy, zz

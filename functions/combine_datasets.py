@@ -3,6 +3,7 @@ import xarray as xr
 import numpy as np
 import pandas as pd
 import functions.common as cf
+import functions.plotting as pf
 
 
 def append_science_data(preferred_stream_df, n_streams, refdes, dataset_list, sci_vars_dict, et=[], stime=None, etime=None):
@@ -37,16 +38,24 @@ def append_science_data(preferred_stream_df, n_streams, refdes, dataset_list, sc
                         # if the reference designator has multiple science data streams
                         elif fmethod_stream in sci_vars_dict[strm]['ms']:
                             sci_vars_dict = append_variable_data(ds, sci_vars_dict, strm, et)
+
     return sci_vars_dict
 
 
 def append_variable_data(ds, variable_dict, common_stream_name, exclude_times):
+
     ds_vars = cf.return_raw_vars(list(ds.data_vars.keys()) + list(ds.coords))
     vars_dict = variable_dict[common_stream_name]['vars']
     for var in ds_vars:
         try:
             long_name = ds[var].long_name
-            if long_name in list(vars_dict.keys()):
+            x = [x for x in list(vars_dict.keys()) if long_name in x]
+            if len(x) != 0:
+                print('{} pressure parameters in {}'.format(len(x), list(vars_dict.keys())))
+            # if long_name in list(vars_dict.keys()) or 'Pressure' in long_name:
+                long_name = x[0]
+                print(ds[var].units)
+                print(vars_dict[long_name]['db_units'])
                 if ds[var].units == vars_dict[long_name]['db_units']:
                     if ds[var]._FillValue not in vars_dict[long_name]['fv']:
                         vars_dict[long_name]['fv'].append(ds[var]._FillValue)
@@ -55,20 +64,25 @@ def append_variable_data(ds, variable_dict, common_stream_name, exclude_times):
                     tD = ds['time'].values
                     varD = ds[var].values
                     deployD = ds['deployment'].values
+                    pD, p_unit, p_name = cf.add_pressure_to_dictionary_of_sci_vars(ds)
                     if len(exclude_times) > 0:
                         for et in exclude_times:
-                            tD, varD, deployD = exclude_time_ranges(tD, varD, deployD, et)
+                            tD, pD, varD, deployD = exclude_time_ranges(tD, pD, varD, deployD, et)
                         if len(tD) > 0:
                             vars_dict[long_name]['t'] = np.append(vars_dict[long_name]['t'], tD)
+                            vars_dict[long_name]['pressure'] = np.append(vars_dict[long_name]['pressure'], pD)
                             vars_dict[long_name]['values'] = np.append(vars_dict[long_name]['values'], varD)
                             vars_dict[long_name]['deployments'] = np.append(vars_dict[long_name]['deployments'], deployD)
                     else:
                         vars_dict[long_name]['t'] = np.append(vars_dict[long_name]['t'], tD)
+                        vars_dict[long_name]['pressure'] = np.append(vars_dict[long_name]['pressure'], pD)
                         vars_dict[long_name]['values'] = np.append(vars_dict[long_name]['values'], varD)
                         vars_dict[long_name]['deployments'] = np.append(vars_dict[long_name]['deployments'], deployD)
 
+
         except AttributeError:
             continue
+
     return variable_dict
 
 
@@ -91,14 +105,15 @@ def common_long_names(science_variable_dictionary):
     return var_dict
 
 
-def exclude_time_ranges(time_data, variable_data, deploy_data, time_lst):
+def exclude_time_ranges(time_data, pressure_data, variable_data, deploy_data, time_lst):
     t0 = np.datetime64(time_lst[0])
     t1 = np.datetime64(time_lst[1])
     ind = np.where((time_data < t0) | (time_data > t1), True, False)
     timedata = time_data[ind]
+    pressuredata = pressure_data[ind]
     variabledata = variable_data[ind]
     deploydata = deploy_data[ind]
-    return timedata, variabledata, deploydata
+    return timedata, pressuredata, variabledata, deploydata
 
 
 def initialize_empty_arrays(dictionary, stream_name):
@@ -159,3 +174,18 @@ def sci_var_long_names_check(stream_sci_vars_dict):
             sci_vars_dict = initialize_empty_arrays(sci_vars_dict, csn)
 
     return sci_vars_dict
+
+
+def var_long_names(refdes):
+    # get science variable long names from the Data Review Database
+    stream_vars_dict = dict()
+    dr = cf.refdes_datareview_json(refdes)
+    for x in dr['instrument']['data_streams']:
+        dr_ms = '-'.join((x['method'], x['stream_name']))
+        sci_vars = dict()
+        for y in x['stream']['parameters']:
+            if (y['data_product_type'] == 'Science Data') or (y['data_product_type'] == 'Unprocessed Data'):
+                sci_vars.update({y['display_name']: dict(db_units=y['unit'], var_name=y['name'])})
+        if len(sci_vars) > 0:
+            stream_vars_dict.update({dr_ms: sci_vars})
+    return stream_vars_dict
