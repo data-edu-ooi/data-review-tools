@@ -24,115 +24,115 @@ def main(url_list, sDir, plot_type, start_time, end_time, deployment_num):
             rd_list.append(rd)
 
     for r in rd_list:
-        print('\n{}'.format(r))
-        datasets = []
-        for u in url_list:
-            splitter = u.split('/')[-2].split('-')
-            rd_check = '-'.join((splitter[1], splitter[2], splitter[3], splitter[4]))
-            if rd_check == r:
-                udatasets = cf.get_nc_urls([u])
-                datasets.append(udatasets)
-        datasets = list(itertools.chain(*datasets))
-        fdatasets = []
+        if 'ENG' not in r:
+            print('\n{}'.format(r))
+            datasets = []
+            for u in url_list:
+                splitter = u.split('/')[-2].split('-')
+                rd_check = '-'.join((splitter[1], splitter[2], splitter[3], splitter[4]))
+                if rd_check == r:
+                    udatasets = cf.get_nc_urls([u])
+                    datasets.append(udatasets)
+            datasets = list(itertools.chain(*datasets))
+            fdatasets = []
 
-        # get the preferred stream information
-        ps_df, n_streams = cf.get_preferred_stream_info(r)
+            # get the preferred stream information
+            ps_df, n_streams = cf.get_preferred_stream_info(r)
 
-        for index, row in ps_df.iterrows():
-            for ii in range(n_streams):
+            for index, row in ps_df.iterrows():
+                for ii in range(n_streams):
+                    try:
+                        rms = '-'.join((r, row[ii]))
+                    except TypeError:
+                        continue
+                    for dd in datasets:
+                        spl = dd.split('/')[-2].split('-')
+                        catalog_rms = '-'.join((spl[1], spl[2], spl[3], spl[4], spl[5], spl[6]))
+                        fdeploy = dd.split('/')[-1].split('_')[0]
+                        if rms == catalog_rms and fdeploy == row['deployment']:
+                            fdatasets.append(dd)
+
+            main_sensor = r.split('-')[-1]
+            fdatasets_sel = cf.filter_collocated_instruments(main_sensor, fdatasets)
+            subsite = r.split('-')[0]
+            array = subsite[0:2]
+            save_dir = os.path.join(sDir, array, subsite, r, plot_type)
+            cf.create_dir(save_dir)
+            sname = '-'.join((r, 'track'))
+
+            sh = pd.DataFrame()
+            deployments = []
+            for ii, d in enumerate(fdatasets_sel):
+                print('\nDataset {} of {}: {}'.format(ii + 1, len(fdatasets_sel), d.split('/')[-1]))
+                deploy = d.split('/')[-1].split('_')[0]
+                if deployment_num:
+                    if int(deploy[-4:]) is not deployment_num:
+                        continue
+
+                ds = xr.open_dataset(d, mask_and_scale=False)
+                ds = ds.swap_dims({'obs': 'time'})
+
+                if start_time is not None and end_time is not None:
+                    ds = ds.sel(time=slice(start_time, end_time))
+                    if len(ds['time'].values) == 0:
+                        print('No data to plot for specified time range: ({} to {})'.format(start_time, end_time))
+                        continue
+
                 try:
-                    rms = '-'.join((r, row[ii]))
-                except TypeError:
-                    continue
-                for dd in datasets:
-                    spl = dd.split('/')[-2].split('-')
-                    catalog_rms = '-'.join((spl[1], spl[2], spl[3], spl[4], spl[5], spl[6]))
-                    fdeploy = dd.split('/')[-1].split('_')[0]
-                    if rms == catalog_rms and fdeploy == row['deployment']:
-                        fdatasets.append(dd)
+                    ds_lat = ds['lat'].values
+                except KeyError:
+                    ds_lat = None
+                    print('No latitude variable in file')
+                try:
+                    ds_lon = ds['lon'].values
+                except KeyError:
+                    ds_lon = None
+                    print('No longitude variable in file')
 
-        main_sensor = r.split('-')[-1]
-        fdatasets_sel = cf.filter_collocated_instruments(main_sensor, fdatasets)
-        subsite = r.split('-')[0]
-        array = subsite[0:2]
-        save_dir = os.path.join(sDir, array, subsite, r, plot_type)
-        cf.create_dir(save_dir)
-        sname = '-'.join((r, 'track'))
+                if ds_lat is not None and ds_lon is not None:
+                    data = {'lat': ds_lat, 'lon': ds_lon}
+                    new_r = pd.DataFrame(data, columns=['lat', 'lon'], index=ds['time'].values)
+                    sh = sh.append(new_r)
 
-        print('Appending....')
-        sh = pd.DataFrame()
-        deployments = []
-        for ii, d in enumerate(fdatasets_sel):
-            print('\nDataset {} of {}: {}'.format(ii + 1, len(fdatasets_sel), d.split('/')[-1]))
-            deploy = d.split('/')[-1].split('_')[0]
-            if deployment_num:
-                if int(deploy[-4:]) is not deployment_num:
-                    continue
+                    # append the deployments that are actually plotted
+                    if int(deploy[-4:]) not in deployments:
+                        deployments.append(int(deploy[-4:]))
+            #sh = sh.resample('H').median()  # resample hourly
+            xD = sh.lon.values
+            yD = sh.lat.values
+            tD = sh.index.values
+    
+            clabel = 'Time'
+            ylabel = 'Latitude'
+            xlabel = 'Longitude'
+            title = 'Glider Track - ' + r + '\n' + 'Deployments: ' + str(deployments) + '   x: platform locations' + '\n blue box: Glider Sampling Area'
 
-            ds = xr.open_dataset(d, mask_and_scale=False)
-            ds = ds.swap_dims({'obs': 'time'})
+            fig, ax = pf.plot_profiles(xD, yD, tD, ylabel, xlabel, clabel, '', '', stdev=None)
+            ax.invert_yaxis()
+            ax.set_title(title, fontsize=9)
 
-            if start_time is not None and end_time is not None:
-                ds = ds.sel(time=slice(start_time, end_time))
-                if len(ds['time'].values) == 0:
-                    print('No data to plot for specified time range: ({} to {})'.format(start_time, end_time))
-                    continue
+            # add glider sampling limits
+            bulk_load = pd.read_csv('https://raw.githubusercontent.com/ooi-integration/asset-management/master/bulk/array_bulk_load-AssetRecord.csv')
+            bulk_load['array'] = bulk_load['MIO_Inventory_Description'].str.split(' ', n=1, expand=True)[0]
+            ind = bulk_load.loc[bulk_load['array'] == array].index[0]
+            poly = bulk_load.iloc[ind].Array_geometry
+            poly = poly.split('((')[-1].split('))')[0]
+            xx = []
+            yy = []
+            for x in poly.split(', '):
+                xx.append(float(x.split(' ')[0]))
+                yy.append(float(x.split(' ')[1]))
 
-            try:
-                ds_lat = ds['lat'].values
-            except KeyError:
-                ds_lat = None
-                print('No latitude variable in file')
-            try:
-                ds_lon = ds['lon'].values
-            except KeyError:
-                ds_lon = None
-                print('No longitude variable in file')
+            #ax.set_xlim(-71.75, -69.75)
+            #ax.set_ylim(38.75, 40.75)
+            ax.plot(xx, yy, color='b', linewidth=2)
+            #ax.text(np.mean(xx) - 0.15, np.max(yy) + (np.max(yy) * 0.0025), 'Glider Sampling Area', color='blue', fontsize=8)
 
-            if ds_lat is not None and ds_lon is not None:
-                data = {'lat': ds_lat, 'lon': ds_lon}
-                new_r = pd.DataFrame(data, columns=['lat', 'lon'], index=ds['time'].values)
-                sh = sh.append(new_r)
+            array_loc = cf.return_array_subsites_standard_loc(array)
 
-                # append the deployments that are actually plotted
-                if int(deploy[-4:]) not in deployments:
-                    deployments.append(int(deploy[-4:]))
-        sh = sh.resample('H').median()  # resample hourly
-        xD = sh.lon.values
-        yD = sh.lat.values
-        tD = sh.index.values
+            ax.scatter(array_loc.lon, array_loc.lat, s=45, marker='x', color='k')
 
-        clabel = 'Time'
-        ylabel = 'Latitude'
-        xlabel = 'Longitude'
-        title = 'Glider Track - ' + r + '\n' + 'Deployments:' + str(deployments) + '   x: platform locations'
-
-        fig, ax = pf.plot_profiles(xD, yD, tD, ylabel, xlabel, clabel, '', '', stdev=None)
-        ax.invert_yaxis()
-        ax.set_title(title, fontsize=9)
-
-        # add glider sampling limits
-        bulk_load = pd.read_csv('https://raw.githubusercontent.com/ooi-integration/asset-management/master/bulk/array_bulk_load-AssetRecord.csv')
-        bulk_load['array'] = bulk_load['MIO_Inventory_Description'].str.split(' ', n=1, expand=True)[0]
-        ind = bulk_load.loc[bulk_load['array'] == array].index[0]
-        poly = bulk_load.iloc[ind].Array_geometry
-        poly = poly.split('((')[-1].split('))')[0]
-        xx = []
-        yy = []
-        for x in poly.split(', '):
-            xx.append(float(x.split(' ')[0]))
-            yy.append(float(x.split(' ')[1]))
-
-        #ax.set_xlim(-71.75, -69.75)
-        #ax.set_ylim(38.75, 40.75)
-        ax.plot(xx, yy, color='b')
-        ax.text(np.mean(xx) - 0.15, np.max(yy) + 0.15, 'Glider Sampling Area', color='blue', fontsize=8)
-
-        array_loc = cf.return_array_subsites_standard_loc(array)
-
-        ax.scatter(array_loc.lon, array_loc.lat, s=40, marker='x', color='k', alpha=0.3)
-
-        pf.save_fig(save_dir, sname)
+            pf.save_fig(save_dir, sname)
 
 
 if __name__ == '__main__':
