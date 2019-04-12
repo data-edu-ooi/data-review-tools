@@ -419,7 +419,7 @@ def reject_timestamps_in_groups(groups, d_groups, n_std, tt, yy, zz, inpercentil
     return y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_to_exclude, t_ex, z_ex, y_ex
 
 
-def reject_timestamps_portal(subsite, r, tt, yy, zz):
+def reject_timestamps_dataportal(subsite, r, tt, yy, zz):
 
     dr = pd.read_csv('https://datareview.marine.rutgers.edu/notes/export')
     drn = dr.loc[dr.type == 'exclusion']
@@ -499,16 +499,17 @@ def add_pressure_to_dictionary_of_sci_vars(ds):
     return y, y_unit, y_name
 
 
-def reject_erroneous_data(t, y, z, fill_value):
+def reject_erroneous_data(r, v, t, y, z, fill_value):
 
-    '''
-
+    """
+    :param r: reference designator
+    :param v: data parameter name
     :param t: time array
     :param y: pressure array
     :param z: data values
     :param fill_value: fill values defined in the data file
     :return: filtered data from fill values, NaNs, extreme values '|1e7|' and data outside global ranges
-    '''
+    """
 
     # reject fill values
     fv_ind = z != fill_value
@@ -525,29 +526,29 @@ def reject_erroneous_data(t, y, z, fill_value):
     print(len(z_nofv) - len(nan_ind), ' NaNs')
 
     # reject extreme values
-    ev_ind = cf.reject_extreme_values(z_nofv_nonan)
+    ev_ind = reject_extreme_values(z_nofv_nonan)
     t_nofv_nonan_noev = t_nofv_nonan[ev_ind]
     y_nofv_nonan_noev = y_nofv_nonan[ev_ind]
     z_nofv_nonan_noev = z_nofv_nonan[ev_ind]
     print(len(z_nofv_nonan) - len(ev_ind), ' Extreme Values', '|1e7|')
 
     # reject values outside global ranges:
-    global_min, global_max = cf.get_global_ranges(r, vinfo['var_name'])
+    global_min, global_max = get_global_ranges(r, v)
     if isinstance(global_min, (int, float)) and isinstance(global_max, (int, float)):
-        gr_ind = cf.reject_global_ranges(z_nofv_nonan_noev, global_min, global_max)
-        t_nofv_nonan_noev_nogr = t_nofv_nonan_noev[gr_ind]
-        y_nofv_nonan_noev_nogr = y_nofv_nonan_noev[gr_ind]
-        z_nofv_nonan_noev_nogr = z_nofv_nonan_noev[gr_ind]
+        gr_ind = reject_global_ranges(z_nofv_nonan_noev, global_min, global_max)
+        dtime = t_nofv_nonan_noev[gr_ind]
+        zpressure = y_nofv_nonan_noev[gr_ind]
+        ndata = z_nofv_nonan_noev[gr_ind]
         print('{} Global ranges [{} - {}]'.format(len(z_nofv_nonan_noev) - len(gr_ind),
                                                   global_min, global_max))
     else:
         gr_ind = []
-        t_nofv_nonan_noev_nogr = t_nofv_nonan_noev
-        y_nofv_nonan_noev_nogr = y_nofv_nonan_noev
-        z_nofv_nonan_noev_nogr = z_nofv_nonan_noev
+        dtime = t_nofv_nonan_noev
+        zpressure = y_nofv_nonan_noev
+        ndata = z_nofv_nonan_noev
         print('{} global ranges [{} - {}]'.format(len(gr_ind), global_min, global_max))
 
-    return t_nofv_nonan_noev_nogr, y_nofv_nonan_noev_nogr, z_nofv_nonan_noev_nogr
+    return dtime, zpressure, ndata, len(fv_ind), len(nan_ind), len(ev_ind), len(gr_ind), global_min, global_max
 
 
 def reject_suspect_data(t, y, z, timestamps):
@@ -566,4 +567,4 @@ def reject_suspect_data(t, y, z, timestamps):
             zz = zz[ind]
             yy = yy[ind]
 
-    return tt, yy, zz
+    return tt, zz, yy
