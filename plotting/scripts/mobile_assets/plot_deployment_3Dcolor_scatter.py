@@ -3,7 +3,7 @@
 Created on Feb 2019
 
 @author: Leila Belabbassi
-@brief: This script is used to create 3-D color scatter plots for instruments data on mobile platforms (WFP & Gliders).
+@brief: This script is used to create color scatter plots for instruments data on mobile platforms (WFP & Gliders).
 Each plot contain data from one deployment.
 """
 
@@ -83,8 +83,6 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
 
             # initialize an empty data array for science variables in dictionary
             sci_vars_dict = cd.initialize_empty_arrays(stream_sci_vars_dict, ms)
-            # y_unit = []
-            # y_name = []
 
             for var in list(sci_vars_dict[ms]['vars'].keys()):
                 sh = sci_vars_dict[ms]['vars'][var]
@@ -98,7 +96,7 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                     sh['values'] = np.append(sh['values'], ds[var].values)
 
                     y, y_unit, y_name = cf.add_pressure_to_dictionary_of_sci_vars(ds)
-
+                    sh['pressure'] = np.append(sh['pressure'], y)
 
             for m, n in sci_vars_dict.items():
                 for sv, vinfo in n['vars'].items():
@@ -114,8 +112,6 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                         z = vinfo['values']
                         y = vinfo['pressure']
 
-                        title = ' '.join((deployment, r, ms.split('-')[0]))
-
                         # Check if the array is all NaNs
                         if sum(np.isnan(z)) == len(z):
                             print('Array of all NaNs - skipping plot.')
@@ -125,6 +121,10 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                             print('Array of all fill values - skipping plot.')
 
                         else:
+
+                            """
+                            clean up data
+                            """
                             # reject erroneous data
                             dtime, zpressure, ndata, lenfv, lennan, lenev, lengr, global_min, global_max = \
                                                                             cf.reject_erroneous_data(r, sv, t, y, z, fv)
@@ -151,11 +151,24 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                             print('{} using visual inspection of data'.format(len(z_nospct) - len(z_portal),
                                                                               inpercentile, zcell_size))
 
-                        ''''
-                        Plot data
-                        '''''
+                            # reject data in a depth range
+                            if zdbar is not None:
+                                y_ind = y_portal < zdbar
+                                t_array = t_portal[y_ind]
+                                y_array = y_portal[y_ind]
+                                z_array = z_portal[y_ind]
+                            else:
+                                y_ind = []
+                                t_array = t_portal
+                                y_array = y_portal
+                                z_array = z_portal
+                            print('{} in water depth > {} dbar'.format(len(y_ind), zdbar))
 
-                        if len(t_portal) > 0:
+                        """
+                        Plot data
+                        """
+
+                        if len(t_array) > 0:
                             if m == 'common_stream_placeholder':
                                 sname = '-'.join((sv, r))
                             else:
@@ -163,15 +176,14 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
 
                         clabel = sv + " (" + sv_units + ")"
                         ylabel = y_name[0] + " (" + y_unit[0] + ")"
-
+                        title = ' '.join((deployment, r, m))
 
                         # plot non-erroneous data
                         fig, ax, bar = pf.plot_xsection(subsite, dtime, zpressure, ndata,
                                                         clabel, ylabel, inpercentile, stdev=None)
                         ax.set_title(title, fontsize=9)
                         leg_text = (
-                            'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}]'.format
-                                (
+                            'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}]'.format(
                                 len(z) - lenfv, len(z) - lennan, len(z) - lenev, lengr, global_min, global_max) + '\n' +
                                 ('(black) data average in {} dbar segments'.format(zcell_size)) + '\n' +
                                 ('(magenta) upper and lower {} percentile envelope in {} dbar segments'.format(
@@ -208,22 +220,17 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, method
                             sfile = '_'.join(('rm_v_suspect_data', sname))
                             pf.save_fig(save_dir, sfile)
 
-                        # Plot data excluding a depth range
-                        if zdbar is not None:
-                            y_ind = y_portal < zdbar
-                            t_zrange = t_portal[y_ind]
-                            y_zrange = y_portal[y_ind]
-                            z_zrange = z_portal[y_ind]
+                            # Plot excluding a selected depth value
+                            if len(z_array) != len(z_array):
+                                fig, ax, bar = pf.plot_xsection(subsite, t_array, y_array, z_array,
+                                                                clabel, ylabel, inpercentile, stdev=None)
+                                ax.set_title(title, fontsize=9)
+                                leg_text = ('excluded {} suspect data in water depth greater than {} dbar'.format(len(y_ind), zdbar),)
+                                ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
+                                fig.tight_layout()
 
-                            fig, ax, bar = pf.plot_xsection(subsite, t_zrange, y_zrange, z_zrange,
-                                                            clabel, ylabel, inpercentile, stdev=None)
-                            ax.set_title(title, fontsize=9)
-                            leg_text = ('removed data in range {} dbar'.format(zcell_size),)
-                            ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
-                            fig.tight_layout()
-
-                            sfile = '_'.join(('rm_depth_range', sname))
-                            pf.save_fig(save_dir, sfile)
+                                sfile = '_'.join(('rm_depth_range', sname))
+                                pf.save_fig(save_dir, sfile)
 
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
@@ -257,7 +264,7 @@ if __name__ == '__main__':
     deployment_num = 1
 
     '''
-    define plot type, output directory, and data files URL 
+    define plot type, output directory, and data files URLok 
     '''
     plot_type = 'xsection_plots'
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'

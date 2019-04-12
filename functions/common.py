@@ -399,22 +399,6 @@ def reject_timestamps_in_groups(groups, d_groups, n_std, tt, yy, zz, inpercentil
 
     time_to_exclude = np.unique(time_exclude)
     t_ex, z_ex, y_ex = reject_suspect_data(tt, yy, zz, time_to_exclude)
-    # if len(time_to_exclude) != 0:
-    #     t_ex = tt
-    #     y_ex = yy
-    #     z_ex = zz
-    #     for row in time_to_exclude:
-    #         ntime = pd.to_datetime(row)
-    #         ne = np.datetime64(ntime)
-    #
-    #         ind = np.where((t_ex != ne), True, False)
-    #         if not ind.any():
-    #             print('{} {}'.format(row, 'is not in data'))
-    #             print(np.unique(ind))
-    #         else:
-    #             t_ex = t_ex[ind]
-    #             z_ex = z_ex[ind]
-    #             y_ex = y_ex[ind]
 
     return y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_to_exclude, t_ex, z_ex, y_ex
 
@@ -499,7 +483,7 @@ def add_pressure_to_dictionary_of_sci_vars(ds):
     return y, y_unit, y_name
 
 
-def reject_erroneous_data(r, v, t, y, z, fill_value):
+def reject_erroneous_data(r, v, t, y, z, fz):
 
     """
     :param r: reference designator
@@ -507,12 +491,12 @@ def reject_erroneous_data(r, v, t, y, z, fill_value):
     :param t: time array
     :param y: pressure array
     :param z: data values
-    :param fill_value: fill values defined in the data file
+    :param fz: fill values defined in the data file
     :return: filtered data from fill values, NaNs, extreme values '|1e7|' and data outside global ranges
     """
 
     # reject fill values
-    fv_ind = z != fill_value
+    fv_ind = z != fz
     y_nofv = y[fv_ind]
     t_nofv = t[fv_ind]
     z_nofv = z[fv_ind]
