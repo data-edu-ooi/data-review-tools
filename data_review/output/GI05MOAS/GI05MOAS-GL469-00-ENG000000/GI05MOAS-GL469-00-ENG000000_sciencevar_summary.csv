@@ -1,2 +1,0 @@
-deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
-deployment0001,telemetered,glider_eng_telemetered,m_depth,m,nan,"[None, None]",3459,1599,0,no global ranges,0,1860,53.77,393.9191,0.0,976.019,294.8619
