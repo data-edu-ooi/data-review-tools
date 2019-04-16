@@ -412,25 +412,26 @@ def reject_timestamps_dataportal(subsite, r, tt, yy, zz):
         subsite_node = '-'.join((subsite, r.split('-')[1]))
         drne = drn.loc[drn.reference_designator.isin([subsite, subsite_node, r])]
         if len(drne['reference_designator']) != 0:
-            t_ex = tt
-            y_ex = yy
-            z_ex = zz
             for ij, row in drne.iterrows():
                 sdate = format_dates(row.start_date)
                 edate = format_dates(row.end_date)
                 ts = np.datetime64(sdate)
                 te = np.datetime64(edate)
-                if t_ex.max() < ts:
+                if tt.max() < ts:
                     continue
-                elif t_ex.min() > te:
+                elif tt.min() > te:
                     continue
                 else:
-                    ind = np.where((t_ex < ts) | (t_ex > te), True, False)
+                    ind = np.where((tt < ts) | (tt > te), True, False)
                     if len(ind) != 0:
-                        t_ex = t_ex[ind]
-                        z_ex = z_ex[ind]
-                        y_ex = y_ex[ind]
-                        print('excluding {} timestamps [{} - {}]'.format(len(ind), sdate, edate))
+                        t_ex = tt[ind]
+                        z_ex = zz[ind]
+                        y_ex = yy[ind]
+                        print('excluding {} timestamps [{} - {}]'.format(np.sum(~ind), sdate, edate))
+        else:
+            t_ex = tt
+            y_ex = yy
+            z_ex = zz
 
     return t_ex, z_ex, y_ex
 
@@ -500,21 +501,24 @@ def reject_erroneous_data(r, v, t, y, z, fz):
     y_nofv = y[fv_ind]
     t_nofv = t[fv_ind]
     z_nofv = z[fv_ind]
-    print(len(z) - len(fv_ind), ' fill values')
+    n_fv = np.sum(~fv_ind)
+    print(n_fv, ' fill values')
 
     # reject NaNs
     nan_ind = ~np.isnan(z_nofv)
     t_nofv_nonan = t_nofv[nan_ind]
     y_nofv_nonan = y_nofv[nan_ind]
     z_nofv_nonan = z_nofv[nan_ind]
-    print(len(z_nofv) - len(nan_ind), ' NaNs')
+    n_nan = np.sum(~nan_ind)
+    print(n_nan, ' NaNs')
 
     # reject extreme values
     ev_ind = reject_extreme_values(z_nofv_nonan)
     t_nofv_nonan_noev = t_nofv_nonan[ev_ind]
     y_nofv_nonan_noev = y_nofv_nonan[ev_ind]
     z_nofv_nonan_noev = z_nofv_nonan[ev_ind]
-    print(len(z_nofv_nonan) - len(ev_ind), ' Extreme Values', '|1e7|')
+    n_ev = np.sum(~ev_ind)
+    print(n_ev, ' Extreme Values', '|1e7|')
 
     # reject values outside global ranges:
     global_min, global_max = get_global_ranges(r, v)
@@ -523,16 +527,16 @@ def reject_erroneous_data(r, v, t, y, z, fz):
         dtime = t_nofv_nonan_noev[gr_ind]
         zpressure = y_nofv_nonan_noev[gr_ind]
         ndata = z_nofv_nonan_noev[gr_ind]
-        print('{} Global ranges [{} - {}]'.format(len(z_nofv_nonan_noev) - len(gr_ind),
-                                                  global_min, global_max))
+        n_gr = np.sum(~gr_ind)
+        print('{} Global ranges [{} - {}]'.format(n_gr, global_min, global_max))
     else:
-        gr_ind = []
+        n_gr = 0
         dtime = t_nofv_nonan_noev
         zpressure = y_nofv_nonan_noev
         ndata = z_nofv_nonan_noev
-        print('{} global ranges [{} - {}]'.format(len(gr_ind), global_min, global_max))
+        print('no global ranges for {}'.format(v))
 
-    return dtime, zpressure, ndata, len(fv_ind), len(nan_ind), len(ev_ind), len(gr_ind), global_min, global_max
+    return dtime, zpressure, ndata, n_fv, n_nan, n_ev, n_gr, global_min, global_max
 
 
 def reject_suspect_data(t, y, z, timestamps):
