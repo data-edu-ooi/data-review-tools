@@ -118,11 +118,20 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
             cf.create_dir(save_dir_profile)
             cf.create_dir(save_dir_xsection)
 
+            texclude_dir = os.path.join(sDir, array, subsite, refdes, 'time_to_exclude')
+            cf.create_dir(texclude_dir)
+
             tm = ds['time'].values
 
             # get pressure variable
             y, y_units, press = cf.add_pressure_to_dictionary_of_sci_vars(ds)
 
+            # prepare file to list timestamps with suspect data  for each data parameter
+            stat_data = pd.DataFrame(columns=['deployments', 'time_to_exclude'])
+            file_exclude = '{}/{}_{}_{}_excluded_timestamps.csv'.format(texclude_dir, deployment, refdes, method)
+            stat_data.to_csv(file_exclude, index=True)
+
+            # loop through sensor-data parameters
             for sv in sci_vars:
                 print(sv)
                 if 'pressure' not in sv:
@@ -174,6 +183,18 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                             groups, d_groups, n_std, inpercentile)
 
                         t_nospct, z_nospct, y_nospct = cf.reject_suspect_data(dtime, zpressure, ndata, time_ex)
+
+                        """
+                        writing timestamps to .csv file to use with data_range.py script
+                        """
+                        if len(time_ex) != 0:
+                            t_exclude = time_ex[0]
+                            for i in range(len(time_ex))[1:len(time_ex)]:
+                                t_exclude = '{}, {}'.format(t_exclude, time_ex[i])
+
+                            stat_data = pd.DataFrame({'deployments': deployment,
+                                                      'time_to_exclude': t_exclude}, index=[sv])
+                            stat_data.to_csv(file_exclude, index=True, mode='a', header=False)
 
                         # reject time range from data portal file export
                         t_portal, z_portal, y_portal = cf.reject_timestamps_dataportal(subsite, r,
