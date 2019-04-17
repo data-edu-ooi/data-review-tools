@@ -25,15 +25,11 @@ import datetime
 
 
 def main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time):
-
     """""
     URL : path to instrument data by methods
-    sDir : path to the directory on your machine to save plots
-    mDir : path to the directory on your machine to save data ranges
-    zcell_size : depth cell size to group data
-    zdbar : define depth where suspect data are identified
-    start_time : select start date to slice timeseries
-    end_time : select end date to slice timeseries
+    sDir : path to the directory on your machine to save files
+    plot_type: folder name for a plot type
+
     """""
     rd_list = []
     ms_list = []
@@ -46,6 +42,9 @@ def main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time):
         if ms not in ms_list:
             ms_list.append(ms)
 
+    ''' 
+    separate different instruments
+    '''
     for r in rd_list:
         print('\n{}'.format(r))
         subsite = r.split('-')[0]
@@ -60,6 +59,7 @@ def main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time):
 
         # get science variable long names from the Data Review Database
         stream_sci_vars = cd.sci_var_long_names(r)
+        #stream_vars = cd.var_long_names(r)
 
         # check if the science variable long names are the same for each stream and initialize empty arrays
         sci_vars_dict0 = cd.sci_var_long_names_check(stream_sci_vars)
@@ -87,8 +87,9 @@ def main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time):
 
         # build dictionary of science data from the preferred dataset for each deployment
         print('\nAppending data from files')
-        sci_vars_dict, y_unit, y_name = cd.append_evaluated_science_data(sDir, ps_df, n_streams, r, fdatasets_final,
-                                                                            sci_vars_dict0, zdbar, start_time, end_time)
+        et = []
+        sci_vars_dict, y_unit, y_name = cd.append_evaluated_science_data(sDir,
+            ps_df, n_streams, r, fdatasets_final, sci_vars_dict0, et, start_time, end_time)
 
         # get end times of deployments
         deployments = []
@@ -99,17 +100,18 @@ def main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time):
             deployments.append(int(deploy[-4:]))
             end_times.append(pd.to_datetime(deploy_info['stop_date']))
 
-        # create data range output folders
+        """
+        create a data-ranges table and figure for full data time range
+        """
+        # create a folder to save data ranges
         save_dir_stat = os.path.join(mDir, array, subsite)
         cf.create_dir(save_dir_stat)
-        # create plots output folder
+
         save_fdir = os.path.join(sDir, array, subsite, r, 'data_range')
         cf.create_dir(save_fdir)
         stat_df = pd.DataFrame()
 
-        """
-        create data ranges csv file and figures
-        """
+
         for m, n in sci_vars_dict.items():
             for sv, vinfo in n['vars'].items():
                 print(vinfo['var_name'])
@@ -132,8 +134,62 @@ def main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time):
                     print('Array of all fill values - skipping plot.')
                     continue
                 else:
+                    """
+                    clean up data
+                    """
+                    # reject erroneous data
+                    dtime, zpressure, ndata, lenfv, lennan, lenev, lengr, global_min, global_max = \
+                        cf.reject_erroneous_data(r, sv, t, y, z, fv)
 
-                    if len(y) > 0:
+                    # reject timestamps from stat analysis
+                    Dpath = '{}/{}/{}/{}/{}'.format(sDir, array, subsite, r, 'time_to_exclude')
+
+                    onlyfiles = []
+                    for item in os.listdir(Dpath):
+                        if not item.startswith('.') and os.path.isfile(os.path.join(Dpath, item)):
+                            onlyfiles.append(join(Dpath, item))
+
+                    dre = pd.DataFrame()
+                    for nn in onlyfiles:
+                        dr = pd.read_csv(nn)
+                        dre = dre.append(dr, ignore_index=True)
+
+                    drn = dre.loc[dre['Unnamed: 0'] == vinfo['var_name']]
+                    list_time = []
+                    for itime in drn.time_to_exclude:
+                        ntime = itime.split(', ')
+                        list_time.extend(ntime)
+
+                    u_time_list = np.unique(list_time)
+                    if len(u_time_list) != 0:
+                        t_nospct, z_nospct, y_nospct = cf.reject_suspect_data(dtime, zpressure, ndata, u_time_list)
+
+                    print('{} using {} percentile of data grouped in {} dbar segments'.format(
+                        len(zpressure) - len(z_nospct), inpercentile, zcell_size))
+
+
+                    # reject time range from data portal file export
+                    t_portal, z_portal, y_portal = cf.reject_timestamps_dataportal(subsite, r,
+                                                                                   t_nospct, y_nospct, z_nospct)
+
+                    print('{} using visual inspection of data'.format(len(z_nospct) - len(z_portal),
+                                                                      inpercentile, zcell_size))
+
+                    # reject data in a depth range
+                    if zdbar is not None:
+                        y_ind = y_portal < zdbar
+                        t_array = t_portal[y_ind]
+                        y_array = y_portal[y_ind]
+                        z_array = z_portal[y_ind]
+                    else:
+                        y_ind = []
+                        t_array = t_portal
+                        y_array = y_portal
+                        z_array = z_portal
+                    print('{} in water depth > {} dbar'.format(len(y_ind), zdbar))
+
+
+                    if len(y_array) > 0:
                         if m == 'common_stream_placeholder':
                             sname = '-'.join((vinfo['var_name'], r))
                         else:
@@ -148,12 +204,12 @@ def main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time):
                         else:
                             columns = ['tsec', 'dbar', str(vinfo['var_name'])]
                             # create depth ranges
-                            min_r = int(round(min(y) - zcell_size))
-                            max_r = int(round(max(y) + zcell_size))
+                            min_r = int(round(min(y_array) - zcell_size))
+                            max_r = int(round(max(y_array) + zcell_size))
                             ranges = list(range(min_r, max_r, zcell_size))
 
                             # group data by depth
-                            groups, d_groups = gt.group_by_depth_range(t, y, z, columns, ranges)
+                            groups, d_groups = gt.group_by_depth_range(t_array, y_array, z_array, columns, ranges)
 
                             print('writing data ranges for {}'.format(vinfo['var_name']))
                             stat_data = groups.describe()[vinfo['var_name']]
@@ -163,7 +219,7 @@ def main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time):
                                 t_deploy = '{}, {}'.format(t_deploy, deployments[i])
                             stat_data.insert(loc=1, column='deployments', value=t_deploy, allow_duplicates=False)
 
-                            stat_df = stat_df.append(stat_data, ignore_index=True)
+                        stat_df = stat_df.append(stat_data, ignore_index=True)
 
                         """
                         plot full time range free from errors and suspect data
@@ -175,23 +231,22 @@ def main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time):
 
 
                         # plot non-erroneous -suspect data
-                        print(len(t))
-                        fig, ax, bar = pf.plot_xsection(subsite, t, y, z,
+                        fig, ax, bar = pf.plot_xsection(subsite, t_array, y_array, z_array,
                                                                     clabel, ylabel, inpercentile=None, stdev=None)
 
                         ax.set_title(title, fontsize=9)
-                        # leg_text = (
-                        #     'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}]'.format(
-                        #         len(z) - lenfv, len(z) - lennan, len(z) - lenev, lengr, global_min, global_max) + '\n' +
-                        #     ('removed {} in the upper and lower {} percentile of data grouped in {} dbar segments'.format(
-                        #                                     len(zpressure) - len(z_nospct), inpercentile, zcell_size)),)
-                        #
-                        # ax.legend(leg_textt, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
+                        leg_text = (
+                            'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}]'.format(
+                                len(z) - lenfv, len(z) - lennan, len(z) - lenev, lengr, global_min, global_max) + '\n' +
+                            ('removed {} in the upper and lower {} percentile of data grouped in {} dbar segments'.format(
+                                                            len(zpressure) - len(z_nospct), inpercentile, zcell_size)),)
+
+                        ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
 
 
                         for ii in range(len(end_times)):
                             ax.axvline(x=end_times[ii], color='b', linestyle='--', linewidth=.8)
-                            ax.text(end_times[ii], min(y)-5, 'End' + str(deployments[ii]),
+                            ax.text(end_times[ii], min(y_array)-5, 'End' + str(deployments[ii]),
                                                    fontsize=6, style='italic',
                                                    bbox=dict(boxstyle='round',
                                                              ec=(0., 0.5, 0.5),
@@ -212,10 +267,10 @@ if __name__ == '__main__':
         set to None if plotting all data
         set to dt.datetime(yyyy, m, d, h, m, s) for specific dates
         '''
-    # start_time = dt.datetime(2014, 10, 16) #10/16/2015	05/07/2016
-    # end_time = dt.datetime(2016, 5, 7)
-    start_time = None
-    end_time = None
+    start_time = dt.datetime(2016, 1, 1) #10/16/2015	05/07/2016
+    end_time = dt.datetime(2016, 1, 15)
+    # start_time = None
+    # end_time = None
 
     '''
     define filters standard deviation, percentile, depth range
