@@ -18,7 +18,7 @@ import functions.plotting as pf
 import functions.group_by_timerange as gt
 
 
-def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, preferred_only, zdbar, n_std, inpercentile, zcell_size):
+def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, preferred_only, glider, zdbar, n_std, inpercentile, zcell_size):
     rd_list = []
     for uu in url_list:
         elements = uu.split('/')[-2].split('-')
@@ -110,9 +110,14 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, prefer
 
             # get pressure variable
             ds_vars = list(ds.data_vars.keys()) + [x for x in ds.coords.keys() if 'pressure' in x]
-            press = pf.pressure_var(ds, ds_vars)
-            y = ds[press].values
-            y_units = ds[press].units
+
+            y, y_units, press = cf.add_pressure_to_dictionary_of_sci_vars(ds)
+            print(y_units, press)
+
+            # press = pf.pressure_var(ds, ds_vars)
+            # print(press)
+            # y = ds[press].values
+            # y_units = ds[press].units
 
             for sv in sci_vars:
                 print(sv)
@@ -162,8 +167,8 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, prefer
                         #  rejecting timestamps from percentile analysis
                         y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_ex, \
                         t_nospct, z_nospct, y_nospct = cf.reject_timestamps_in_groups(groups, d_groups, n_std,
-                                                                                       dtime, zpressure, ndata,
-                                                                                       inpercentile)
+                                                                                dtime, zpressure, ndata, inpercentile)
+
                         print('removed {} data points using {} percentile of data grouped in {} dbar segments'.format(
                                                     len(zpressure) - len(z_nospct), inpercentile, zcell_size))
 
@@ -194,11 +199,15 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, prefer
                         sname = '-'.join((r, method, sv))
 
                         clabel = sv + " (" + z_units + ")"
-                        ylabel = press + " (" + y_units + ")"
+                        ylabel = press[0] + " (" + y_units[0] + ")"
+
+                        if glider == 'no':
+                            t_eng = None
+                            m_water_depth = None
 
                         # plot non-erroneous data
-                        fig, ax, bar = pf.plot_xsection(subsite, dtime, zpressure, ndata, clabel, ylabel, t_eng,
-                                                        m_water_depth, inpercentile=None, stdev=None)
+                        fig, ax, bar = pf.plot_xsection(subsite, dtime, zpressure, ndata, clabel, ylabel,
+                                                        t_eng, m_water_depth, inpercentile, stdev=None)
 
                         t0 = pd.to_datetime(dtime.min()).strftime('%Y-%m-%dT%H:%M:%S')
                         t1 = pd.to_datetime(dtime.max()).strftime('%Y-%m-%dT%H:%M:%S')
@@ -218,9 +227,10 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, prefer
                         if len(t_array) > 0:
                             if len(t_array) != len(dtime):
                                 # plot bathymetry only within data time ranges
-                                eng_ind = (t_eng >= np.min(t_array)) & (t_eng <= np.max(t_array))
-                                t_eng = t_eng[eng_ind]
-                                m_water_depth = m_water_depth[eng_ind]
+                                if glider == 'yes':
+                                    eng_ind = (t_eng >= np.min(t_array)) & (t_eng <= np.max(t_array))
+                                    t_eng = t_eng[eng_ind]
+                                    m_water_depth = m_water_depth[eng_ind]
 
                                 fig, ax, bar = pf.plot_xsection(subsite, t_array, y_array, z_array, clabel, ylabel,
                                                                 t_eng, m_water_depth, inpercentile, stdev=None)
@@ -314,6 +324,7 @@ if __name__ == '__main__':
     zdbar = None
     n_std = None
     inpercentile = 5
+    glider = 'no'
 
     '''
     define the depth cell_size for data grouping 
@@ -323,7 +334,7 @@ if __name__ == '__main__':
     ''''
     define deployment number and indicate if only the preferred data should be plotted
     '''
-    deployment_num = 1
+    deployment_num = 8
     preferred_only = 'yes'  # options: 'yes', 'no'
 
     '''
@@ -337,4 +348,4 @@ if __name__ == '__main__':
     '''
     call in main function with the above attributes
     '''
-    main(url_list, sDir, plot_type, deployment_num, start_time, end_time, preferred_only, zdbar, n_std, inpercentile, zcell_size)
+    main(url_list, sDir, plot_type, deployment_num, start_time, end_time, preferred_only, glider, zdbar, n_std, inpercentile, zcell_size)
