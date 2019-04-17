@@ -539,20 +539,57 @@ def reject_erroneous_data(r, v, t, y, z, fz):
     return dtime, zpressure, ndata, n_fv, n_nan, n_ev, n_gr, global_min, global_max
 
 
-def reject_suspect_data(t, y, z, timestamps):
-    tt = t
-    yy = y
-    zz = z
-    for row in timestamps:
-        ntime = pd.to_datetime(row)
-        ne = np.datetime64(ntime)
-        ind = np.where((tt != ne), True, False)
-        if not ind.any():
-            print('{} {}'.format(row, 'is not in data'))
-            print(np.unique(ind))
-        else:
-            tt = tt[ind]
-            zz = zz[ind]
-            yy = yy[ind]
+# def reject_suspect_data(t, y, z, timestamps):
+#     tt = t
+#     yy = y
+#     zz = z
+#     ne = []
+#     for row in timestamps:
+#         ntime = pd.to_datetime(row)
+#         ne.append(np.datetime64(ntime))
+#
+#     ind = [index for index, value in enumerate(t) if value not in ne]
+#     if len(ind) == 0:
+#         print('{} {}'.format(row, 'is not in data'))
+#         print(np.unique(ind))
+#     else:
+#         tt = tt[ind]
+#         zz = zz[ind]
+#         yy = yy[ind]
+#
+#     # for row in timestamps:
+#     #     ntime = pd.to_datetime(row)
+#     #     ne = np.datetime64(ntime)
+#     #     ind = np.where((tt != ne), True, False)
+#     #
+#     #     if not ind.any():
+#     #         print('{} {}'.format(row, 'is not in data'))
+#     #         print(np.unique(ind))
+#     #     else:
+#     #         tt = tt[ind]
+#     #         zz = zz[ind]
+#     #         yy = yy[ind]
+#
+#     return tt, zz, yy
 
-    return tt, zz, yy
+def reject_suspect_data(t, y, z, timestamps):
+
+    data = pd.DataFrame({'yy': y, 'zz': z, 'tt': t}, index=t)
+    l0 =len(data['tt'])
+    dtime = [(np.datetime64(pd.to_datetime(row))) for row in timestamps]
+
+    if pd.to_datetime(t.max()) > pd.to_datetime(min(dtime)) or pd.to_datetime(t.min()) < pd.to_datetime(max(dtime)):
+        print(min(dtime), t.min(), ' ', max(dtime), t.max())
+        ind = np.where((dtime >= t.min()) & (dtime <= t.max()))
+        print(len(ind[0]))
+        print(len(dtime))
+        if len(dtime) - len(ind[0]) > 0:
+            list_to_drop = [value for index, value in enumerate(dtime) if index in list(ind[0])]
+            dtime = list_to_drop
+            print(len(dtime))
+
+        print('dropping suspect data')
+        data = data.drop(dtime)
+        print(len(data['tt']), 'out < - > in', l0)
+
+    return data['tt'], data['zz'].values, data['yy'].values
