@@ -156,8 +156,6 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                         zpressure = zpressure[ind]
                         ndata = ndata[ind]
 
-
-
                         # create data groups
                         columns = ['tsec', 'dbar', str(sv)]
                         min_r = int(round(min(zpressure) - zcell_size))
@@ -239,7 +237,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                                 clabel = 'Time'
 
                                 # plot non-erroneous data
-                                fig, ax = pf.plot_profiles(ndata, zpressure, dtime, ylabel, xlabel, clabel, stdev=None)
+                                fig, ax = pf.plot_profiles(z_array, y_array, t_array, ylabel, xlabel, clabel, stdev=None)
 
                                 ax.set_title(title, fontsize=9)
                                 ax.plot(n_avg, y_avg, '-k')
