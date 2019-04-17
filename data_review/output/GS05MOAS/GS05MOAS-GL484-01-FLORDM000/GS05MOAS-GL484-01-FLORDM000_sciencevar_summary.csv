@@ -1,0 +1,5 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,telemetered,flord_m_glider_instrument,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",383,0,0,no global ranges,0,383,100.0,0.0006,0.0005,0.0007,0.0
+deployment0001,telemetered,flord_m_glider_instrument,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",383,0,0,30,6,347,90.6,0.001,0.0005,0.0287,0.0022
+deployment0001,telemetered,flord_m_glider_instrument,sci_flbb_bb_units,m-1 sr-1,nan,"[0.0, 0.0079]",383,0,0,0,6,377,98.43,0.0001,0.0,0.0042,0.0003
+deployment0001,telemetered,flord_m_glider_instrument,sci_flbb_chlor_units,µg L-1,nan,"[0.0, 50.0]",383,0,0,0,2,381,99.48,0.278,0.0,1.3968,0.322

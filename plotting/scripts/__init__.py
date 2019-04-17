@@ -1,4 +1,5 @@
 from .mobile_assets import map_gliders
+from .mobile_assets import plot_deployment_3Dcolor_scatter
 from .fixed_assets import plot_compare_timeseries
 #from .deprecated import plot_profiles
 from .fixed_assets import plot_timeseries
