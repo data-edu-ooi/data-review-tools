@@ -165,9 +165,10 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, prefer
                         groups, d_groups = gt.group_by_depth_range(dtime, zpressure, ndata, columns, ranges)
 
                         #  rejecting timestamps from percentile analysis
-                        y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_ex, \
-                        t_nospct, z_nospct, y_nospct = cf.reject_timestamps_in_groups(groups, d_groups, n_std,
-                                                                                dtime, zpressure, ndata, inpercentile)
+                        y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_ex = cf.reject_timestamps_in_groups(
+                            groups, d_groups, n_std, inpercentile)
+
+                        t_nospct, z_nospct, y_nospct = cf.reject_suspect_data(dtime, zpressure, ndata, time_ex)
 
                         print('removed {} data points using {} percentile of data grouped in {} dbar segments'.format(
                                                     len(zpressure) - len(z_nospct), inpercentile, zcell_size))
