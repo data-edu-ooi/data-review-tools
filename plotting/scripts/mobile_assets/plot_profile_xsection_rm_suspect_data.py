@@ -235,7 +235,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                                 profile plot
                                 '''
                                 xlabel = sv + " (" + sv_units + ")"
-                                ylabel = press + " (" + y_units[0] + ")"
+                                ylabel = press[0] + " (" + y_units[0] + ")"
                                 clabel = 'Time'
 
                                 # plot non-erroneous data
@@ -252,7 +252,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                                 xsection plot
                                 '''
                                 clabel = sv + " (" + sv_units + ")"
-                                ylabel = press + " (" + y_units[0] + ")"
+                                ylabel = press[0] + " (" + y_units[0] + ")"
 
                                 # plot bathymetry only within data time ranges
                                 if t_eng:

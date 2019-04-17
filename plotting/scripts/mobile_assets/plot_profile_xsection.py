@@ -188,7 +188,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                             profile plot
                             '''
                             xlabel = sv + " (" + sv_units + ")"
-                            ylabel = press + " (" + y_units[0] + ")"
+                            ylabel = press[0] + " (" + y_units[0] + ")"
                             clabel = 'Time'
 
                             fig, ax = pf.plot_profiles(ndata, zpressure, dtime, ylabel, xlabel, clabel, stdev=None)
@@ -210,7 +210,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                             xsection plot
                             '''
                             clabel = sv + " (" + sv_units + ")"
-                            ylabel = press + " (" + y_units[0] + ")"
+                            ylabel = press[0] + " (" + y_units[0] + ")"
 
                             # plot non-erroneous data
                             fig, ax, bar = pf.plot_xsection(subsite, dtime, zpressure, ndata, clabel, ylabel, t_eng,
