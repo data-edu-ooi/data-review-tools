@@ -407,6 +407,9 @@ def reject_timestamps_dataportal(subsite, r, tt, yy, zz):
 
     dr = pd.read_csv('https://datareview.marine.rutgers.edu/notes/export')
     drn = dr.loc[dr.type == 'exclusion']
+    t_ex = tt
+    y_ex = yy
+    z_ex = zz
 
     if len(drn) != 0:
         subsite_node = '-'.join((subsite, r.split('-')[1]))
@@ -428,10 +431,6 @@ def reject_timestamps_dataportal(subsite, r, tt, yy, zz):
                         z_ex = zz[ind]
                         y_ex = yy[ind]
                         print('excluding {} timestamps [{} - {}]'.format(np.sum(~ind), sdate, edate))
-        else:
-            t_ex = tt
-            y_ex = yy
-            z_ex = zz
 
     return t_ex, z_ex, y_ex
 
