@@ -350,13 +350,14 @@ def variable_statistics(var_data, stdev=None):
 
     return [num_outliers, mean, min, max, sd, n]
 
+
 def format_dates(dd):
     fd = dt.datetime.strptime(dd.replace(',', ''), '%m/%d/%y %I:%M %p')
     fd2 = dt.datetime.strftime(fd, '%Y-%m-%dT%H:%M:%S')
     return fd2
 
 
-def reject_timestamps_in_groups(groups, d_groups, n_std, tt, yy, zz, inpercentile):
+def reject_timestamps_in_groups(groups, d_groups, n_std, inpercentile):
     y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_exclude = [], [], [], [], [], [], [], []
 
     tm = 1
@@ -398,9 +399,8 @@ def reject_timestamps_in_groups(groups, d_groups, n_std, tt, yy, zz, inpercentil
         # n_pres = np.append(n_pres, ypres[d_ind].values)
 
     time_to_exclude = np.unique(time_exclude)
-    t_ex, z_ex, y_ex = reject_suspect_data(tt, yy, zz, time_to_exclude)
 
-    return y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_to_exclude, t_ex, z_ex, y_ex
+    return y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_to_exclude
 
 
 def reject_timestamps_dataportal(subsite, r, tt, yy, zz):
@@ -574,7 +574,7 @@ def reject_erroneous_data(r, v, t, y, z, fz):
 def reject_suspect_data(t, y, z, timestamps):
 
     data = pd.DataFrame({'yy': y, 'zz': z, 'tt': t}, index=t)
-    l0 =len(data['tt'])
+    l0 = len(data['tt'])
     dtime = [(np.datetime64(pd.to_datetime(row))) for row in timestamps]
 
     if pd.to_datetime(t.max()) > pd.to_datetime(min(dtime)) or pd.to_datetime(t.min()) < pd.to_datetime(max(dtime)):

@@ -26,7 +26,7 @@ def format_date_axis(axis, figure):
     figure.autofmt_xdate()
 
 
-def plot_profiles(x, y, t, ylabel, xlabel, clabel, end_times, deployments, stdev=None):
+def plot_profiles(x, y, t, ylabel, xlabel, clabel, stdev=None):
     """
     Create a profile plot for mobile instruments
     :param x: .nc data array containing data for plotting variable of interest (e.g. density)

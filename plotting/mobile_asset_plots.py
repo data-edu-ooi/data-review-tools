@@ -21,9 +21,9 @@ start_time = None  # dt.datetime(2016, 9, 1, 0, 0, 0)  # optional, set to None i
 end_time = None  # dt.datetime(2016, 10, 1, 0, 0, 0)  # optional, set to None if plotting all data
 preferred_only = 'yes'  # options: 'yes', 'no'
 
-zdbar = None  # depth range for plotting
+zdbar = None  # remove data below this depth for analysis and plotting
 n_std = None
-inpercentile = 5
+inpercentile = 1
 
 zcell_size = 10  # depth cell size for data grouping
 deployment_num = None  # 3
@@ -32,5 +32,6 @@ ff = pd.read_csv(f)
 url_list = ff['outputUrl'].tolist()
 url_list = [u for u in url_list if u not in 'no_output_url']
 
-#scripts.map_gliders.main(url_list, sDir, 'glider_track', start_time, end_time, deployment_num)
-scripts.plot_deployment_3Dcolor_scatter.main(url_list, sDir, 'xsection_plots', deployment_num, start_time, end_time, preferred_only, zdbar, n_std, inpercentile, zcell_size)
+scripts.map_gliders.main(url_list, sDir, 'glider_track', start_time, end_time, deployment_num)
+scripts.plot_profile_xsection.main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n_std, inpercentile, zcell_size)
+scripts.plot_profile_xsection_rm_suspect_data.main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, zdbar, n_std, inpercentile, zcell_size)

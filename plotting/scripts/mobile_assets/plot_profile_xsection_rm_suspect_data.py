@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 """
-Created on Feb 2019
+Created on Feb 2019 by Leila Belabbassi
+Modified on Apr 17 2019 by Lori Garzio
 
-@author: Leila Belabbassi
-@brief: This script is used to create color scatter plots for instruments data on mobile platforms (WFP & Gliders).
-Each plot contain data from one deployment.
+@brief: This script is used to create initial profile plots and color scatter plots for instruments on mobile platforms
+(WFP & Gliders). Excludes erroneous data and data outside of global ranges. Each plot contain data from one deployment
+and one science variable.
 """
 
 import os
@@ -18,7 +19,7 @@ import functions.plotting as pf
 import functions.group_by_timerange as gt
 
 
-def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, preferred_only, glider, zdbar, n_std, inpercentile, zcell_size):
+def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, zdbar, n_std, inpercentile, zcell_size):
     rd_list = []
     for uu in url_list:
         elements = uu.split('/')[-2].split('-')
@@ -60,7 +61,7 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, prefer
 
         for fd in fdatasets_sel:
             part_d = fd.split('/')[-1]
-            print(part_d)
+            print('\n{}'.format(part_d))
             ds = xr.open_dataset(fd, mask_and_scale=False)
             ds = ds.swap_dims({'obs': 'time'})
 
@@ -86,6 +87,14 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, prefer
                         t_eng = t_eng[eng_ind]
                     else:
                         print('No engineering file for deployment {}'.format(deployment))
+                        m_water_depth = None
+                        t_eng = None
+                else:
+                    m_water_depth = None
+                    t_eng = None
+            else:
+                m_water_depth = None
+                t_eng = None
 
             if deployment_num is not None:
                 if int(deployment.split('0')[-1]) is not deployment_num:
@@ -100,31 +109,26 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, prefer
                 stime = start_time.strftime('%Y-%m-%d')
                 etime = end_time.strftime('%Y-%m-%d')
                 ext = stime + 'to' + etime  # .join((ds0_method, ds1_method
-                save_dir = os.path.join(sDir, array, subsite, refdes, plot_type, deployment, ext)
+                save_dir_profile = os.path.join(sDir, array, subsite, refdes, 'profile_plots', deployment, ext)
+                save_dir_xsection = os.path.join(sDir, array, subsite, refdes, 'xsection_plots', deployment, ext)
             else:
-                save_dir = os.path.join(sDir, array, subsite, refdes, plot_type, deployment)
+                save_dir_profile = os.path.join(sDir, array, subsite, refdes, 'profile_plots', deployment)
+                save_dir_xsection = os.path.join(sDir, array, subsite, refdes, 'xsection_plots', deployment)
 
-            cf.create_dir(save_dir)
+            cf.create_dir(save_dir_profile)
+            cf.create_dir(save_dir_xsection)
 
             tm = ds['time'].values
 
             # get pressure variable
-            ds_vars = list(ds.data_vars.keys()) + [x for x in ds.coords.keys() if 'pressure' in x]
-
             y, y_units, press = cf.add_pressure_to_dictionary_of_sci_vars(ds)
-            print(y_units, press)
-
-            # press = pf.pressure_var(ds, ds_vars)
-            # print(press)
-            # y = ds[press].values
-            # y_units = ds[press].units
 
             for sv in sci_vars:
                 print(sv)
-                if 'sci_water_pressure' not in sv:
+                if 'pressure' not in sv:
                     z = ds[sv].values
                     fv = ds[sv]._FillValue
-                    z_units = ds[sv].units
+                    sv_units = ds[sv].units
 
                     # Check if the array is all NaNs
                     if sum(np.isnan(z)) == len(z):
@@ -137,10 +141,6 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, prefer
                         continue
 
                     else:
-
-                        """
-                        clean up data
-                        """
                         # reject erroneous data
                         dtime, zpressure, ndata, lenfv, lennan, lenev, lengr, global_min, global_max = \
                                                                         cf.reject_erroneous_data(r, sv, tm, y, z, fv)
@@ -156,7 +156,9 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, prefer
                         zpressure = zpressure[ind]
                         ndata = ndata[ind]
 
-                        # creating data groups
+
+
+                        # create data groups
                         columns = ['tsec', 'dbar', str(sv)]
                         min_r = int(round(min(zpressure) - zcell_size))
                         max_r = int(round(max(zpressure) + zcell_size))
@@ -164,19 +166,22 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, prefer
 
                         groups, d_groups = gt.group_by_depth_range(dtime, zpressure, ndata, columns, ranges)
 
+                        if 'scatter' in sv:
+                            n_std = None  # to use percentile
+                        else:
+                            n_std = n_std
+
                         #  rejecting timestamps from percentile analysis
                         y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_ex = cf.reject_timestamps_in_groups(
                             groups, d_groups, n_std, inpercentile)
 
                         t_nospct, z_nospct, y_nospct = cf.reject_suspect_data(dtime, zpressure, ndata, time_ex)
 
-                        print('removed {} data points using {} percentile of data grouped in {} dbar segments'.format(
-                                                    len(zpressure) - len(z_nospct), inpercentile, zcell_size))
-
                         # reject time range from data portal file export
                         t_portal, z_portal, y_portal = cf.reject_timestamps_dataportal(subsite, r,
-                                                                                    t_nospct, y_nospct, z_nospct)
-                        print('removed {} data points using visual inspection of data'.format(len(z_nospct) - len(z_portal)))
+                                                                                       t_nospct, y_nospct, z_nospct)
+                        print('removed {} data points using visual inspection of data'.format(
+                            len(z_nospct) - len(z_portal)))
 
                         # reject data in a depth range
                         if zdbar:
@@ -192,65 +197,30 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, prefer
                             z_array = z_portal
                         print('{} in water depth > {} dbar'.format(n_zdbar, zdbar))
 
-                    """
-                    Plot data
-                    """
-
-                    if len(dtime) > 0:
-                        sname = '-'.join((r, method, sv))
-
-                        clabel = sv + " (" + z_units + ")"
-                        ylabel = press[0] + " (" + y_units[0] + ")"
-
-                        if glider == 'no':
-                            t_eng = None
-                            m_water_depth = None
-
-                        # plot non-erroneous data
-                        fig, ax, bar = pf.plot_xsection(subsite, dtime, zpressure, ndata, clabel, ylabel,
-                                                        t_eng, m_water_depth, inpercentile, stdev=None)
-
-                        t0 = pd.to_datetime(dtime.min()).strftime('%Y-%m-%dT%H:%M:%S')
-                        t1 = pd.to_datetime(dtime.max()).strftime('%Y-%m-%dT%H:%M:%S')
-                        title = ' '.join((deployment, refdes, method)) + '\n' + t0 + ' to ' + t1
-
-                        ax.set_title(title, fontsize=9)
-                        leg_text = (
-                            'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
-                            '{} zeros'.format(lenfv, lennan, lenev, lengr, global_min, global_max, lenzero),
-                        )
-                        ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
-                        fig.tight_layout()
-                        sfile = '_'.join(('rm_erroneous_data', sname))
-                        pf.save_fig(save_dir, sfile)
-
-                        # plots removing all suspect data
+                        """
+                        Plot data
+                        """
                         if len(t_array) > 0:
                             if len(t_array) != len(dtime):
-                                # plot bathymetry only within data time ranges
-                                if glider == 'yes':
-                                    eng_ind = (t_eng >= np.min(t_array)) & (t_eng <= np.max(t_array))
-                                    t_eng = t_eng[eng_ind]
-                                    m_water_depth = m_water_depth[eng_ind]
-
-                                fig, ax, bar = pf.plot_xsection(subsite, t_array, y_array, z_array, clabel, ylabel,
-                                                                t_eng, m_water_depth, inpercentile, stdev=None)
+                                sname = '-'.join((r, method, sv))
+                                sfile = '_'.join(('rm_suspect_data', sname))
 
                                 t0 = pd.to_datetime(t_array.min()).strftime('%Y-%m-%dT%H:%M:%S')
                                 t1 = pd.to_datetime(t_array.max()).strftime('%Y-%m-%dT%H:%M:%S')
                                 title = ' '.join((deployment, refdes, method)) + '\n' + t0 + ' to ' + t1
 
-                                ax.set_title(title, fontsize=9)
                                 if zdbar:
                                     leg_text = (
-                                        'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
-                                        '{} zeros'.format(lenfv, lennan, lenev, lengr, global_min, global_max, lenzero)
-                                        + '\nremoved {} in the upper and lower {}th percentile of data grouped in {} dbar segments'.format(
-                                            len(zpressure) - len(z_nospct), inpercentile, zcell_size)
+                                        'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges '
+                                        '[{} - {}], {} zeros'.format(lenfv, lennan, lenev, lengr, global_min,
+                                                                     global_max, lenzero)
+                                        + '\nremoved {} in the upper and lower {}th percentile of data grouped in {} '
+                                          'dbar segments'.format(len(zpressure) - len(z_nospct), inpercentile, zcell_size)
                                         + '\nexcluded {} suspect data points when inspected visually'.format(
                                             len(z_nospct) - len(z_portal))
-                                        + '\nexcluded {} suspect data in water depth greater than {} dbar'.format(n_zdbar,
-                                                                                                             zdbar),
+                                        + '\nexcluded {} suspect data in water depth greater than {} dbar'.format(
+                                            n_zdbar,
+                                            zdbar),
                                     )
                                 else:
                                     leg_text = (
@@ -261,50 +231,43 @@ def main(url_list, sDir, plot_type, deployment_num, start_time, end_time, prefer
                                         + '\nexcluded {} suspect data points when inspected visually'.format(
                                             len(z_nospct) - len(z_portal)),
                                     )
+                                '''
+                                profile plot
+                                '''
+                                xlabel = sv + " (" + sv_units + ")"
+                                ylabel = press + " (" + y_units + ")"
+                                clabel = 'Time'
+
+                                # plot non-erroneous data
+                                fig, ax = pf.plot_profiles(ndata, zpressure, dtime, ylabel, xlabel, clabel, stdev=None)
+
+                                ax.set_title(title, fontsize=9)
+                                ax.plot(n_avg, y_avg, '-k')
+                                ax.fill_betweenx(y_avg, n0_std, n1_std, color='m', alpha=0.2)
                                 ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
                                 fig.tight_layout()
+                                pf.save_fig(save_dir_profile, sfile)
 
-                                sfile = '_'.join(('rm_suspect_data', sname))
-                                pf.save_fig(save_dir, sfile)
+                                '''
+                                xsection plot
+                                '''
+                                clabel = sv + " (" + sv_units + ")"
+                                ylabel = press + " (" + y_units + ")"
 
+                                # plot bathymetry only within data time ranges
+                                if t_eng:
+                                    eng_ind = (t_eng >= np.min(t_array)) & (t_eng <= np.max(t_array))
+                                    t_eng = t_eng[eng_ind]
+                                    m_water_depth = m_water_depth[eng_ind]
 
-                        # # plot excluding timestamps for suspect data
-                        # if len(z_nospct) != len(zpressure):
-                        #     fig, ax, bar = pf.plot_xsection(subsite, t_nospct, y_nospct, z_nospct,
-                        #                                     clabel, ylabel, inpercentile, stdev=None)
-                        #
-                        #     ax.set_title(title, fontsize=9)
-                        #     leg_text = (
-                        #     'removed {} in the upper and lower {} percentile of data grouped in {} dbar segments'.format(
-                        #     len(zpressure) - len(z_nospct), inpercentile, zcell_size),)
-                        #     ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
-                        #     fig.tight_layout()
-                        #     sfile = '_'.join(('rm_suspect_data', sname))
-                        #     pf.save_fig(save_dir, sfile)
-                        #
-                        # # plot excluding time ranges from data portal export
-                        # if len(z_nospct) - len(z_portal) > 0:
-                        #
-                        #     fig, ax, bar = pf.plot_xsection(subsite, t_portal, y_portal, z_portal,
-                        #                                     clabel, ylabel, inpercentile=None, stdev=None)
-                        #     ax.set_title(title, fontsize=9)
-                        #     leg_text = ('excluded {} suspect data when inspected visually'.format(len(z_nospct) - len(z_portal)),)
-                        #     ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
-                        #     fig.tight_layout()
-                        #     sfile = '_'.join(('rm_v_suspect_data', sname))
-                        #     pf.save_fig(save_dir, sfile)
-                        #
-                        #     # Plot excluding a selected depth value
-                        #     if len(z_array) != len(z_array):
-                        #         fig, ax, bar = pf.plot_xsection(subsite, t_array, y_array, z_array,
-                        #                                         clabel, ylabel, inpercentile, stdev=None)
-                        #         ax.set_title(title, fontsize=9)
-                        #         leg_text = ('excluded {} suspect data in water depth greater than {} dbar'.format(len(y_ind), zdbar),)
-                        #         ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
-                        #         fig.tight_layout()
-                        #
-                        #         sfile = '_'.join(('rm_depth_range', sname))
-                        #         pf.save_fig(save_dir, sfile)
+                                # plot non-erroneous data
+                                fig, ax, bar = pf.plot_xsection(subsite, t_array, y_array, z_array, clabel, ylabel,
+                                                                t_eng, m_water_depth, inpercentile, stdev=None)
+
+                                ax.set_title(title, fontsize=9)
+                                ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
+                                fig.tight_layout()
+                                pf.save_fig(save_dir_xsection, sfile)
 
 
 if __name__ == '__main__':
@@ -321,11 +284,9 @@ if __name__ == '__main__':
     '''
     define filters standard deviation, percentile, depth range
     '''
-
     zdbar = None
     n_std = None
     inpercentile = 5
-    glider = 'no'
 
     '''
     define the depth cell_size for data grouping 
@@ -335,13 +296,12 @@ if __name__ == '__main__':
     ''''
     define deployment number and indicate if only the preferred data should be plotted
     '''
-    deployment_num = 8
+    deployment_num = 1
     preferred_only = 'yes'  # options: 'yes', 'no'
 
     '''
-    define plot type, output directory, and data files URLok 
+    output directory, and data files URL location
     '''
-    plot_type = 'xsection_plots'
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
     url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021222-CE09OSPM-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html']
     #url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021350-CE09OSPM-WFP01-04-FLORTK000-telemetered-flort_sample/catalog.html']
@@ -349,4 +309,4 @@ if __name__ == '__main__':
     '''
     call in main function with the above attributes
     '''
-    main(url_list, sDir, plot_type, deployment_num, start_time, end_time, preferred_only, glider, zdbar, n_std, inpercentile, zcell_size)
+    main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, zdbar, n_std, inpercentile, zcell_size)
