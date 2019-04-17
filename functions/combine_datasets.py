@@ -4,7 +4,9 @@ import numpy as np
 import pandas as pd
 import functions.common as cf
 import functions.plotting as pf
-
+import os
+from os import listdir
+from os.path import isfile, join
 
 def append_science_data(preferred_stream_df, n_streams, refdes, dataset_list, sci_vars_dict, et=[], stime=None, etime=None):
     # build dictionary of science data from the preferred dataset for each deployment
@@ -29,21 +31,22 @@ def append_science_data(preferred_stream_df, n_streams, refdes, dataset_list, sc
                             continue
 
                     fmethod_stream = '-'.join((ds.collection_method, ds.stream))
-
                     for strm, b in sci_vars_dict.items():
                         # if the reference designator has 1 science data stream
                         if strm == 'common_stream_placeholder':
-                            sci_vars_dict = append_variable_data(ds, sci_vars_dict,
-                                                                 'common_stream_placeholder', et)
+                            variable_dict, pressure_unit, pressure_name = append_variable_data(ds, sci_vars_dict,
+                                                                            'common_stream_placeholder', et)
                         # if the reference designator has multiple science data streams
                         elif fmethod_stream in sci_vars_dict[strm]['ms']:
-                            sci_vars_dict = append_variable_data(ds, sci_vars_dict, strm, et)
+                            variable_dict, pressure_unit, pressure_name = append_variable_data(ds, sci_vars_dict,
+                                                                                               strm, et)
 
-    return sci_vars_dict
+
+    return sci_vars_dict, pressure_unit, pressure_name
 
 
 def append_variable_data(ds, variable_dict, common_stream_name, exclude_times):
-
+    pressure_unit, pressure_name = [], []
     ds_vars = cf.return_raw_vars(list(ds.data_vars.keys()) + list(ds.coords))
     vars_dict = variable_dict[common_stream_name]['vars']
     for var in ds_vars:
@@ -51,11 +54,7 @@ def append_variable_data(ds, variable_dict, common_stream_name, exclude_times):
             long_name = ds[var].long_name
             x = [x for x in list(vars_dict.keys()) if long_name in x]
             if len(x) != 0:
-                print('{} pressure parameters in {}'.format(len(x), list(vars_dict.keys())))
-            # if long_name in list(vars_dict.keys()) or 'Pressure' in long_name:
                 long_name = x[0]
-                print(ds[var].units)
-                print(vars_dict[long_name]['db_units'])
                 if ds[var].units == vars_dict[long_name]['db_units']:
                     if ds[var]._FillValue not in vars_dict[long_name]['fv']:
                         vars_dict[long_name]['fv'].append(ds[var]._FillValue)
@@ -64,7 +63,14 @@ def append_variable_data(ds, variable_dict, common_stream_name, exclude_times):
                     tD = ds['time'].values
                     varD = ds[var].values
                     deployD = ds['deployment'].values
+
+                    # find the pressure to use from the data file
                     pD, p_unit, p_name = cf.add_pressure_to_dictionary_of_sci_vars(ds)
+                    if p_unit not in pressure_unit:
+                        pressure_unit.append(p_unit)
+                    if p_name not in pressure_name:
+                        pressure_name.append(p_name)
+
                     if len(exclude_times) > 0:
                         for et in exclude_times:
                             tD, pD, varD, deployD = exclude_time_ranges(tD, pD, varD, deployD, et)
@@ -83,7 +89,7 @@ def append_variable_data(ds, variable_dict, common_stream_name, exclude_times):
         except AttributeError:
             continue
 
-    return variable_dict
+    return variable_dict, pressure_unit, pressure_name
 
 
 def common_long_names(science_variable_dictionary):
@@ -189,3 +195,281 @@ def var_long_names(refdes):
         if len(sci_vars) > 0:
             stream_vars_dict.update({dr_ms: sci_vars})
     return stream_vars_dict
+
+def append_evaluated_science_data(sDir, preferred_stream_df, n_streams, refdes, dataset_list, sci_vars_dict, zdbar, stime=None, etime=None):
+    # build dictionary of science data from the preferred dataset for each deployment
+    for index, row in preferred_stream_df.iterrows():
+        for ii in range(n_streams):
+            try:
+                rms = '-'.join((refdes, row[ii]))
+                drms = '_'.join((row['deployment'], rms))
+                print(drms)
+                print(row['deployment'])
+            except TypeError:
+                continue
+
+            for d in dataset_list:
+                ds_drms = d.split('/')[-1].split('_20')[0]
+                if ds_drms == drms:
+                    ds = xr.open_dataset(d, mask_and_scale=False)
+                    ds = ds.swap_dims({'obs': 'time'})
+                    if stime is not None and etime is not None:
+                        ds = ds.sel(time=slice(stime, etime))
+                        if len(ds['time'].values) == 0:
+                            print('No data for specified time range: ({} to {})'.format(stime, etime))
+                            continue
+
+                    fmethod_stream = '-'.join((ds.collection_method, ds.stream))
+                    for strm, b in sci_vars_dict.items():
+                        # if the reference designator has 1 science data stream
+                        if strm == 'common_stream_placeholder':
+                            variable_dict, pressure_unit, pressure_name = append_evaluated_data(
+                                                                        sDir, row['deployment'], ds, sci_vars_dict,
+                                                                        'common_stream_placeholder', zdbar)
+
+                        # if the reference designator has multiple science data streams
+                        elif fmethod_stream in sci_vars_dict[strm]['ms']:
+                            variable_dict, pressure_unit, pressure_name = append_evaluated_data(sDir, row['deployment'],
+                                                                        ds, sci_vars_dict, strm, zdbar)
+
+
+    return sci_vars_dict, pressure_unit, pressure_name
+
+
+def append_evaluated_data(sDir, deployment, ds, variable_dict, common_stream_name, zdbar):
+    pressure_unit, pressure_name = [], []
+    r = '{}-{}-{}'.format(ds.subsite, ds.node, ds.sensor)
+    ds_vars = cf.return_raw_vars(list(ds.data_vars.keys()) + list(ds.coords))
+    vars_dict = variable_dict[common_stream_name]['vars']
+    for var in ds_vars:
+        try:
+            long_name = ds[var].long_name
+            x = [x for x in list(vars_dict.keys()) if long_name in x]
+            if len(x) != 0:
+                long_name = x[0]
+                if ds[var].units == vars_dict[long_name]['db_units']:
+                    print(var)
+                    if ds[var]._FillValue not in vars_dict[long_name]['fv']:
+                        vars_dict[long_name]['fv'].append(ds[var]._FillValue)
+                    if ds[var].units not in vars_dict[long_name]['units']:
+                        vars_dict[long_name]['units'].append(ds[var].units)
+                    tD = ds['time'].values
+                    varD = ds[var].values
+                    deployD = ds['deployment'].values
+
+                    # find the pressure to use from the data file
+                    pD, p_unit, p_name = cf.add_pressure_to_dictionary_of_sci_vars(ds)
+                    if p_unit not in pressure_unit:
+                        pressure_unit.append(p_unit)
+                    if p_name not in pressure_name:
+                        pressure_name.append(p_name)
+
+                    # reject erroneous data
+                    l0 = len(tD)
+                    tD, pD, varD, deployD, lenfv, lennan, lenev, lengr, global_min, global_max = reject_erroneous_data(
+                                                                     r, var, tD, pD, varD, deployD, ds[var]._FillValue)
+
+                    l_erroneous = len(tD)
+                    print('{}% erroneous data'.format(round((l0 - l_erroneous) / l0), 8))
+
+                    if len(tD) != 0:
+                        # reject time range from data portal file export
+                        tD, pD, varD, deployD = reject_timestamps_dataportal(ds.subsite, r, tD, pD, varD, deployD)
+                        l_portal = len(tD)
+                        print('{}% suspect  - data portal'.format(round((l_erroneous - l_portal) / l0), 8))
+                        if len(tD) != 0:
+                            # reject timestamps from stat analysis
+                            Dpath = '{}/{}/{}/{}/{}'.format(sDir, ds.subsite[0:2], ds.subsite, r, 'time_to_exclude')
+                            tD, pD, varD, deployD = reject_timestamps_from_stat_analysis(Dpath, deployment, var, tD, pD,
+                                                                                         varD, deployD)
+                            l_stat = len(tD)
+                            print('{}% suspect  - stat analysis'.format(round((l_portal - l_stat) / l0), 8))
+
+                            # # reject timestamps in a depth range
+                            tD, pD, varD, deployD = reject_data_in_depth_range(tD, pD, varD, deployD, zdbar)
+                            l_zrange = len(tD)
+                            print('{}% suspect - water depth > {} dbar'.format(round((l_stat - l_zrange) / l0, 8), zdbar))
+
+                            print(l0, ' Start < - > Final ', len(tD), 'Dictinary entry: ', len(vars_dict[long_name]['t']))
+                            print()
+                            vars_dict[long_name]['t'] = np.append(vars_dict[long_name]['t'], tD)
+                            vars_dict[long_name]['pressure'] = np.append(vars_dict[long_name]['pressure'], pD)
+                            vars_dict[long_name]['values'] = np.append(vars_dict[long_name]['values'], varD)
+                            vars_dict[long_name]['deployments'] = np.append(vars_dict[long_name]['deployments'], deployD)
+                    else:
+                        print('why here')
+                        vars_dict[long_name]['t'] = np.append(vars_dict[long_name]['t'], tD)
+                        vars_dict[long_name]['pressure'] = np.append(vars_dict[long_name]['pressure'], pD)
+                        vars_dict[long_name]['values'] = np.append(vars_dict[long_name]['values'], varD)
+                        vars_dict[long_name]['deployments'] = np.append(vars_dict[long_name]['deployments'], deployD)
+
+        except AttributeError:
+            continue
+
+    return variable_dict, pressure_unit, pressure_name
+
+
+def reject_erroneous_data(r, v, t, y, z, d, fz):
+
+    """
+    :param r: reference designator
+    :param v: data parameter name
+    :param t: time array
+    :param y: pressure array
+    :param z: data values
+    :param d: deployment number
+    :param fz: fill values defined in the data file
+    :return: filtered data from fill values, NaNs, extreme values '|1e7|' and data outside global ranges
+    """
+
+    # reject fill values
+    fv_ind = z != fz
+    y_nofv = y[fv_ind]
+    t_nofv = t[fv_ind]
+    z_nofv = z[fv_ind]
+    d_nofv = d[fv_ind]
+    print(len(z) - len(fv_ind), ' fill values')
+
+    # reject NaNs
+    nan_ind = ~np.isnan(z_nofv)
+    t_nofv_nonan = t_nofv[nan_ind]
+    y_nofv_nonan = y_nofv[nan_ind]
+    z_nofv_nonan = z_nofv[nan_ind]
+    d_nofv_nonan = d_nofv[nan_ind]
+    print(len(z_nofv) - len(nan_ind), ' NaNs')
+
+    # reject extreme values
+    ev_ind = cf.reject_extreme_values(z_nofv_nonan)
+    t_nofv_nonan_noev = t_nofv_nonan[ev_ind]
+    y_nofv_nonan_noev = y_nofv_nonan[ev_ind]
+    z_nofv_nonan_noev = z_nofv_nonan[ev_ind]
+    d_nofv_nonan_noev = d_nofv_nonan[ev_ind]
+    print(len(z_nofv_nonan) - len(ev_ind), ' Extreme Values', '|1e7|')
+
+    # reject values outside global ranges:
+    global_min, global_max = cf.get_global_ranges(r, v)
+    if isinstance(global_min, (int, float)) and isinstance(global_max, (int, float)):
+        gr_ind = cf.reject_global_ranges(z_nofv_nonan_noev, global_min, global_max)
+        dtime = t_nofv_nonan_noev[gr_ind]
+        zpressure = y_nofv_nonan_noev[gr_ind]
+        ndata = z_nofv_nonan_noev[gr_ind]
+        ndeploy = d_nofv_nonan_noev[gr_ind]
+        print('{} Global ranges [{} - {}]'.format(len(z_nofv_nonan_noev) - len(gr_ind),
+                                                  global_min, global_max))
+    else:
+        gr_ind = []
+        dtime = t_nofv_nonan_noev
+        zpressure = y_nofv_nonan_noev
+        ndata = z_nofv_nonan_noev
+        ndeploy = d_nofv_nonan_noev
+        print('{} global ranges [{} - {}]'.format(len(gr_ind), global_min, global_max))
+
+    return dtime, zpressure, ndata, ndeploy, len(fv_ind), len(nan_ind), len(ev_ind), len(gr_ind), global_min, global_max
+
+
+def reject_timestamps_dataportal(subsite, r, tt, yy, zz, dd):
+
+    dr = pd.read_csv('https://datareview.marine.rutgers.edu/notes/export')
+    drn = dr.loc[dr.type == 'exclusion']
+
+    if len(drn) != 0:
+        subsite_node = '-'.join((subsite, r.split('-')[1]))
+        drne = drn.loc[drn.reference_designator.isin([subsite, subsite_node, r])]
+        if len(drne['reference_designator']) != 0:
+            t_ex = tt
+            y_ex = yy
+            z_ex = zz
+            d_ex = dd
+            for ij, row in drne.iterrows():
+                sdate = cf.format_dates(row.start_date)
+                edate = cf.format_dates(row.end_date)
+                ts = np.datetime64(sdate)
+                te = np.datetime64(edate)
+                if t_ex.max() < ts:
+                    continue
+                elif t_ex.min() > te:
+                    continue
+                else:
+                    ind = np.where((t_ex < ts) | (t_ex > te), True, False)
+                    if len(ind) != 0:
+                        t_ex = t_ex[ind]
+                        z_ex = z_ex[ind]
+                        y_ex = y_ex[ind]
+                        d_ex = d_ex[ind]
+                        print('excluding {} timestamps [{} - {}]'.format(len(ind), sdate, edate))
+
+    return t_ex, y_ex, z_ex, d_ex
+
+def reject_timestamps_from_stat_analysis(Dpath, deployment, var, tt, yy, zz, dd):
+
+    onlyfiles = []
+    for item in os.listdir(Dpath):
+        if not item.startswith('.') and os.path.isfile(os.path.join(Dpath, item)):
+            if deployment in item:
+                onlyfiles.append(join(Dpath, item))
+
+    dre = pd.DataFrame()
+    for nn in onlyfiles:
+        dr = pd.read_csv(nn)
+        dre = dre.append(dr, ignore_index=True)
+
+    drn = dre.loc[dre['Unnamed: 0'] == var]
+    list_time = []
+    for itime in drn.time_to_exclude:
+        ntime = itime.split(', ')
+        list_time.extend(ntime)
+
+    u_time_list = np.unique(list_time)
+    if len(u_time_list) != 0:
+        tt, yy, zz, dd = reject_suspect_data(tt, yy, zz, dd, u_time_list)
+
+    # ind = np.where((tt > np.datetime64(pd.to_datetime('2016-1-6T00:00:00.000000000'))) & (
+    #             tt < np.datetime64(pd.to_datetime('2016-1-7T00:00:00.000000000'))), True, False)
+    # print(tt[ind])
+    return tt, yy, zz, dd
+
+def reject_data_in_depth_range(tt, yy, zz, dd, zdbar):
+    if zdbar is not None:
+        y_ind = y_portal < zdbar
+        if len(y_ind) != 0:
+            tt = tt[y_ind]
+            yy = yy[y_ind]
+            zz = zz[y_ind]
+            dd = dd[y_ind]
+    return tt, yy, zz, dd
+
+
+def reject_suspect_data(t, y, z, d, timestamps):
+
+    data = pd.DataFrame({'yy': y, 'zz': z, 'dd': d, 'tt': t}, index=t)
+    l0 =len(data['tt'])
+    dtime = [(np.datetime64(pd.to_datetime(row))) for row in timestamps]
+    # for row in timestamps:
+    #     dtime.append(np.datetime64(pd.to_datetime(row)))
+
+    if pd.to_datetime(t.max()) > pd.to_datetime(min(dtime)) or pd.to_datetime(t.min()) < pd.to_datetime(max(dtime)):
+        print(min(dtime), t.min(), ' ', max(dtime), t.max())
+        ind = np.where((dtime >= t.min()) & (dtime <= t.max()))
+        print(len(ind[0]))
+        print(len(dtime))
+        if len(dtime) - len(ind[0]) > 0:
+            list_to_drop = [value for index, value in enumerate(dtime) if index in list(ind[0])]
+            dtime = list_to_drop
+            print(len(dtime))
+
+        print('dropping suspect data')
+        data = data.drop(dtime)
+        print(len(data['tt']), 'out < - > in', l0)
+            # count_in = 0
+            # count_out = 0
+            # for row in timestamps:
+            #     ntime = pd.to_datetime(row)
+            #     try:
+            #         data = data.drop(np.datetime64(ntime))
+            #         count_in += 1
+            #     except KeyError:
+            #         #print(np.datetime64(ntime), ' not found in axis')
+            #         count_out += 1
+
+    # print(len(t), len(data.index.values), len(timestamps), '=', count_in, '+', count_out)
+    return data['tt'], data['zz'].values, data['yy'].values, data['dd'].values
