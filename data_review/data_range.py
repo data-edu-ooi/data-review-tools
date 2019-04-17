@@ -87,8 +87,8 @@ def main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time):
 
         # build dictionary of science data from the preferred dataset for each deployment
         print('\nAppending data from files')
-        sci_vars_dict, y_unit, y_name = cd.append_evaluated_science_data(sDir, ps_df, n_streams, r, fdatasets_final,
-                                                                            sci_vars_dict0, zdbar, start_time, end_time)
+        sci_vars_dict, y_unit, y_name, l0 = cd.append_evaluated_science_data(
+                                sDir, ps_df, n_streams, r, fdatasets_final, sci_vars_dict0, zdbar, start_time, end_time)
 
         # get end times of deployments
         deployments = []
@@ -176,17 +176,10 @@ def main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time):
 
                         # plot non-erroneous -suspect data
                         print(len(t))
-                        fig, ax, bar = pf.plot_xsection(subsite, t, y, z,
-                                                                    clabel, ylabel, inpercentile=None, stdev=None)
-
+                        fig, ax, bar = pf.plot_xsection(subsite, t, y, z, clabel, ylabel, inpercentile=None, stdev=None)
                         ax.set_title(title, fontsize=9)
-                        # leg_text = (
-                        #     'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}]'.format(
-                        #         len(z) - lenfv, len(z) - lennan, len(z) - lenev, lengr, global_min, global_max) + '\n' +
-                        #     ('removed {} in the upper and lower {} percentile of data grouped in {} dbar segments'.format(
-                        #                                     len(zpressure) - len(z_nospct), inpercentile, zcell_size)),)
-                        #
-                        # ax.legend(leg_textt, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
+                        leg_text = (('{} out of {} data are suspect'.format(len(t), l0)),)
+                        ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
 
 
                         for ii in range(len(end_times)):

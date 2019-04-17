@@ -579,17 +579,12 @@ def reject_suspect_data(t, y, z, timestamps):
     dtime = [(np.datetime64(pd.to_datetime(row))) for row in timestamps]
 
     if pd.to_datetime(t.max()) > pd.to_datetime(min(dtime)) or pd.to_datetime(t.min()) < pd.to_datetime(max(dtime)):
-        print(min(dtime), t.min(), ' ', max(dtime), t.max())
         ind = np.where((dtime >= t.min()) & (dtime <= t.max()))
-        print(len(ind[0]))
-        print(len(dtime))
         if len(dtime) - len(ind[0]) > 0:
             list_to_drop = [value for index, value in enumerate(dtime) if index in list(ind[0])]
             dtime = list_to_drop
-            print(len(dtime))
 
-        print('dropping suspect data')
         data = data.drop(dtime)
-        print(len(data['tt']), 'out < - > in', l0)
+        print('rejected suspect data', len(data['tt']), 'out < - > in', l0)
 
     return data['tt'], data['zz'].values, data['yy'].values
