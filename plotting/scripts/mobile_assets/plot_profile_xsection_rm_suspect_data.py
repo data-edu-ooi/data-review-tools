@@ -178,11 +178,9 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                         else:
                             n_std = n_std
 
-                        #  rejecting timestamps from percentile analysis
+                        #  identifying timestamps from percentile analysis
                         y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_ex = cf.reject_timestamps_in_groups(
                             groups, d_groups, n_std, inpercentile)
-
-                        t_nospct, z_nospct, y_nospct = cf.reject_suspect_data(dtime, zpressure, ndata, time_ex)
 
                         """
                         writing timestamps to .csv file to use with data_range.py script
@@ -196,11 +194,14 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                                                       'time_to_exclude': t_exclude}, index=[sv])
                             stat_data.to_csv(file_exclude, index=True, mode='a', header=False)
 
+                        #  rejecting timestamps from percentile analysis
+                        t_nospct, z_nospct, y_nospct = cf.reject_suspect_data(dtime, zpressure, ndata, time_ex)
+
                         # reject time range from data portal file export
                         t_portal, z_portal, y_portal = cf.reject_timestamps_dataportal(subsite, r,
                                                                                        t_nospct, y_nospct, z_nospct)
                         print('removed {} data points using visual inspection of data'.format(
-                            len(z_nospct) - len(z_portal)))
+                                                                                         len(z_nospct) - len(z_portal)))
 
                         # reject data in a depth range
                         if zdbar:
@@ -322,8 +323,10 @@ if __name__ == '__main__':
     output directory, and data files URL location
     '''
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021222-CE09OSPM-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html']
-    #url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021350-CE09OSPM-WFP01-04-FLORTK000-telemetered-flort_sample/catalog.html']
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021122-CE09OSPM-WFP01-03-CTDPFK000-recovered_wfp-ctdpf_ckl_wfp_instrument_recovered/catalog.html']
+    # url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021136-CE09OSPM-WFP01-03-CTDPFK000-telemetered-ctdpf_ckl_wfp_instrument/catalog.html']
+    # url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021222-CE09OSPM-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html']
+    # url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021350-CE09OSPM-WFP01-04-FLORTK000-telemetered-flort_sample/catalog.html']
 
     '''
     call in main function with the above attributes
