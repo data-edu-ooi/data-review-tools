@@ -572,13 +572,18 @@ def reject_erroneous_data(r, v, t, y, z, fz):
 #     return tt, zz, yy
 
 def reject_suspect_data(t, y, z, timestamps):
-
+    # print(t[0], type(t[0]))
+    t = [(np.datetime64(pd.to_datetime(tx))) for tx in t]
+    # print(t[0], type(t[0]), pd.to_datetime(max(t)))
     data = pd.DataFrame({'yy': y, 'zz': z, 'tt': t}, index=t)
     l0 = len(data['tt'])
-    dtime = [(np.datetime64(pd.to_datetime(row))) for row in timestamps]
 
-    if pd.to_datetime(t.max()) > pd.to_datetime(min(dtime)) or pd.to_datetime(t.min()) < pd.to_datetime(max(dtime)):
-        ind = np.where((dtime >= t.min()) & (dtime <= t.max()))
+    dtime = [(np.datetime64(pd.to_datetime(row))) for row in timestamps]
+    print(dtime[0], type(dtime[0]), pd.to_datetime(min(dtime)))
+    # if pd.to_datetime(t.max()) > pd.to_datetime(min(dtime)) or pd.to_datetime(t.min()) < pd.to_datetime(max(dtime)):
+    #     ind = np.where((dtime >= t.min()) & (dtime <= t.max()))
+    if pd.to_datetime(max(t)) > pd.to_datetime(min(dtime)) or pd.to_datetime(min(t)) < pd.to_datetime(max(dtime)):
+        ind = np.where((dtime >= min(t)) & (dtime <= max(t)))
         if len(dtime) - len(ind[0]) > 0:
             list_to_drop = [value for index, value in enumerate(dtime) if index in list(ind[0])]
             dtime = list_to_drop

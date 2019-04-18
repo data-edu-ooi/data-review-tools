@@ -248,7 +248,7 @@ def append_evaluated_data(sDir, deployment, ds, variable_dict, common_stream_nam
             if len(x) != 0:
                 long_name = x[0]
                 if ds[var].units == vars_dict[long_name]['db_units']:
-                    print(var)
+                    print('\n' + var)
                     if ds[var]._FillValue not in vars_dict[long_name]['fv']:
                         vars_dict[long_name]['fv'].append(ds[var]._FillValue)
                     if ds[var].units not in vars_dict[long_name]['units']:
@@ -264,7 +264,6 @@ def append_evaluated_data(sDir, deployment, ds, variable_dict, common_stream_nam
                     if p_name not in pressure_name:
                         pressure_name.append(p_name)
 
-
                     l0 = len(tD)
                     # reject erroneous data
                     tD, pD, varD, deployD = reject_erroneous_data(r, var, tD, pD, varD, deployD, ds[var]._FillValue)
@@ -276,8 +275,8 @@ def append_evaluated_data(sDir, deployment, ds, variable_dict, common_stream_nam
                         tD, pD, varD, deployD = reject_timestamps_data_portal(ds.subsite, r, tD, pD, varD, deployD)
                         l_portal = len(tD)
                         print('{} suspect  - data portal'.format(l_erroneous - l_portal))
-                        if l_portal != 0:
 
+                        if l_portal != 0:
                             # reject timestamps from stat analysis
                             Dpath = '{}/{}/{}/{}/{}'.format(sDir, ds.subsite[0:2], ds.subsite, r, 'time_to_exclude')
                             tD, pD, varD, deployD = reject_timestamps_from_stat_analysis(
@@ -289,22 +288,15 @@ def append_evaluated_data(sDir, deployment, ds, variable_dict, common_stream_nam
                             tD, pD, varD, deployD = reject_data_in_depth_range(tD, pD, varD, deployD, zdbar)
                             l_zrange = len(tD)
                             print('{} suspect - water depth > {} dbar'.format(l_stat - l_zrange, zdbar))
-
-                            print(l0, ' Start < - > Final ', len(tD), 'Dictinary entry: ', len(vars_dict[long_name]['t']))
-                            print()
-                            vars_dict[long_name]['t'] = np.append(vars_dict[long_name]['t'], tD)
-                            vars_dict[long_name]['pressure'] = np.append(vars_dict[long_name]['pressure'], pD)
-                            vars_dict[long_name]['values'] = np.append(vars_dict[long_name]['values'], varD)
-                            vars_dict[long_name]['deployments'] = np.append(vars_dict[long_name]['deployments'], deployD)
                         else:
                             print('suspect data - rejected all, see data portal')
                     else:
                         print('erroneous data - rejected all')
-                        vars_dict[long_name]['t'] = np.append(vars_dict[long_name]['t'], tD)
-                        vars_dict[long_name]['pressure'] = np.append(vars_dict[long_name]['pressure'], pD)
-                        vars_dict[long_name]['values'] = np.append(vars_dict[long_name]['values'], varD)
-                        vars_dict[long_name]['deployments'] = np.append(vars_dict[long_name]['deployments'], deployD)
 
+                    vars_dict[long_name]['t'] = np.append(vars_dict[long_name]['t'], tD)
+                    vars_dict[long_name]['pressure'] = np.append(vars_dict[long_name]['pressure'], pD)
+                    vars_dict[long_name]['values'] = np.append(vars_dict[long_name]['values'], varD)
+                    vars_dict[long_name]['deployments'] = np.append(vars_dict[long_name]['deployments'], deployD)
                 total_len += l0
 
         except AttributeError:
@@ -374,32 +366,32 @@ def reject_timestamps_data_portal(subsite, r, tt, yy, zz, dd):
 
     dr = pd.read_csv('https://datareview.marine.rutgers.edu/notes/export')
     drn = dr.loc[dr.type == 'exclusion']
+    t_ex = tt
+    y_ex = yy
+    z_ex = zz
+    d_ex = dd
 
     if len(drn) != 0:
         subsite_node = '-'.join((subsite, r.split('-')[1]))
         drne = drn.loc[drn.reference_designator.isin([subsite, subsite_node, r])]
         if len(drne['reference_designator']) != 0:
-            t_ex = tt
-            y_ex = yy
-            z_ex = zz
-            d_ex = dd
             for ij, row in drne.iterrows():
                 sdate = cf.format_dates(row.start_date)
                 edate = cf.format_dates(row.end_date)
                 ts = np.datetime64(sdate)
                 te = np.datetime64(edate)
-                if t_ex.max() < ts:
-                    continue
-                elif t_ex.min() > te:
-                    continue
-                else:
-                    ind = np.where((t_ex < ts) | (t_ex > te), True, False)
-                    if len(ind) != 0:
-                        t_ex = t_ex[ind]
-                        z_ex = z_ex[ind]
-                        y_ex = y_ex[ind]
-                        d_ex = d_ex[ind]
-                        print('Portal: excluding {} timestamps in [{} - {}]'.format(len(ind), sdate, edate))
+                if len(t_ex) != 0:
+                    if t_ex.max() < ts or t_ex.min() > te:
+                        print('outside range - skipping')
+                        continue
+                    else:
+                        ind = np.where((t_ex < ts) | (t_ex > te), True, False)
+                        if len(ind) != 0:
+                            t_ex = t_ex[ind]
+                            z_ex = z_ex[ind]
+                            y_ex = y_ex[ind]
+                            d_ex = d_ex[ind]
+                            print('Portal: excluding {} timestamps in [{} - {}]'.format(len(ind), sdate, edate))
 
     return t_ex, y_ex, z_ex, d_ex
 
