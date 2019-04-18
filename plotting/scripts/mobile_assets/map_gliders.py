@@ -62,6 +62,10 @@ def main(url_list, sDir, plot_type, start_time, end_time, deployment_num):
 
             sh = pd.DataFrame()
             deployments = []
+
+            clabel = 'Time'
+            ylabel = 'Latitude'
+            xlabel = 'Longitude'
             for ii, d in enumerate(fdatasets_sel):
                 print('\nDataset {} of {}: {}'.format(ii + 1, len(fdatasets_sel), d.split('/')[-1]))
                 deploy = d.split('/')[-1].split('_')[0]
@@ -97,17 +101,25 @@ def main(url_list, sDir, plot_type, start_time, end_time, deployment_num):
                     # append the deployments that are actually plotted
                     if int(deploy[-4:]) not in deployments:
                         deployments.append(int(deploy[-4:]))
+
+                    # plot data by deployment
+                    sfile = '-'.join((deploy, sname))
+                    ttl = 'Glider Track - ' + r + '-' + deploy + '\nx: platform locations'
+                    fig, ax = pf.plot_profiles(ds_lon, ds_lat, ds['time'].values, ylabel, xlabel, clabel, stdev=None)
+                    ax.invert_yaxis()
+                    ax.set_title(ttl, fontsize=9)
+
+                    array_loc = cf.return_array_subsites_standard_loc(array)
+                    ax.scatter(array_loc.lon, array_loc.lat, s=45, marker='x', color='k')
+                    pf.save_fig(save_dir, sfile)
+
             #sh = sh.resample('H').median()  # resample hourly
             xD = sh.lon.values
             yD = sh.lat.values
             tD = sh.index.values
-    
-            clabel = 'Time'
-            ylabel = 'Latitude'
-            xlabel = 'Longitude'
-            title = 'Glider Track - ' + r + '\n' + 'Deployments: ' + str(deployments) + '   x: platform locations' + '\n blue box: Glider Sampling Area'
+            title = 'Glider Track - ' + r + '\nDeployments: ' + str(deployments) + '   x: platform locations' + '\n blue box: Glider Sampling Area'
 
-            fig, ax = pf.plot_profiles(xD, yD, tD, ylabel, xlabel, clabel, '', '', stdev=None)
+            fig, ax = pf.plot_profiles(xD, yD, tD, ylabel, xlabel, clabel, stdev=None)
             ax.invert_yaxis()
             ax.set_title(title, fontsize=9)
 
