@@ -3,9 +3,9 @@
 Created on Feb 2019 by Leila Belabbassi
 Modified on Apr 17 2019 by Lori Garzio
 
-@brief: This script is used to create initial profile plots and color scatter plots for instruments on mobile platforms
-(WFP & Gliders). Excludes erroneous data and data outside of global ranges. Each plot contain data from one deployment
-and one science variable.
+@brief: This script is used to create profile plots and color scatter plots for instruments on mobile platforms
+(WFP & Gliders). Excludes erroneous data, data outside of global ranges, data outside of defined percentile, and
+suspect data determined visually. Each plot contain data from one deployment and one science variable.
 """
 
 import os
