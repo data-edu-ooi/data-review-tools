@@ -403,13 +403,17 @@ def reject_timestamps_in_groups(groups, d_groups, n_std, inpercentile):
     return y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_to_exclude
 
 
-def reject_timestamps_dataportal(subsite, r, tt, yy, zz):
+def reject_timestamps_dataportal(subsite, r, tt, yy, zz, lat=None, lon=None):
 
     dr = pd.read_csv('https://datareview.marine.rutgers.edu/notes/export')
     drn = dr.loc[dr.type == 'exclusion']
+    i = 0
+
     t_ex = tt
     y_ex = yy
     z_ex = zz
+    lat_ex = lat
+    lon_ex = lon
 
     if len(drn) != 0:
         subsite_node = '-'.join((subsite, r.split('-')[1]))
@@ -425,14 +429,30 @@ def reject_timestamps_dataportal(subsite, r, tt, yy, zz):
                 elif tt.min() > te:
                     continue
                 else:
-                    ind = np.where((tt < ts) | (tt > te), True, False)
-                    if len(ind) != 0:
+                    if i == 0:
+                        ind = np.where((tt < ts) | (tt > te), True, False)
                         t_ex = tt[ind]
                         z_ex = zz[ind]
                         y_ex = yy[ind]
+                        if lat is not None:
+                            lat_ex = lat[ind]
+                        if lon is not None:
+                            lon_ex = lon[ind]
+                        i += 1
+                        print('excluding {} timestamps [{} - {}]'.format(np.sum(~ind), sdate, edate))
+                    else:
+                        ind = np.where((t_ex < ts) | (t_ex > te), True, False)
+                        t_ex = t_ex[ind]
+                        z_ex = z_ex[ind]
+                        y_ex = y_ex[ind]
+                        if lat is not None:
+                            lat_ex = lat_ex[ind]
+                        if lon is not None:
+                            lon_ex = lon_ex[ind]
+                        i += 1
                         print('excluding {} timestamps [{} - {}]'.format(np.sum(~ind), sdate, edate))
 
-    return t_ex, z_ex, y_ex
+    return t_ex, z_ex, y_ex, lat_ex, lon_ex
 
 
 def add_pressure_to_dictionary_of_sci_vars(ds):
