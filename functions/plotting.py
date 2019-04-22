@@ -268,6 +268,11 @@ def plot_xsection(subsite, x, y, z, clabel, ylabel, t_eng=None, m_water_depth=No
     :param x:  array containing data for x-axis (e.g. time)
     :param y: .nc data array containing data for plotting on the y-axis (e.g. pressure)
     :param z: .nc data array containing data for plotting variable of interest (e.g. density)
+    :param clabel: label for the colorbar
+    :param ylabel: label for the y-axis
+    :param t_eng: .nc data array containing engineering timestamps (to plot water depth)
+    :param m_water_depth: .nc data array containing water depth data from the engineering data stream
+    :param inpercentile: percentile of data to exclude from plot
     :param stdev: desired standard deviation to exclude from plotting
     """
     if type(z) is not np.ndarray:

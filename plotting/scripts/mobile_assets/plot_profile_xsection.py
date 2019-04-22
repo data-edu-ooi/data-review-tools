@@ -3,9 +3,9 @@
 Created on Feb 2019 by Leila Belabbassi
 Modified on Apr 17 2019 by Lori Garzio
 
-@brief: This script is used to create initial profile plots and color scatter plots for instruments on mobile platforms
-(WFP & Gliders). Excludes erroneous data and data outside of global ranges. Each plot contain data from one deployment
-and one science variable.
+@brief: This script is used to create initial profile plots and 3D color scatter plots for instruments on mobile
+platforms (WFP & Gliders). Also produces 4D color scatter plots for gliders only. Excludes erroneous data and data
+outside of global ranges. Each plot contains data from one deployment and one science variable.
 """
 
 import os
@@ -14,6 +14,8 @@ import xarray as xr
 import numpy as np
 import datetime as dt
 import itertools
+from mpl_toolkits.mplot3d import Axes3D  # need this for 4D scatter plot
+import matplotlib.pyplot as plt
 import functions.common as cf
 import functions.plotting as pf
 import functions.group_by_timerange as gt
@@ -111,14 +113,23 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                 ext = stime + 'to' + etime  # .join((ds0_method, ds1_method
                 save_dir_profile = os.path.join(sDir, array, subsite, refdes, 'profile_plots', deployment, ext)
                 save_dir_xsection = os.path.join(sDir, array, subsite, refdes, 'xsection_plots', deployment, ext)
+                save_dir_4d = os.path.join(sDir, array, subsite, refdes, 'xsection_plots_4d', deployment, ext)
             else:
                 save_dir_profile = os.path.join(sDir, array, subsite, refdes, 'profile_plots', deployment)
                 save_dir_xsection = os.path.join(sDir, array, subsite, refdes, 'xsection_plots', deployment)
-
-            cf.create_dir(save_dir_profile)
-            cf.create_dir(save_dir_xsection)
+                save_dir_4d = os.path.join(sDir, array, subsite, refdes, 'xsection_plots_4d', deployment)
 
             tm = ds['time'].values
+            try:
+                ds_lat = ds['lat'].values
+            except KeyError:
+                ds_lat = None
+                print('No latitude variable in file')
+            try:
+                ds_lon = ds['lon'].values
+            except KeyError:
+                ds_lon = None
+                print('No longitude variable in file')
 
             # get pressure variable
             y, y_units, press = cf.add_pressure_to_dictionary_of_sci_vars(ds)
@@ -142,8 +153,8 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
 
                     else:
                         # reject erroneous data
-                        dtime, zpressure, ndata, lenfv, lennan, lenev, lengr, global_min, global_max = \
-                                                                        cf.reject_erroneous_data(r, sv, tm, y, z, fv)
+                        dtime, zpressure, ndata, lenfv, lennan, lenev, lengr, global_min, global_max, lat, lon = \
+                            cf.reject_erroneous_data(r, sv, tm, y, z, fv, ds_lat, ds_lon)
 
                         # get rid of 0.0 data
                         if 'CTD' in r:
@@ -181,6 +192,8 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                         Plot data
                         """
                         if len(dtime) > 0:
+                            cf.create_dir(save_dir_profile)
+                            cf.create_dir(save_dir_xsection)
                             sname = '-'.join((r, method, sv))
                             sfile = '_'.join(('rm_erroneous_data', sname))
 
@@ -224,6 +237,34 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                             ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
                             fig.tight_layout()
                             pf.save_fig(save_dir_xsection, sfile)
+
+                            '''
+                            4D plot for gliders only
+                            '''
+                            if 'MOAS' in r:
+                                if ds_lat is not None and ds_lon is not None:
+                                    cf.create_dir(save_dir_4d)
+                                    lat = lat[ind]
+                                    lon = lon[ind]
+
+                                    clabel = sv + " (" + sv_units + ")"
+                                    zlabel = press[0] + " (" + y_units[0] + ")"
+
+                                    fig = plt.figure()
+                                    ax = fig.add_subplot(111, projection='3d')
+                                    sct = ax.scatter(lon, lat, zpressure, c=ndata, s=2)
+                                    cbar = plt.colorbar(sct, label=clabel, extend='both')
+                                    cbar.ax.tick_params(labelsize=8)
+                                    ax.invert_zaxis()
+                                    ax.view_init(25, 32)
+                                    ax.invert_xaxis()
+                                    ax.invert_yaxis()
+                                    ax.set_zlabel(zlabel, fontsize=9)
+                                    ax.set_ylabel('Latitude', fontsize=9)
+                                    ax.set_xlabel('Longitude', fontsize=9)
+
+                                    ax.set_title(title, fontsize=9)
+                                    pf.save_fig(save_dir_4d, sfile)
 
 
 if __name__ == '__main__':
