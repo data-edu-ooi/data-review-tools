@@ -176,14 +176,27 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                         dtime = dtime[ind]
                         zpressure = zpressure[ind]
                         ndata = ndata[ind]
+                        if ds_lat is not None and ds_lon is not None:
+                            lat = lat[ind]
+                            lon = lon[ind]
+                        else:
+                            lat = None
+                            lon = None
+
+                        # reject time range from data portal file export
+                        t_portal, z_portal, y_portal, lat_portal, lon_portal = \
+                            cf.reject_timestamps_dataportal(subsite, r, dtime, zpressure, ndata, lat, lon)
+
+                        print('removed {} data points using visual inspection of data'.format(
+                            len(ndata) - len(z_portal)))
 
                         # create data groups
                         columns = ['tsec', 'dbar', str(sv)]
-                        min_r = int(round(min(zpressure) - zcell_size))
-                        max_r = int(round(max(zpressure) + zcell_size))
+                        min_r = int(round(min(y_portal) - zcell_size))
+                        max_r = int(round(max(y_portal) + zcell_size))
                         ranges = list(range(min_r, max_r, zcell_size))
 
-                        groups, d_groups = gt.group_by_depth_range(dtime, zpressure, ndata, columns, ranges)
+                        groups, d_groups = gt.group_by_depth_range(t_portal, y_portal, z_portal, columns, ranges)
 
                         if 'scatter' in sv:
                             n_std = None  # to use percentile
@@ -207,26 +220,20 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                             stat_data.to_csv(file_exclude, index=True, mode='a', header=False)
 
                         #  rejecting timestamps from percentile analysis
-                        t_nospct, z_nospct, y_nospct = cf.reject_suspect_data(dtime, zpressure, ndata, time_ex)
-
-                        # reject time range from data portal file export
-                        t_portal, z_portal, y_portal = cf.reject_timestamps_dataportal(subsite, r,
-                                                                                       t_nospct, y_nospct, z_nospct)
-                        print('removed {} data points using visual inspection of data'.format(
-                                                                                         len(z_nospct) - len(z_portal)))
+                        t_nospct, z_nospct, y_nospct = cf.reject_suspect_data(t_portal, y_portal, z_portal, time_ex)
 
                         # reject data in a depth range
                         if zdbar:
-                            y_ind = y_portal < zdbar
+                            y_ind = y_nospct < zdbar
                             n_zdbar = np.sum(~y_ind)
-                            t_array = t_portal[y_ind]
-                            y_array = y_portal[y_ind]
-                            z_array = z_portal[y_ind]
+                            t_array = t_nospct[y_ind]
+                            y_array = y_nospct[y_ind]
+                            z_array = z_nospct[y_ind]
                         else:
                             n_zdbar = 0
-                            t_array = t_portal
-                            y_array = y_portal
-                            z_array = z_portal
+                            t_array = t_nospct
+                            y_array = y_nospct
+                            z_array = z_nospct
                         print('{} in water depth > {} dbar'.format(n_zdbar, zdbar))
 
                         """
@@ -249,21 +256,20 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                                         '[{} - {}], {} zeros'.format(lenfv, lennan, lenev, lengr, global_min,
                                                                      global_max, lenzero)
                                         + '\nremoved {} in the upper and lower {} percentile of data grouped in {} '
-                                          'dbar segments'.format(len(zpressure) - len(z_nospct), inpercentile, zcell_size)
+                                          'dbar segments'.format(len(z_portal) - len(z_nospct), inpercentile, zcell_size)
                                         + '\nexcluded {} suspect data points when inspected visually'.format(
-                                            len(z_nospct) - len(z_portal))
+                                            len(ndata) - len(z_portal))
                                         + '\nexcluded {} suspect data in water depth greater than {} dbar'.format(
-                                            n_zdbar,
-                                            zdbar),
+                                            n_zdbar, zdbar),
                                     )
                                 else:
                                     leg_text = (
                                         'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
                                         '{} zeros'.format(lenfv, lennan, lenev, lengr, global_min, global_max, lenzero)
                                         + '\nremoved {} in the upper and lower {} percentile of data grouped in {} dbar segments'.format(
-                                            len(zpressure) - len(z_nospct), inpercentile, zcell_size)
+                                            len(z_portal) - len(z_nospct), inpercentile, zcell_size)
                                         + '\nexcluded {} suspect data points when inspected visually'.format(
-                                            len(z_nospct) - len(z_portal)),
+                                            len(ndata) - len(z_portal)),
                                     )
                                 '''
                                 profile plot
@@ -309,8 +315,6 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                                 if 'MOAS' in r:
                                     if ds_lat is not None and ds_lon is not None:
                                         cf.create_dir(save_dir_4d)
-                                        lat = lat[ind]
-                                        lon = lon[ind]
 
                                         clabel = sv + " (" + sv_units + ")"
                                         zlabel = press[0] + " (" + y_units[0] + ")"

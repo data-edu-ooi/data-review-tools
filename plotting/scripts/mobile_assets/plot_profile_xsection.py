@@ -166,18 +166,31 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                         dtime = dtime[ind]
                         zpressure = zpressure[ind]
                         ndata = ndata[ind]
+                        if ds_lat is not None and ds_lon is not None:
+                            lat = lat[ind]
+                            lon = lon[ind]
+                        else:
+                            lat = None
+                            lon = None
 
                         t0 = pd.to_datetime(dtime.min()).strftime('%Y-%m-%dT%H:%M:%S')
                         t1 = pd.to_datetime(dtime.max()).strftime('%Y-%m-%dT%H:%M:%S')
                         title = ' '.join((deployment, refdes, method)) + '\n' + t0 + ' to ' + t1
 
+                        # reject time range from data portal file export
+                        t_portal, z_portal, y_portal, lat_portal, lon_portal = \
+                            cf.reject_timestamps_dataportal(subsite, r, dtime, zpressure, ndata, lat, lon)
+
+                        print('removed {} data points using visual inspection of data'.format(
+                            len(ndata) - len(z_portal)))
+
                         # create data groups
                         columns = ['tsec', 'dbar', str(sv)]
-                        min_r = int(round(min(zpressure) - zcell_size))
-                        max_r = int(round(max(zpressure) + zcell_size))
+                        min_r = int(round(min(y_portal) - zcell_size))
+                        max_r = int(round(max(y_portal) + zcell_size))
                         ranges = list(range(min_r, max_r, zcell_size))
 
-                        groups, d_groups = gt.group_by_depth_range(dtime, zpressure, ndata, columns, ranges)
+                        groups, d_groups = gt.group_by_depth_range(t_portal, y_portal, z_portal, columns, ranges)
 
                         if 'scatter' in sv:
                             n_std = None  # to use percentile
@@ -189,12 +202,45 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                             groups, d_groups, n_std, inpercentile)
 
                         """
-                        Plot data
+                        Plot all data
                         """
-                        if len(dtime) > 0:
+                        if len(tm) > 0:
                             cf.create_dir(save_dir_profile)
                             cf.create_dir(save_dir_xsection)
                             sname = '-'.join((r, method, sv))
+                            sfileall = '_'.join(('all_data', sname))
+
+                            '''
+                            profile plot
+                            '''
+                            xlabel = sv + " (" + sv_units + ")"
+                            ylabel = press[0] + " (" + y_units[0] + ")"
+                            clabel = 'Time'
+
+                            fig, ax = pf.plot_profiles(z, y, tm, ylabel, xlabel, clabel, stdev=None)
+
+                            ax.set_title(title, fontsize=9)
+                            fig.tight_layout()
+                            pf.save_fig(save_dir_profile, sfileall)
+
+                            '''
+                            xsection plot
+                            '''
+                            clabel = sv + " (" + sv_units + ")"
+                            ylabel = press[0] + " (" + y_units[0] + ")"
+
+                            fig, ax, bar = pf.plot_xsection(subsite, tm, y, z, clabel, ylabel, t_eng,
+                                                            m_water_depth, inpercentile=None, stdev=None)
+
+                            ax.set_title(title, fontsize=9)
+                            fig.tight_layout()
+                            pf.save_fig(save_dir_xsection, sfileall)
+
+                        """
+                        Plot cleaned-up data
+                        """
+                        if len(dtime) > 0:
+
                             sfile = '_'.join(('rm_erroneous_data', sname))
 
                             '''
@@ -204,7 +250,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                             ylabel = press[0] + " (" + y_units[0] + ")"
                             clabel = 'Time'
 
-                            fig, ax = pf.plot_profiles(ndata, zpressure, dtime, ylabel, xlabel, clabel, stdev=None)
+                            fig, ax = pf.plot_profiles(z_portal, y_portal, t_portal, ylabel, xlabel, clabel, stdev=None)
 
                             ax.set_title(title, fontsize=9)
                             ax.plot(n_avg, y_avg, '-k')
@@ -212,6 +258,8 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                             leg_text = (
                                 'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
                                 '{} zeros'.format(lenfv, lennan, lenev, lengr, global_min, global_max, lenzero) +
+                                '\nexcluded {} suspect data points when inspected visually'.format(
+                                    len(ndata) - len(z_portal)) +
                                 '\n(black) data average in {} dbar segments'.format(zcell_size) +
                                 '\n(magenta) upper and lower {} percentile envelope in {} dbar segments'.format(
                                     inpercentile, zcell_size),)
@@ -226,13 +274,15 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                             ylabel = press[0] + " (" + y_units[0] + ")"
 
                             # plot non-erroneous data
-                            fig, ax, bar = pf.plot_xsection(subsite, dtime, zpressure, ndata, clabel, ylabel, t_eng,
+                            fig, ax, bar = pf.plot_xsection(subsite, t_portal, y_portal, z_portal, clabel, ylabel, t_eng,
                                                             m_water_depth, inpercentile=None, stdev=None)
 
                             ax.set_title(title, fontsize=9)
                             leg_text = (
                                 'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
-                                '{} zeros'.format(lenfv, lennan, lenev, lengr, global_min, global_max, lenzero),
+                                '{} zeros'.format(lenfv, lennan, lenev, lengr, global_min, global_max, lenzero) +
+                                '\nexcluded {} suspect data points when inspected visually'.format(
+                                    len(ndata) - len(z_portal)),
                             )
                             ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
                             fig.tight_layout()
@@ -244,15 +294,13 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                             if 'MOAS' in r:
                                 if ds_lat is not None and ds_lon is not None:
                                     cf.create_dir(save_dir_4d)
-                                    lat = lat[ind]
-                                    lon = lon[ind]
 
                                     clabel = sv + " (" + sv_units + ")"
                                     zlabel = press[0] + " (" + y_units[0] + ")"
 
                                     fig = plt.figure()
                                     ax = fig.add_subplot(111, projection='3d')
-                                    sct = ax.scatter(lon, lat, zpressure, c=ndata, s=2)
+                                    sct = ax.scatter(lon_portal, lat_portal, y_portal, c=z_portal, s=2)
                                     cbar = plt.colorbar(sct, label=clabel, extend='both')
                                     cbar.ax.tick_params(labelsize=8)
                                     ax.invert_zaxis()
