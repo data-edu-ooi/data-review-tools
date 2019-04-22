@@ -248,7 +248,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                                         'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges '
                                         '[{} - {}], {} zeros'.format(lenfv, lennan, lenev, lengr, global_min,
                                                                      global_max, lenzero)
-                                        + '\nremoved {} in the upper and lower {}th percentile of data grouped in {} '
+                                        + '\nremoved {} in the upper and lower {} percentile of data grouped in {} '
                                           'dbar segments'.format(len(zpressure) - len(z_nospct), inpercentile, zcell_size)
                                         + '\nexcluded {} suspect data points when inspected visually'.format(
                                             len(z_nospct) - len(z_portal))
@@ -260,7 +260,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                                     leg_text = (
                                         'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
                                         '{} zeros'.format(lenfv, lennan, lenev, lengr, global_min, global_max, lenzero)
-                                        + '\nremoved {} in the upper and lower {}th percentile of data grouped in {} dbar segments'.format(
+                                        + '\nremoved {} in the upper and lower {} percentile of data grouped in {} dbar segments'.format(
                                             len(zpressure) - len(z_nospct), inpercentile, zcell_size)
                                         + '\nexcluded {} suspect data points when inspected visually'.format(
                                             len(z_nospct) - len(z_portal)),
@@ -277,7 +277,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
 
                                 ax.set_title(title, fontsize=9)
                                 ax.plot(n_avg, y_avg, '-k')
-                                ax.fill_betweenx(y_avg, n0_std, n1_std, color='m', alpha=0.2)
+                                #ax.fill_betweenx(y_avg, n0_std, n1_std, color='m', alpha=0.2)
                                 ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
                                 fig.tight_layout()
                                 pf.save_fig(save_dir_profile, sfile)
@@ -289,8 +289,8 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                                 ylabel = press[0] + " (" + y_units[0] + ")"
 
                                 # plot bathymetry only within data time ranges
-                                if t_eng:
-                                    eng_ind = (t_eng >= np.min(t_array)) & (t_eng <= np.max(t_array))
+                                if t_eng is not None:
+                                    eng_ind = (t_eng >= np.nanmin(t_array)) & (t_eng <= np.nanmax(t_array))
                                     t_eng = t_eng[eng_ind]
                                     m_water_depth = m_water_depth[eng_ind]
 
