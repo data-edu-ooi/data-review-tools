@@ -24,7 +24,7 @@ import xarray as xr
 import datetime
 
 
-def main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time):
+def main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time, glider):
 
     """""
     URL : path to instrument data by methods
@@ -112,7 +112,7 @@ def main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time):
         """
         for m, n in sci_vars_dict.items():
             for sv, vinfo in n['vars'].items():
-                print(vinfo['var_name'])
+                print('\n' + vinfo['var_name'])
                 if len(vinfo['t']) < 1:
                     print('no variable data to plot')
                     continue
@@ -171,14 +171,22 @@ def main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time):
 
                         clabel = sv + " (" + sv_units + ")"
                         ylabel = (y_name[0][0] + " (" + y_unit[0][0] + ")")
-                        title = ' '.join((r, m))
+
+
+                        if glider is 'no':
+                            t_eng = None
+                            m_water_depth = None
 
 
                         # plot non-erroneous -suspect data
-                        print(len(t))
-                        fig, ax, bar = pf.plot_xsection(subsite, t, y, z, clabel, ylabel, inpercentile=None, stdev=None)
-                        ax.set_title(title, fontsize=9)
-                        leg_text = (('{} out of {} data are suspect'.format(len(t), l0)),)
+                        fig, ax, bar = pf.plot_xsection(subsite, t, y, z, clabel, ylabel, t_eng, m_water_depth,
+                                                        inpercentile, stdev=None)
+
+
+                        title0 = 'Data colored using the upper and lower {}th percentile.'.format(inpercentile)
+                        ax.set_title(r+'\n'+title0, fontsize=9)
+                        leg_text = ('{} % erroneous values removed after Human In the Loop review'.format(
+                                                                                                    (len(t)/l0) * 100),)
                         ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
 
 
@@ -191,7 +199,7 @@ def main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time):
                                                              fc=(1., 1., 1.),
                                                              ))
 
-                        fig.tight_layout()
+                        # fig.tight_layout()
                         sfile = '_'.join(('data_range', sname))
                         pf.save_fig(save_fdir, sfile)
 
@@ -225,10 +233,11 @@ if __name__ == '__main__':
     '''
         define plot type, save-directory name and URL where data files live 
     '''
+    glider = 'no' # options: yes, no
     mainP = '/Users/leila/Documents/NSFEduSupport/'
     mDir = mainP + 'github/data-review-tools/data_review/data_ranges'
     sDir = mainP + 'review/figures'
     url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021222-CE09OSPM-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html',
                 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021350-CE09OSPM-WFP01-04-FLORTK000-telemetered-flort_sample/catalog.html']
 
-    main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time)
+    main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time, glider)
