@@ -537,53 +537,16 @@ def reject_erroneous_data(r, v, t, y, z, fz):
 
     return dtime, zpressure, ndata, n_fv, n_nan, n_ev, n_gr, global_min, global_max
 
-
-# def reject_suspect_data(t, y, z, timestamps):
-#     tt = t
-#     yy = y
-#     zz = z
-#     ne = []
-#     for row in timestamps:
-#         ntime = pd.to_datetime(row)
-#         ne.append(np.datetime64(ntime))
-#
-#     ind = [index for index, value in enumerate(t) if value not in ne]
-#     if len(ind) == 0:
-#         print('{} {}'.format(row, 'is not in data'))
-#         print(np.unique(ind))
-#     else:
-#         tt = tt[ind]
-#         zz = zz[ind]
-#         yy = yy[ind]
-#
-#     # for row in timestamps:
-#     #     ntime = pd.to_datetime(row)
-#     #     ne = np.datetime64(ntime)
-#     #     ind = np.where((tt != ne), True, False)
-#     #
-#     #     if not ind.any():
-#     #         print('{} {}'.format(row, 'is not in data'))
-#     #         print(np.unique(ind))
-#     #     else:
-#     #         tt = tt[ind]
-#     #         zz = zz[ind]
-#     #         yy = yy[ind]
-#
-#     return tt, zz, yy
-
 def reject_suspect_data(t, y, z, timestamps):
-    # print(t[0], type(t[0]))
-    t = [(np.datetime64(pd.to_datetime(tx))) for tx in t]
-    # print(t[0], type(t[0]), pd.to_datetime(max(t)))
+    print(timestamps[1], type(timestamps[1]))
     data = pd.DataFrame({'yy': y, 'zz': z, 'tt': t}, index=t)
     l0 = len(data['tt'])
 
-    dtime = [(np.datetime64(pd.to_datetime(row))) for row in timestamps]
-    print(dtime[0], type(dtime[0]), pd.to_datetime(min(dtime)))
-    # if pd.to_datetime(t.max()) > pd.to_datetime(min(dtime)) or pd.to_datetime(t.min()) < pd.to_datetime(max(dtime)):
-    #     ind = np.where((dtime >= t.min()) & (dtime <= t.max()))
-    if pd.to_datetime(max(t)) > pd.to_datetime(min(dtime)) or pd.to_datetime(min(t)) < pd.to_datetime(max(dtime)):
-        ind = np.where((dtime >= min(t)) & (dtime <= max(t)))
+    dtime = [(np.datetime64(str(row))) for row in timestamps]
+    print(dtime[1], type(dtime[1]), pd.to_datetime(min(dtime)), min(dtime))
+
+    if pd.to_datetime(t.max()) > pd.to_datetime(min(dtime)) or pd.to_datetime(t.min()) < pd.to_datetime(max(dtime)):
+        ind = np.where((dtime >= t.min()) & (dtime <= t.max()))
         if len(dtime) - len(ind[0]) > 0:
             list_to_drop = [value for index, value in enumerate(dtime) if index in list(ind[0])]
             dtime = list_to_drop
