@@ -3,9 +3,10 @@
 Created on Feb 2019 by Leila Belabbassi
 Modified on Apr 17 2019 by Lori Garzio
 
-@brief: This script is used to create initial profile plots and color scatter plots for instruments on mobile platforms
-(WFP & Gliders). Excludes erroneous data and data outside of global ranges. Each plot contain data from one deployment
-and one science variable.
+@brief: This script is used to create profile plots and color scatter plots for instruments on mobile platforms
+(WFP & Gliders). Also produces 4D color scatter plots for gliders only. Excludes erroneous data, data outside of
+global ranges, data outside of defined percentile, and suspect data determined visually. Each plot contain data from
+one deployment and one science variable.
 """
 
 import os
@@ -14,6 +15,8 @@ import xarray as xr
 import numpy as np
 import datetime as dt
 import itertools
+from mpl_toolkits.mplot3d import Axes3D  # need this for 4D scatter plot
+import matplotlib.pyplot as plt
 import functions.common as cf
 import functions.plotting as pf
 import functions.group_by_timerange as gt
@@ -111,17 +114,26 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                 ext = stime + 'to' + etime  # .join((ds0_method, ds1_method
                 save_dir_profile = os.path.join(sDir, array, subsite, refdes, 'profile_plots', deployment, ext)
                 save_dir_xsection = os.path.join(sDir, array, subsite, refdes, 'xsection_plots', deployment, ext)
+                save_dir_4d = os.path.join(sDir, array, subsite, refdes, 'xsection_plots_4d', deployment, ext)
             else:
                 save_dir_profile = os.path.join(sDir, array, subsite, refdes, 'profile_plots', deployment)
                 save_dir_xsection = os.path.join(sDir, array, subsite, refdes, 'xsection_plots', deployment)
-
-            cf.create_dir(save_dir_profile)
-            cf.create_dir(save_dir_xsection)
+                save_dir_4d = os.path.join(sDir, array, subsite, refdes, 'xsection_plots_4d', deployment)
 
             texclude_dir = os.path.join(sDir, array, subsite, refdes, 'time_to_exclude')
             cf.create_dir(texclude_dir)
 
             tm = ds['time'].values
+            try:
+                ds_lat = ds['lat'].values
+            except KeyError:
+                ds_lat = None
+                print('No latitude variable in file')
+            try:
+                ds_lon = ds['lon'].values
+            except KeyError:
+                ds_lon = None
+                print('No longitude variable in file')
 
             # get pressure variable
             y, y_units, press = cf.add_pressure_to_dictionary_of_sci_vars(ds)
@@ -151,8 +163,8 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
 
                     else:
                         # reject erroneous data
-                        dtime, zpressure, ndata, lenfv, lennan, lenev, lengr, global_min, global_max = \
-                                                                        cf.reject_erroneous_data(r, sv, tm, y, z, fv)
+                        dtime, zpressure, ndata, lenfv, lennan, lenev, lengr, global_min, global_max, lat, lon = \
+                            cf.reject_erroneous_data(r, sv, tm, y, z, fv, ds_lat, ds_lon)
 
                         # get rid of 0.0 data
                         if 'CTD' in r:
@@ -164,14 +176,27 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                         dtime = dtime[ind]
                         zpressure = zpressure[ind]
                         ndata = ndata[ind]
+                        if ds_lat is not None and ds_lon is not None:
+                            lat = lat[ind]
+                            lon = lon[ind]
+                        else:
+                            lat = None
+                            lon = None
+
+                        # reject time range from data portal file export
+                        t_portal, z_portal, y_portal, lat_portal, lon_portal = \
+                            cf.reject_timestamps_dataportal(subsite, r, dtime, zpressure, ndata, lat, lon)
+
+                        print('removed {} data points using visual inspection of data'.format(
+                            len(ndata) - len(z_portal)))
 
                         # create data groups
                         columns = ['tsec', 'dbar', str(sv)]
-                        min_r = int(round(min(zpressure) - zcell_size))
-                        max_r = int(round(max(zpressure) + zcell_size))
+                        min_r = int(round(min(y_portal) - zcell_size))
+                        max_r = int(round(max(y_portal) + zcell_size))
                         ranges = list(range(min_r, max_r, zcell_size))
 
-                        groups, d_groups = gt.group_by_depth_range(dtime, zpressure, ndata, columns, ranges)
+                        groups, d_groups = gt.group_by_depth_range(t_portal, y_portal, z_portal, columns, ranges)
 
                         if 'scatter' in sv:
                             n_std = None  # to use percentile
@@ -195,26 +220,20 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                             stat_data.to_csv(file_exclude, index=True, mode='a', header=False)
 
                         #  rejecting timestamps from percentile analysis
-                        t_nospct, z_nospct, y_nospct = cf.reject_suspect_data(dtime, zpressure, ndata, time_ex)
-
-                        # reject time range from data portal file export
-                        t_portal, z_portal, y_portal = cf.reject_timestamps_dataportal(subsite, r,
-                                                                                       t_nospct, y_nospct, z_nospct)
-                        print('removed {} data points using visual inspection of data'.format(
-                                                                                         len(z_nospct) - len(z_portal)))
+                        t_nospct, z_nospct, y_nospct = cf.reject_suspect_data(t_portal, y_portal, z_portal, time_ex)
 
                         # reject data in a depth range
                         if zdbar:
-                            y_ind = y_portal < zdbar
+                            y_ind = y_nospct < zdbar
                             n_zdbar = np.sum(~y_ind)
-                            t_array = t_portal[y_ind]
-                            y_array = y_portal[y_ind]
-                            z_array = z_portal[y_ind]
+                            t_array = t_nospct[y_ind]
+                            y_array = y_nospct[y_ind]
+                            z_array = z_nospct[y_ind]
                         else:
                             n_zdbar = 0
-                            t_array = t_portal
-                            y_array = y_portal
-                            z_array = z_portal
+                            t_array = t_nospct
+                            y_array = y_nospct
+                            z_array = z_nospct
                         print('{} in water depth > {} dbar'.format(n_zdbar, zdbar))
 
                         """
@@ -222,6 +241,8 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                         """
                         if len(t_array) > 0:
                             if len(t_array) != len(dtime):
+                                cf.create_dir(save_dir_profile)
+                                cf.create_dir(save_dir_xsection)
                                 sname = '-'.join((r, method, sv))
                                 sfile = '_'.join(('rm_suspect_data', sname))
 
@@ -234,22 +255,21 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                                         'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges '
                                         '[{} - {}], {} zeros'.format(lenfv, lennan, lenev, lengr, global_min,
                                                                      global_max, lenzero)
-                                        + '\nremoved {} in the upper and lower {}th percentile of data grouped in {} '
-                                          'dbar segments'.format(len(zpressure) - len(z_nospct), inpercentile, zcell_size)
+                                        + '\nremoved {} in the upper and lower {} percentile of data grouped in {} '
+                                          'dbar segments'.format(len(z_portal) - len(z_nospct), inpercentile, zcell_size)
                                         + '\nexcluded {} suspect data points when inspected visually'.format(
-                                            len(z_nospct) - len(z_portal))
+                                            len(ndata) - len(z_portal))
                                         + '\nexcluded {} suspect data in water depth greater than {} dbar'.format(
-                                            n_zdbar,
-                                            zdbar),
+                                            n_zdbar, zdbar),
                                     )
                                 else:
                                     leg_text = (
                                         'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
                                         '{} zeros'.format(lenfv, lennan, lenev, lengr, global_min, global_max, lenzero)
-                                        + '\nremoved {} in the upper and lower {}th percentile of data grouped in {} dbar segments'.format(
-                                            len(zpressure) - len(z_nospct), inpercentile, zcell_size)
+                                        + '\nremoved {} in the upper and lower {} percentile of data grouped in {} dbar segments'.format(
+                                            len(z_portal) - len(z_nospct), inpercentile, zcell_size)
                                         + '\nexcluded {} suspect data points when inspected visually'.format(
-                                            len(z_nospct) - len(z_portal)),
+                                            len(ndata) - len(z_portal)),
                                     )
                                 '''
                                 profile plot
@@ -263,7 +283,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
 
                                 ax.set_title(title, fontsize=9)
                                 ax.plot(n_avg, y_avg, '-k')
-                                ax.fill_betweenx(y_avg, n0_std, n1_std, color='m', alpha=0.2)
+                                #ax.fill_betweenx(y_avg, n0_std, n1_std, color='m', alpha=0.2)
                                 ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
                                 fig.tight_layout()
                                 pf.save_fig(save_dir_profile, sfile)
@@ -275,8 +295,8 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                                 ylabel = press[0] + " (" + y_units[0] + ")"
 
                                 # plot bathymetry only within data time ranges
-                                if t_eng:
-                                    eng_ind = (t_eng >= np.min(t_array)) & (t_eng <= np.max(t_array))
+                                if t_eng is not None:
+                                    eng_ind = (t_eng >= np.nanmin(t_array)) & (t_eng <= np.nanmax(t_array))
                                     t_eng = t_eng[eng_ind]
                                     m_water_depth = m_water_depth[eng_ind]
 
@@ -289,6 +309,32 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                                 fig.tight_layout()
                                 pf.save_fig(save_dir_xsection, sfile)
 
+                                '''
+                                4D plot for gliders only
+                                '''
+                                if 'MOAS' in r:
+                                    if ds_lat is not None and ds_lon is not None:
+                                        cf.create_dir(save_dir_4d)
+
+                                        clabel = sv + " (" + sv_units + ")"
+                                        zlabel = press[0] + " (" + y_units[0] + ")"
+
+                                        fig = plt.figure()
+                                        ax = fig.add_subplot(111, projection='3d')
+                                        sct = ax.scatter(lon, lat, zpressure, c=ndata, s=2)
+                                        cbar = plt.colorbar(sct, label=clabel, extend='both')
+                                        cbar.ax.tick_params(labelsize=8)
+                                        ax.invert_zaxis()
+                                        ax.view_init(25, 32)
+                                        ax.invert_xaxis()
+                                        ax.invert_yaxis()
+                                        ax.set_zlabel(zlabel, fontsize=9)
+                                        ax.set_ylabel('Latitude', fontsize=9)
+                                        ax.set_xlabel('Longitude', fontsize=9)
+
+                                        ax.set_title(title, fontsize=9)
+                                        pf.save_fig(save_dir_4d, sfile)
+
 
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
@@ -298,8 +344,8 @@ if __name__ == '__main__':
     set to None if plotting all data
     set to dt.datetime(yyyy, m, d, h, m, s) for specific dates
     """
-    start_time = None #dt.datetime(2014, 12, 1)
-    end_time = None #dt.datetime(2015, 5, 2)
+    start_time = None  # dt.datetime(2014, 12, 1)
+    end_time = None  # dt.datetime(2015, 5, 2)
 
     '''
     define filters standard deviation, percentile, depth range

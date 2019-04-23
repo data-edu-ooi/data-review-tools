@@ -69,6 +69,7 @@ def main(sDir, url_list):
 
     json_file_list = []
     for r in rd_list:
+        dependencies = []
         print('\n{}'.format(r))
         data = OrderedDict(deployments=OrderedDict())
         save_dir = os.path.join(sDir, r.split('-')[0], r)
@@ -99,6 +100,10 @@ def main(sDir, url_list):
                         for dss in rdatasets:  # filter out collocated data files
                             if catalog_rms == dss.split('/')[-1].split('_20')[0][15:]:
                                 datasets.append(dss)
+                            else:
+                                drd = dss.split('/')[-1].split('_20')[0][15:42]
+                                if drd not in dependencies:
+                                    dependencies.append(drd)
 
                         notes = []
                         time_ascending = ''
@@ -430,9 +435,14 @@ def main(sDir, url_list):
         with open(sfile, 'w') as outfile:
             json.dump(data, outfile)
 
+        depfile = os.path.join(save_dir, '{}-dependencies.txt'.format(r))
+        with open(depfile, 'w') as depf:
+            depf.write(str(dependencies))
+
         json_file_list.append(str(sfile))
 
     return json_file_list
+
 
 if __name__ == '__main__':
     sDir = '/Users/lgarzio/Documents/repo/OOI/ooi-data-lab/data-review-tools/data_review/output'

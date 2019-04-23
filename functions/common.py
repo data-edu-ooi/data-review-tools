@@ -403,13 +403,17 @@ def reject_timestamps_in_groups(groups, d_groups, n_std, inpercentile):
     return y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_to_exclude
 
 
-def reject_timestamps_dataportal(subsite, r, tt, yy, zz):
+def reject_timestamps_dataportal(subsite, r, tt, yy, zz, lat=None, lon=None):
 
     dr = pd.read_csv('https://datareview.marine.rutgers.edu/notes/export')
     drn = dr.loc[dr.type == 'exclusion']
+    i = 0
+
     t_ex = tt
     y_ex = yy
     z_ex = zz
+    lat_ex = lat
+    lon_ex = lon
 
     if len(drn) != 0:
         subsite_node = '-'.join((subsite, r.split('-')[1]))
@@ -425,14 +429,30 @@ def reject_timestamps_dataportal(subsite, r, tt, yy, zz):
                 elif tt.min() > te:
                     continue
                 else:
-                    ind = np.where((tt < ts) | (tt > te), True, False)
-                    if len(ind) != 0:
+                    if i == 0:
+                        ind = np.where((tt < ts) | (tt > te), True, False)
                         t_ex = tt[ind]
                         z_ex = zz[ind]
                         y_ex = yy[ind]
+                        if lat is not None:
+                            lat_ex = lat[ind]
+                        if lon is not None:
+                            lon_ex = lon[ind]
+                        i += 1
+                        print('excluding {} timestamps [{} - {}]'.format(np.sum(~ind), sdate, edate))
+                    else:
+                        ind = np.where((t_ex < ts) | (t_ex > te), True, False)
+                        t_ex = t_ex[ind]
+                        z_ex = z_ex[ind]
+                        y_ex = y_ex[ind]
+                        if lat is not None:
+                            lat_ex = lat_ex[ind]
+                        if lon is not None:
+                            lon_ex = lon_ex[ind]
+                        i += 1
                         print('excluding {} timestamps [{} - {}]'.format(np.sum(~ind), sdate, edate))
 
-    return t_ex, z_ex, y_ex
+    return t_ex, z_ex, y_ex, lat_ex, lon_ex
 
 
 def add_pressure_to_dictionary_of_sci_vars(ds):
@@ -483,7 +503,7 @@ def add_pressure_to_dictionary_of_sci_vars(ds):
     return y, y_unit, y_name
 
 
-def reject_erroneous_data(r, v, t, y, z, fz):
+def reject_erroneous_data(r, v, t, y, z, fz, lat=None, lon=None):
 
     """
     :param r: reference designator
@@ -500,6 +520,10 @@ def reject_erroneous_data(r, v, t, y, z, fz):
     y_nofv = y[fv_ind]
     t_nofv = t[fv_ind]
     z_nofv = z[fv_ind]
+    if lat is not None:
+        lat = lat[fv_ind]
+    if lon is not None:
+        lon = lon[fv_ind]
     n_fv = np.sum(~fv_ind)
     print(n_fv, ' fill values')
 
@@ -508,6 +532,10 @@ def reject_erroneous_data(r, v, t, y, z, fz):
     t_nofv_nonan = t_nofv[nan_ind]
     y_nofv_nonan = y_nofv[nan_ind]
     z_nofv_nonan = z_nofv[nan_ind]
+    if lat is not None:
+        lat = lat[nan_ind]
+    if lon is not None:
+        lon = lon[nan_ind]
     n_nan = np.sum(~nan_ind)
     print(n_nan, ' NaNs')
 
@@ -516,6 +544,10 @@ def reject_erroneous_data(r, v, t, y, z, fz):
     t_nofv_nonan_noev = t_nofv_nonan[ev_ind]
     y_nofv_nonan_noev = y_nofv_nonan[ev_ind]
     z_nofv_nonan_noev = z_nofv_nonan[ev_ind]
+    if lat is not None:
+        lat = lat[ev_ind]
+    if lon is not None:
+        lon = lon[ev_ind]
     n_ev = np.sum(~ev_ind)
     print(n_ev, ' Extreme Values', '|1e7|')
 
@@ -526,6 +558,10 @@ def reject_erroneous_data(r, v, t, y, z, fz):
         dtime = t_nofv_nonan_noev[gr_ind]
         zpressure = y_nofv_nonan_noev[gr_ind]
         ndata = z_nofv_nonan_noev[gr_ind]
+        if lat is not None:
+            lat = lat[gr_ind]
+        if lon is not None:
+            lon = lon[gr_ind]
         n_gr = np.sum(~gr_ind)
         print('{} Global ranges [{} - {}]'.format(n_gr, global_min, global_max))
     else:
@@ -535,7 +571,7 @@ def reject_erroneous_data(r, v, t, y, z, fz):
         ndata = z_nofv_nonan_noev
         print('no global ranges for {}'.format(v))
 
-    return dtime, zpressure, ndata, n_fv, n_nan, n_ev, n_gr, global_min, global_max
+    return dtime, zpressure, ndata, n_fv, n_nan, n_ev, n_gr, global_min, global_max, lat, lon
 
 def reject_suspect_data(t, y, z, timestamps):
     print(timestamps[1], type(timestamps[1]))

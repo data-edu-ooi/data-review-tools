@@ -3,9 +3,9 @@
 Created on Feb 2019 by Leila Belabbassi
 Modified on Apr 17 2019 by Lori Garzio
 
-@brief: This script is used to create initial profile plots and color scatter plots for instruments on mobile platforms
-(WFP & Gliders). Excludes erroneous data and data outside of global ranges. Each plot contain data from one deployment
-and one science variable.
+@brief: This script is used to create initial profile plots and 3D color scatter plots for instruments on mobile
+platforms (WFP & Gliders). Also produces 4D color scatter plots for gliders only. Excludes erroneous data and data
+outside of global ranges. Each plot contains data from one deployment and one science variable.
 """
 
 import os
@@ -14,6 +14,8 @@ import xarray as xr
 import numpy as np
 import datetime as dt
 import itertools
+from mpl_toolkits.mplot3d import Axes3D  # need this for 4D scatter plot
+import matplotlib.pyplot as plt
 import functions.common as cf
 import functions.plotting as pf
 import functions.group_by_timerange as gt
@@ -111,14 +113,23 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                 ext = stime + 'to' + etime  # .join((ds0_method, ds1_method
                 save_dir_profile = os.path.join(sDir, array, subsite, refdes, 'profile_plots', deployment, ext)
                 save_dir_xsection = os.path.join(sDir, array, subsite, refdes, 'xsection_plots', deployment, ext)
+                save_dir_4d = os.path.join(sDir, array, subsite, refdes, 'xsection_plots_4d', deployment, ext)
             else:
                 save_dir_profile = os.path.join(sDir, array, subsite, refdes, 'profile_plots', deployment)
                 save_dir_xsection = os.path.join(sDir, array, subsite, refdes, 'xsection_plots', deployment)
-
-            cf.create_dir(save_dir_profile)
-            cf.create_dir(save_dir_xsection)
+                save_dir_4d = os.path.join(sDir, array, subsite, refdes, 'xsection_plots_4d', deployment)
 
             tm = ds['time'].values
+            try:
+                ds_lat = ds['lat'].values
+            except KeyError:
+                ds_lat = None
+                print('No latitude variable in file')
+            try:
+                ds_lon = ds['lon'].values
+            except KeyError:
+                ds_lon = None
+                print('No longitude variable in file')
 
             # get pressure variable
             y, y_units, press = cf.add_pressure_to_dictionary_of_sci_vars(ds)
@@ -142,8 +153,8 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
 
                     else:
                         # reject erroneous data
-                        dtime, zpressure, ndata, lenfv, lennan, lenev, lengr, global_min, global_max = \
-                                                                        cf.reject_erroneous_data(r, sv, tm, y, z, fv)
+                        dtime, zpressure, ndata, lenfv, lennan, lenev, lengr, global_min, global_max, lat, lon = \
+                            cf.reject_erroneous_data(r, sv, tm, y, z, fv, ds_lat, ds_lon)
 
                         # get rid of 0.0 data
                         if 'CTD' in r:
@@ -155,18 +166,31 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                         dtime = dtime[ind]
                         zpressure = zpressure[ind]
                         ndata = ndata[ind]
+                        if ds_lat is not None and ds_lon is not None:
+                            lat = lat[ind]
+                            lon = lon[ind]
+                        else:
+                            lat = None
+                            lon = None
 
                         t0 = pd.to_datetime(dtime.min()).strftime('%Y-%m-%dT%H:%M:%S')
                         t1 = pd.to_datetime(dtime.max()).strftime('%Y-%m-%dT%H:%M:%S')
                         title = ' '.join((deployment, refdes, method)) + '\n' + t0 + ' to ' + t1
 
+                        # reject time range from data portal file export
+                        t_portal, z_portal, y_portal, lat_portal, lon_portal = \
+                            cf.reject_timestamps_dataportal(subsite, r, dtime, zpressure, ndata, lat, lon)
+
+                        print('removed {} data points using visual inspection of data'.format(
+                            len(ndata) - len(z_portal)))
+
                         # create data groups
                         columns = ['tsec', 'dbar', str(sv)]
-                        min_r = int(round(min(zpressure) - zcell_size))
-                        max_r = int(round(max(zpressure) + zcell_size))
+                        min_r = int(round(min(y_portal) - zcell_size))
+                        max_r = int(round(max(y_portal) + zcell_size))
                         ranges = list(range(min_r, max_r, zcell_size))
 
-                        groups, d_groups = gt.group_by_depth_range(dtime, zpressure, ndata, columns, ranges)
+                        groups, d_groups = gt.group_by_depth_range(t_portal, y_portal, z_portal, columns, ranges)
 
                         if 'scatter' in sv:
                             n_std = None  # to use percentile
@@ -178,10 +202,45 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                             groups, d_groups, n_std, inpercentile)
 
                         """
-                        Plot data
+                        Plot all data
+                        """
+                        if len(tm) > 0:
+                            cf.create_dir(save_dir_profile)
+                            cf.create_dir(save_dir_xsection)
+                            sname = '-'.join((r, method, sv))
+                            sfileall = '_'.join(('all_data', sname))
+
+                            '''
+                            profile plot
+                            '''
+                            xlabel = sv + " (" + sv_units + ")"
+                            ylabel = press[0] + " (" + y_units[0] + ")"
+                            clabel = 'Time'
+
+                            fig, ax = pf.plot_profiles(z, y, tm, ylabel, xlabel, clabel, stdev=None)
+
+                            ax.set_title(title, fontsize=9)
+                            fig.tight_layout()
+                            pf.save_fig(save_dir_profile, sfileall)
+
+                            '''
+                            xsection plot
+                            '''
+                            clabel = sv + " (" + sv_units + ")"
+                            ylabel = press[0] + " (" + y_units[0] + ")"
+
+                            fig, ax, bar = pf.plot_xsection(subsite, tm, y, z, clabel, ylabel, t_eng,
+                                                            m_water_depth, inpercentile=None, stdev=None)
+
+                            ax.set_title(title, fontsize=9)
+                            fig.tight_layout()
+                            pf.save_fig(save_dir_xsection, sfileall)
+
+                        """
+                        Plot cleaned-up data
                         """
                         if len(dtime) > 0:
-                            sname = '-'.join((r, method, sv))
+
                             sfile = '_'.join(('rm_erroneous_data', sname))
 
                             '''
@@ -191,7 +250,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                             ylabel = press[0] + " (" + y_units[0] + ")"
                             clabel = 'Time'
 
-                            fig, ax = pf.plot_profiles(ndata, zpressure, dtime, ylabel, xlabel, clabel, stdev=None)
+                            fig, ax = pf.plot_profiles(z_portal, y_portal, t_portal, ylabel, xlabel, clabel, stdev=None)
 
                             ax.set_title(title, fontsize=9)
                             ax.plot(n_avg, y_avg, '-k')
@@ -199,6 +258,8 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                             leg_text = (
                                 'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
                                 '{} zeros'.format(lenfv, lennan, lenev, lengr, global_min, global_max, lenzero) +
+                                '\nexcluded {} suspect data points when inspected visually'.format(
+                                    len(ndata) - len(z_portal)) +
                                 '\n(black) data average in {} dbar segments'.format(zcell_size) +
                                 '\n(magenta) upper and lower {} percentile envelope in {} dbar segments'.format(
                                     inpercentile, zcell_size),)
@@ -213,17 +274,45 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                             ylabel = press[0] + " (" + y_units[0] + ")"
 
                             # plot non-erroneous data
-                            fig, ax, bar = pf.plot_xsection(subsite, dtime, zpressure, ndata, clabel, ylabel, t_eng,
+                            fig, ax, bar = pf.plot_xsection(subsite, t_portal, y_portal, z_portal, clabel, ylabel, t_eng,
                                                             m_water_depth, inpercentile=None, stdev=None)
 
                             ax.set_title(title, fontsize=9)
                             leg_text = (
                                 'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
-                                '{} zeros'.format(lenfv, lennan, lenev, lengr, global_min, global_max, lenzero),
+                                '{} zeros'.format(lenfv, lennan, lenev, lengr, global_min, global_max, lenzero) +
+                                '\nexcluded {} suspect data points when inspected visually'.format(
+                                    len(ndata) - len(z_portal)),
                             )
                             ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
                             fig.tight_layout()
                             pf.save_fig(save_dir_xsection, sfile)
+
+                            '''
+                            4D plot for gliders only
+                            '''
+                            if 'MOAS' in r:
+                                if ds_lat is not None and ds_lon is not None:
+                                    cf.create_dir(save_dir_4d)
+
+                                    clabel = sv + " (" + sv_units + ")"
+                                    zlabel = press[0] + " (" + y_units[0] + ")"
+
+                                    fig = plt.figure()
+                                    ax = fig.add_subplot(111, projection='3d')
+                                    sct = ax.scatter(lon_portal, lat_portal, y_portal, c=z_portal, s=2)
+                                    cbar = plt.colorbar(sct, label=clabel, extend='both')
+                                    cbar.ax.tick_params(labelsize=8)
+                                    ax.invert_zaxis()
+                                    ax.view_init(25, 32)
+                                    ax.invert_xaxis()
+                                    ax.invert_yaxis()
+                                    ax.set_zlabel(zlabel, fontsize=9)
+                                    ax.set_ylabel('Latitude', fontsize=9)
+                                    ax.set_xlabel('Longitude', fontsize=9)
+
+                                    ax.set_title(title, fontsize=9)
+                                    pf.save_fig(save_dir_4d, sfile)
 
 
 if __name__ == '__main__':
