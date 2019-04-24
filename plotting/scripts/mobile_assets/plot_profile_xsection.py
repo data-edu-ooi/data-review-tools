@@ -261,8 +261,8 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                                 '\nexcluded {} suspect data points when inspected visually'.format(
                                     len(ndata) - len(z_portal)) +
                                 '\n(black) data average in {} dbar segments'.format(zcell_size) +
-                                '\n(magenta) upper and lower {} percentile envelope in {} dbar segments'.format(
-                                    inpercentile, zcell_size),)
+                                '\n(magenta) {} percentile envelope in {} dbar segments'.format(
+                                    int(100 - inpercentile * 2), zcell_size),)
                             ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
                             fig.tight_layout()
                             pf.save_fig(save_dir_profile, sfile)

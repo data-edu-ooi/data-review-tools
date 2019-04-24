@@ -157,7 +157,7 @@ if __name__ == '__main__':
     start_time = None
     end_time = None
     plot_type = 'glider_track'
-    deployment_num = 1
-    sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190306T174451-CP05MOAS-GL379-04-DOSTAM000-recovered_host-dosta_abcdjm_glider_recovered/catalog.html']
+    deployment_num = None
+    sDir = '/Users/lgarzio/Documents/OOI/DataReviews'
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190410T154220-CE05MOAS-GL383-05-CTDGVM000-recovered_host-ctdgv_m_glider_instrument_recovered/catalog.html']
     main(url_list, sDir, plot_type, start_time, end_time, deployment_num)
