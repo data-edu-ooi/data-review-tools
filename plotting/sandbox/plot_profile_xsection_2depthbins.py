@@ -21,7 +21,67 @@ import functions.plotting as pf
 import functions.group_by_timerange as gt
 
 
-def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n_std, inpercentile, zcell_size):
+def reject_timestamps_in_groups(groups, d_groups, n_std, inpercentile):
+    y_plt, n_med, n_min, n_max, n0_std, n1_std, l_arr, time_exclude = [], [], [], [], [], [], [], []
+
+    tm = 1
+    for ii in range(len(groups)):
+        nan_ind = d_groups[ii + tm].notnull()
+        if not nan_ind.any():
+            print('{} {} {}'.format('group', ii, 'is all NaNs'))
+            tm += 2
+            continue
+        xtime = d_groups[ii + tm][nan_ind]
+        ypres = d_groups[ii + tm + 1][nan_ind]
+        nval = d_groups[ii + tm + 2][nan_ind]
+        tm += 2
+
+        # create arrays for plotting - at the min y, append min and median. at max y, append median and max
+        # need to append every other variable twice for the arrays to be the same lengths
+        l_arr.append(len(nval))  # count of data to filter out small groups
+        if ii == 0:
+            y_plt.append(ypres.min())
+            y_plt.append(ypres.median())
+        else:
+            y_plt.append(ypres.median())
+            y_plt.append(ypres.max())
+        n_med.append(nval.median())
+        n_med.append(nval.median())
+        n_min.append(nval.min())
+        n_min.append(nval.min())
+        n_max.append(nval.max())
+        n_max.append(nval.max())
+
+        if n_std is not None:
+            upper_l = nval.median() + n_std[ii] * nval.std()
+            lower_l = nval.median() - n_std[ii] * nval.std()
+            n0_std.append(upper_l)
+            n1_std.append(lower_l)
+            n0_std.append(upper_l)
+            n1_std.append(lower_l)
+            t_ind = np.where((nval < lower_l) | (nval > upper_l), True, False)
+            # d_ind = np.where((nval > lower_l) & (nval < upper_l), True, False)
+        else:
+            upper_l = np.percentile(nval, 100 - inpercentile[ii])
+            lower_l = np.percentile(nval, inpercentile[ii])
+            n0_std.append(upper_l)
+            n1_std.append(lower_l)
+            n0_std.append(upper_l)
+            n1_std.append(lower_l)
+            t_ind = np.where((nval < lower_l) | (nval > upper_l), True, False)
+            # d_ind = np.where((nval > lower_l) & (nval < upper_l), True, False)
+
+        time_exclude = np.append(time_exclude, xtime[t_ind].values)
+        # n_data = np.append(n_data, nval[d_ind].values)
+        # n_time = np.append(n_time, xtime[d_ind].values)
+        # n_pres = np.append(n_pres, ypres[d_ind].values)
+
+    time_to_exclude = np.unique(time_exclude)
+
+    return y_plt, n_med, n_min, n_max, n0_std, n1_std, l_arr, time_to_exclude
+
+
+def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n_std, surface_params, depth_params):
     rd_list = []
     for uu in url_list:
         elements = uu.split('/')[-2].split('-')
@@ -186,9 +246,13 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
 
                         # create data groups
                         columns = ['tsec', 'dbar', str(sv)]
-                        min_r = int(round(min(y_portal) - zcell_size))
-                        max_r = int(round(max(y_portal) + zcell_size))
-                        ranges = list(range(min_r, max_r, zcell_size))
+                        # min_r = int(round(min(y_portal) - zcell_size))
+                        # max_r = int(round(max(y_portal) + zcell_size))
+                        # ranges = list(range(min_r, max_r, zcell_size))
+                        #ranges = [0, 10, 20, 30, 40, 50, 60, 70, 80, 200]
+                        range1 = list(range(surface_params[0], surface_params[1], surface_params[2]))
+                        range2 = list(range(depth_params[0], depth_params[1]+depth_params[2], depth_params[2]))
+                        ranges = range1 + range2
 
                         groups, d_groups = gt.group_by_depth_range(t_portal, y_portal, z_portal, columns, ranges)
 
@@ -198,7 +262,9 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                             n_std = n_std
 
                         #  get percentile analysis for printing on the profile plot
-                        y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_ex = cf.reject_timestamps_in_groups(
+                        inpercentile = [surface_params[3]] * len(range1) + [depth_params[3]] * len(range2)
+                        n_std = [surface_params[3]] * len(range1) + [depth_params[3]] * len(range2)
+                        y_plt, n_med, n_min, n_max, n0_std, n1_std, l_arr, time_ex = reject_timestamps_in_groups(
                             groups, d_groups, n_std, inpercentile)
 
                         """
@@ -253,16 +319,17 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                             fig, ax = pf.plot_profiles(z_portal, y_portal, t_portal, ylabel, xlabel, clabel, stdev=None)
 
                             ax.set_title(title, fontsize=9)
-                            ax.plot(n_avg, y_avg, '-k')
-                            ax.fill_betweenx(y_avg, n0_std, n1_std, color='m', alpha=0.2)
+                            ax.plot(n_med, y_plt,  '.k')
+                            ax.fill_betweenx(y_plt, n0_std, n1_std, color='m', alpha=0.2)
                             leg_text = (
                                 'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
                                 '{} zeros'.format(lenfv, lennan, lenev, lengr, global_min, global_max, lenzero) +
                                 '\nexcluded {} suspect data points when inspected visually'.format(
                                     len(ndata) - len(z_portal)) +
-                                '\n(black) data average in {} dbar segments'.format(zcell_size) +
-                                '\n(magenta) {} percentile envelope in {} dbar segments'.format(
-                                    int(100 - inpercentile * 2), zcell_size),)
+                                '\n(black) data median in {} dbar segments (break at {} dbar)'.format(
+                                    [surface_params[2], depth_params[2]], depth_params[0]) +
+                                '\n(magenta) upper and lower {} percentile envelope in {} dbar segments'.format(
+                                    [surface_params[3], depth_params[3]], [surface_params[2], depth_params[2]]),)
                             ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
                             fig.tight_layout()
                             pf.save_fig(save_dir_profile, sfile)
@@ -330,12 +397,13 @@ if __name__ == '__main__':
     define filters standard deviation, percentile
     '''
     n_std = None
-    inpercentile = 5
+    #inpercentile = 5
 
     '''
-    define the depth cell_size for data grouping 
+    define parameters for data grouping 
     '''
-    zcell_size = 10
+    surface_params = [0, 100, 10, 5]  # parameters for data grouping in surface layer [min depth, max depth, cell size, percentile]
+    depth_params = [100, 200, 25, 1]  # parameters for data grouping in bottom layer [min depth, max depth, cell size, percentile]
 
     ''''
     define deployment number and indicate if only the preferred data should be plotted
@@ -353,4 +421,4 @@ if __name__ == '__main__':
     '''
     call in main function with the above attributes
     '''
-    main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n_std, inpercentile, zcell_size)
+    main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n_std, surface_params, depth_params)
