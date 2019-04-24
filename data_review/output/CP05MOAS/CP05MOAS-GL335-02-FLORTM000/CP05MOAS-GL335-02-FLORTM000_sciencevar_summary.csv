@@ -1,0 +1,26 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_host,flort_m_sample,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",3543203,0,0,no global ranges,1024,3542179,99.97,0.0006,0.0006,0.0006,0.0
+deployment0001,recovered_host,flort_m_sample,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",3543203,0,0,1023,18054,3524126,99.46,0.0028,0.0004,0.0209,0.003
+deployment0001,recovered_host,flort_m_sample,sci_flbbcd_bb_units,m-1 sr-1,nan,"[0.0, 0.0079]",3543203,0,0,0,18054,3525149,99.49,0.0004,0.0,0.0031,0.0004
+deployment0001,recovered_host,flort_m_sample,sci_flbbcd_cdom_units,ppb,nan,"[0.0, 375.0]",3543203,0,0,159,223,3542821,99.99,2.1119,0.0,5.068,0.5661
+deployment0001,recovered_host,flort_m_sample,sci_flbbcd_chlor_units,µg L-1,nan,"[0.0, 50.0]",3543203,0,0,394389,2618,3146196,88.8,0.684,0.0,4.2632,0.7063
+deployment0002,recovered_host,flort_m_sample,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",1231416,0,0,no global ranges,1243,1230173,99.9,0.0006,0.0006,0.0006,0.0
+deployment0002,recovered_host,flort_m_sample,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",1231416,0,0,1114,4959,1225343,99.51,0.0016,0.0004,0.0088,0.0011
+deployment0002,recovered_host,flort_m_sample,sci_flbbcd_bb_units,m-1 sr-1,nan,"[0.0, 0.0079]",1231416,0,0,0,4959,1226457,99.6,0.0002,0.0,0.0013,0.0002
+deployment0002,recovered_host,flort_m_sample,sci_flbbcd_cdom_units,ppb,nan,"[0.0, 375.0]",1231416,0,0,143,96,1231177,99.98,1.9453,0.0,14.2085,0.3807
+deployment0002,recovered_host,flort_m_sample,sci_flbbcd_chlor_units,µg L-1,nan,"[0.0, 50.0]",1231416,0,0,101552,112,1129752,91.74,0.7758,0.0,4.6939,0.7403
+deployment0003,recovered_host,flort_m_sample,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",532301,0,0,no global ranges,490,531811,99.91,0.0006,0.0006,0.0006,0.0
+deployment0003,recovered_host,flort_m_sample,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",532301,0,0,486,4873,526942,98.99,0.0018,0.0005,0.0181,0.0023
+deployment0003,recovered_host,flort_m_sample,sci_flbbcd_bb_units,m-1 sr-1,nan,"[0.0, 0.0079]",532301,0,0,0,4879,527422,99.08,0.0003,0.0,0.0027,0.0003
+deployment0003,recovered_host,flort_m_sample,sci_flbbcd_cdom_units,ppb,nan,"[0.0, 375.0]",532301,0,0,16,12,532273,99.99,1.4704,0.0,3.3485,0.3876
+deployment0003,recovered_host,flort_m_sample,sci_flbbcd_chlor_units,µg L-1,nan,"[0.0, 50.0]",532301,0,0,0,13,532288,100.0,0.6889,0.0,3.8325,0.6309
+deployment0004,recovered_host,flort_m_sample,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",1814031,0,2110,no global ranges,0,1811921,99.88,0.0006,0.0005,0.0006,0.0
+deployment0004,recovered_host,flort_m_sample,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",1814031,0,2110,1219,2371,1808331,99.69,0.0012,0.0004,0.0058,0.0008
+deployment0004,recovered_host,flort_m_sample,sci_flbbcd_bb_units,m-1 sr-1,nan,"[0.0, 0.0079]",1814031,0,0,0,2440,1811591,99.87,0.0002,0.0,0.0009,0.0001
+deployment0004,recovered_host,flort_m_sample,sci_flbbcd_cdom_units,ppb,nan,"[0.0, 375.0]",1814031,0,0,94,373,1813564,99.97,1.2003,0.0,2.715,0.2299
+deployment0004,recovered_host,flort_m_sample,sci_flbbcd_chlor_units,µg L-1,nan,"[0.0, 50.0]",1814031,0,0,2,9290,1804739,99.49,0.4014,0.0,4.1537,0.6579
+deployment0005,recovered_host,flort_m_sample,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",3164252,0,0,no global ranges,4214,3160038,99.87,0.0006,0.0006,0.0006,0.0
+deployment0005,recovered_host,flort_m_sample,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",3164252,0,0,742,7116,3156394,99.75,0.0023,0.0004,0.0141,0.002
+deployment0005,recovered_host,flort_m_sample,sci_flbbcd_bb_units,m-1 sr-1,nan,"[0.0, 0.0079]",3164252,0,0,0,7116,3157136,99.78,0.0003,0.0,0.0021,0.0003
+deployment0005,recovered_host,flort_m_sample,sci_flbbcd_cdom_units,ppb,nan,"[0.0, 375.0]",3164252,0,0,1,816,3163435,99.97,1.7112,0.543,3.077,0.2784
+deployment0005,recovered_host,flort_m_sample,sci_flbbcd_chlor_units,µg L-1,nan,"[0.0, 50.0]",3164252,0,0,249308,229,2914715,92.11,0.624,0.0,2.8397,0.4438
