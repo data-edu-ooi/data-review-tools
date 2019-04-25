@@ -102,7 +102,7 @@ def main(sDir, url_list):
                                 datasets.append(dss)
                             else:
                                 drd = dss.split('/')[-1].split('_20')[0][15:42]
-                                if drd not in dependencies:
+                                if drd not in dependencies and drd != r:
                                     dependencies.append(drd)
 
                         notes = []
@@ -357,58 +357,59 @@ def main(sDir, url_list):
                             print(sv)
                             try:
                                 var = ds[sv]
-                                num_dims = len(var.dims)
+                                vnum_dims = len(var.dims)
 
-                                if num_dims > 1:
-                                    print('variable has more than 1 dimension')
+                                if vnum_dims > 2:
+                                    print('variable has more than 2 dimensions')
                                     num_outliers = None
                                     mean = None
                                     vmin = None
                                     vmax = None
                                     sd = None
-                                    n_stats = 'variable has more than 1 dimension'
+                                    n_stats = 'variable has more than 2 dimensions'
                                     var_units = var.units
                                     n_nan = None
                                     n_fv = None
                                     n_grange = None
                                     fv = None
+                                    n_all = None
                                 else:
-                                    # reject NaNs
-                                    var_nonan = var.values[~np.isnan(var.values)]
-                                    n_nan = len(var) - len(var_nonan)
-
-                                    # reject fill values
+                                    if vnum_dims > 1:
+                                        n_all = [len(var), len(var.values.flatten())]
+                                    else:
+                                        n_all = len(var)
+                                    n_nan = int(np.sum(np.isnan(var.values)))
                                     fv = var._FillValue
-                                    var_nonan_nofv = var_nonan[var_nonan != fv]
-                                    n_fv = len(var) - n_nan - len(var_nonan_nofv)
+                                    var_nofv = var.where(var != fv)
+                                    n_fv = int(np.sum(np.isnan(var_nofv.values))) - n_nan
+
 
                                     # reject data outside of global ranges
                                     [g_min, g_max] = cf.get_global_ranges(r, sv)
                                     if g_min is not None and g_max is not None:
-                                        gr_ind = cf.reject_global_ranges(var_nonan_nofv, g_min, g_max)
-                                        var_nonan_nofv_gr = var_nonan_nofv[gr_ind]
-                                        n_grange = len(var) - n_nan - n_fv - len(var_nonan_nofv_gr)
+                                        var_gr = var_nofv.where((var_nofv >= g_min) & (var_nofv <= g_max))
+                                        n_grange = int(np.sum(np.isnan(var_gr)) - n_fv - n_nan)
                                     else:
                                         n_grange = 'no global ranges'
-                                        var_nonan_nofv_gr = var_nonan_nofv
+                                        var_gr = var_nofv
 
-                                    if len(var_nonan_nofv_gr) > 1:
-                                        [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_nonan_nofv_gr, 5)
-                                    elif len(var_nonan_nofv_gr) == 1:
-                                        num_outliers = 0
-                                        mean = (round(list(var_nonan_nofv_gr)[0], 4)).astype('float64')
-                                        vmin = None
-                                        vmax = None
-                                        sd = None
-                                        n_stats = 1
+                                    if vnum_dims == 1:
+                                        if list(np.unique(np.isnan(var_gr.values))) != [True]:
+                                            [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_gr, 5)
+                                        else:
+                                            num_outliers = None
+                                            mean = None
+                                            vmin = None
+                                            vmax = None
+                                            sd = None
+                                            n_stats = 0
                                     else:
                                         num_outliers = None
                                         mean = None
                                         vmin = None
                                         vmax = None
                                         sd = None
-                                        n_stats = 0
-
+                                        n_stats = None
                                     var_units = var.units
 
                             except KeyError:
@@ -423,12 +424,18 @@ def main(sDir, url_list):
                                 n_fv = None
                                 fv = None
                                 n_grange = None
+                                n_all = None
 
+                            if vnum_dims > 1:
+                                sv = '{} (dims: {})'.format(sv, list(var.dims))
+                            else:
+                                sv = sv
                             data['deployments'][deployment]['method'][method]['stream'][data_stream]['file'][
                                 fname]['sci_var_stats'][sv] = dict(n_outliers=num_outliers, mean=mean, min=vmin,
                                                                    max=vmax, stdev=sd, n_stats=n_stats, units=var_units,
                                                                    n_nans=n_nan, n_fillvalues=n_fv, fill_value=str(fv),
-                                                                   global_ranges=[g_min, g_max], n_grange=n_grange)
+                                                                   global_ranges=[g_min, g_max], n_grange=n_grange,
+                                                                   n_all=n_all)
 
 
         sfile = os.path.join(save_dir, '{}-file_analysis.json'.format(r))

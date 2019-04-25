@@ -340,7 +340,7 @@ def variable_statistics(var_data, stdev=None):
         ind2 = reject_outliers(var, stdev)
         varD = var[ind2]
         varD = varD.astype('float64')  # force variables to be float64 (float32 is not JSON serializable)
-        num_outliers = len(var_data) - len(varD)
+        num_outliers = int(np.sum(~ind2))
 
     mean = round(np.nanmean(varD), 4)
     min = round(np.nanmin(varD), 4)

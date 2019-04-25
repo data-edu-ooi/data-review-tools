@@ -158,27 +158,33 @@ def main(f, ps, mc):
                         valid_list = []
                         for v in ddata['method'][m]['stream'][s]['file'][fname]['sci_var_stats'].keys():
                             vsummary = data['deployments'][d]['method'][m]['stream'][s]['file'][fname]['sci_var_stats'][v]
+                            n_all = vsummary['n_all']
                             units = vsummary['units']
                             mean = vsummary['mean']
                             min = vsummary['min']
                             max = vsummary['max']
                             stdev = vsummary['stdev']
                             n_stats = vsummary['n_stats']
-
-                            if type(n_stats) == str:
-                                percent_valid_data = 'stats not calculated'
-                            else:
-                                percent_valid_data = round((float(n_stats)/float(nt) * 100), 2)
                             n_o = vsummary['n_outliers']
                             n_nan = vsummary['n_nans']
                             n_fv = vsummary['n_fillvalues']
                             fv = vsummary['fill_value']
                             gr = vsummary['global_ranges']
                             n_gr = vsummary['n_grange']
+                            if type(n_stats) == str:
+                                percent_valid_data = 'stats not calculated'
+                            elif type(n_all) == list:
+                                if type(n_gr) == str:
+                                    n1 = n_all[1] - n_nan - n_fv
+                                else:
+                                    n1 = n_all[1] - n_nan - n_fv - n_gr
+                                percent_valid_data = round((float(n1) / float(n_all[1]) * 100), 2)
+                            else:
+                                percent_valid_data = round((float(n_stats)/float(n_all) * 100), 2)
 
                             valid_list.append(percent_valid_data)
 
-                            vsummary_rows.append([d, m, s, v, units, fv, gr, nt, n_nan, n_fv, n_gr, n_o, n_stats,
+                            vsummary_rows.append([d, m, s, v, units, fv, gr, n_all, n_nan, n_fv, n_gr, n_o, n_stats,
                                                   percent_valid_data, mean, min, max, stdev])
 
                         # build file summary
