@@ -58,7 +58,7 @@ def main(url_list, sDir, plot_type, start_time, end_time, deployment_num):
             array = subsite[0:2]
             save_dir = os.path.join(sDir, array, subsite, r, plot_type)
             cf.create_dir(save_dir)
-            sname = '-'.join((r, 'track'))
+            sname = '_'.join((r, 'glider_track'))
 
             sh = pd.DataFrame()
             deployments = []
@@ -144,7 +144,8 @@ def main(url_list, sDir, plot_type, start_time, end_time, deployment_num):
 
             ax.scatter(array_loc.lon, array_loc.lat, s=45, marker='x', color='k')
 
-            pf.save_fig(save_dir, sname)
+            save_dir_main = os.path.join(sDir, array, subsite, r)
+            pf.save_fig(save_dir_main, sname)
 
 
 if __name__ == '__main__':
