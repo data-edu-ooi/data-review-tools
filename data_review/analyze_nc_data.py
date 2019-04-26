@@ -19,7 +19,7 @@ f = '/Users/lgarzio/Documents/OOI/DataReviews/test3/GS01SUMO/data_request_summar
 
 ff = pd.read_csv(f)
 url_list = ff['outputUrl'].tolist()
-url_list = [u for u in url_list if u not in 'no_output_url']
+url_list = [u for u in url_list if (u not in 'no_output_url') & ('ENG' not in str(u))]
 
 json_nc_analysis = scripts.nc_file_analysis.main(sDir, url_list)
 

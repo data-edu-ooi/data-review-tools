@@ -6,13 +6,92 @@ Modified on Apr 11 2019 by Lori Garzio
 """
 import os
 import itertools
-import matplotlib
-import functions.plotting as pf
-import functions.common as cf
-import numpy as np
+
+import matplotlib.pyplot as plt
 import xarray as xr
 import pandas as pd
-matplotlib.use("TkAgg")
+import cartopy.crs as ccrs
+import cartopy.feature as cfeature
+import numpy as np
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+import functions.plotting as pf
+import functions.common as cf
+
+
+def define_extent(data1, data2, version):
+    dmin = np.min([np.nanmin(data1), np.nanmin(data2)])
+    dmax = np.max([np.nanmax(data1), np.nanmax(data2)])
+
+    if version == 'lon':
+        diff = abs(dmax - dmin)
+        if diff > 3:
+            mult = 0.001
+        else:
+            mult = 0.0075
+    else:
+        mult = 0.005
+
+    if dmin < 0:
+        dmin_ex = dmin + dmin * mult
+        dmax_ex = dmax - dmax * mult
+    else:
+        dmin_ex = dmin - dmin * mult
+        dmax_ex = dmax + dmax * mult
+    return dmin_ex, dmax_ex
+
+
+def plot_map(save_directory, savefile, plt_title, londata, latdata, tm, array, add_box=None):
+    #ax = plt.axes(projection=ccrs.PlateCarree())
+    fig, ax = plt.subplots(figsize=(8, 8), subplot_kw=dict(projection=ccrs.PlateCarree()))
+    plt.subplots_adjust(right=0.85)
+    states = cfeature.NaturalEarthFeature(category="cultural", scale="10m",
+                                 facecolor="none",
+                                 name="admin_1_states_provinces_shp")
+    ax.add_feature(states, linewidth=.5, edgecolor="black", facecolor='grey')
+    ax.add_feature(cfeature.RIVERS, zorder=10, facecolor='white')
+    gl = ax.gridlines(crs=ccrs.PlateCarree(), draw_labels=True, linewidth=.5, color='gray', alpha=0.5, linestyle='--')
+    gl.xlabels_top = False
+    gl.ylabels_right = False
+    # gl.xlabel_style = {'size': 14.5}
+    # gl.ylabel_style = {'size': 14.5}
+    ax.coastlines('10m', linewidth=1)
+
+    array_loc = cf.return_array_subsites_standard_loc(array)
+    lonmin, lonmax = define_extent(array_loc.lon, londata, 'lon')
+    latmin, latmax = define_extent(array_loc.lat, latdata, 'lat')
+
+    array_loc = cf.return_array_subsites_standard_loc(array)
+    sct = plt.scatter(londata, latdata, c=tm, marker='.', s=2, cmap='rainbow', transform=ccrs.Geodetic())
+
+    ax.set_title(plt_title, fontsize=10)
+
+    plt.scatter(array_loc.lon, array_loc.lat, s=45, marker='x', color='k')
+
+    if add_box == 'yes':
+        # add glider sampling limits
+        bulk_load = pd.read_csv(
+            'https://raw.githubusercontent.com/ooi-integration/asset-management/master/bulk/array_bulk_load-AssetRecord.csv')
+        bulk_load['array'] = bulk_load['MIO_Inventory_Description'].str.split(' ', n=1, expand=True)[0]
+        ind = bulk_load.loc[bulk_load['array'] == array].index[0]
+        poly = bulk_load.iloc[ind].Array_geometry
+        poly = poly.split('((')[-1].split('))')[0]
+        xx = []
+        yy = []
+        for x in poly.split(', '):
+            xx.append(float(x.split(' ')[0]))
+            yy.append(float(x.split(' ')[1]))
+        ax.plot(xx, yy, color='b', linewidth=2)
+    else:
+
+        ax.set_extent([lonmin, lonmax, latmin, latmax], crs=ccrs.PlateCarree())
+
+    divider = make_axes_locatable(ax)
+    cax = divider.new_horizontal(size='5%', pad=0.1, axes_class=plt.Axes)
+    fig.add_axes(cax)
+    cbar = plt.colorbar(sct, cax=cax, label='Time')
+    cbar.ax.set_yticklabels(pd.to_datetime(cbar.ax.get_yticks()).strftime(date_format='%Y-%m-%d'))
+
+    pf.save_fig(save_directory, savefile)
 
 
 def main(url_list, sDir, plot_type, start_time, end_time, deployment_num):
@@ -58,14 +137,10 @@ def main(url_list, sDir, plot_type, start_time, end_time, deployment_num):
             array = subsite[0:2]
             save_dir = os.path.join(sDir, array, subsite, r, plot_type)
             cf.create_dir(save_dir)
-            sname = '-'.join((r, 'track'))
+            sname = '_'.join((r, 'glider_track'))
 
             sh = pd.DataFrame()
             deployments = []
-
-            clabel = 'Time'
-            ylabel = 'Latitude'
-            xlabel = 'Longitude'
             for ii, d in enumerate(fdatasets_sel):
                 print('\nDataset {} of {}: {}'.format(ii + 1, len(fdatasets_sel), d.split('/')[-1]))
                 deploy = d.split('/')[-1].split('_')[0]
@@ -105,46 +180,17 @@ def main(url_list, sDir, plot_type, start_time, end_time, deployment_num):
                     # plot data by deployment
                     sfile = '-'.join((deploy, sname))
                     ttl = 'Glider Track - ' + r + '-' + deploy + '\nx: platform locations'
-                    fig, ax = pf.plot_profiles(ds_lon, ds_lat, ds['time'].values, ylabel, xlabel, clabel, stdev=None)
-                    ax.invert_yaxis()
-                    ax.set_title(ttl, fontsize=9)
-
-                    array_loc = cf.return_array_subsites_standard_loc(array)
-                    ax.scatter(array_loc.lon, array_loc.lat, s=45, marker='x', color='k')
-                    pf.save_fig(save_dir, sfile)
+                    #fig, ax = pf.plot_profiles(ds_lon, ds_lat, ds['time'].values, ylabel, xlabel, clabel, stdev=None)
+                    plot_map(save_dir, sfile, ttl, ds_lon, ds_lat, ds['time'].values, array)
 
             #sh = sh.resample('H').median()  # resample hourly
             xD = sh.lon.values
             yD = sh.lat.values
             tD = sh.index.values
             title = 'Glider Track - ' + r + '\nDeployments: ' + str(deployments) + '   x: platform locations' + '\n blue box: Glider Sampling Area'
+            save_dir_main = os.path.join(sDir, array, subsite, r)
 
-            fig, ax = pf.plot_profiles(xD, yD, tD, ylabel, xlabel, clabel, stdev=None)
-            ax.invert_yaxis()
-            ax.set_title(title, fontsize=9)
-
-            # add glider sampling limits
-            bulk_load = pd.read_csv('https://raw.githubusercontent.com/ooi-integration/asset-management/master/bulk/array_bulk_load-AssetRecord.csv')
-            bulk_load['array'] = bulk_load['MIO_Inventory_Description'].str.split(' ', n=1, expand=True)[0]
-            ind = bulk_load.loc[bulk_load['array'] == array].index[0]
-            poly = bulk_load.iloc[ind].Array_geometry
-            poly = poly.split('((')[-1].split('))')[0]
-            xx = []
-            yy = []
-            for x in poly.split(', '):
-                xx.append(float(x.split(' ')[0]))
-                yy.append(float(x.split(' ')[1]))
-
-            #ax.set_xlim(-71.75, -69.75)
-            #ax.set_ylim(38.75, 40.75)
-            ax.plot(xx, yy, color='b', linewidth=2)
-            #ax.text(np.mean(xx) - 0.15, np.max(yy) + (np.max(yy) * 0.0025), 'Glider Sampling Area', color='blue', fontsize=8)
-
-            array_loc = cf.return_array_subsites_standard_loc(array)
-
-            ax.scatter(array_loc.lon, array_loc.lat, s=45, marker='x', color='k')
-
-            pf.save_fig(save_dir, sname)
+            plot_map(save_dir_main, sname, title, xD, yD, tD, array, add_box='yes')
 
 
 if __name__ == '__main__':
