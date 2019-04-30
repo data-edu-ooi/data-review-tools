@@ -13,6 +13,7 @@ import pandas as pd
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import numpy as np
+import oceansdb
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import functions.plotting as pf
 import functions.common as cf
@@ -84,6 +85,17 @@ def plot_map(save_directory, savefile, plt_title, londata, latdata, tm, array, a
     else:
 
         ax.set_extent([lonmin, lonmax, latmin, latmax], crs=ccrs.PlateCarree())
+
+    # get bathymetry
+    # db = oceansdb.ETOPO()
+    # xx = np.arange(ax.get_xlim()[0], ax.get_xlim()[1], .01)
+    # xx = np.append(xx, xx[0])
+    # yy = np.arange(ax.get_ylim()[0], ax.get_ylim()[1], .01)
+    # yy = np.append(yy, yy[0])
+    # topo = db['topography'].extract(lat=yy, lon=xx)
+    # bathy = topo['height'].data
+    # CS = ax.contour(xx, yy, bathy, [-3000, -2000, -1000, -50, 0], colors='gray', linewidths=0.5, alpha=0.5)
+    # ax.clabel(CS, inline=1, fontsize=8, fmt='%.0f')
 
     divider = make_axes_locatable(ax)
     cax = divider.new_horizontal(size='5%', pad=0.1, axes_class=plt.Axes)
