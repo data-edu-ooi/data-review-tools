@@ -13,6 +13,7 @@ import pandas as pd
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import numpy as np
+#import oceansdb
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import functions.plotting as pf
 import functions.common as cf
@@ -40,6 +41,22 @@ def define_extent(data1, data2, version):
     return dmin_ex, dmax_ex
 
 
+def plot_glider_box(ax, array):
+    bulk_load = pd.read_csv(
+        'https://raw.githubusercontent.com/ooi-integration/asset-management/master/bulk/array_bulk_load-AssetRecord.csv')
+    bulk_load['array'] = bulk_load['MIO_Inventory_Description'].str.split(' ', n=1, expand=True)[0]
+    ind = bulk_load.loc[bulk_load['array'] == array].index[0]
+    poly = bulk_load.iloc[ind].Array_geometry
+    poly = poly.split('((')[-1].split('))')[0]
+    xx = []
+    yy = []
+    for x in poly.split(', '):
+        xx.append(float(x.split(' ')[0]))
+        yy.append(float(x.split(' ')[1]))
+    ax.plot(xx, yy, color='b', linewidth=2)
+    return ax
+
+
 def plot_map(save_directory, savefile, plt_title, londata, latdata, tm, array, add_box=None):
     #ax = plt.axes(projection=ccrs.PlateCarree())
     fig, ax = plt.subplots(figsize=(8, 8), subplot_kw=dict(projection=ccrs.PlateCarree()))
@@ -57,33 +74,45 @@ def plot_map(save_directory, savefile, plt_title, londata, latdata, tm, array, a
     ax.coastlines('10m', linewidth=1)
 
     array_loc = cf.return_array_subsites_standard_loc(array)
-    lonmin, lonmax = define_extent(array_loc.lon, londata, 'lon')
-    latmin, latmax = define_extent(array_loc.lat, latdata, 'lat')
-
-    array_loc = cf.return_array_subsites_standard_loc(array)
     sct = plt.scatter(londata, latdata, c=tm, marker='.', s=2, cmap='rainbow', transform=ccrs.Geodetic())
 
     ax.set_title(plt_title, fontsize=10)
 
     plt.scatter(array_loc.lon, array_loc.lat, s=45, marker='x', color='k')
 
-    if add_box == 'yes':
-        # add glider sampling limits
-        bulk_load = pd.read_csv(
-            'https://raw.githubusercontent.com/ooi-integration/asset-management/master/bulk/array_bulk_load-AssetRecord.csv')
-        bulk_load['array'] = bulk_load['MIO_Inventory_Description'].str.split(' ', n=1, expand=True)[0]
-        ind = bulk_load.loc[bulk_load['array'] == array].index[0]
-        poly = bulk_load.iloc[ind].Array_geometry
-        poly = poly.split('((')[-1].split('))')[0]
-        xx = []
-        yy = []
-        for x in poly.split(', '):
-            xx.append(float(x.split(' ')[0]))
-            yy.append(float(x.split(' ')[1]))
-        ax.plot(xx, yy, color='b', linewidth=2)
+    if array == 'CE':
+        if add_box == 'yes':
+            ax = plot_glider_box(ax, array)
+        else:
+            lonmin, lonmax = define_extent(array_loc.lon, londata, 'lon')
+            latmin, latmax = define_extent(array_loc.lat, latdata, 'lat')
+            lims = [lonmin, lonmax, latmin, latmax]
+            ax.set_extent(lims, crs=ccrs.PlateCarree())
     else:
+        if array == 'CP':
+            lims = [-72.5, -69.5, 38.5, 42]
+        elif array == 'GA':
+            lims = [-43.5, -41.5, -43.5, -42]
+        elif array == 'GI':
+            lims = [-40.1, -39, 59.2, 60.3]
+        elif array == 'GP':
+            lims = [-145.1, -143.95, 49.7, 50.6]
+        elif array == 'GS':
+            lims = [-89.95, -88.65, -54.8, -53.7]
+        ax.set_extent(lims, crs=ccrs.PlateCarree())
+        ax = plot_glider_box(ax, array)
 
-        ax.set_extent([lonmin, lonmax, latmin, latmax], crs=ccrs.PlateCarree())
+
+    # get bathymetry
+    # db = oceansdb.ETOPO()
+    # xx = np.arange(ax.get_xlim()[0], ax.get_xlim()[1], .01)
+    # xx = np.append(xx, xx[0])
+    # yy = np.arange(ax.get_ylim()[0], ax.get_ylim()[1], .01)
+    # yy = np.append(yy, yy[0])
+    # topo = db['topography'].extract(lat=yy, lon=xx)
+    # bathy = topo['height'].data
+    # CS = ax.contour(xx, yy, bathy, [-3000, -2000, -1000, -50, 0], colors='gray', linewidths=0.5, alpha=0.5)
+    # ax.clabel(CS, inline=1, fontsize=8, fmt='%.0f')
 
     divider = make_axes_locatable(ax)
     cax = divider.new_horizontal(size='5%', pad=0.1, axes_class=plt.Axes)
@@ -179,15 +208,18 @@ def main(url_list, sDir, plot_type, start_time, end_time, deployment_num):
 
                     # plot data by deployment
                     sfile = '-'.join((deploy, sname))
-                    ttl = 'Glider Track - ' + r + '-' + deploy + '\nx: platform locations'
+                    if array == 'CE':
+                        ttl = 'Glider Track - ' + r + ' - ' + deploy + '\nx: Mooring Locations'
+                    else:
+                        ttl = 'Glider Track - ' + r + ' - ' + deploy + '\nx: Mooring Locations' + '\n blue box: Glider Sampling Area'
                     #fig, ax = pf.plot_profiles(ds_lon, ds_lat, ds['time'].values, ylabel, xlabel, clabel, stdev=None)
                     plot_map(save_dir, sfile, ttl, ds_lon, ds_lat, ds['time'].values, array)
 
-            #sh = sh.resample('H').median()  # resample hourly
+            sh = sh.resample('H').median()  # resample hourly
             xD = sh.lon.values
             yD = sh.lat.values
             tD = sh.index.values
-            title = 'Glider Track - ' + r + '\nDeployments: ' + str(deployments) + '   x: platform locations' + '\n blue box: Glider Sampling Area'
+            title = 'Glider Track - ' + r + '\nDeployments: ' + str(deployments) + '   x: Mooring Locations' + '\n blue box: Glider Sampling Area'
             save_dir_main = os.path.join(sDir, array, subsite, r)
 
             plot_map(save_dir_main, sname, title, xD, yD, tD, array, add_box='yes')
