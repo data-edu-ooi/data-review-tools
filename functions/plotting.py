@@ -322,7 +322,8 @@ def plot_xsection(subsite, x, y, z, clabel, ylabel, t_eng=None, m_water_depth=No
 
     # add bathymetry for coastal gliders
     if t_eng is not None and m_water_depth is not None:
-        ax.fill_between(t_eng, m_water_depth, np.max(m_water_depth) + 2, facecolor='k', alpha=0.4)
+        if len(t_eng) > 1:
+            ax.fill_between(t_eng, m_water_depth, np.max(m_water_depth) + 2, facecolor='k', alpha=0.4)
 
     # add color bar
     bar = fig.colorbar(xc, ax=ax, label=clabel, extend='both')
