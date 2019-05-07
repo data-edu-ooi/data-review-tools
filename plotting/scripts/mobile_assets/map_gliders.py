@@ -57,7 +57,7 @@ def plot_glider_box(ax, array):
     return ax
 
 
-def plot_map(save_directory, savefile, plt_title, londata, latdata, tm, array, add_box=None):
+def plot_map(save_directory, savefile, plt_title, londata, latdata, tm, array, plt_type=None, add_box=None):
     #ax = plt.axes(projection=ccrs.PlateCarree())
     fig, ax = plt.subplots(figsize=(8, 8), subplot_kw=dict(projection=ccrs.PlateCarree()))
     plt.subplots_adjust(right=0.85)
@@ -92,7 +92,12 @@ def plot_map(save_directory, savefile, plt_title, londata, latdata, tm, array, a
         if array == 'CP':
             lims = [-72.5, -69.5, 38.5, 42]
         elif array == 'GA':
-            lims = [-43.5, -41.5, -43.5, -42]
+            if plt_type == 'glider_track_drift':
+                lonmin, lonmax = define_extent(array_loc.lon, londata, 'lon')
+                latmin, latmax = define_extent(array_loc.lat, latdata, 'lat')
+                lims = [lonmin, lonmax, latmin, latmax]
+            else:
+                lims = [-43.5, -41.5, -43.5, -42]
         elif array == 'GI':
             lims = [-40.1, -39, 59.2, 60.3]
         elif array == 'GP':
@@ -166,7 +171,7 @@ def main(url_list, sDir, plot_type, start_time, end_time, deployment_num):
             array = subsite[0:2]
             save_dir = os.path.join(sDir, array, subsite, r, plot_type)
             cf.create_dir(save_dir)
-            sname = '_'.join((r, 'glider_track'))
+            sname = '_'.join((r, plot_type))
 
             sh = pd.DataFrame()
             deployments = []
@@ -213,7 +218,7 @@ def main(url_list, sDir, plot_type, start_time, end_time, deployment_num):
                     else:
                         ttl = 'Glider Track - ' + r + ' - ' + deploy + '\nx: Mooring Locations' + '\n blue box: Glider Sampling Area'
                     #fig, ax = pf.plot_profiles(ds_lon, ds_lat, ds['time'].values, ylabel, xlabel, clabel, stdev=None)
-                    plot_map(save_dir, sfile, ttl, ds_lon, ds_lat, ds['time'].values, array)
+                    plot_map(save_dir, sfile, ttl, ds_lon, ds_lat, ds['time'].values, array, plot_type)
 
             sh = sh.resample('H').median()  # resample hourly
             xD = sh.lon.values
@@ -222,7 +227,7 @@ def main(url_list, sDir, plot_type, start_time, end_time, deployment_num):
             title = 'Glider Track - ' + r + '\nDeployments: ' + str(deployments) + '   x: Mooring Locations' + '\n blue box: Glider Sampling Area'
             save_dir_main = os.path.join(sDir, array, subsite, r)
 
-            plot_map(save_dir_main, sname, title, xD, yD, tD, array, add_box='yes')
+            plot_map(save_dir_main, sname, title, xD, yD, tD, array, plot_type, add_box='yes')
 
 
 if __name__ == '__main__':
@@ -234,7 +239,7 @@ if __name__ == '__main__':
     '''
     start_time = None
     end_time = None
-    plot_type = 'glider_track'
+    plot_type = 'glider_track_drift'  # 'glider_track' 'glider_track_drift'
     deployment_num = None
     sDir = '/Users/lgarzio/Documents/OOI/DataReviews'
     url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190410T154220-CE05MOAS-GL383-05-CTDGVM000-recovered_host-ctdgv_m_glider_instrument_recovered/catalog.html']

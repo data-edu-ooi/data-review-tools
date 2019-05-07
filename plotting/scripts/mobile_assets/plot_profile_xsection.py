@@ -84,7 +84,10 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                         m_water_depth = ds_eng['m_water_depth'].values
 
                         # m_altimeter_status = 0 means a good reading (not nan or -1)
-                        eng_ind = ds_eng['m_altimeter_status'].values == 0
+                        try:
+                            eng_ind = ds_eng['m_altimeter_status'].values == 0
+                        except KeyError:
+                            eng_ind = (~np.isnan(m_water_depth)) & (m_water_depth >= 0)
                         m_water_depth = m_water_depth[eng_ind]
                         t_eng = t_eng[eng_ind]
                     else:
