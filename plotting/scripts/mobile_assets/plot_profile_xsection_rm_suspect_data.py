@@ -27,7 +27,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
     for uu in url_list:
         elements = uu.split('/')[-2].split('-')
         rd = '-'.join((elements[1], elements[2], elements[3], elements[4]))
-        if rd not in rd_list and 'ENG' not in rd:
+        if rd not in rd_list and 'ENG' not in rd and 'ADCP' not in rd:
             rd_list.append(rd)
 
     for r in rd_list:
@@ -85,9 +85,18 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                         m_water_depth = ds_eng['m_water_depth'].values
 
                         # m_altimeter_status = 0 means a good reading (not nan or -1)
-                        eng_ind = ds_eng['m_altimeter_status'].values == 0
+                        try:
+                            eng_ind = ds_eng['m_altimeter_status'].values == 0
+                        except KeyError:
+                            eng_ind = (~np.isnan(m_water_depth)) & (m_water_depth >= 0)
+
                         m_water_depth = m_water_depth[eng_ind]
                         t_eng = t_eng[eng_ind]
+
+                        # get rid of any remaining nans or fill values
+                        eng_ind2 = (~np.isnan(m_water_depth)) & (m_water_depth >= 0)
+                        m_water_depth = m_water_depth[eng_ind2]
+                        t_eng = t_eng[eng_ind2]
                     else:
                         print('No engineering file for deployment {}'.format(deployment))
                         m_water_depth = None
