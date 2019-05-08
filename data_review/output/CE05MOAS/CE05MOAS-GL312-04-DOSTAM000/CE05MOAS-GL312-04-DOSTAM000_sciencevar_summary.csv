@@ -1,0 +1,25 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_oxygen,µmol L-1,nan,"[0.0, 400.0]",2153913,0,0,0,0,2153913,100.0,95.1486,0.0,351.557,98.4755
+deployment0001,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_saturation,percent,nan,"[0.0, 110.0]",2153913,0,0,0,0,2153913,100.0,26.3063,0.0,108.174,28.7788
+deployment0001,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_temp,1,nan,"[None, None]",2153913,0,0,no global ranges,0,2153913,100.0,6.5086,0.0,17.881,2.5233
+deployment0001,recovered_host,dosta_abcdjm_glider_recovered,sci_abs_oxygen,µmol kg-1,nan,"[0.0, 400.0]",2153913,0,0,7,0,2153906,100.0,75.3775,0.0,329.1837,78.419
+deployment0002,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_oxygen,µmol L-1,nan,"[0.0, 400.0]",557089,0,0,16219,0,540870,97.09,121.334,0.0,400.0,113.9907
+deployment0002,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_saturation,percent,nan,"[0.0, 110.0]",557089,0,0,33594,0,523495,93.97,31.1863,0.0,110.0,30.6429
+deployment0002,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_temp,1,nan,"[None, None]",557089,0,0,no global ranges,0,557089,100.0,7.2335,0.0,16.307,2.4555
+deployment0002,recovered_host,dosta_abcdjm_glider_recovered,sci_abs_oxygen,µmol kg-1,nan,"[0.0, 400.0]",557089,9817,0,2,0,547270,98.24,103.6465,0.0,388.704,98.0365
+deployment0003,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_oxygen,µmol L-1,nan,"[0.0, 400.0]",908958,0,0,0,0,908958,100.0,124.5441,0.0,359.679,123.0593
+deployment0003,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_saturation,percent,nan,"[0.0, 110.0]",908958,0,0,0,0,908958,100.0,34.9958,0.0,105.507,35.9865
+deployment0003,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_temp,1,nan,"[None, None]",908958,0,0,no global ranges,0,908958,100.0,7.0325,0.0,11.653,2.6325
+deployment0003,recovered_host,dosta_abcdjm_glider_recovered,sci_abs_oxygen,µmol kg-1,nan,"[0.0, 400.0]",908958,1488,0,6,0,907464,99.84,98.538,0.0,349.2048,97.8254
+deployment0004,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_oxygen,µmol L-1,nan,"[0.0, 400.0]",2131699,0,0,0,0,2131699,100.0,76.6264,0.0,292.407,79.2172
+deployment0004,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_saturation,percent,nan,"[0.0, 110.0]",2131699,0,0,982,0,2130717,99.95,26.6089,0.0,109.954,29.3221
+deployment0004,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_temp,1,nan,"[None, None]",2131699,0,0,no global ranges,0,2131699,100.0,6.3103,0.0,17.39,2.8154
+deployment0004,recovered_host,dosta_abcdjm_glider_recovered,sci_abs_oxygen,µmol kg-1,nan,"[0.0, 400.0]",2131699,4,0,0,0,2131695,100.0,60.6833,0.0,236.0279,63.0774
+deployment0005,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_oxygen,µmol L-1,nan,"[0.0, 400.0]",31954,0,0,0,303,31651,99.05,343.4519,258.225,371.209,15.7365
+deployment0005,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_saturation,percent,nan,"[0.0, 110.0]",31954,0,0,0,303,31651,99.05,99.3154,73.185,108.106,5.1299
+deployment0005,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_temp,1,nan,"[None, None]",31954,0,0,no global ranges,303,31651,99.05,10.8159,9.97,12.33,0.3141
+deployment0005,recovered_host,dosta_abcdjm_glider_recovered,sci_abs_oxygen,µmol kg-1,nan,"[0.0, 400.0]",31954,0,0,0,303,31651,99.05,273.3248,204.7196,295.5371,12.7684
+deployment0006,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_oxygen,µmol L-1,nan,"[0.0, 400.0]",2139899,0,0,13,0,2139886,100.0,128.5443,0.0,399.997,121.619
+deployment0006,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_saturation,percent,nan,"[0.0, 110.0]",2139899,0,0,410,0,2139489,99.98,35.7653,0.0,109.965,35.2301
+deployment0006,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_temp,1,nan,"[None, None]",2139899,0,0,no global ranges,0,2139899,100.0,6.9315,0.0,12.168,2.4868
+deployment0006,recovered_host,dosta_abcdjm_glider_recovered,sci_abs_oxygen,µmol kg-1,nan,"[0.0, 400.0]",2139899,0,0,2,0,2139897,100.0,101.7143,0.0,321.7758,96.5547
