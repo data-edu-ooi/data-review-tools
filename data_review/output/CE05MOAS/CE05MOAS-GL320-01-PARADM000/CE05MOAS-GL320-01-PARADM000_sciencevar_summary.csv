@@ -1,0 +1,13 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_host,parad_m_glider_recovered,sci_bsipar_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",1764980,0,0,1763966,0,1014,0.06,0.0,0.0,0.0,0.0
+deployment0001,recovered_host,parad_m_glider_recovered,sci_bsipar_temp,ºC,nan,"[-2.0, 40.0]",1764980,0,0,0,1033,1763947,99.94,11.9236,7.35,23.11,2.2756
+deployment0001,recovered_host,parad_m_glider_recovered,parad_m_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",1764980,0,0,1246,11691,1752043,99.27,6.4027,0.0,533.152,36.916
+deployment0002,recovered_host,parad_m_glider_recovered,sci_bsipar_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",1201505,0,0,758154,5636,437715,36.43,100.0936,0.0,1961.76,281.2159
+deployment0002,recovered_host,parad_m_glider_recovered,sci_bsipar_temp,ºC,nan,"[-2.0, 40.0]",1201505,0,0,0,0,1201505,100.0,12.242,0.0,19.79,2.5384
+deployment0002,recovered_host,parad_m_glider_recovered,parad_m_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",1201505,0,0,758154,5636,437715,36.43,100.0936,0.0,1961.76,281.2159
+deployment0003,recovered_host,parad_m_glider_recovered,sci_bsipar_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",615527,0,0,2497,6897,606133,98.47,35.2615,0.0,1146.92,128.046
+deployment0003,recovered_host,parad_m_glider_recovered,sci_bsipar_temp,ºC,nan,"[-2.0, 40.0]",615527,0,0,0,549,614978,99.91,9.7127,7.35,13.57,0.9301
+deployment0003,recovered_host,parad_m_glider_recovered,parad_m_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",615527,0,0,2497,6897,606133,98.47,35.2615,0.0,1146.92,128.046
+deployment0004,recovered_host,parad_m_glider_recovered,sci_bsipar_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",1037422,0,0,4725,12169,1020528,98.37,44.3045,0.0,1295.78,152.7367
+deployment0004,recovered_host,parad_m_glider_recovered,sci_bsipar_temp,ºC,nan,"[-2.0, 40.0]",1037422,0,0,0,1283,1036139,99.88,10.3454,6.93,17.31,1.6348
+deployment0004,recovered_host,parad_m_glider_recovered,parad_m_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",1037422,0,0,4725,12169,1020528,98.37,44.3045,0.0,1295.78,152.7367
