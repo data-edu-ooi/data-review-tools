@@ -229,7 +229,12 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                             stat_data.to_csv(file_exclude, index=True, mode='a', header=False)
 
                         #  rejecting timestamps from percentile analysis
-                        t_nospct, z_nospct, y_nospct = cf.reject_suspect_data(t_portal, y_portal, z_portal, time_ex)
+                        if len(time_ex) > 0:
+                            t_nospct, z_nospct, y_nospct = cf.reject_suspect_data(t_portal, y_portal, z_portal, time_ex)
+                        else:
+                            t_nospct = t_portal
+                            z_nospct = z_portal
+                            y_nospct = y_portal
 
                         # reject data in a depth range
                         if zdbar:
