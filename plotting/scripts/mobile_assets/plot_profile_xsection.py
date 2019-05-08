@@ -26,7 +26,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
     for uu in url_list:
         elements = uu.split('/')[-2].split('-')
         rd = '-'.join((elements[1], elements[2], elements[3], elements[4]))
-        if rd not in rd_list and 'ENG' not in rd:
+        if rd not in rd_list and 'ENG' not in rd and 'ADCP' not in rd:
             rd_list.append(rd)
 
     for r in rd_list:
