@@ -192,162 +192,163 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                             lat = None
                             lon = None
 
-                        # reject time range from data portal file export
-                        t_portal, z_portal, y_portal, lat_portal, lon_portal = \
-                            cf.reject_timestamps_dataportal(subsite, r, dtime, zpressure, ndata, lat, lon)
+                        if len(dtime) > 0:
+                            # reject time range from data portal file export
+                            t_portal, z_portal, y_portal, lat_portal, lon_portal = \
+                                cf.reject_timestamps_dataportal(subsite, r, dtime, zpressure, ndata, lat, lon)
 
-                        print('removed {} data points using visual inspection of data'.format(
-                            len(ndata) - len(z_portal)))
+                            print('removed {} data points using visual inspection of data'.format(
+                                len(ndata) - len(z_portal)))
 
-                        # create data groups
-                        columns = ['tsec', 'dbar', str(sv)]
-                        min_r = int(round(min(y_portal) - zcell_size))
-                        max_r = int(round(max(y_portal) + zcell_size))
-                        ranges = list(range(min_r, max_r, zcell_size))
+                            # create data groups
+                            columns = ['tsec', 'dbar', str(sv)]
+                            min_r = int(round(min(y_portal) - zcell_size))
+                            max_r = int(round(max(y_portal) + zcell_size))
+                            ranges = list(range(min_r, max_r, zcell_size))
 
-                        groups, d_groups = gt.group_by_depth_range(t_portal, y_portal, z_portal, columns, ranges)
+                            groups, d_groups = gt.group_by_depth_range(t_portal, y_portal, z_portal, columns, ranges)
 
-                        if 'scatter' in sv:
-                            n_std = None  # to use percentile
-                        else:
-                            n_std = n_std
+                            if 'scatter' in sv:
+                                n_std = None  # to use percentile
+                            else:
+                                n_std = n_std
 
-                        #  identifying timestamps from percentile analysis
-                        y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_ex = cf.reject_timestamps_in_groups(
-                            groups, d_groups, n_std, inpercentile)
+                            #  identifying timestamps from percentile analysis
+                            y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_ex = cf.reject_timestamps_in_groups(
+                                groups, d_groups, n_std, inpercentile)
 
-                        """
-                        writing timestamps to .csv file to use with data_range.py script
-                        """
-                        if len(time_ex) != 0:
-                            t_exclude = time_ex[0]
-                            for i in range(len(time_ex))[1:len(time_ex)]:
-                                t_exclude = '{}, {}'.format(t_exclude, time_ex[i])
+                            """
+                            writing timestamps to .csv file to use with data_range.py script
+                            """
+                            if len(time_ex) != 0:
+                                t_exclude = time_ex[0]
+                                for i in range(len(time_ex))[1:len(time_ex)]:
+                                    t_exclude = '{}, {}'.format(t_exclude, time_ex[i])
 
-                            stat_data = pd.DataFrame({'deployments': deployment,
-                                                      'time_to_exclude': t_exclude}, index=[sv])
-                            stat_data.to_csv(file_exclude, index=True, mode='a', header=False)
+                                stat_data = pd.DataFrame({'deployments': deployment,
+                                                          'time_to_exclude': t_exclude}, index=[sv])
+                                stat_data.to_csv(file_exclude, index=True, mode='a', header=False)
 
-                        #  rejecting timestamps from percentile analysis
-                        if len(time_ex) > 0:
-                            t_nospct, z_nospct, y_nospct = cf.reject_suspect_data(t_portal, y_portal, z_portal, time_ex)
-                        else:
-                            t_nospct = t_portal
-                            z_nospct = z_portal
-                            y_nospct = y_portal
+                            #  rejecting timestamps from percentile analysis
+                            if len(time_ex) > 0:
+                                t_nospct, z_nospct, y_nospct = cf.reject_suspect_data(t_portal, y_portal, z_portal, time_ex)
+                            else:
+                                t_nospct = t_portal
+                                z_nospct = z_portal
+                                y_nospct = y_portal
 
-                        # reject data in a depth range
-                        if zdbar:
-                            y_ind = y_nospct < zdbar
-                            n_zdbar = np.sum(~y_ind)
-                            t_array = t_nospct[y_ind]
-                            y_array = y_nospct[y_ind]
-                            z_array = z_nospct[y_ind]
-                        else:
-                            n_zdbar = 0
-                            t_array = t_nospct
-                            y_array = y_nospct
-                            z_array = z_nospct
-                        print('{} in water depth > {} dbar'.format(n_zdbar, zdbar))
+                            # reject data in a depth range
+                            if zdbar:
+                                y_ind = y_nospct < zdbar
+                                n_zdbar = np.sum(~y_ind)
+                                t_array = t_nospct[y_ind]
+                                y_array = y_nospct[y_ind]
+                                z_array = z_nospct[y_ind]
+                            else:
+                                n_zdbar = 0
+                                t_array = t_nospct
+                                y_array = y_nospct
+                                z_array = z_nospct
+                            print('{} in water depth > {} dbar'.format(n_zdbar, zdbar))
 
-                        """
-                        Plot data
-                        """
-                        if len(t_array) > 0:
-                            if len(t_array) != len(dtime):
-                                cf.create_dir(save_dir_profile)
-                                cf.create_dir(save_dir_xsection)
-                                sname = '-'.join((r, method, sv))
-                                sfile = '_'.join(('rm_suspect_data', sname))
+                            """
+                            Plot data
+                            """
+                            if len(t_array) > 0:
+                                if len(t_array) != len(dtime):
+                                    cf.create_dir(save_dir_profile)
+                                    cf.create_dir(save_dir_xsection)
+                                    sname = '-'.join((r, method, sv))
+                                    sfile = '_'.join(('rm_suspect_data', sname))
 
-                                t0 = pd.to_datetime(t_array.min()).strftime('%Y-%m-%dT%H:%M:%S')
-                                t1 = pd.to_datetime(t_array.max()).strftime('%Y-%m-%dT%H:%M:%S')
-                                title = ' '.join((deployment, refdes, method)) + '\n' + t0 + ' to ' + t1
+                                    t0 = pd.to_datetime(t_array.min()).strftime('%Y-%m-%dT%H:%M:%S')
+                                    t1 = pd.to_datetime(t_array.max()).strftime('%Y-%m-%dT%H:%M:%S')
+                                    title = ' '.join((deployment, refdes, method)) + '\n' + t0 + ' to ' + t1
 
-                                if zdbar:
-                                    leg_text = (
-                                        'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges '
-                                        '[{} - {}], {} zeros'.format(lenfv, lennan, lenev, lengr, global_min,
-                                                                     global_max, lenzero)
-                                        + '\nremoved {} in the upper and lower {} percentile of data grouped in {} '
-                                          'dbar segments'.format(len(z_portal) - len(z_nospct), inpercentile, zcell_size)
-                                        + '\nexcluded {} suspect data points when inspected visually'.format(
-                                            len(ndata) - len(z_portal))
-                                        + '\nexcluded {} suspect data in water depth greater than {} dbar'.format(
-                                            n_zdbar, zdbar),
-                                    )
-                                else:
-                                    leg_text = (
-                                        'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
-                                        '{} zeros'.format(lenfv, lennan, lenev, lengr, global_min, global_max, lenzero)
-                                        + '\nremoved {} in the upper and lower {} percentile of data grouped in {} dbar segments'.format(
-                                            len(z_portal) - len(z_nospct), inpercentile, zcell_size)
-                                        + '\nexcluded {} suspect data points when inspected visually'.format(
-                                            len(ndata) - len(z_portal)),
-                                    )
-                                '''
-                                profile plot
-                                '''
-                                xlabel = sv + " (" + sv_units + ")"
-                                ylabel = press[0] + " (" + y_units[0] + ")"
-                                clabel = 'Time'
+                                    if zdbar:
+                                        leg_text = (
+                                            'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges '
+                                            '[{} - {}], {} zeros'.format(lenfv, lennan, lenev, lengr, global_min,
+                                                                         global_max, lenzero)
+                                            + '\nremoved {} in the upper and lower {} percentile of data grouped in {} '
+                                              'dbar segments'.format(len(z_portal) - len(z_nospct), inpercentile, zcell_size)
+                                            + '\nexcluded {} suspect data points when inspected visually'.format(
+                                                len(ndata) - len(z_portal))
+                                            + '\nexcluded {} suspect data in water depth greater than {} dbar'.format(
+                                                n_zdbar, zdbar),
+                                        )
+                                    else:
+                                        leg_text = (
+                                            'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
+                                            '{} zeros'.format(lenfv, lennan, lenev, lengr, global_min, global_max, lenzero)
+                                            + '\nremoved {} in the upper and lower {} percentile of data grouped in {} dbar segments'.format(
+                                                len(z_portal) - len(z_nospct), inpercentile, zcell_size)
+                                            + '\nexcluded {} suspect data points when inspected visually'.format(
+                                                len(ndata) - len(z_portal)),
+                                        )
+                                    '''
+                                    profile plot
+                                    '''
+                                    xlabel = sv + " (" + sv_units + ")"
+                                    ylabel = press[0] + " (" + y_units[0] + ")"
+                                    clabel = 'Time'
 
-                                # plot non-erroneous data
-                                fig, ax = pf.plot_profiles(z_array, y_array, t_array, ylabel, xlabel, clabel, stdev=None)
+                                    # plot non-erroneous data
+                                    fig, ax = pf.plot_profiles(z_array, y_array, t_array, ylabel, xlabel, clabel, stdev=None)
 
-                                ax.set_title(title, fontsize=9)
-                                ax.plot(n_avg, y_avg, '-k')
-                                #ax.fill_betweenx(y_avg, n0_std, n1_std, color='m', alpha=0.2)
-                                ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
-                                fig.tight_layout()
-                                pf.save_fig(save_dir_profile, sfile)
+                                    ax.set_title(title, fontsize=9)
+                                    ax.plot(n_avg, y_avg, '-k')
+                                    #ax.fill_betweenx(y_avg, n0_std, n1_std, color='m', alpha=0.2)
+                                    ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
+                                    fig.tight_layout()
+                                    pf.save_fig(save_dir_profile, sfile)
 
-                                '''
-                                xsection plot
-                                '''
-                                clabel = sv + " (" + sv_units + ")"
-                                ylabel = press[0] + " (" + y_units[0] + ")"
+                                    '''
+                                    xsection plot
+                                    '''
+                                    clabel = sv + " (" + sv_units + ")"
+                                    ylabel = press[0] + " (" + y_units[0] + ")"
 
-                                # plot bathymetry only within data time ranges
-                                if t_eng is not None:
-                                    eng_ind = (t_eng >= np.nanmin(t_array)) & (t_eng <= np.nanmax(t_array))
-                                    t_eng = t_eng[eng_ind]
-                                    m_water_depth = m_water_depth[eng_ind]
+                                    # plot bathymetry only within data time ranges
+                                    if t_eng is not None:
+                                        eng_ind = (t_eng >= np.nanmin(t_array)) & (t_eng <= np.nanmax(t_array))
+                                        t_eng = t_eng[eng_ind]
+                                        m_water_depth = m_water_depth[eng_ind]
 
-                                # plot non-erroneous data
-                                fig, ax, bar = pf.plot_xsection(subsite, t_array, y_array, z_array, clabel, ylabel,
-                                                                t_eng, m_water_depth, inpercentile, stdev=None)
+                                    # plot non-erroneous data
+                                    fig, ax, bar = pf.plot_xsection(subsite, t_array, y_array, z_array, clabel, ylabel,
+                                                                    t_eng, m_water_depth, inpercentile, stdev=None)
 
-                                ax.set_title(title, fontsize=9)
-                                ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
-                                fig.tight_layout()
-                                pf.save_fig(save_dir_xsection, sfile)
+                                    ax.set_title(title, fontsize=9)
+                                    ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
+                                    fig.tight_layout()
+                                    pf.save_fig(save_dir_xsection, sfile)
 
-                                '''
-                                4D plot for gliders only
-                                '''
-                                if 'MOAS' in r:
-                                    if ds_lat is not None and ds_lon is not None:
-                                        cf.create_dir(save_dir_4d)
+                                    '''
+                                    4D plot for gliders only
+                                    '''
+                                    if 'MOAS' in r:
+                                        if ds_lat is not None and ds_lon is not None:
+                                            cf.create_dir(save_dir_4d)
 
-                                        clabel = sv + " (" + sv_units + ")"
-                                        zlabel = press[0] + " (" + y_units[0] + ")"
+                                            clabel = sv + " (" + sv_units + ")"
+                                            zlabel = press[0] + " (" + y_units[0] + ")"
 
-                                        fig = plt.figure()
-                                        ax = fig.add_subplot(111, projection='3d')
-                                        sct = ax.scatter(lon, lat, zpressure, c=ndata, s=2)
-                                        cbar = plt.colorbar(sct, label=clabel, extend='both')
-                                        cbar.ax.tick_params(labelsize=8)
-                                        ax.invert_zaxis()
-                                        ax.view_init(25, 32)
-                                        ax.invert_xaxis()
-                                        ax.invert_yaxis()
-                                        ax.set_zlabel(zlabel, fontsize=9)
-                                        ax.set_ylabel('Latitude', fontsize=9)
-                                        ax.set_xlabel('Longitude', fontsize=9)
+                                            fig = plt.figure()
+                                            ax = fig.add_subplot(111, projection='3d')
+                                            sct = ax.scatter(lon, lat, zpressure, c=ndata, s=2)
+                                            cbar = plt.colorbar(sct, label=clabel, extend='both')
+                                            cbar.ax.tick_params(labelsize=8)
+                                            ax.invert_zaxis()
+                                            ax.view_init(25, 32)
+                                            ax.invert_xaxis()
+                                            ax.invert_yaxis()
+                                            ax.set_zlabel(zlabel, fontsize=9)
+                                            ax.set_ylabel('Latitude', fontsize=9)
+                                            ax.set_xlabel('Longitude', fontsize=9)
 
-                                        ax.set_title(title, fontsize=9)
-                                        pf.save_fig(save_dir_4d, sfile)
+                                            ax.set_title(title, fontsize=9)
+                                            pf.save_fig(save_dir_4d, sfile)
 
 
 if __name__ == '__main__':
