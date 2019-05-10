@@ -26,7 +26,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
     for uu in url_list:
         elements = uu.split('/')[-2].split('-')
         rd = '-'.join((elements[1], elements[2], elements[3], elements[4]))
-        if rd not in rd_list and 'ENG' not in rd:
+        if rd not in rd_list and 'ENG' not in rd and 'ADCP' not in rd:
             rd_list.append(rd)
 
     for r in rd_list:
@@ -88,8 +88,14 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                             eng_ind = ds_eng['m_altimeter_status'].values == 0
                         except KeyError:
                             eng_ind = (~np.isnan(m_water_depth)) & (m_water_depth >= 0)
+
                         m_water_depth = m_water_depth[eng_ind]
                         t_eng = t_eng[eng_ind]
+
+                        # get rid of any remaining nans or fill values
+                        eng_ind2 = (~np.isnan(m_water_depth)) & (m_water_depth >= 0)
+                        m_water_depth = m_water_depth[eng_ind2]
+                        t_eng = t_eng[eng_ind2]
                     else:
                         print('No engineering file for deployment {}'.format(deployment))
                         m_water_depth = None
@@ -176,33 +182,30 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                             lat = None
                             lon = None
 
-                        t0 = pd.to_datetime(dtime.min()).strftime('%Y-%m-%dT%H:%M:%S')
-                        t1 = pd.to_datetime(dtime.max()).strftime('%Y-%m-%dT%H:%M:%S')
-                        title = ' '.join((deployment, refdes, method)) + '\n' + t0 + ' to ' + t1
+                        if len(dtime) > 0:
+                            # reject time range from data portal file export
+                            t_portal, z_portal, y_portal, lat_portal, lon_portal = \
+                                cf.reject_timestamps_dataportal(subsite, r, dtime, zpressure, ndata, lat, lon)
 
-                        # reject time range from data portal file export
-                        t_portal, z_portal, y_portal, lat_portal, lon_portal = \
-                            cf.reject_timestamps_dataportal(subsite, r, dtime, zpressure, ndata, lat, lon)
+                            print('removed {} data points using visual inspection of data'.format(
+                                len(ndata) - len(z_portal)))
 
-                        print('removed {} data points using visual inspection of data'.format(
-                            len(ndata) - len(z_portal)))
+                            # create data groups
+                            columns = ['tsec', 'dbar', str(sv)]
+                            min_r = int(round(min(y_portal) - zcell_size))
+                            max_r = int(round(max(y_portal) + zcell_size))
+                            ranges = list(range(min_r, max_r, zcell_size))
 
-                        # create data groups
-                        columns = ['tsec', 'dbar', str(sv)]
-                        min_r = int(round(min(y_portal) - zcell_size))
-                        max_r = int(round(max(y_portal) + zcell_size))
-                        ranges = list(range(min_r, max_r, zcell_size))
+                            groups, d_groups = gt.group_by_depth_range(t_portal, y_portal, z_portal, columns, ranges)
 
-                        groups, d_groups = gt.group_by_depth_range(t_portal, y_portal, z_portal, columns, ranges)
+                            if 'scatter' in sv:
+                                n_std = None  # to use percentile
+                            else:
+                                n_std = n_std
 
-                        if 'scatter' in sv:
-                            n_std = None  # to use percentile
-                        else:
-                            n_std = n_std
-
-                        #  get percentile analysis for printing on the profile plot
-                        y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_ex = cf.reject_timestamps_in_groups(
-                            groups, d_groups, n_std, inpercentile)
+                            #  get percentile analysis for printing on the profile plot
+                            y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_ex = cf.reject_timestamps_in_groups(
+                                groups, d_groups, n_std, inpercentile)
 
                         """
                         Plot all data
@@ -212,6 +215,9 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                             cf.create_dir(save_dir_xsection)
                             sname = '-'.join((r, method, sv))
                             sfileall = '_'.join(('all_data', sname))
+                            tm0 = pd.to_datetime(tm.min()).strftime('%Y-%m-%dT%H:%M:%S')
+                            tm1 = pd.to_datetime(tm.max()).strftime('%Y-%m-%dT%H:%M:%S')
+                            title = ' '.join((deployment, refdes, method)) + '\n' + tm0 + ' to ' + tm1
 
                             '''
                             profile plot
@@ -243,8 +249,10 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                         Plot cleaned-up data
                         """
                         if len(dtime) > 0:
-
                             sfile = '_'.join(('rm_erroneous_data', sname))
+                            t0 = pd.to_datetime(t_portal.min()).strftime('%Y-%m-%dT%H:%M:%S')
+                            t1 = pd.to_datetime(t_portal.max()).strftime('%Y-%m-%dT%H:%M:%S')
+                            title = ' '.join((deployment, refdes, method)) + '\n' + t0 + ' to ' + t1
 
                             '''
                             profile plot

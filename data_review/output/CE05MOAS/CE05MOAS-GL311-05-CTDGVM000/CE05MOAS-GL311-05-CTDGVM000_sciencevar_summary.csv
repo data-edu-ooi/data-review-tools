@@ -1,0 +1,37 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_host,ctdgv_m_glider_instrument_recovered,practical_salinity,1,-9999999.0,"[0.0, 42.0]",1706577,18,0,0,1499,1705060,99.91,33.2079,27.5895,34.9484,0.5387
+deployment0001,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_cond,S m-1,nan,"[0.0, 6.0]",1706577,0,0,18,1488,1705071,99.91,3.6841,3.2127,4.1922,0.1643
+deployment0001,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_pressure,bar,nan,"[0.0, 6000.0]",1706577,0,0,89,0,1706488,99.99,8.7581,0.0,19.47,5.418
+deployment0001,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_temp,ºC,nan,"[-2.0, 40.0]",1706577,0,0,0,0,1706577,100.0,10.5159,0.0,21.7906,2.3235
+deployment0001,recovered_host,ctdgv_m_glider_instrument_recovered,sci_seawater_density,kg m-3,nan,"[1000.0, 1100.0]",1706577,27,0,1490,18,1705042,99.91,1025.8425,1020.7274,1027.4246,1.0259
+deployment0001,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_pressure_dbar,dbar,nan,"[0.0, 6000.0]",1706577,0,0,89,0,1706488,99.99,87.5815,0.0,194.7,54.1802
+deployment0002,recovered_host,ctdgv_m_glider_instrument_recovered,practical_salinity,1,-9999999.0,"[0.0, 42.0]",915848,0,0,0,1306,914542,99.86,32.8684,27.0058,33.954,0.5774
+deployment0002,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_cond,S m-1,nan,"[0.0, 6.0]",915848,0,0,0,1306,914542,99.86,3.6407,3.0817,3.7655,0.0495
+deployment0002,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_pressure,bar,nan,"[0.0, 6000.0]",915848,0,0,127,0,915721,99.99,8.286,0.0,19.542,5.2015
+deployment0002,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_temp,ºC,nan,"[-2.0, 40.0]",915848,0,0,0,1306,914542,99.86,10.4252,7.4142,12.2672,1.101
+deployment0002,recovered_host,ctdgv_m_glider_instrument_recovered,sci_seawater_density,kg m-3,nan,"[1000.0, 1100.0]",915848,0,0,1308,57,914483,99.85,1025.5929,1021.3469,1027.4253,0.8509
+deployment0002,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_pressure_dbar,dbar,nan,"[0.0, 6000.0]",915848,0,0,127,0,915721,99.99,82.8597,0.0,195.42,52.0153
+deployment0003,recovered_host,ctdgv_m_glider_instrument_recovered,practical_salinity,1,-9999999.0,"[0.0, 42.0]",1675151,0,0,0,1780,1673371,99.89,33.3097,29.1166,34.0601,0.552
+deployment0003,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_cond,S m-1,nan,"[0.0, 6.0]",1675151,0,0,0,1780,1673371,99.89,3.6846,3.4326,4.1178,0.1557
+deployment0003,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_pressure,bar,nan,"[0.0, 6000.0]",1675151,0,0,9,0,1675142,100.0,9.6011,0.0,19.581,5.5515
+deployment0003,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_temp,ºC,nan,"[-2.0, 40.0]",1675151,0,0,0,0,1675151,100.0,10.407,0.0,16.3198,2.3122
+deployment0003,recovered_host,ctdgv_m_glider_instrument_recovered,sci_seawater_density,kg m-3,nan,"[1000.0, 1100.0]",1675151,4,0,1780,0,1673367,99.89,1025.9792,1021.3019,1027.4827,1.0595
+deployment0003,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_pressure_dbar,dbar,nan,"[0.0, 6000.0]",1675151,0,0,9,0,1675142,100.0,96.0111,0.0,195.81,55.5151
+deployment0004,recovered_host,ctdgv_m_glider_instrument_recovered,practical_salinity,1,-9999999.0,"[0.0, 42.0]",1711438,28,0,0,1843,1709567,99.89,33.3622,28.0373,35.3981,0.6747
+deployment0004,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_cond,S m-1,nan,"[0.0, 6.0]",1711438,0,0,28,1843,1709567,99.89,3.5723,3.1235,4.4103,0.138
+deployment0004,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_pressure,bar,nan,"[0.0, 6000.0]",1711438,0,0,37,0,1711401,100.0,6.159,0.0,20.12,4.8093
+deployment0004,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_temp,ºC,nan,"[-2.0, 40.0]",1711438,0,0,0,30,1711408,100.0,9.1321,0.0,18.4162,2.1443
+deployment0004,recovered_host,ctdgv_m_glider_instrument_recovered,sci_seawater_density,kg m-3,nan,"[1000.0, 1100.0]",1711438,35,0,1843,1,1709559,99.89,1026.0791,1021.0051,1027.6239,1.0171
+deployment0004,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_pressure_dbar,dbar,nan,"[0.0, 6000.0]",1711438,0,0,37,0,1711401,100.0,61.5897,0.0,201.2,48.0928
+deployment0005,recovered_host,ctdgv_m_glider_instrument_recovered,practical_salinity,1,-9999999.0,"[0.0, 42.0]",81583,0,0,0,78,81505,99.9,32.6853,29.5011,33.9086,0.6662
+deployment0005,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_cond,S m-1,nan,"[0.0, 6.0]",81583,0,0,0,78,81505,99.9,3.5397,3.2559,3.6041,0.0325
+deployment0005,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_pressure,bar,nan,"[0.0, 6000.0]",81583,0,0,0,0,81583,100.0,4.3272,0.0,16.069,3.1091
+deployment0005,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_temp,ºC,nan,"[-2.0, 40.0]",81583,0,0,0,78,81505,99.9,9.5129,7.6021,10.3527,0.5339
+deployment0005,recovered_host,ctdgv_m_glider_instrument_recovered,sci_seawater_density,kg m-3,nan,"[1000.0, 1100.0]",81583,849,0,78,0,80656,98.86,1025.4155,1022.6945,1027.1611,0.7127
+deployment0005,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_pressure_dbar,dbar,nan,"[0.0, 6000.0]",81583,0,0,0,0,81583,100.0,43.2723,0.0,160.69,31.0907
+deployment0006,recovered_host,ctdgv_m_glider_instrument_recovered,practical_salinity,1,-9999999.0,"[0.0, 42.0]",449440,2,0,0,974,448464,99.78,33.7918,28.3564,34.4242,0.7164
+deployment0006,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_cond,S m-1,nan,"[0.0, 6.0]",449440,0,0,2,239,449199,99.95,3.3899,3.1993,3.954,0.1455
+deployment0006,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_pressure,bar,nan,"[0.0, 6000.0]",449440,0,0,0,0,449440,100.0,41.4057,0.0,99.827,30.3427
+deployment0006,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_temp,ºC,nan,"[-2.0, 40.0]",449440,0,0,0,0,449440,100.0,6.4936,0.0,17.4822,2.4032
+deployment0006,recovered_host,ctdgv_m_glider_instrument_recovered,sci_seawater_density,kg m-3,nan,"[1000.0, 1100.0]",449440,2,0,239,0,449199,99.95,1028.4181,1020.9275,1031.9909,2.1938
+deployment0006,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_pressure_dbar,dbar,nan,"[0.0, 6000.0]",449440,0,0,0,0,449440,100.0,414.0565,0.0,998.27,303.4273
