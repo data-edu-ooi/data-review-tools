@@ -1,0 +1,13 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_host,parad_m_glider_recovered,sci_bsipar_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",1996698,0,0,1990014,0,6684,0.33,1034.4464,0.0,1980.59,989.3103
+deployment0001,recovered_host,parad_m_glider_recovered,sci_bsipar_temp,ºC,nan,"[-2.0, 40.0]",1996698,0,0,0,0,1996698,100.0,15.2424,0.0,32.65,4.4883
+deployment0001,recovered_host,parad_m_glider_recovered,parad_m_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",1996698,0,0,1729,14134,1980835,99.21,25.6017,0.0,693.781,79.7024
+deployment0002,recovered_host,parad_m_glider_recovered,sci_bsipar_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",4460495,0,0,776,43220,4416499,99.01,23.2358,0.0,649.998,80.6932
+deployment0002,recovered_host,parad_m_glider_recovered,sci_bsipar_temp,ºC,nan,"[-2.0, 40.0]",4460495,0,0,0,1406,4459089,99.97,17.0717,11.5,31.83,2.9664
+deployment0002,recovered_host,parad_m_glider_recovered,parad_m_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",4460495,0,0,98,29767,4430630,99.33,0.0,0.0,0.0007,0.0001
+deployment0003,recovered_host,parad_m_glider_recovered,sci_bsipar_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",5233162,0,0,5231500,0,1662,0.03,83.4183,0.0,1980.59,397.8177
+deployment0003,recovered_host,parad_m_glider_recovered,sci_bsipar_temp,ºC,nan,"[-2.0, 40.0]",5233162,0,0,0,1602,5231560,99.97,15.5804,10.67,28.09,2.566
+deployment0003,recovered_host,parad_m_glider_recovered,parad_m_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",5233162,0,0,837,49996,5182329,99.03,20.8378,0.0,633.599,75.866
+deployment0004,recovered_host,parad_m_glider_recovered,sci_bsipar_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",4613060,0,0,4611786,0,1274,0.03,0.0,0.0,0.0,0.0
+deployment0004,recovered_host,parad_m_glider_recovered,sci_bsipar_temp,ºC,nan,"[-2.0, 40.0]",4613060,0,0,0,1274,4611786,99.97,17.6224,13.16,24.36,1.6727
+deployment0004,recovered_host,parad_m_glider_recovered,parad_m_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",4613060,0,0,368,28922,4583770,99.37,4.4426,0.0,253.527,20.1299
