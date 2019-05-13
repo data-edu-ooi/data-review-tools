@@ -72,41 +72,41 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
             array = subsite[0:2]
             sci_vars = cf.return_science_vars(stream)
 
-            if 'CE05MOAS' in r or 'CP05MOAS' in r:  # for coastal gliders, get m_water_depth for bathymetry
-                eng = '-'.join((r.split('-')[0], r.split('-')[1], '00-ENG000000', method, 'glider_eng'))
-                eng_url = [s for s in url_list if eng in s]
-                if len(eng_url) == 1:
-                    eng_datasets = cf.get_nc_urls(eng_url)
-                    # filter out collocated datasets
-                    eng_dataset = [j for j in eng_datasets if (eng in j.split('/')[-1] and deployment in j.split('/')[-1])]
-                    if len(eng_dataset) > 0:
-                        ds_eng = xr.open_dataset(eng_dataset[0], mask_and_scale=False)
-                        t_eng = ds_eng['time'].values
-                        m_water_depth = ds_eng['m_water_depth'].values
-
-                        # m_altimeter_status = 0 means a good reading (not nan or -1)
-                        try:
-                            eng_ind = ds_eng['m_altimeter_status'].values == 0
-                        except KeyError:
-                            eng_ind = (~np.isnan(m_water_depth)) & (m_water_depth >= 0)
-
-                        m_water_depth = m_water_depth[eng_ind]
-                        t_eng = t_eng[eng_ind]
-
-                        # get rid of any remaining nans or fill values
-                        eng_ind2 = (~np.isnan(m_water_depth)) & (m_water_depth >= 0)
-                        m_water_depth = m_water_depth[eng_ind2]
-                        t_eng = t_eng[eng_ind2]
-                    else:
-                        print('No engineering file for deployment {}'.format(deployment))
-                        m_water_depth = None
-                        t_eng = None
-                else:
-                    m_water_depth = None
-                    t_eng = None
-            else:
-                m_water_depth = None
-                t_eng = None
+            # if 'CE05MOAS' in r or 'CP05MOAS' in r:  # for coastal gliders, get m_water_depth for bathymetry
+            #     eng = '-'.join((r.split('-')[0], r.split('-')[1], '00-ENG000000', method, 'glider_eng'))
+            #     eng_url = [s for s in url_list if eng in s]
+            #     if len(eng_url) == 1:
+            #         eng_datasets = cf.get_nc_urls(eng_url)
+            #         # filter out collocated datasets
+            #         eng_dataset = [j for j in eng_datasets if (eng in j.split('/')[-1] and deployment in j.split('/')[-1])]
+            #         if len(eng_dataset) > 0:
+            #             ds_eng = xr.open_dataset(eng_dataset[0], mask_and_scale=False)
+            #             t_eng = ds_eng['time'].values
+            #             m_water_depth = ds_eng['m_water_depth'].values
+            #
+            #             # m_altimeter_status = 0 means a good reading (not nan or -1)
+            #             try:
+            #                 eng_ind = ds_eng['m_altimeter_status'].values == 0
+            #             except KeyError:
+            #                 eng_ind = (~np.isnan(m_water_depth)) & (m_water_depth >= 0)
+            #
+            #             m_water_depth = m_water_depth[eng_ind]
+            #             t_eng = t_eng[eng_ind]
+            #
+            #             # get rid of any remaining nans or fill values
+            #             eng_ind2 = (~np.isnan(m_water_depth)) & (m_water_depth >= 0)
+            #             m_water_depth = m_water_depth[eng_ind2]
+            #             t_eng = t_eng[eng_ind2]
+            #         else:
+            #             print('No engineering file for deployment {}'.format(deployment))
+            #             m_water_depth = None
+            #             t_eng = None
+            #     else:
+            #         m_water_depth = None
+            #         t_eng = None
+            # else:
+            #     m_water_depth = None
+            #     t_eng = None
 
             if deployment_num is not None:
                 if int(deployment.split('0')[-1]) is not deployment_num:
@@ -310,14 +310,15 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                                     ylabel = press[0] + " (" + y_units[0] + ")"
 
                                     # plot bathymetry only within data time ranges
-                                    if t_eng is not None:
-                                        eng_ind = (t_eng >= np.nanmin(t_array)) & (t_eng <= np.nanmax(t_array))
-                                        t_eng = t_eng[eng_ind]
-                                        m_water_depth = m_water_depth[eng_ind]
+                                    # if t_eng is not None:
+                                    #     eng_ind = (t_eng >= np.nanmin(t_array)) & (t_eng <= np.nanmax(t_array))
+                                    #     t_eng = t_eng[eng_ind]
+                                    #     m_water_depth = m_water_depth[eng_ind]
 
                                     # plot non-erroneous data
                                     fig, ax, bar = pf.plot_xsection(subsite, t_array, y_array, z_array, clabel, ylabel,
-                                                                    t_eng, m_water_depth, inpercentile, stdev=None)
+                                                                    t_eng=None, m_water_depth=None,
+                                                                    inpercentile=inpercentile, stdev=None)
 
                                     ax.set_title(title, fontsize=9)
                                     ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
@@ -327,28 +328,28 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                                     '''
                                     4D plot for gliders only
                                     '''
-                                    if 'MOAS' in r:
-                                        if ds_lat is not None and ds_lon is not None:
-                                            cf.create_dir(save_dir_4d)
-
-                                            clabel = sv + " (" + sv_units + ")"
-                                            zlabel = press[0] + " (" + y_units[0] + ")"
-
-                                            fig = plt.figure()
-                                            ax = fig.add_subplot(111, projection='3d')
-                                            sct = ax.scatter(lon, lat, zpressure, c=ndata, s=2)
-                                            cbar = plt.colorbar(sct, label=clabel, extend='both')
-                                            cbar.ax.tick_params(labelsize=8)
-                                            ax.invert_zaxis()
-                                            ax.view_init(25, 32)
-                                            ax.invert_xaxis()
-                                            ax.invert_yaxis()
-                                            ax.set_zlabel(zlabel, fontsize=9)
-                                            ax.set_ylabel('Latitude', fontsize=9)
-                                            ax.set_xlabel('Longitude', fontsize=9)
-
-                                            ax.set_title(title, fontsize=9)
-                                            pf.save_fig(save_dir_4d, sfile)
+                                    # if 'MOAS' in r:
+                                    #     if ds_lat is not None and ds_lon is not None:
+                                    #         cf.create_dir(save_dir_4d)
+                                    #
+                                    #         clabel = sv + " (" + sv_units + ")"
+                                    #         zlabel = press[0] + " (" + y_units[0] + ")"
+                                    #
+                                    #         fig = plt.figure()
+                                    #         ax = fig.add_subplot(111, projection='3d')
+                                    #         sct = ax.scatter(lon, lat, zpressure, c=ndata, s=2)
+                                    #         cbar = plt.colorbar(sct, label=clabel, extend='both')
+                                    #         cbar.ax.tick_params(labelsize=8)
+                                    #         ax.invert_zaxis()
+                                    #         ax.view_init(25, 32)
+                                    #         ax.invert_xaxis()
+                                    #         ax.invert_yaxis()
+                                    #         ax.set_zlabel(zlabel, fontsize=9)
+                                    #         ax.set_ylabel('Latitude', fontsize=9)
+                                    #         ax.set_xlabel('Longitude', fontsize=9)
+                                    #
+                                    #         ax.set_title(title, fontsize=9)
+                                    #         pf.save_fig(save_dir_4d, sfile)
 
 
 if __name__ == '__main__':
