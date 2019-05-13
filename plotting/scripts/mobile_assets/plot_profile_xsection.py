@@ -198,8 +198,8 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
 
                             # create data groups
                             columns = ['tsec', 'dbar', str(sv)]
-                            min_r = int(round(min(y_portal) - zcell_size))
-                            max_r = int(round(max(y_portal) + zcell_size))
+                            min_r = int(round(np.nanmin(y_portal) - zcell_size))
+                            max_r = int(round(np.nanmax(y_portal) + zcell_size))
                             ranges = list(range(min_r, max_r, zcell_size))
 
                             groups, d_groups = gt.group_by_depth_range(t_portal, y_portal, z_portal, columns, ranges)

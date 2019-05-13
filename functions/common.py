@@ -472,10 +472,16 @@ def add_pressure_to_dictionary_of_sci_vars(ds):
         else:
             pressure = 'int_ctd_pressure'
             y = ds[pressure].values
-            if ds[pressure].units not in y_unit:
-                y_unit.append(ds[pressure].units)
-            if ds[pressure].long_name not in y_name:
-                y_name.append(ds[pressure].long_name)
+            try:
+                if ds[pressure].units not in y_unit:
+                    y_unit.append(ds[pressure].units)
+            except AttributeError:
+                y_unit.append('no_units')
+            try:
+                if ds[pressure].long_name not in y_name:
+                    y_name.append(ds[pressure].long_name)
+            except AttributeError:
+                y_name.append('pressure')
     else:
         pressure = pf.pressure_var(ds, ds.data_vars.keys())
         y = ds[pressure].values

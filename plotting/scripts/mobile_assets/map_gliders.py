@@ -101,6 +101,7 @@ def plot_map(save_directory, savefile, plt_title, londata, latdata, tm, array, b
                 lonmin, lonmax = define_extent(array_loc.lon, londata, 'lon')
                 latmin, latmax = define_extent(array_loc.lat, latdata, 'lat')
                 lims = [lonmin, lonmax, latmin, latmax]
+                gf = None
             else:
                 if array == 'GA':
                     lims = [-43.5, -41.5, -43.5, -42]
@@ -125,15 +126,16 @@ def plot_map(save_directory, savefile, plt_title, londata, latdata, tm, array, b
         ax.set_extent(lims, crs=ccrs.PlateCarree())
         ax = plot_glider_box(ax, array)
 
-    gf_lon = grid_file['lon']
-    gf_lat = grid_file['lat']
-    lon_ind = np.logical_and(gf_lon > ax.get_xlim()[0], gf_lon < ax.get_xlim()[1])
-    lat_ind = np.logical_and(gf_lat > ax.get_ylim()[0], gf_lat < ax.get_ylim()[1])
-    bathy = grid_file['altitude'][lat_ind, lon_ind].values
-    CS = ax.contour(gf_lon[lon_ind], gf_lat[lat_ind], bathy, bathy_contours, colors='gray', linewidths=0.5, alpha=0.5)
-    ax.clabel(CS, inline=1, fontsize=8, fmt='%.0f')
-    #h = ax.pcolormesh(xx, yy, bathy, cmap='Blues_r', linewidth=0, rasterized=True)
-    #h = ax.pcolor(grid_file['altitude'], cmap='Blues_r', alpha=.1)
+    if gf:
+        gf_lon = grid_file['lon']
+        gf_lat = grid_file['lat']
+        lon_ind = np.logical_and(gf_lon > ax.get_xlim()[0], gf_lon < ax.get_xlim()[1])
+        lat_ind = np.logical_and(gf_lat > ax.get_ylim()[0], gf_lat < ax.get_ylim()[1])
+        bathy = grid_file['altitude'][lat_ind, lon_ind].values
+        CS = ax.contour(gf_lon[lon_ind], gf_lat[lat_ind], bathy, bathy_contours, colors='gray', linewidths=0.5, alpha=0.5)
+        ax.clabel(CS, inline=1, fontsize=8, fmt='%.0f')
+        #h = ax.pcolormesh(xx, yy, bathy, cmap='Blues_r', linewidth=0, rasterized=True)
+        #h = ax.pcolor(grid_file['altitude'], cmap='Blues_r', alpha=.1)
 
     sct = plt.scatter(londata, latdata, c=tm, marker='.', s=2, cmap='rainbow', transform=ccrs.Geodetic())
     plt.scatter(array_loc.lon, array_loc.lat, s=45, marker='x', color='k')
