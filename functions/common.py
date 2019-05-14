@@ -483,13 +483,26 @@ def add_pressure_to_dictionary_of_sci_vars(ds):
             except AttributeError:
                 y_name.append('pressure')
     else:
-        pressure = pf.pressure_var(ds, ds.data_vars.keys())
-        y = ds[pressure].values
+        try:
+            pressure = pf.pressure_var(ds, ds.data_vars.keys())
+            y = ds[pressure].values
+        except KeyError:
+            print('no pressure variable in file - replacing by a nan array')
+            y_empty = np.empty((1, len(ds['time'].values)))
+            y_empty[:] = np.nan
+            y = y_empty.ravel()
 
-    if len(y[y != 0]) == 0 or sum(np.isnan(y)) == len(y) or len(y[y != ds[pressure]._FillValue]) == 0:
-        print('Pressure Array of all zeros or NaNs or fill values - ... using pressure coordinate')
+
+    if sum(np.isnan(y)) == len(y) or len(y[y != 0]) == 0 or len(y[y != ds[pressure]._FillValue]) == 0:
+        print('Pressure array of all  NaNs or zeros or fill values - ... trying to use pressure coordinate')
         pressure = [pressure for pressure in ds.coords.keys() if 'pressure' in ds.coords[pressure].name]
-        y = ds.coords[pressure[0]].values
+        if len(pressure) != 0:
+            y = ds.coords[pressure[0]].values
+        else:
+            print('no pressure coordinate')
+            y_empty = np.empty((1, len(ds['time'].values)))
+            y_empty[:] = np.nan
+            y = y_empty.ravel()
 
     try:
         ds[pressure].units
