@@ -15,7 +15,7 @@ def append_science_data(preferred_stream_df, n_streams, refdes, dataset_list, sc
             try:
                 rms = '-'.join((refdes, row[ii]))
                 drms = '_'.join((row['deployment'], rms))
-                print(drms)
+                print('\nDATAFILE: ', drms)
             except TypeError:
                 continue
 
@@ -49,12 +49,15 @@ def append_variable_data(ds, variable_dict, common_stream_name, exclude_times):
     pressure_unit, pressure_name = [], []
     ds_vars = cf.return_raw_vars(list(ds.data_vars.keys()) + list(ds.coords))
     vars_dict = variable_dict[common_stream_name]['vars']
+
+    print('\nPARAMETERS: ')
     for var in ds_vars:
         try:
             long_name = ds[var].long_name
             x = [x for x in list(vars_dict.keys()) if long_name in x]
             if len(x) != 0:
                 long_name = x[0]
+                print('______', long_name)
                 if ds[var].units == vars_dict[long_name]['db_units']:
                     if ds[var]._FillValue not in vars_dict[long_name]['fv']:
                         vars_dict[long_name]['fv'].append(ds[var]._FillValue)

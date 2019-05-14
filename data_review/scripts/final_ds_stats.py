@@ -96,7 +96,7 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
 
         # build dictionary of science data from the preferred dataset for each deployment
         print('\nAppending data from files')
-        sci_vars_dict = cd.append_science_data(ps_df, n_streams, r, fdatasets_sel, sci_vars_dict, et)
+        sci_vars_dict, pressure_unit, pressure_name = cd.append_science_data(ps_df, n_streams, r, fdatasets_sel, sci_vars_dict, et)
 
         # analyze combined dataset
         print('\nAnalyzing combined dataset and writing summary file')
@@ -106,7 +106,7 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
         cf.create_dir(save_dir)
 
         for m, n in sci_vars_dict.items():
-            print(m)
+            print('\nSTREAM: ', m)
             if m == 'common_stream_placeholder':
                 m = 'science_data_stream'
             if m == 'metbk_hourly':  # don't calculate ranges for metbk_hourly
@@ -138,6 +138,7 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                 ind_press = (pdata >= ipress_min) & (pdata <= ipress_max)
 
                 # calculate stats for all variables
+                print('\nPARAMETERS:')
                 for sv, vinfo in n['vars'].items():
                     print(sv)
                     fv_lst = np.unique(vinfo['fv']).tolist()
@@ -219,6 +220,8 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                 rows = []
                 if not sd_calc:
                     sdcalc = None
+
+                print('\nPARAMETERS: ')
                 for sv, vinfo in n['vars'].items():
                     print(sv)
 
@@ -347,8 +350,8 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
 
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
-    sDir = '/Users/lgarzio/Documents/repo/OOI/ooi-data-lab/data-review-tools/data_review/data_ranges'
-    plotting_sDir = '/Users/lgarzio/Documents/OOI/DataReviews'
+    sDir = ''
+    plotting_sDir = ''
     sd_calc = None  # number of standard deviations for outlier calculation. options: int or None
     url_list = []
 
