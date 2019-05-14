@@ -259,7 +259,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                                     cf.create_dir(save_dir_profile)
                                     cf.create_dir(save_dir_xsection)
                                     sname = '-'.join((r, method, sv))
-                                    sfile = '_'.join(('rm_suspect_data', sname))
+                                    sfile = '_'.join(('rm_suspect_data', sname, pd.to_datetime(t_array.min()).strftime('%Y%m%d')))
 
                                     t0 = pd.to_datetime(t_array.min()).strftime('%Y-%m-%dT%H:%M:%S')
                                     t1 = pd.to_datetime(t_array.max()).strftime('%Y-%m-%dT%H:%M:%S')

@@ -220,7 +220,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                             cf.create_dir(save_dir_profile)
                             cf.create_dir(save_dir_xsection)
                             sname = '-'.join((r, method, sv))
-                            sfileall = '_'.join(('all_data', sname))
+                            sfileall = '_'.join(('all_data', sname, pd.to_datetime(tm.min()).strftime('%Y%m%d')))
                             tm0 = pd.to_datetime(tm.min()).strftime('%Y-%m-%dT%H:%M:%S')
                             tm1 = pd.to_datetime(tm.max()).strftime('%Y-%m-%dT%H:%M:%S')
                             title = ' '.join((deployment, refdes, method)) + '\n' + tm0 + ' to ' + tm1
@@ -255,7 +255,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                         Plot cleaned-up data
                         """
                         if len(dtime) > 0:
-                            sfile = '_'.join(('rm_erroneous_data', sname))
+                            sfile = '_'.join(('rm_erroneous_data', sname, pd.to_datetime(t_portal.min()).strftime('%Y%m%d')))
                             t0 = pd.to_datetime(t_portal.min()).strftime('%Y-%m-%dT%H:%M:%S')
                             t1 = pd.to_datetime(t_portal.max()).strftime('%Y-%m-%dT%H:%M:%S')
                             title = ' '.join((deployment, refdes, method)) + '\n' + t0 + ' to ' + t1
