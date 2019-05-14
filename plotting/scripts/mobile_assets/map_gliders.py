@@ -8,12 +8,11 @@ import os
 import itertools
 
 import matplotlib.pyplot as plt
-import xarray as xr
 import pandas as pd
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import numpy as np
-#import oceansdb
+import xarray as xr
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import functions.plotting as pf
 import functions.common as cf
@@ -57,7 +56,7 @@ def plot_glider_box(ax, array):
     return ax
 
 
-def plot_map(save_directory, savefile, plt_title, londata, latdata, tm, array, plt_type=None, add_box=None):
+def plot_map(save_directory, savefile, plt_title, londata, latdata, tm, array, bfiles, plt_type=None, add_box=None):
     #ax = plt.axes(projection=ccrs.PlateCarree())
     fig, ax = plt.subplots(figsize=(8, 8), subplot_kw=dict(projection=ccrs.PlateCarree()))
     plt.subplots_adjust(right=0.85)
@@ -66,19 +65,19 @@ def plot_map(save_directory, savefile, plt_title, londata, latdata, tm, array, p
                                  name="admin_1_states_provinces_shp")
     ax.add_feature(states, linewidth=.5, edgecolor="black", facecolor='grey')
     ax.add_feature(cfeature.RIVERS, zorder=10, facecolor='white')
-    gl = ax.gridlines(crs=ccrs.PlateCarree(), draw_labels=True, linewidth=.5, color='gray', alpha=0.5, linestyle='--')
+    #gl = ax.gridlines(crs=ccrs.PlateCarree(), draw_labels=True, linewidth=.5, color='gray', alpha=0.5, linestyle='--')
+    gl = ax.gridlines(crs=ccrs.PlateCarree(), draw_labels=True)
     gl.xlabels_top = False
     gl.ylabels_right = False
+    gl.xlines = False
+    gl.ylines = False
     # gl.xlabel_style = {'size': 14.5}
     # gl.ylabel_style = {'size': 14.5}
     ax.coastlines('10m', linewidth=1)
 
     array_loc = cf.return_array_subsites_standard_loc(array)
-    sct = plt.scatter(londata, latdata, c=tm, marker='.', s=2, cmap='rainbow', transform=ccrs.Geodetic())
 
     ax.set_title(plt_title, fontsize=10)
-
-    plt.scatter(array_loc.lon, array_loc.lat, s=45, marker='x', color='k')
 
     if array == 'CE':
         if add_box == 'yes':
@@ -88,36 +87,58 @@ def plot_map(save_directory, savefile, plt_title, londata, latdata, tm, array, p
             latmin, latmax = define_extent(array_loc.lat, latdata, 'lat')
             lims = [lonmin, lonmax, latmin, latmax]
             ax.set_extent(lims, crs=ccrs.PlateCarree())
+        gf = os.path.join(bfiles, 'GMRTv3_6_20190510topo_CE.grd')
+        grid_file = xr.open_dataset(gf)
+        bathy_contours = [-3000, -2500, -2000, -1500, -1000, -50, 0]
     else:
         if array == 'CP':
             lims = [-72.5, -69.5, 38.5, 42]
-        elif array == 'GA':
+            gf = os.path.join(bfiles, 'GMRTv3_6_20190510topo_CP.grd')
+            grid_file = xr.open_dataset(gf)
+            bathy_contours = [-3000, -2500, -2000, -1500, -1000, -50, 0]
+        else:
             if plt_type == 'glider_track_drift':
                 lonmin, lonmax = define_extent(array_loc.lon, londata, 'lon')
                 latmin, latmax = define_extent(array_loc.lat, latdata, 'lat')
                 lims = [lonmin, lonmax, latmin, latmax]
+                gf = None
             else:
-                lims = [-43.5, -41.5, -43.5, -42]
-        elif array == 'GI':
-            lims = [-40.1, -39, 59.2, 60.3]
-        elif array == 'GP':
-            lims = [-145.1, -143.95, 49.7, 50.6]
-        elif array == 'GS':
-            lims = [-89.95, -88.65, -54.8, -53.7]
+                if array == 'GA':
+                    lims = [-43.5, -41.5, -43.5, -42]
+                    gf = os.path.join(bfiles, 'GMRTv3_6_20190510topo_GA.grd')
+                    grid_file = xr.open_dataset(gf)
+                    bathy_contours = [-5500, -5400, -5300, -5200, -5100, -5000]
+                elif array == 'GI':
+                    lims = [-40.1, -39, 59.2, 60.3]
+                    gf = os.path.join(bfiles, 'GMRTv3_6_20190510topo_GI.grd')
+                    grid_file = xr.open_dataset(gf)
+                    bathy_contours = [-3500, -3250, -3000, -2750, -2500, -2250, -2000]
+                elif array == 'GP':
+                    gf = os.path.join(bfiles, 'GMRTv3_6_20190513topo_GP.grd')
+                    grid_file = xr.open_dataset(gf)
+                    bathy_contours = [-4500, -4250, -4000, -3750, -3500, -3250, -3000]
+                    lims = [-145.1, -143.95, 49.7, 50.6]
+                elif array == 'GS':
+                    gf = os.path.join(bfiles, 'GMRTv3_6_20190513topo_GS.grd')
+                    grid_file = xr.open_dataset(gf)
+                    bathy_contours = [-5500, -5000, -4500, -4000, -3500, -3000, -2500, -2000]
+                    lims = [-89.95, -88.65, -54.8, -53.7]
         ax.set_extent(lims, crs=ccrs.PlateCarree())
         ax = plot_glider_box(ax, array)
 
+    if gf:
+        gf_lon = grid_file['lon']
+        gf_lat = grid_file['lat']
+        lon_ind = np.logical_and(gf_lon > ax.get_xlim()[0], gf_lon < ax.get_xlim()[1])
+        lat_ind = np.logical_and(gf_lat > ax.get_ylim()[0], gf_lat < ax.get_ylim()[1])
+        bathy = grid_file['altitude'][lat_ind, lon_ind].values
+        CS = ax.contour(gf_lon[lon_ind], gf_lat[lat_ind], bathy, bathy_contours, colors='gray', linewidths=0.5, alpha=0.5)
+        ax.clabel(CS, inline=1, fontsize=8, fmt='%.0f')
+        #h = ax.pcolormesh(xx, yy, bathy, cmap='Blues_r', linewidth=0, rasterized=True)
+        #h = ax.pcolor(grid_file['altitude'], cmap='Blues_r', alpha=.1)
 
-    # get bathymetry
-    # db = oceansdb.ETOPO()
-    # xx = np.arange(ax.get_xlim()[0], ax.get_xlim()[1], .01)
-    # xx = np.append(xx, xx[0])
-    # yy = np.arange(ax.get_ylim()[0], ax.get_ylim()[1], .01)
-    # yy = np.append(yy, yy[0])
-    # topo = db['topography'].extract(lat=yy, lon=xx)
-    # bathy = topo['height'].data
-    # CS = ax.contour(xx, yy, bathy, [-3000, -2000, -1000, -50, 0], colors='gray', linewidths=0.5, alpha=0.5)
-    # ax.clabel(CS, inline=1, fontsize=8, fmt='%.0f')
+    sct = plt.scatter(londata, latdata, c=tm, marker='.', s=2, cmap='rainbow', transform=ccrs.Geodetic())
+    plt.scatter(array_loc.lon, array_loc.lat, s=45, marker='x', color='k')
 
     divider = make_axes_locatable(ax)
     cax = divider.new_horizontal(size='5%', pad=0.1, axes_class=plt.Axes)
@@ -128,7 +149,7 @@ def plot_map(save_directory, savefile, plt_title, londata, latdata, tm, array, p
     pf.save_fig(save_directory, savefile)
 
 
-def main(url_list, sDir, plot_type, start_time, end_time, deployment_num):
+def main(url_list, sDir, plot_type, start_time, end_time, deployment_num, bfiles):
     rd_list = []
     for uu in url_list:
         elements = uu.split('/')[-2].split('-')
@@ -144,8 +165,9 @@ def main(url_list, sDir, plot_type, start_time, end_time, deployment_num):
                 splitter = u.split('/')[-2].split('-')
                 rd_check = '-'.join((splitter[1], splitter[2], splitter[3], splitter[4]))
                 if rd_check == r:
-                    udatasets = cf.get_nc_urls([u])
-                    datasets.append(udatasets)
+                    if 'bottom_track_earth' not in splitter[-1]:
+                        udatasets = cf.get_nc_urls([u])
+                        datasets.append(udatasets)
             datasets = list(itertools.chain(*datasets))
             fdatasets = []
 
@@ -218,7 +240,7 @@ def main(url_list, sDir, plot_type, start_time, end_time, deployment_num):
                     else:
                         ttl = 'Glider Track - ' + r + ' - ' + deploy + '\nx: Mooring Locations' + '\n blue box: Glider Sampling Area'
                     #fig, ax = pf.plot_profiles(ds_lon, ds_lat, ds['time'].values, ylabel, xlabel, clabel, stdev=None)
-                    plot_map(save_dir, sfile, ttl, ds_lon, ds_lat, ds['time'].values, array, plot_type)
+                    plot_map(save_dir, sfile, ttl, ds_lon, ds_lat, ds['time'].values, array, bfiles, plot_type)
 
             sh = sh.resample('H').median()  # resample hourly
             xD = sh.lon.values
@@ -227,7 +249,7 @@ def main(url_list, sDir, plot_type, start_time, end_time, deployment_num):
             title = 'Glider Track - ' + r + '\nDeployments: ' + str(deployments) + '   x: Mooring Locations' + '\n blue box: Glider Sampling Area'
             save_dir_main = os.path.join(sDir, array, subsite, r)
 
-            plot_map(save_dir_main, sname, title, xD, yD, tD, array, plot_type, add_box='yes')
+            plot_map(save_dir_main, sname, title, xD, yD, tD, array, bfiles, plot_type, add_box='yes')
 
 
 if __name__ == '__main__':
@@ -239,8 +261,9 @@ if __name__ == '__main__':
     '''
     start_time = None
     end_time = None
-    plot_type = 'glider_track_drift'  # 'glider_track' 'glider_track_drift'
+    plot_type = 'glider_track'  # 'glider_track' 'glider_track_drift'
     deployment_num = None
     sDir = '/Users/lgarzio/Documents/OOI/DataReviews'
+    bathy_files = '/Users/lgarzio/Documents/repo/OOI/ooi-data-lab/data-review-tools/data_review/bathymetry_files'
     url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190410T154220-CE05MOAS-GL383-05-CTDGVM000-recovered_host-ctdgv_m_glider_instrument_recovered/catalog.html']
-    main(url_list, sDir, plot_type, start_time, end_time, deployment_num)
+    main(url_list, sDir, plot_type, start_time, end_time, deployment_num, bathy_files)

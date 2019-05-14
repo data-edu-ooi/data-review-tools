@@ -66,6 +66,7 @@ def plot_profiles(x, y, t, ylabel, xlabel, clabel, stdev=None):
     cbar.ax.set_yticklabels(pd.to_datetime(cbar.ax.get_yticks()).strftime(date_format='%Y-%m-%d'))
 
     ax.invert_yaxis()
+    #plt.xlim([-0.5, 0.5])
     ax.set_xlabel(xlabel, fontsize=9)
     ax.set_ylabel(ylabel, fontsize=9)
     ax.legend(leg_text, loc='best', fontsize=6)
@@ -317,39 +318,48 @@ def plot_xsection(subsite, x, y, z, clabel, ylabel, t_eng=None, m_water_depth=No
 
     fig, ax = plt.subplots()
     plt.margins(y=.08, x=.02)
-    xc = ax.scatter(xD, yD, c=zD, s=2, edgecolor='None')
-    ax.invert_yaxis()
+    try:
+        xc = ax.scatter(xD, yD, c=zD, s=2, edgecolor='None')
+        #plt.ylim([0, 100])
+        ax.invert_yaxis()
 
-    # add bathymetry for coastal gliders
-    if t_eng is not None and m_water_depth is not None:
-        if len(t_eng) > 1:
-            ax.fill_between(t_eng, m_water_depth, np.max(m_water_depth) + 2, facecolor='k', alpha=0.4)
+        # add bathymetry for coastal gliders
+        if t_eng is not None and m_water_depth is not None:
+            if len(t_eng) > 1:
+                ax.fill_between(t_eng, m_water_depth, np.max(m_water_depth) + 2, facecolor='k', alpha=0.4)
 
-    # add color bar
-    bar = fig.colorbar(xc, ax=ax, label=clabel, extend='both')
-    bar.formatter.set_useOffset(False)
-    bar.ax.tick_params(labelsize=8)
+        # add color bar
+        #ticks = np.linspace(np.nanmin(zD), np.nanmax(zD), 5).tolist()
+        bar = fig.colorbar(xc, ax=ax, label=clabel, extend='both')
+        bar.formatter.set_useOffset(False)
+        bar.ax.tick_params(labelsize=8)
 
-    if inpercentile is not None:
-        upper_lim = np.percentile(zD, 100 - inpercentile)
-        # upper_mid = np.percentile(zD, 100 - 15*inpercentile)
-        # lower_mid = np.percentile(zD, 100 - 10*inpercentile)
-        lower_lim = np.percentile(zD, inpercentile)
-        bar.set_clim(lower_lim, upper_lim)
-        bar.set_ticks([lower_lim, upper_lim], update_ticks=True) #lower_mid, upper_mid,
+        if inpercentile is not None:
+            upper_lim = np.percentile(zD, 100 - inpercentile)
+            # upper_mid = np.percentile(zD, 100 - 15*inpercentile)
+            # lower_mid = np.percentile(zD, 100 - 10*inpercentile)
+            lower_lim = np.percentile(zD, inpercentile)
+            bar.set_clim(lower_lim, upper_lim)
+            bar.set_ticks([lower_lim, upper_lim], update_ticks=True) #lower_mid, upper_mid,
 
-    ax.set_ylabel(ylabel, fontsize=9)
-    format_date_axis(ax, fig)
+        ax.set_ylabel(ylabel, fontsize=9)
+        format_date_axis(ax, fig)
 
-    if zeros is None and type(outliers) is str:
-        leg = ('rm: {} outliers (SD={})'.format(outliers, stdev),)
-        ax.legend(leg, loc=1, fontsize=6)
-    if type(zeros) is str and outliers is None:
-        leg = ('rm: {} values <=0.0'.format(zeros),)
-        ax.legend(leg, loc=1, fontsize=6)
-    if type(zeros) is str and type(outliers) is str:
-        leg = ('rm: {} values <=0.0, rm: {} outliers (SD={})'.format(zeros, outliers, stdev),)
-        ax.legend(leg, loc=1, fontsize=6)
+        if zeros is None and type(outliers) is str:
+            leg = ('rm: {} outliers (SD={})'.format(outliers, stdev),)
+            ax.legend(leg, loc=1, fontsize=6)
+        if type(zeros) is str and outliers is None:
+            leg = ('rm: {} values <=0.0'.format(zeros),)
+            ax.legend(leg, loc=1, fontsize=6)
+        if type(zeros) is str and type(outliers) is str:
+            leg = ('rm: {} values <=0.0, rm: {} outliers (SD={})'.format(zeros, outliers, stdev),)
+            ax.legend(leg, loc=1, fontsize=6)
+    except ValueError:
+        print("plot can't be generated")
+        fig = None
+        ax = None
+        bar = None
+
     return fig, ax, bar
 
 
