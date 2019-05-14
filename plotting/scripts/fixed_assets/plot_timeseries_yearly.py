@@ -24,7 +24,7 @@ from matplotlib import pyplot
 from matplotlib import colors as mcolors
 from matplotlib.dates import (YEARLY, DateFormatter, rrulewrapper, RRuleLocator, drange)
 from matplotlib.ticker import MaxNLocator
-from statsmodels.nonparametric.kde import KDEUnivariate
+# from statsmodels.nonparametric.kde import KDEUnivariate
 
 
 colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
@@ -43,7 +43,7 @@ def save_dir_path(ms_list):
     ms_dict = dict({'ms_unique': ms_list_check, 'ms_count': n_ms})
     return ms_dict
 
-def main(sDir, url_list):
+def main(sDir, url_list, preferred_only):
     rd_list = []
     ms_list = []
     for uu in url_list:
@@ -60,7 +60,40 @@ def main(sDir, url_list):
         subsite = r.split('-')[0]
         array = subsite[0:2]
 
-        ps_df, n_streams = cf.get_preferred_stream_info(r)
+        # filter datasets
+        datasets = []
+        for u in url_list:
+            print(u)
+            splitter = u.split('/')[-2].split('-')
+            rd_check = '-'.join((splitter[1], splitter[2], splitter[3], splitter[4]))
+            if rd_check == r:
+                udatasets = cf.get_nc_urls([u])
+                datasets.append(udatasets)
+        datasets = list(itertools.chain(*datasets))
+
+        fdatasets = []
+        if preferred_only == 'yes':
+            # get the preferred stream information
+            ps_df, n_streams = cf.get_preferred_stream_info(r)
+            for index, row in ps_df.iterrows():
+                for ii in range(n_streams):
+                    try:
+                        rms = '-'.join((r, row[ii]))
+                    except TypeError:
+                        continue
+                    for dd in datasets:
+                        spl = dd.split('/')[-2].split('-')
+                        catalog_rms = '-'.join((spl[1], spl[2], spl[3], spl[4], spl[5], spl[6]))
+                        fdeploy = dd.split('/')[-1].split('_')[0]
+                        if rms == catalog_rms and fdeploy == row['deployment']:
+                            fdatasets.append(dd)
+        else:
+            fdatasets = datasets
+
+        main_sensor = r.split('-')[-1]
+        fdatasets = cf.filter_collocated_instruments(main_sensor, fdatasets)
+
+        # ps_df, n_streams = cf.get_preferred_stream_info(r)
 
         # get end times of deployments
         dr_data = cf.refdes_datareview_json(r)
@@ -72,19 +105,19 @@ def main(sDir, url_list):
             deployments.append(int(deploy[-4:]))
             end_times.append(pd.to_datetime(deploy_info['stop_date']))
 
-        # filter datasets
-        datasets = []
-        for u in url_list:
-            print(u)
-            splitter = u.split('/')[-2].split('-')
-            rd_check = '-'.join((splitter[1], splitter[2], splitter[3], splitter[4]))
-            if rd_check == r:
-                udatasets = cf.get_nc_urls([u])
-                datasets.append(udatasets)
-        datasets = list(itertools.chain(*datasets))
-        main_sensor = r.split('-')[-1]
-        fdatasets = cf.filter_collocated_instruments(main_sensor, datasets)
-        fdatasets = cf.filter_other_streams(r, ms_list, fdatasets)
+        # # filter datasets
+        # datasets = []
+        # for u in url_list:
+        #     print(u)
+        #     splitter = u.split('/')[-2].split('-')
+        #     rd_check = '-'.join((splitter[1], splitter[2], splitter[3], splitter[4]))
+        #     if rd_check == r:
+        #         udatasets = cf.get_nc_urls([u])
+        #         datasets.append(udatasets)
+        # datasets = list(itertools.chain(*datasets))
+        # main_sensor = r.split('-')[-1]
+        # fdatasets = cf.filter_collocated_instruments(main_sensor, datasets)
+        # fdatasets = cf.filter_other_streams(r, ms_list, fdatasets)
 
         methodstream = []
         for f in fdatasets:
@@ -126,6 +159,7 @@ def main(sDir, url_list):
                     sh = sci_vars_dict[ms]['vars'][var]
                     try:
                         ds[var]
+                        print(var)
                         if ds[var].units == sh['db_units']:
                             if ds[var]._FillValue not in sh['fv']:
                                 sh['fv'].append(ds[var]._FillValue)
@@ -349,8 +383,8 @@ def main(sDir, url_list):
 
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
-    sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
+    preferred_only = 'yes'
+    sDir = ''
     url_list = []
 
-
-    main(sDir, url_list)
+    main(sDir, url_list, preferred_only)
