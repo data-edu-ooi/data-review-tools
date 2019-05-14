@@ -289,19 +289,19 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                                     '''
                                     profile plot
                                     '''
-                                    xlabel = sv + " (" + sv_units + ")"
-                                    ylabel = press[0] + " (" + y_units[0] + ")"
-                                    clabel = 'Time'
-
-                                    # plot non-erroneous data
-                                    fig, ax = pf.plot_profiles(z_array, y_array, t_array, ylabel, xlabel, clabel, stdev=None)
-
-                                    ax.set_title(title, fontsize=9)
-                                    ax.plot(n_avg, y_avg, '-k')
-                                    #ax.fill_betweenx(y_avg, n0_std, n1_std, color='m', alpha=0.2)
-                                    ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
-                                    fig.tight_layout()
-                                    pf.save_fig(save_dir_profile, sfile)
+                                    # xlabel = sv + " (" + sv_units + ")"
+                                    # ylabel = press[0] + " (" + y_units[0] + ")"
+                                    # clabel = 'Time'
+                                    #
+                                    # # plot non-erroneous data
+                                    # fig, ax = pf.plot_profiles(z_array, y_array, t_array, ylabel, xlabel, clabel, stdev=None)
+                                    #
+                                    # ax.set_title(title, fontsize=9)
+                                    # ax.plot(n_avg, y_avg, '-k')
+                                    # #ax.fill_betweenx(y_avg, n0_std, n1_std, color='m', alpha=0.2)
+                                    # ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
+                                    # fig.tight_layout()
+                                    # pf.save_fig(save_dir_profile, sfile)
 
                                     '''
                                     xsection plot

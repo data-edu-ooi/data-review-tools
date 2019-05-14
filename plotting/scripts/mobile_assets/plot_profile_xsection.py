@@ -247,9 +247,10 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                             fig, ax, bar = pf.plot_xsection(subsite, tm, y, z, clabel, ylabel, t_eng=None,
                                                             m_water_depth=None, inpercentile=None, stdev=None)
 
-                            ax.set_title(title, fontsize=9)
-                            fig.tight_layout()
-                            pf.save_fig(save_dir_xsection, sfileall)
+                            if fig:
+                                ax.set_title(title, fontsize=9)
+                                fig.tight_layout()
+                                pf.save_fig(save_dir_xsection, sfileall)
 
                         """
                         Plot cleaned-up data

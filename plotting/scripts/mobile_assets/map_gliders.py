@@ -165,8 +165,9 @@ def main(url_list, sDir, plot_type, start_time, end_time, deployment_num, bfiles
                 splitter = u.split('/')[-2].split('-')
                 rd_check = '-'.join((splitter[1], splitter[2], splitter[3], splitter[4]))
                 if rd_check == r:
-                    udatasets = cf.get_nc_urls([u])
-                    datasets.append(udatasets)
+                    if 'bottom_track_earth' not in splitter[-1]:
+                        udatasets = cf.get_nc_urls([u])
+                        datasets.append(udatasets)
             datasets = list(itertools.chain(*datasets))
             fdatasets = []
 
