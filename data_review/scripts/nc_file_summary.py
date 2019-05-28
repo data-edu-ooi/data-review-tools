@@ -297,13 +297,20 @@ def main(f, ps, mc):
                                 n_missing_gaps = np.unique([np.amin(n_missing_gaps), np.amax(n_missing_gaps)]).tolist()
                                 n_missing_days = np.unique([np.amin(n_missing_days), np.amax(n_missing_days)]).tolist()
 
-                                fd_test = 'fail: data found in another stream (gaps: {} days: {})'.format(n_missing_gaps, n_missing_days)
+                                # if there are the same number of gaps and days missing, the test is invalid
+                                if (n_missing_gaps[0] > 100) & (n_missing_gaps[0] == n_missing_days[0]):
+                                    fd_test = 'no comparison: timestamps do not match'
+                                else:
+                                    fd_test = 'fail: data found in another stream (gaps: {} days: {})'.format(n_missing_gaps, n_missing_days)
 
                         # Check that the difference between multiple methods for science variables is less than 0
                         comparison_details = dict()
                         if fd_test == 'No valid data to compare':
                             comparison_details = 'No valid data to compare'
                             comparison_test = 'No valid data to compare'
+                        elif fd_test == 'no comparison: timestamps do not match':
+                            comparison_details = 'no comparison: timestamps do not match'
+                            comparison_test = 'no comparison: timestamps do not match'
                         else:
                             if len(diff_gzero_list) > 0:
                                 if list(set(diff_gzero_list)) == [None]:
