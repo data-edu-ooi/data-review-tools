@@ -107,7 +107,12 @@ def compare_data(df):
 
                                 # skip if the variables have more than 1 dimension
                                 if (type(ds0_df) == str) or (type(ds1_df) == str):
-                                    continue
+                                    n_comparison = 0
+                                    n_diff_g_zero = None
+                                    min_diff = None
+                                    max_diff = None
+                                    ds0_missing_dict = '2D dataset'
+                                    ds1_missing_dict = '2D dataset'
                                 else:
                                     # Compare units
                                     if ds0_units == ds1_units:
@@ -209,11 +214,11 @@ def compare_data(df):
                                             max_diff = round(max(abs(diff)), 10)
                                             n_comparison = len(diff)
 
-                                    summary['deployments'][d]['comparison'][compare]['vars'][str(long_name)] = dict(
-                                        ds0=dict(name=name_ds0, units=ds0_units, n=n0, n_nan=n0_nan, missing=ds0_missing_dict),
-                                        ds1=dict(name=name_ds1, units=ds1_units, n=n1, n_nan=n1_nan, missing=ds1_missing_dict),
-                                        unit_test=unit_test, n_comparison=n_comparison, n_diff_greater_zero=n_diff_g_zero,
-                                        min_abs_diff=min_diff, max_abs_diff=max_diff)
+                                summary['deployments'][d]['comparison'][compare]['vars'][str(long_name)] = dict(
+                                    ds0=dict(name=name_ds0, units=ds0_units, n=n0, n_nan=n0_nan, missing=ds0_missing_dict),
+                                    ds1=dict(name=name_ds1, units=ds1_units, n=n1, n_nan=n1_nan, missing=ds1_missing_dict),
+                                    unit_test=unit_test, n_comparison=n_comparison, n_diff_greater_zero=n_diff_g_zero,
+                                    min_abs_diff=min_diff, max_abs_diff=max_diff)
     return summary
 
 

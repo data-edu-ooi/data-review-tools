@@ -383,7 +383,6 @@ def main(sDir, url_list):
                                     var_nofv = var.where(var != fv)
                                     n_fv = int(np.sum(np.isnan(var_nofv.values))) - n_nan
 
-
                                     # reject data outside of global ranges
                                     [g_min, g_max] = cf.get_global_ranges(r, sv)
                                     if g_min is not None and g_max is not None:
@@ -436,7 +435,7 @@ def main(sDir, url_list):
                                                                    n_nans=n_nan, n_fillvalues=n_fv, fill_value=str(fv),
                                                                    global_ranges=[g_min, g_max], n_grange=n_grange,
                                                                    n_all=n_all)
-
+                        ds.close()
 
         sfile = os.path.join(save_dir, '{}-file_analysis.json'.format(r))
         with open(sfile, 'w') as outfile:
