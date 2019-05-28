@@ -285,6 +285,8 @@ def main(f, ps, mc):
                                     continue
                                 elif 'No valid data to compare' in md:
                                     continue
+                                elif '2D dataset' in md:
+                                    continue
                                 else:
                                     md = ast.literal_eval(md)
                                     n_missing_gaps.append(len(md['missing_data_gaps']))

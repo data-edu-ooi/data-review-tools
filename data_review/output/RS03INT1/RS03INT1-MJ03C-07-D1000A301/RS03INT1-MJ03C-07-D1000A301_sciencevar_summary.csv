@@ -1,0 +1,10 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0002,streamed,d1000_sample,temperature1,ºC,-9999999.0,"[None, None]",210298,0,0,no global ranges,0,210298,100.0,140.2446,26.5,169.0,42.5719
+deployment0002,streamed,d1000_sample,temperature2,ºC,-9999999.0,"[None, None]",210298,0,0,no global ranges,0,210298,100.0,119.6559,38.8,154.1,28.517
+deployment0002,streamed,d1000_sample,temperature3,ºC,-9999999.0,"[None, None]",210298,0,0,no global ranges,0,210298,100.0,99999.9922,99999.9922,99999.9922,0.0
+deployment0003,streamed,d1000_sample,temperature1,ºC,-9999999.0,"[None, None]",3231215,0,0,no global ranges,0,3231215,100.0,89.3666,2.4,148.4,31.2416
+deployment0003,streamed,d1000_sample,temperature2,ºC,-9999999.0,"[None, None]",3231215,0,0,no global ranges,0,3231215,100.0,94.9577,2.4,166.8,34.7426
+deployment0003,streamed,d1000_sample,temperature3,ºC,-9999999.0,"[None, None]",3231215,0,0,no global ranges,1466,3229749,99.95,3.1073,2.0,7.5,0.8787
+deployment0004,streamed,d1000_sample,temperature1,ºC,-9999999.0,"[None, None]",2119987,0,0,no global ranges,0,2119987,100.0,99999.9922,99999.9922,99999.9922,0.0
+deployment0004,streamed,d1000_sample,temperature2,ºC,-9999999.0,"[None, None]",2119987,0,0,no global ranges,253,2119734,99.99,29.1481,3.3,47.9,5.1615
+deployment0004,streamed,d1000_sample,temperature3,ºC,-9999999.0,"[None, None]",2119987,0,0,no global ranges,3,2119984,100.0,2.484,2.3,2.8,0.0642
