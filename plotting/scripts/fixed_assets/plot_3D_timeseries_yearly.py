@@ -227,99 +227,100 @@ def main(sDir, url_list, preferred_only):
                         for group in range(len(groups)):
                             nan_ind = d_groups[time_ind[group]].notnull()
                             xtime = d_groups[time_ind[group]][nan_ind]
-                            n_year = xtime[0].year
-                            print(n_year)
                             ycol = list(range(data_ind0[group], data_ind1[group] + 1))
-
                             ydata = d_groups[ycol][nan_ind]
-                            ydata = ydata.set_index(xtime)
 
-                            if len(ydata.columns) > 1:
-                                print('more than one col: ', len(ydata.columns))
-                                b = fsplt.split_by_timegap(ydata, 86400)
+                            if len(xtime) != 0 and len(ydata) != 0:
+                                n_year = xtime[0].year
+                                print(n_year)
+                                ydata = ydata.set_index(xtime)
 
-                                if b:
-                                    print('gaps exist, splitting data')
-                                    for ib in (range(len(b))):
-                                        iydata = b[ib][b[ib].columns.values[0:-2]]
+                                if len(ydata.columns) > 1:
+                                    print('more than one col: ', len(ydata.columns))
+                                    b = fsplt.split_by_timegap(ydata, 86400)
+
+                                    if b:
+                                        print('gaps exist, splitting data')
+                                        for ib in (range(len(b))):
+                                            iydata = b[ib][b[ib].columns.values[0:-2]]
+                                            Y = iydata.columns.values
+                                            X = iydata.index.values
+                                            Z = iydata.values
+                                            if Z.shape[0] == 1:
+                                                X = np.repeat(X[0], len(Y), axis=0)
+                                                df = pd.DataFrame(dict(a=list(X), b=list(Y), c=list(Z[0])))
+                                                images.append(ax[group].scatter(df['a'].values, df['b'].values, c=df['c'].values, cmap='Blues', s=1))
+                                            else:
+                                                Z = Z.T
+                                                x, y = np.meshgrid(X, Y)
+                                                images.append(ax[group].contourf(x, y, Z, alpha=0.7, cmap='Blues'))
+
+                                    else:
+                                        print('no gaps exist, not splitting data')
+                                        iydata = ydata[ydata.columns.values[0:-2]]
                                         Y = iydata.columns.values
                                         X = iydata.index.values
                                         Z = iydata.values
-                                        if Z.shape[0] == 1:
-                                            X = np.repeat(X[0], len(Y), axis=0)
-                                            df = pd.DataFrame(dict(a=list(X), b=list(Y), c=list(Z[0])))
-                                            images.append(ax[group].scatter(df['a'].values, df['b'].values, c=df['c'].values, cmap='Blues', s=1))
-                                        else:
-                                            Z = Z.T
-                                            x, y = np.meshgrid(X, Y)
-                                            images.append(ax[group].contourf(x, y, Z, alpha=0.7, cmap='Blues'))
+                                        Z = Z.T
+                                        x, y = np.meshgrid(X, Y)
+                                        im = ax[group].contourf(x, y, Z, alpha=0.7, cmap='Blues') #pyplot.cm.jet
+                                        images.append(ax[group].contourf(x, y, Z, alpha=0.7, cmap='Blues'))
 
                                 else:
-                                    print('no gaps exist, not splitting data')
-                                    iydata = ydata[ydata.columns.values[0:-2]]
-                                    Y = iydata.columns.values
-                                    X = iydata.index.values
-                                    Z = iydata.values
-                                    Z = Z.T
-                                    x, y = np.meshgrid(X, Y)
-                                    im = ax[group].contourf(x, y, Z, alpha=0.7, cmap='Blues') #pyplot.cm.jet
-                                    images.append(ax[group].contourf(x, y, Z, alpha=0.7, cmap='Blues'))
+                                    print('with one column:', len(ydata.columns))
+                                    ax[group].contourf(x, y, Z, alpha=0.7, cmap='Blues')(ydata.plot(ax=ax[group],
+                                                        linestyle='None',
+                                                        marker='.',
+                                                        markersize=0.5,
+                                                        color=colors[group]))
 
-                            else:
-                                print('with one column:', len(ydata.columns))
-                                ax[group].contourf(x, y, Z, alpha=0.7, cmap='Blues')(ydata.plot(ax=ax[group],
-                                                    linestyle='None',
-                                                    marker='.',
-                                                    markersize=0.5,
-                                                    color=colors[group]))
+                                    ax[group].legend().set_visible(False)
 
-                                ax[group].legend().set_visible(False)
+                                    # plot Mean and Standard deviation
+                                    ma = ydata.rolling('86400s').mean()
+                                    mstd = ydata.rolling('86400s').std()
+                                    m_mstd_min = ma[ycol].values - 2 * mstd[ycol].values
+                                    m_mstd_max = ma[ycol].values + 2 * mstd[ycol].values
+                                    ax[group].plot(ma.index.values, ma[ycol].values, 'k', linewidth=0.15)
+                                    ax[group].fill_between(mstd.index.values, m_mstd_min, m_mstd_max, color='b', alpha=0.2)
 
-                                # plot Mean and Standard deviation
-                                ma = ydata.rolling('86400s').mean()
-                                mstd = ydata.rolling('86400s').std()
-                                m_mstd_min = ma[ycol].values - 2 * mstd[ycol].values
-                                m_mstd_max = ma[ycol].values + 2 * mstd[ycol].values
-                                ax[group].plot(ma.index.values, ma[ycol].values, 'k', linewidth=0.15)
-                                ax[group].fill_between(mstd.index.values, m_mstd_min, m_mstd_max, color='b', alpha=0.2)
+                                # flag deployments end-time for reference
+                                ymin, ymax = ax[group].get_ylim()
+                                dep = 1
+                                for etimes in end_times:
+                                    if etimes.year == n_year:
+                                        ax[group].axvline(x=etimes, color='b', linestyle='--', linewidth=.6)
+                                        ax[group].text(etimes, ymin, 'End' + str(dep), fontsize=6, style='italic',
+                                                       bbox=dict(boxstyle='round', ec=(0., 0.5, 0.5), fc=(1., 1., 1.)))
+                                    dep += 1
 
-                            # flag deployments end-time for reference
-                            ymin, ymax = ax[group].get_ylim()
-                            dep = 1
-                            for etimes in end_times:
-                                if etimes.year == n_year:
-                                    ax[group].axvline(x=etimes, color='b', linestyle='--', linewidth=.6)
-                                    ax[group].text(etimes, ymin, 'End' + str(dep), fontsize=6, style='italic',
-                                                   bbox=dict(boxstyle='round', ec=(0., 0.5, 0.5), fc=(1., 1., 1.)))
-                                dep += 1
+                                # prepare the time axis parameters
+                                datemin = datetime.date(n_year, 1, 1)
+                                datemax = datetime.date(n_year, 12, 31)
+                                ax[group].set_xlim(datemin, datemax)
+                                xlocator = mdates.MonthLocator()  # every month
+                                myFmt = mdates.DateFormatter('%m')
+                                ax[group].xaxis.set_minor_locator(xlocator)
+                                ax[group].xaxis.set_major_formatter(myFmt)
 
-                            # prepare the time axis parameters
-                            datemin = datetime.date(n_year, 1, 1)
-                            datemax = datetime.date(n_year, 12, 31)
-                            ax[group].set_xlim(datemin, datemax)
-                            xlocator = mdates.MonthLocator()  # every month
-                            myFmt = mdates.DateFormatter('%m')
-                            ax[group].xaxis.set_minor_locator(xlocator)
-                            ax[group].xaxis.set_major_formatter(myFmt)
+                                # prepare the y axis parameters
+                                ax[group].set_ylabel(n_year, rotation=0, fontsize=8, color='b', labelpad=20)
+                                ax[group].yaxis.set_label_position("right")
+                                ylocator = MaxNLocator(prune='both', nbins=3)
+                                ax[group].yaxis.set_major_locator(ylocator)
+                                ax[group].yaxis.set_ticklabels([]) #range(1, len(col), 1)
 
-                            # prepare the y axis parameters
-                            ax[group].set_ylabel(n_year, rotation=0, fontsize=8, color='b', labelpad=20)
-                            ax[group].yaxis.set_label_position("right")
-                            ylocator = MaxNLocator(prune='both', nbins=3)
-                            ax[group].yaxis.set_major_locator(ylocator)
-                            ax[group].yaxis.set_ticklabels([]) #range(1, len(col), 1)
-
-                            # format figure
-                            ax[group].tick_params(axis='both', color='r', labelsize=7, labelcolor='m')
-                            if group == 0:
-                                ax[group].set_title(sv + '( ' + sv_units + ')', fontsize=8)
-                            if group < len(groups) - 1:
-                                ax[group].tick_params(which='both', pad=0.1, length=1, labelbottom=False)
-                                ax[group].set_xlabel(' ')
-                            else:
-                                ax[group].tick_params(which='both', color='r', labelsize=7, labelcolor='m',
-                                                      pad=0.1, length=1, rotation=0)
-                                ax[group].set_xlabel('Months', rotation=0, fontsize=8, color='b')
+                                # format figure
+                                ax[group].tick_params(axis='both', color='r', labelsize=7, labelcolor='m')
+                                if group == 0:
+                                    ax[group].set_title(sv + '( ' + sv_units + ')', fontsize=8)
+                                if group < len(groups) - 1:
+                                    ax[group].tick_params(which='both', pad=0.1, length=1, labelbottom=False)
+                                    ax[group].set_xlabel(' ')
+                                else:
+                                    ax[group].tick_params(which='both', color='r', labelsize=7, labelcolor='m',
+                                                          pad=0.1, length=1, rotation=0)
+                                    ax[group].set_xlabel('Months', rotation=0, fontsize=8, color='b')
 
 
                         vmin = min(image.get_array().min() for image in images)
@@ -338,9 +339,10 @@ def main(sDir, url_list, preferred_only):
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
     preferred_only = 'yes'
-    sDir = ''
-    url_list = []
-
+    sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
+    url_list = [
+        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T193331-CP01CNSM-RID26-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html',
+        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T193320-CP01CNSM-RID26-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
+        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T193307-CP01CNSM-RID26-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html']
 
 main(sDir, url_list, preferred_only)
-
