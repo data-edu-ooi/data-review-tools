@@ -18,14 +18,10 @@ deployment0001,recovered_inst,adcp_velocity_earth,"bin_depths (dims: ['time', 'b
 deployment0001,recovered_inst,adcpt_m_instrument_log9_recovered,significant_wave_height,m,-9999999.0,"[0.0, 18.0]",615,0,0,0,4.0,611.0,99.35,1.636,0.52,5.4,0.6959
 deployment0001,recovered_inst,adcpt_m_instrument_log9_recovered,peak_wave_period,sec,-9999999.0,"[3.0, 30.0]",615,0,0,2,0.0,613.0,99.67,9.245,4.1,18.1,2.5646
 deployment0001,recovered_inst,adcpt_m_instrument_log9_recovered,peak_wave_direction,degrees,-9999999.0,"[0.0, 360.0]",615,0,0,0,0.0,615.0,100.0,267.5252,185.0,315.0,24.7964
-deployment0001,recovered_inst,adcpt_m_instrument_log9_recovered,tp_sea,degrees,-9999999.0,"[0.0, 360.0]",615,0,0,0,0.0,615.0,100.0,267.5252,185.0,315.0,24.7964
 deployment0001,recovered_inst,adcpt_m_instrument_log9_recovered,dp_sea,degrees,-9999999.0,"[0.0, 360.0]",615,0,0,0,1.0,614.0,99.84,265.8713,170.0,336.0,30.7723
 deployment0001,recovered_inst,adcpt_m_instrument_log9_recovered,hs_sea,meters,-9999999.0,"[None, None]",615,0,0,no global ranges,0.0,615.0,100.0,1.1273,0.34,2.62,0.3841
-deployment0001,recovered_inst,adcpt_m_instrument_log9_recovered,tp_swell,meters,-9999999.0,"[None, None]",615,0,0,no global ranges,0.0,615.0,100.0,1.1273,0.34,2.62,0.3841
 deployment0001,recovered_inst,adcpt_m_instrument_log9_recovered,dp_swell,degrees,-9999999.0,"[0.0, 360.0]",615,0,0,0,0.0,615.0,100.0,266.9415,200.0,315.0,21.97
 deployment0001,recovered_inst,adcpt_m_instrument_log9_recovered,hs_swell,meters,-9999999.0,"[None, None]",615,0,0,no global ranges,5.0,610.0,99.19,1.1145,0.21,3.92,0.6852
-deployment0001,recovered_inst,adcpt_m_instrument_log9_recovered,t_max,meters,-9999999.0,"[None, None]",615,0,0,no global ranges,5.0,610.0,99.19,1.1145,0.21,3.92,0.6852
-deployment0001,recovered_inst,adcpt_m_instrument_log9_recovered,t_1_3,meters,-9999999.0,"[None, None]",615,0,0,no global ranges,5.0,610.0,99.19,1.1145,0.21,3.92,0.6852
 deployment0001,recovered_inst,adcpt_m_instrument_log9_recovered,t_mean,s,-9999999.0,"[None, None]",615,0,0,no global ranges,0.0,615.0,100.0,6.6745,2.81,14.38,1.6771
 deployment0001,recovered_inst,adcpt_m_instrument_log9_recovered,t_1_10,s,-9999999.0,"[None, None]",615,0,0,no global ranges,0.0,615.0,100.0,8.2554,5.0,15.71,1.7882
 deployment0001,recovered_inst,adcpt_m_instrument_log9_recovered,d_mean,degrees,-9999999.0,"[0.0, 360.0]",615,0,0,0,0.0,615.0,100.0,266.6309,188.0,318.0,23.1112
@@ -57,14 +53,10 @@ deployment0002,recovered_inst,adcp_velocity_earth,"bin_depths (dims: ['time', 'b
 deployment0002,recovered_inst,adcpt_m_instrument_log9_recovered,significant_wave_height,m,-9999999.0,"[0.0, 18.0]",733,0,0,0,0.0,733.0,100.0,2.1957,0.52,6.89,0.9602
 deployment0002,recovered_inst,adcpt_m_instrument_log9_recovered,peak_wave_period,sec,-9999999.0,"[3.0, 30.0]",733,0,0,0,0.0,733.0,100.0,11.9495,5.1,20.3,2.5031
 deployment0002,recovered_inst,adcpt_m_instrument_log9_recovered,peak_wave_direction,degrees,-9999999.0,"[0.0, 360.0]",733,0,0,0,0.0,733.0,100.0,263.2169,180.0,318.0,20.8689
-deployment0002,recovered_inst,adcpt_m_instrument_log9_recovered,tp_sea,degrees,-9999999.0,"[0.0, 360.0]",733,0,0,0,0.0,733.0,100.0,263.2169,180.0,318.0,20.8689
 deployment0002,recovered_inst,adcpt_m_instrument_log9_recovered,dp_sea,degrees,-9999999.0,"[0.0, 360.0]",733,0,0,0,0.0,733.0,100.0,253.4734,74.0,346.0,37.4878
 deployment0002,recovered_inst,adcpt_m_instrument_log9_recovered,hs_sea,meters,-9999999.0,"[None, None]",733,0,0,no global ranges,0.0,733.0,100.0,1.0999,0.0,2.75,0.5103
-deployment0002,recovered_inst,adcpt_m_instrument_log9_recovered,tp_swell,meters,-9999999.0,"[None, None]",733,0,0,no global ranges,0.0,733.0,100.0,1.0999,0.0,2.75,0.5103
 deployment0002,recovered_inst,adcpt_m_instrument_log9_recovered,dp_swell,degrees,-9999999.0,"[0.0, 360.0]",733,0,0,0,0.0,733.0,100.0,263.7381,198.0,318.0,19.2904
 deployment0002,recovered_inst,adcpt_m_instrument_log9_recovered,hs_swell,meters,-9999999.0,"[None, None]",733,0,0,no global ranges,0.0,733.0,100.0,1.8639,0.44,6.31,0.8954
-deployment0002,recovered_inst,adcpt_m_instrument_log9_recovered,t_max,meters,-9999999.0,"[None, None]",733,0,0,no global ranges,0.0,733.0,100.0,1.8639,0.44,6.31,0.8954
-deployment0002,recovered_inst,adcpt_m_instrument_log9_recovered,t_1_3,meters,-9999999.0,"[None, None]",733,0,0,no global ranges,0.0,733.0,100.0,1.8639,0.44,6.31,0.8954
 deployment0002,recovered_inst,adcpt_m_instrument_log9_recovered,t_mean,s,-9999999.0,"[None, None]",733,0,0,no global ranges,0.0,733.0,100.0,9.4574,5.15,15.52,1.6754
 deployment0002,recovered_inst,adcpt_m_instrument_log9_recovered,t_1_10,s,-9999999.0,"[None, None]",733,0,0,no global ranges,0.0,733.0,100.0,10.8688,5.62,18.0,1.8058
 deployment0002,recovered_inst,adcpt_m_instrument_log9_recovered,d_mean,degrees,-9999999.0,"[0.0, 360.0]",733,0,0,0,0.0,733.0,100.0,262.6917,188.0,315.0,19.0077
@@ -87,14 +79,10 @@ deployment0003,recovered_inst,adcp_velocity_earth,"bin_depths (dims: ['time', 'b
 deployment0003,recovered_inst,adcpt_m_instrument_log9_recovered,significant_wave_height,m,-9999999.0,"[0.0, 18.0]",1002,0,0,1,0.0,1001.0,99.9,1.265,0.48,3.03,0.3825
 deployment0003,recovered_inst,adcpt_m_instrument_log9_recovered,peak_wave_period,sec,-9999999.0,"[3.0, 30.0]",1002,0,0,2,0.0,1000.0,99.8,8.5277,3.4,18.0,2.6649
 deployment0003,recovered_inst,adcpt_m_instrument_log9_recovered,peak_wave_direction,degrees,-9999999.0,"[0.0, 360.0]",1002,0,0,1,0.0,1001.0,99.9,296.8452,188.0,351.0,26.6346
-deployment0003,recovered_inst,adcpt_m_instrument_log9_recovered,tp_sea,degrees,-9999999.0,"[0.0, 360.0]",1002,0,0,1,0.0,1001.0,99.9,296.8452,188.0,351.0,26.6346
 deployment0003,recovered_inst,adcpt_m_instrument_log9_recovered,dp_sea,degrees,-9999999.0,"[0.0, 360.0]",1002,0,0,1,2.0,999.0,99.7,301.8258,168.0,351.0,27.7589
 deployment0003,recovered_inst,adcpt_m_instrument_log9_recovered,hs_sea,meters,-9999999.0,"[None, None]",1002,0,0,no global ranges,1.0,1001.0,99.9,1.0232,0.34,2.68,0.3306
-deployment0003,recovered_inst,adcpt_m_instrument_log9_recovered,tp_swell,meters,-9999999.0,"[None, None]",1002,0,0,no global ranges,1.0,1001.0,99.9,1.0232,0.34,2.68,0.3306
 deployment0003,recovered_inst,adcpt_m_instrument_log9_recovered,dp_swell,degrees,-9999999.0,"[0.0, 360.0]",1002,0,0,1,0.0,1001.0,99.9,293.04,188.0,341.0,26.1384
 deployment0003,recovered_inst,adcpt_m_instrument_log9_recovered,hs_swell,meters,-9999999.0,"[None, None]",1002,0,0,no global ranges,1.0,1001.0,99.9,0.6958,0.1,2.15,0.3279
-deployment0003,recovered_inst,adcpt_m_instrument_log9_recovered,t_max,meters,-9999999.0,"[None, None]",1002,0,0,no global ranges,1.0,1001.0,99.9,0.6958,0.1,2.15,0.3279
-deployment0003,recovered_inst,adcpt_m_instrument_log9_recovered,t_1_3,meters,-9999999.0,"[None, None]",1002,0,0,no global ranges,1.0,1001.0,99.9,0.6958,0.1,2.15,0.3279
 deployment0003,recovered_inst,adcpt_m_instrument_log9_recovered,t_mean,s,-9999999.0,"[None, None]",1002,0,0,no global ranges,1.0,1001.0,99.9,6.045,2.31,11.33,1.2381
 deployment0003,recovered_inst,adcpt_m_instrument_log9_recovered,t_1_10,s,-9999999.0,"[None, None]",1002,0,0,no global ranges,1.0,1001.0,99.9,7.8302,3.86,15.83,1.6559
 deployment0003,recovered_inst,adcpt_m_instrument_log9_recovered,d_mean,degrees,-9999999.0,"[0.0, 360.0]",1002,0,0,1,0.0,1001.0,99.9,294.048,188.0,342.0,23.5404
@@ -126,14 +114,10 @@ deployment0004,recovered_inst,adcp_velocity_earth,"bin_depths (dims: ['time', 'b
 deployment0004,recovered_inst,adcpt_m_instrument_log9_recovered,significant_wave_height,m,-9999999.0,"[0.0, 18.0]",1720,0,0,0,2.0,1718.0,99.88,2.7571,0.03,7.68,1.2065
 deployment0004,recovered_inst,adcpt_m_instrument_log9_recovered,peak_wave_period,sec,-9999999.0,"[3.0, 30.0]",1720,0,0,4,0.0,1716.0,99.77,12.4692,5.6,25.3,2.6891
 deployment0004,recovered_inst,adcpt_m_instrument_log9_recovered,peak_wave_direction,degrees,-9999999.0,"[0.0, 360.0]",1720,0,0,1,0.0,1719.0,99.94,276.3764,211.0,331.0,16.3795
-deployment0004,recovered_inst,adcpt_m_instrument_log9_recovered,tp_sea,degrees,-9999999.0,"[0.0, 360.0]",1720,0,0,1,0.0,1719.0,99.94,276.3764,211.0,331.0,16.3795
 deployment0004,recovered_inst,adcpt_m_instrument_log9_recovered,dp_sea,degrees,-9999999.0,"[0.0, 360.0]",1720,0,0,1,9.0,1710.0,99.42,262.4088,74.0,356.0,35.0367
 deployment0004,recovered_inst,adcpt_m_instrument_log9_recovered,hs_sea,meters,-9999999.0,"[None, None]",1720,0,0,no global ranges,0.0,1720.0,100.0,1.3219,0.02,3.05,0.5536
-deployment0004,recovered_inst,adcpt_m_instrument_log9_recovered,tp_swell,meters,-9999999.0,"[None, None]",1720,0,0,no global ranges,0.0,1720.0,100.0,1.3219,0.02,3.05,0.5536
 deployment0004,recovered_inst,adcpt_m_instrument_log9_recovered,dp_swell,degrees,-9999999.0,"[0.0, 360.0]",1720,0,0,1,0.0,1719.0,99.94,276.4427,211.0,327.0,16.0262
 deployment0004,recovered_inst,adcpt_m_instrument_log9_recovered,hs_swell,meters,-9999999.0,"[None, None]",1720,0,0,no global ranges,2.0,1718.0,99.88,2.38,0.02,7.31,1.1602
-deployment0004,recovered_inst,adcpt_m_instrument_log9_recovered,t_max,meters,-9999999.0,"[None, None]",1720,0,0,no global ranges,2.0,1718.0,99.88,2.38,0.02,7.31,1.1602
-deployment0004,recovered_inst,adcpt_m_instrument_log9_recovered,t_1_3,meters,-9999999.0,"[None, None]",1720,0,0,no global ranges,2.0,1718.0,99.88,2.38,0.02,7.31,1.1602
 deployment0004,recovered_inst,adcpt_m_instrument_log9_recovered,t_mean,s,-9999999.0,"[None, None]",1720,0,0,no global ranges,0.0,1720.0,100.0,9.5026,0.0,18.41,2.011
 deployment0004,recovered_inst,adcpt_m_instrument_log9_recovered,t_1_10,s,-9999999.0,"[None, None]",1720,0,0,no global ranges,1.0,1719.0,99.94,11.4008,6.38,19.79,2.1865
 deployment0004,recovered_inst,adcpt_m_instrument_log9_recovered,d_mean,degrees,-9999999.0,"[0.0, 360.0]",1720,0,0,1,0.0,1719.0,99.94,276.1018,213.0,331.0,15.5772
@@ -165,14 +149,10 @@ deployment0005,recovered_inst,adcp_velocity_earth,"bin_depths (dims: ['time', 'b
 deployment0005,recovered_inst,adcpt_m_instrument_log9_recovered,significant_wave_height,m,-9999999.0,"[0.0, 18.0]",1097,0,0,0,0.0,1097.0,100.0,1.4262,0.63,3.27,0.4167
 deployment0005,recovered_inst,adcpt_m_instrument_log9_recovered,peak_wave_period,sec,-9999999.0,"[3.0, 30.0]",1097,0,0,1,0.0,1096.0,99.91,8.8047,3.7,18.1,2.4587
 deployment0005,recovered_inst,adcpt_m_instrument_log9_recovered,peak_wave_direction,degrees,-9999999.0,"[0.0, 360.0]",1097,0,0,0,0.0,1097.0,100.0,289.4913,204.0,332.0,19.7536
-deployment0005,recovered_inst,adcpt_m_instrument_log9_recovered,tp_sea,degrees,-9999999.0,"[0.0, 360.0]",1097,0,0,0,0.0,1097.0,100.0,289.4913,204.0,332.0,19.7536
 deployment0005,recovered_inst,adcpt_m_instrument_log9_recovered,dp_sea,degrees,-9999999.0,"[0.0, 360.0]",1097,0,0,0,0.0,1097.0,100.0,293.6308,193.0,332.0,20.7484
 deployment0005,recovered_inst,adcpt_m_instrument_log9_recovered,hs_sea,meters,-9999999.0,"[None, None]",1097,0,0,no global ranges,0.0,1097.0,100.0,1.08,0.43,2.47,0.2913
-deployment0005,recovered_inst,adcpt_m_instrument_log9_recovered,tp_swell,meters,-9999999.0,"[None, None]",1097,0,0,no global ranges,0.0,1097.0,100.0,1.08,0.43,2.47,0.2913
 deployment0005,recovered_inst,adcpt_m_instrument_log9_recovered,dp_swell,degrees,-9999999.0,"[0.0, 360.0]",1097,0,0,0,0.0,1097.0,100.0,287.7229,222.0,323.0,18.8252
 deployment0005,recovered_inst,adcpt_m_instrument_log9_recovered,hs_swell,meters,-9999999.0,"[None, None]",1097,0,0,no global ranges,0.0,1097.0,100.0,0.8849,0.23,2.75,0.4168
-deployment0005,recovered_inst,adcpt_m_instrument_log9_recovered,t_max,meters,-9999999.0,"[None, None]",1097,0,0,no global ranges,0.0,1097.0,100.0,0.8849,0.23,2.75,0.4168
-deployment0005,recovered_inst,adcpt_m_instrument_log9_recovered,t_1_3,meters,-9999999.0,"[None, None]",1097,0,0,no global ranges,0.0,1097.0,100.0,0.8849,0.23,2.75,0.4168
 deployment0005,recovered_inst,adcpt_m_instrument_log9_recovered,t_mean,s,-9999999.0,"[None, None]",1097,0,0,no global ranges,2.0,1095.0,99.82,6.6431,3.89,11.85,1.0874
 deployment0005,recovered_inst,adcpt_m_instrument_log9_recovered,t_1_10,s,-9999999.0,"[None, None]",1097,0,0,no global ranges,4.0,1093.0,99.64,7.9583,3.83,13.76,1.3325
 deployment0005,recovered_inst,adcpt_m_instrument_log9_recovered,d_mean,degrees,-9999999.0,"[0.0, 360.0]",1097,0,0,0,0.0,1097.0,100.0,286.66,208.0,353.0,18.5676
@@ -204,14 +184,10 @@ deployment0006,recovered_inst,adcp_velocity_earth,"bin_depths (dims: ['time', 'b
 deployment0006,recovered_inst,adcpt_m_instrument_log9_recovered,significant_wave_height,m,-9999999.0,"[0.0, 18.0]",1593,0,0,0,0.0,1593.0,100.0,2.8371,0.48,7.66,1.1709
 deployment0006,recovered_inst,adcpt_m_instrument_log9_recovered,peak_wave_period,sec,-9999999.0,"[3.0, 30.0]",1593,0,0,86,0.0,1507.0,94.6,11.8483,3.0,18.1,2.6807
 deployment0006,recovered_inst,adcpt_m_instrument_log9_recovered,peak_wave_direction,degrees,-9999999.0,"[0.0, 360.0]",1593,0,0,0,2.0,1591.0,99.87,269.4645,188.0,356.0,22.5887
-deployment0006,recovered_inst,adcpt_m_instrument_log9_recovered,tp_sea,degrees,-9999999.0,"[0.0, 360.0]",1593,0,0,0,2.0,1591.0,99.87,269.4645,188.0,356.0,22.5887
 deployment0006,recovered_inst,adcpt_m_instrument_log9_recovered,dp_sea,degrees,-9999999.0,"[0.0, 360.0]",1593,0,0,0,0.0,1593.0,100.0,239.4105,8.0,356.0,69.1304
 deployment0006,recovered_inst,adcpt_m_instrument_log9_recovered,hs_sea,meters,-9999999.0,"[None, None]",1593,0,0,no global ranges,1.0,1592.0,99.94,1.6568,0.24,5.02,0.7837
-deployment0006,recovered_inst,adcpt_m_instrument_log9_recovered,tp_swell,meters,-9999999.0,"[None, None]",1593,0,0,no global ranges,1.0,1592.0,99.94,1.6568,0.24,5.02,0.7837
 deployment0006,recovered_inst,adcpt_m_instrument_log9_recovered,dp_swell,degrees,-9999999.0,"[0.0, 360.0]",1593,0,0,0,0.0,1593.0,100.0,270.3434,204.0,335.0,21.3827
 deployment0006,recovered_inst,adcpt_m_instrument_log9_recovered,hs_swell,meters,-9999999.0,"[None, None]",1593,0,0,no global ranges,0.0,1593.0,100.0,2.2066,0.31,7.3,1.0823
-deployment0006,recovered_inst,adcpt_m_instrument_log9_recovered,t_max,meters,-9999999.0,"[None, None]",1593,0,0,no global ranges,0.0,1593.0,100.0,2.2066,0.31,7.3,1.0823
-deployment0006,recovered_inst,adcpt_m_instrument_log9_recovered,t_1_3,meters,-9999999.0,"[None, None]",1593,0,0,no global ranges,0.0,1593.0,100.0,2.2066,0.31,7.3,1.0823
 deployment0006,recovered_inst,adcpt_m_instrument_log9_recovered,t_mean,s,-9999999.0,"[None, None]",1593,0,0,no global ranges,0.0,1593.0,100.0,9.2523,4.21,17.35,2.0059
 deployment0006,recovered_inst,adcpt_m_instrument_log9_recovered,t_1_10,s,-9999999.0,"[None, None]",1593,0,0,no global ranges,0.0,1593.0,100.0,10.8196,6.16,18.38,2.0158
 deployment0006,recovered_inst,adcpt_m_instrument_log9_recovered,d_mean,degrees,-9999999.0,"[0.0, 360.0]",1593,0,0,0,0.0,1593.0,100.0,269.6334,197.0,334.0,19.5776
@@ -243,14 +219,10 @@ deployment0007,recovered_inst,adcp_velocity_earth,"bin_depths (dims: ['time', 'b
 deployment0007,recovered_inst,adcpt_m_instrument_log9_recovered,significant_wave_height,m,-9999999.0,"[0.0, 18.0]",1414,0,0,0,5.0,1409.0,99.65,1.4018,0.05,4.01,0.5213
 deployment0007,recovered_inst,adcpt_m_instrument_log9_recovered,peak_wave_period,sec,-9999999.0,"[3.0, 30.0]",1414,0,0,7,0.0,1407.0,99.5,8.8509,3.7,18.1,2.3471
 deployment0007,recovered_inst,adcpt_m_instrument_log9_recovered,peak_wave_direction,degrees,-9999999.0,"[0.0, 360.0]",1414,0,0,0,1.0,1413.0,99.93,282.1677,181.0,341.0,24.7228
-deployment0007,recovered_inst,adcpt_m_instrument_log9_recovered,tp_sea,degrees,-9999999.0,"[0.0, 360.0]",1414,0,0,0,1.0,1413.0,99.93,282.1677,181.0,341.0,24.7228
 deployment0007,recovered_inst,adcpt_m_instrument_log9_recovered,dp_sea,degrees,-9999999.0,"[0.0, 360.0]",1414,0,0,0,4.0,1410.0,99.72,283.4745,124.0,356.0,30.1816
 deployment0007,recovered_inst,adcpt_m_instrument_log9_recovered,hs_sea,meters,-9999999.0,"[None, None]",1414,0,0,no global ranges,2.0,1412.0,99.86,1.0389,0.02,2.68,0.353
-deployment0007,recovered_inst,adcpt_m_instrument_log9_recovered,tp_swell,meters,-9999999.0,"[None, None]",1414,0,0,no global ranges,2.0,1412.0,99.86,1.0389,0.02,2.68,0.353
 deployment0007,recovered_inst,adcpt_m_instrument_log9_recovered,dp_swell,degrees,-9999999.0,"[0.0, 360.0]",1414,0,0,0,1.0,1413.0,99.93,278.7551,202.0,337.0,22.8113
 deployment0007,recovered_inst,adcpt_m_instrument_log9_recovered,hs_swell,meters,-9999999.0,"[None, None]",1414,0,0,no global ranges,4.0,1410.0,99.72,0.8908,0.04,3.49,0.5004
-deployment0007,recovered_inst,adcpt_m_instrument_log9_recovered,t_max,meters,-9999999.0,"[None, None]",1414,0,0,no global ranges,4.0,1410.0,99.72,0.8908,0.04,3.49,0.5004
-deployment0007,recovered_inst,adcpt_m_instrument_log9_recovered,t_1_3,meters,-9999999.0,"[None, None]",1414,0,0,no global ranges,4.0,1410.0,99.72,0.8908,0.04,3.49,0.5004
 deployment0007,recovered_inst,adcpt_m_instrument_log9_recovered,t_mean,s,-9999999.0,"[None, None]",1414,0,0,no global ranges,5.0,1409.0,99.65,6.3105,2.64,11.44,1.3685
 deployment0007,recovered_inst,adcpt_m_instrument_log9_recovered,t_1_10,s,-9999999.0,"[None, None]",1414,0,0,no global ranges,5.0,1409.0,99.65,7.9346,3.66,27.15,1.7553
 deployment0007,recovered_inst,adcpt_m_instrument_log9_recovered,d_mean,degrees,-9999999.0,"[0.0, 360.0]",1414,0,0,0,1.0,1413.0,99.93,279.9087,187.0,341.0,21.1656
@@ -282,14 +254,10 @@ deployment0008,recovered_inst,adcp_velocity_earth,"bin_depths (dims: ['time', 'b
 deployment0008,recovered_inst,adcpt_m_instrument_log9_recovered,significant_wave_height,m,-9999999.0,"[0.0, 18.0]",1365,0,0,0,1.0,1364.0,99.93,2.4125,0.42,7.79,1.0783
 deployment0008,recovered_inst,adcpt_m_instrument_log9_recovered,peak_wave_period,sec,-9999999.0,"[3.0, 30.0]",1365,0,0,35,1.0,1329.0,97.36,11.4461,4.7,18.1,2.654
 deployment0008,recovered_inst,adcpt_m_instrument_log9_recovered,peak_wave_direction,degrees,-9999999.0,"[0.0, 360.0]",1365,0,0,0,0.0,1365.0,100.0,267.4484,182.0,328.0,21.5964
-deployment0008,recovered_inst,adcpt_m_instrument_log9_recovered,tp_sea,degrees,-9999999.0,"[0.0, 360.0]",1365,0,0,0,0.0,1365.0,100.0,267.4484,182.0,328.0,21.5964
 deployment0008,recovered_inst,adcpt_m_instrument_log9_recovered,dp_sea,degrees,-9999999.0,"[0.0, 360.0]",1365,0,0,0,0.0,1365.0,100.0,252.2066,12.0,356.0,52.43
 deployment0008,recovered_inst,adcpt_m_instrument_log9_recovered,hs_sea,meters,-9999999.0,"[None, None]",1365,0,0,no global ranges,0.0,1365.0,100.0,1.3626,0.15,4.06,0.6024
-deployment0008,recovered_inst,adcpt_m_instrument_log9_recovered,tp_swell,meters,-9999999.0,"[None, None]",1365,0,0,no global ranges,0.0,1365.0,100.0,1.3626,0.15,4.06,0.6024
 deployment0008,recovered_inst,adcpt_m_instrument_log9_recovered,dp_swell,degrees,-9999999.0,"[0.0, 360.0]",1365,0,0,0,0.0,1365.0,100.0,268.2396,200.0,327.0,20.383
 deployment0008,recovered_inst,adcpt_m_instrument_log9_recovered,hs_swell,meters,-9999999.0,"[None, None]",1365,0,0,no global ranges,3.0,1362.0,99.78,1.917,0.27,6.58,1.0095
-deployment0008,recovered_inst,adcpt_m_instrument_log9_recovered,t_max,meters,-9999999.0,"[None, None]",1365,0,0,no global ranges,3.0,1362.0,99.78,1.917,0.27,6.58,1.0095
-deployment0008,recovered_inst,adcpt_m_instrument_log9_recovered,t_1_3,meters,-9999999.0,"[None, None]",1365,0,0,no global ranges,3.0,1362.0,99.78,1.917,0.27,6.58,1.0095
 deployment0008,recovered_inst,adcpt_m_instrument_log9_recovered,t_mean,s,-9999999.0,"[None, None]",1365,0,0,no global ranges,0.0,1365.0,100.0,8.4826,3.8,15.69,1.937
 deployment0008,recovered_inst,adcpt_m_instrument_log9_recovered,t_1_10,s,-9999999.0,"[None, None]",1365,0,0,no global ranges,0.0,1365.0,100.0,10.3545,5.41,19.04,2.0932
 deployment0008,recovered_inst,adcpt_m_instrument_log9_recovered,d_mean,degrees,-9999999.0,"[0.0, 360.0]",1365,0,0,0,0.0,1365.0,100.0,267.3516,194.0,323.0,19.1113
@@ -321,14 +289,10 @@ deployment0009,recovered_inst,adcp_velocity_earth,"bin_depths (dims: ['time', 'b
 deployment0009,recovered_inst,adcpt_m_instrument_log9_recovered,significant_wave_height,m,-9999999.0,"[0.0, 18.0]",1302,0,0,0,9.0,1293.0,99.31,1.5405,0.5,5.15,0.6482
 deployment0009,recovered_inst,adcpt_m_instrument_log9_recovered,peak_wave_period,sec,-9999999.0,"[3.0, 30.0]",1302,0,0,20,0.0,1282.0,98.46,9.4343,3.0,18.1,2.4918
 deployment0009,recovered_inst,adcpt_m_instrument_log9_recovered,peak_wave_direction,degrees,-9999999.0,"[0.0, 360.0]",1302,0,0,1,5.0,1296.0,99.54,288.4946,160.0,343.0,21.6959
-deployment0009,recovered_inst,adcpt_m_instrument_log9_recovered,tp_sea,degrees,-9999999.0,"[0.0, 360.0]",1302,0,0,1,5.0,1296.0,99.54,288.4946,160.0,343.0,21.6959
 deployment0009,recovered_inst,adcpt_m_instrument_log9_recovered,dp_sea,degrees,-9999999.0,"[0.0, 360.0]",1302,0,0,1,18.0,1283.0,98.54,290.1504,104.0,356.0,31.1497
 deployment0009,recovered_inst,adcpt_m_instrument_log9_recovered,hs_sea,meters,-9999999.0,"[None, None]",1302,0,0,no global ranges,3.0,1299.0,99.77,1.0809,0.32,3.08,0.4275
-deployment0009,recovered_inst,adcpt_m_instrument_log9_recovered,tp_swell,meters,-9999999.0,"[None, None]",1302,0,0,no global ranges,3.0,1299.0,99.77,1.0809,0.32,3.08,0.4275
 deployment0009,recovered_inst,adcpt_m_instrument_log9_recovered,dp_swell,degrees,-9999999.0,"[0.0, 360.0]",1302,0,0,0,0.0,1302.0,100.0,287.3456,192.0,331.0,20.5214
 deployment0009,recovered_inst,adcpt_m_instrument_log9_recovered,hs_swell,meters,-9999999.0,"[None, None]",1302,0,0,no global ranges,8.0,1294.0,99.39,1.0514,0.23,4.05,0.595
-deployment0009,recovered_inst,adcpt_m_instrument_log9_recovered,t_max,meters,-9999999.0,"[None, None]",1302,0,0,no global ranges,8.0,1294.0,99.39,1.0514,0.23,4.05,0.595
-deployment0009,recovered_inst,adcpt_m_instrument_log9_recovered,t_1_3,meters,-9999999.0,"[None, None]",1302,0,0,no global ranges,8.0,1294.0,99.39,1.0514,0.23,4.05,0.595
 deployment0009,recovered_inst,adcpt_m_instrument_log9_recovered,t_mean,s,-9999999.0,"[None, None]",1302,0,0,no global ranges,0.0,1302.0,100.0,7.3607,3.68,14.2,1.4556
 deployment0009,recovered_inst,adcpt_m_instrument_log9_recovered,t_1_10,s,-9999999.0,"[None, None]",1302,0,0,no global ranges,0.0,1302.0,100.0,8.7423,4.82,15.68,1.6764
 deployment0009,recovered_inst,adcpt_m_instrument_log9_recovered,d_mean,degrees,-9999999.0,"[0.0, 360.0]",1302,0,0,0,0.0,1302.0,100.0,288.9562,182.0,354.0,21.7052
