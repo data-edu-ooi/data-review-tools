@@ -212,6 +212,7 @@ def main(sDir, url_list, preferred_only):
                             y_nonan_nofv_nE_nogr = y_nonan_nofv_nE
                             x_nonan_nofv_nE_nogr = x_nonan_nofv_nE
 
+                        # check array length
                         if len(y_nonan_nofv_nE_nogr) > 0:
                             if m == 'common_stream_placeholder':
                                 sname = '-'.join((r, sv))
@@ -276,115 +277,122 @@ def main(sDir, url_list, preferred_only):
                                 y_data = g_data[ny + (t + 1)].dropna(axis=0)
                                 x_time = g_data[ny+t].dropna(axis=0)
                                 t += 1
+                                if len(y_data) != 0 and len(x_time) != 0:
+                                    n_year = x_time[0].year
 
-                                n_year = x_time[0].year
+                                    col_name = str(n_year)
 
-                                col_name = str(n_year)
+                                    serie_n = pd.DataFrame(columns=[col_name], index=x_time)
+                                    serie_n[col_name] = list(y_data[:])
 
-                                serie_n = pd.DataFrame(columns=[col_name], index=x_time)
-                                serie_n[col_name] = list(y_data[:])
+                                    # plot histogram
+                                    # serie_n.plot.hist(ax=ax0[0], bins=bin_range,
+                                    #                   histtype='bar', color=colors[ny], stacked=True)
+                                    serie_n.plot.kde(ax=ax0[0], color=colors[ny])
+                                    ax0[0].legend(fontsize=8, bbox_to_anchor=(0., 1.12, 1., .102), loc=3,
+                                                  ncol=len(groups), mode="expand", borderaxespad=0.)
 
-                                # plot histogram
-                                # serie_n.plot.hist(ax=ax0[0], bins=bin_range,
-                                #                   histtype='bar', color=colors[ny], stacked=True)
-                                serie_n.plot.kde(ax=ax0[0], color=colors[ny])
-                                ax0[0].legend(fontsize=8, bbox_to_anchor=(0., 1.12, 1., .102), loc=3,
-                                              ncol=len(groups), mode="expand", borderaxespad=0.)
+                                    # ax0[0].set_xticks(bin_range)
+                                    ax0[0].set_xlabel('Observation Ranges', fontsize=8)
+                                    ax0[0].set_ylabel('Density', fontsize=8) #'Number of Observations'
+                                    ax0[0].set_title(ms.split('-')[0] + ' (' + sv + ', ' + sv_units+')' +
+                                                     '  Kernel Density Estimates', fontsize=8)
 
-                                # ax0[0].set_xticks(bin_range)
-                                ax0[0].set_xlabel('Observation Ranges', fontsize=8)
-                                ax0[0].set_ylabel('Density', fontsize=8) #'Number of Observations'
-                                ax0[0].set_title(ms.split('-')[0] + ' (' + sv + ', ' + sv_units+')' +
-                                                 '  Kernel Density Estimates', fontsize=8)
+                                    # plot data
+                                    serie_n.plot(ax=ax[ny], linestyle='None', marker='.', markersize=0.5, color=colors[ny])
+                                    ax[ny].legend().set_visible(False)
 
-                                # plot data
-                                serie_n.plot(ax=ax[ny], linestyle='None', marker='.', markersize=0.5, color=colors[ny])
-                                ax[ny].legend().set_visible(False)
+                                    # plot Mean and Standard deviation
+                                    ma = serie_n.rolling('86400s').mean()
+                                    mstd = serie_n.rolling('86400s').std()
 
-                                # plot Mean and Standard deviation
-                                ma = serie_n.rolling('86400s').mean()
-                                mstd = serie_n.rolling('86400s').std()
+                                    ax[ny].plot(ma.index, ma[col_name].values, 'k', linewidth=0.15)
+                                    ax[ny].fill_between(mstd.index, ma[col_name].values - 2 * mstd[col_name].values,
+                                                        ma[col_name].values + 2 * mstd[col_name].values,
+                                                        color='b', alpha=0.2)
 
-                                ax[ny].plot(ma.index, ma[col_name].values, 'k', linewidth=0.15)
-                                ax[ny].fill_between(mstd.index, ma[col_name].values - 2 * mstd[col_name].values,
-                                                    ma[col_name].values + 2 * mstd[col_name].values,
-                                                    color='b', alpha=0.2)
+                                    # prepare the time axis parameters
+                                    datemin = datetime.date(n_year, 1, 1)
+                                    datemax = datetime.date(n_year, 12, 31)
+                                    ax[ny].set_xlim(datemin, datemax)
+                                    xlocator = mdates.MonthLocator()  # every month
+                                    myFmt = mdates.DateFormatter('%m')
+                                    ax[ny].xaxis.set_minor_locator(xlocator)
+                                    ax[ny].xaxis.set_major_formatter(myFmt)
 
-                                # prepare the time axis parameters
-                                datemin = datetime.date(n_year, 1, 1)
-                                datemax = datetime.date(n_year, 12, 31)
-                                ax[ny].set_xlim(datemin, datemax)
-                                xlocator = mdates.MonthLocator()  # every month
-                                myFmt = mdates.DateFormatter('%m')
-                                ax[ny].xaxis.set_minor_locator(xlocator)
-                                ax[ny].xaxis.set_major_formatter(myFmt)
+                                    # prepare the time axis parameters
+                                    # ax[ny].set_yticks(bin_range)
+                                    ylocator = MaxNLocator(prune='both', nbins=3)
+                                    ax[ny].yaxis.set_major_locator(ylocator)
 
-                                # prepare the time axis parameters
-                                # ax[ny].set_yticks(bin_range)
-                                ylocator = MaxNLocator(prune='both', nbins=3)
-                                ax[ny].yaxis.set_major_locator(ylocator)
+                                    # format figure
+                                    ax[ny].tick_params(axis='both', color='r', labelsize=7, labelcolor='m')
 
-                                # format figure
-                                ax[ny].tick_params(axis='both', color='r', labelsize=7, labelcolor='m')
-
-                                if ny < len(groups)-1:
-                                    ax[ny].tick_params(which='both', pad=0.1, length=1, labelbottom=False)
-                                    ax[ny].set_xlabel(' ')
-                                else:
-                                    ax[ny].tick_params(which='both', color='r', labelsize=7, labelcolor='m',
-                                                       pad=0.1, length=1, rotation=0)
-                                    ax[ny].set_xlabel('Months', rotation=0, fontsize=8, color='b')
-
-                                ax[ny].set_ylabel(n_year, rotation=0, fontsize=8, color='b', labelpad=20)
-                                ax[ny].yaxis.set_label_position("right")
-
-                                if ny == 0:
-                                    if global_min and global_max:
-
-                                        ax[ny].set_title(sv + '( '+ sv_units + ') -- Global Range: [' + str(int(global_min)) +
-                                                         ',' + str(int(global_max)) + '] \n'
-                                                         'Plotted: Data, Mean and 2STD (Method: One day rolling window calculations) \n',
-                                                         fontsize=8)
+                                    if ny < len(groups)-1:
+                                        ax[ny].tick_params(which='both', pad=0.1, length=1, labelbottom=False)
+                                        ax[ny].set_xlabel(' ')
                                     else:
-                                        ax[ny].set_title(
-                                         sv + '( ' + sv_units + ') -- Global Range: [] \n'
-                                        'Plotted: Data, Mean and 2STD (Method: One day rolling window calculations) \n',
-                                            fontsize=8)
+                                        ax[ny].tick_params(which='both', color='r', labelsize=7, labelcolor='m',
+                                                           pad=0.1, length=1, rotation=0)
+                                        ax[ny].set_xlabel('Months', rotation=0, fontsize=8, color='b')
 
-                                # plot global ranges
-                                # ax[ny].axhline(y=global_min, color='r', linestyle='--', linewidth=.6)
-                                # ax[ny].axhline(y=global_max, color='r', linestyle='--', linewidth=.6)
+                                    ax[ny].set_ylabel(n_year, rotation=0, fontsize=8, color='b', labelpad=20)
+                                    ax[ny].yaxis.set_label_position("right")
 
-                                # mark deployment end times on figure
-                                ymin, ymax = ax[ny].get_ylim()
-                                dep = 1
-                                for etimes in end_times:
-                                    if etimes.year == n_year:
-                                        ax[ny].axvline(x=etimes, color='b', linestyle='--', linewidth=.6)
-                                        ax[ny].text(etimes, ymin, 'End' + str(dep), fontsize=6, style='italic',
-                                                    bbox=dict(boxstyle='round',
-                                                              ec=(0., 0.5, 0.5),
-                                                              fc=(1., 1., 1.))
-                                                    )
-                                    dep += 1
+                                    if ny == 0:
+                                        if global_min and global_max:
 
-                                # ax[ny].set_ylim(5, 12)
+                                            ax[ny].set_title(sv + '( '+ sv_units + ') -- Global Range: [' + str(int(global_min)) +
+                                                             ',' + str(int(global_max)) + '] \n'
+                                                             'Plotted: Data, Mean and 2STD (Method: One day rolling window calculations) \n',
+                                                             fontsize=8)
+                                        else:
+                                            ax[ny].set_title(
+                                             sv + '( ' + sv_units + ') -- Global Range: [] \n'
+                                            'Plotted: Data, Mean and 2STD (Method: One day rolling window calculations) \n',
+                                                fontsize=8)
 
-                            # save figure to a file
-                            sfile = '_'.join(('all', sname))
-                            save_file = os.path.join(save_dir, sfile)
-                            fig.savefig(str(save_file), dpi=150)
+                                    # plot global ranges
+                                    # ax[ny].axhline(y=global_min, color='r', linestyle='--', linewidth=.6)
+                                    # ax[ny].axhline(y=global_max, color='r', linestyle='--', linewidth=.6)
 
-                            sfile = '_'.join(('Statistics', sname))
-                            save_file = os.path.join(save_dir, sfile)
-                            fig0.savefig(str(save_file), dpi=150)
+                                    # mark deployment end times on figure
+                                    ymin, ymax = ax[ny].get_ylim()
+                                    dep = 1
+                                    for etimes in end_times:
+                                        if etimes.year == n_year:
+                                            ax[ny].axvline(x=etimes, color='b', linestyle='--', linewidth=.6)
+                                            ax[ny].text(etimes, ymin, 'End' + str(dep), fontsize=6, style='italic',
+                                                        bbox=dict(boxstyle='round',
+                                                                  ec=(0., 0.5, 0.5),
+                                                                  fc=(1., 1., 1.))
+                                                        )
+                                        dep += 1
 
-                            pyplot.close()
+                                    # ax[ny].set_ylim(5, 12)
+
+                                # save figure to a file
+                                sfile = '_'.join(('all', sname))
+                                save_file = os.path.join(save_dir, sfile)
+                                fig.savefig(str(save_file), dpi=150)
+
+                                sfile = '_'.join(('Statistics', sname))
+                                save_file = os.path.join(save_dir, sfile)
+                                fig0.savefig(str(save_file), dpi=150)
+
+                                pyplot.close()
 
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
     preferred_only = 'yes'
-    sDir = ''
-    url_list = []
+    sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T193331-CP01CNSM-RID26-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T193320-CP01CNSM-RID26-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T193307-CP01CNSM-RID26-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html']
+
+
+        # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190111T190642-CE06ISSM-MFD35-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190111T190629-CE06ISSM-MFD35-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190111T190618-CE06ISSM-MFD35-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html']
 
     main(sDir, url_list, preferred_only)
