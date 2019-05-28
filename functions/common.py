@@ -156,7 +156,8 @@ def get_nc_urls(catalog_urls):
 
         dataset = requests.get(i).text
         ii = re.findall(r'href=[\'"]?([^\'" >]+)', dataset)
-        x = re.findall(r'(ooi/.*?.nc)', dataset)
+        #x = re.findall(r'(ooi/.*?.nc)', dataset)
+        x = [y for y in ii if y.endswith('.nc')]
         for i in x:
             if i.endswith('.nc') == False:
                 x.remove(i)
@@ -165,7 +166,8 @@ def get_nc_urls(catalog_urls):
                 float(i[-4])
             except:
                 x.remove(i)
-        dataset = [os.path.join(tds_url, i) for i in x]
+        #dataset = [os.path.join(tds_url, i) for i in x]
+        dataset = [os.path.join(tds_url, i.split('=')[-1]) for i in x]
         datasets.append(dataset)
     datasets = list(itertools.chain(*datasets))
     return datasets
