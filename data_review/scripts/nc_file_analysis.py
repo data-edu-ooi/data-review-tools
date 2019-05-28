@@ -310,11 +310,13 @@ def main(sDir, url_list):
                                 if pressure_units == '0.001 dbar':
                                     pressure_max = round((pressure_max / 1000), 2)
                                     pressure_mean = round((pressure_mean / 1000), 2)
+                                    pressure_compare = round((pressure_compare / 1000), 2)
                                     notes.append('Pressure converted from 0.001 dbar to dbar for pressure comparison')
 
                                 elif pressure_units == 'daPa':
                                     pressure_max = round((pressure_max / 1000), 2)
                                     pressure_mean = round((pressure_mean / 1000), 2)
+                                    pressure_compare = round((pressure_compare / 1000), 2)
                                     notes.append('Pressure converted from daPa to dbar for pressure comparison')
 
                             else:
