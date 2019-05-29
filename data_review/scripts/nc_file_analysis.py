@@ -406,23 +406,18 @@ def main(sDir, url_list):
                                                 n_grange = 'no global ranges'
                                                 var_gr = var_nofv
 
-                                            if vnum_dims == 1:
-                                                if list(np.unique(np.isnan(var_gr.values))) != [True]:
+                                            if list(np.unique(np.isnan(var_gr.values))) != [True]:
+                                                if vnum_dims == 1:
                                                     [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_gr, 5)
                                                 else:
-                                                    num_outliers = None
-                                                    mean = None
-                                                    vmin = None
-                                                    vmax = None
-                                                    sd = None
-                                                    n_stats = 0
+                                                    [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_gr.values.flatten(), 5)
                                             else:
                                                 num_outliers = None
                                                 mean = None
                                                 vmin = None
                                                 vmax = None
                                                 sd = None
-                                                n_stats = None
+                                                n_stats = 0
                                             var_units = var.units
 
                                 except KeyError:

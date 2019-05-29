@@ -174,11 +174,7 @@ def main(f, ps, mc):
                             if type(n_stats) == str:
                                 percent_valid_data = 'stats not calculated'
                             elif type(n_all) == list:
-                                if type(n_gr) == str:
-                                    n1 = n_all[1] - n_nan - n_fv
-                                else:
-                                    n1 = n_all[1] - n_nan - n_fv - n_gr
-                                percent_valid_data = round((float(n1) / float(n_all[1]) * 100), 2)
+                                percent_valid_data = round((float(n_stats) / float(n_all[1]) * 100), 2)
                             else:
                                 percent_valid_data = round((float(n_stats)/float(n_all) * 100), 2)
 
