@@ -1,0 +1,3 @@
+common_stream_name,preferred_methods_streams,deployments,long_name,units,t0,t1,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,define_stdev,n_outliers,n_stats,mean,min,max,stdev
+phsen_abcdef_sio_mule_instrument,['recovered_inst-phsen_abcdef_instrument'],,Thermistor Temperature at End of Measurement,[],,,[],"[7.3, 8.5]",2616,0,0,0,1,,,,,,
+phsen_abcdef_sio_mule_instrument,['recovered_inst-phsen_abcdef_instrument'],,pH,[],,,[],"[7.3, 8.5]",2616,0,0,0,1,,,,,,

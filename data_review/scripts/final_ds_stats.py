@@ -229,6 +229,7 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                     if len(fv_lst) == 1:
                         fill_value = fv_lst[0]
                     else:
+                        print(fv_lst)
                         print('No unique fill value for {}'.format(sv))
 
                     lunits = np.unique(vinfo['units']).tolist()
@@ -289,11 +290,13 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                         deployments = None
                         t0 = None
                         t1 = None
+                        t_final = []
 
                     if sd_calc:
                         print_sd = sd_calc
                     else:
                         print_sd = sdcalc
+
                     rows.append([m, list(np.unique(pms)), deployments, sv, lunits, t0, t1, fv_lst, [g_min, g_max],
                                  n_all, n_nan, n_fv, n_grange, print_sd, num_outliers, n_stats, mean, vmin, vmax, sd])
 
@@ -350,9 +353,43 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
 
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
-    sDir = ''
-    plotting_sDir = ''
-    sd_calc = None  # number of standard deviations for outlier calculation. options: int or None
-    url_list = []
+    sDir = '/Users/leila/Documents/NSFEduSupport/github/data-review-tools/data_review/data_ranges'
+
+
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181219T140600-GA03FLMB-RIS01-04-PHSENF000-telemetered-phsen_abcdef_sio_mule_instrument/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181219T140542-GA03FLMB-RIS01-04-PHSENF000-recovered_host-phsen_abcdef_imodem_instrument_recovered/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181219T140523-GA03FLMB-RIS01-04-PHSENF000-recovered_inst-phsen_abcdef_instrument/catalog.html']
+    #
+    # url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181219T135600-GA03FLMA-RIS01-04-PHSENF000-telemetered-phsen_abcdef_sio_mule_instrument/catalog.html',
+    #             'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181219T135543-GA03FLMA-RIS01-04-PHSENF000-recovered_host-phsen_abcdef_imodem_instrument_recovered/catalog.html',
+    #             'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181219T135522-GA03FLMA-RIS01-04-PHSENF000-recovered_inst-phsen_abcdef_instrument/catalog.html']
+
+
+    # url_list = [
+    #     'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T164956-CP04OSSM-RID26-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html',
+    #     'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T164943-CP04OSSM-RID26-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
+    #     'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T164931-CP04OSSM-RID26-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html']
+    # #
+    # url_list = [
+    #     'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T164918-CP04OSSM-MFD35-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html',
+    #     'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T164906-CP04OSSM-MFD35-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
+    #     'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T164853-CP04OSSM-MFD35-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html']
+
+    # url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T193255-CP01CNSM-MFD35-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html',
+    #             'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T193220-CP01CNSM-MFD35-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
+    #             'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T193208-CP01CNSM-MFD35-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html']
+
+    #
+    # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T193331-CP01CNSM-RID26-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html',
+    # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T193320-CP01CNSM-RID26-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
+    # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T193307-CP01CNSM-RID26-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html']
+
+    # url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190515T140544-CE04OSSM-RID26-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html',
+    #             'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190515T140544-CE04OSSM-RID26-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
+    #             'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190515T140544-CE04OSSM-RID26-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html']
+
+    plotting_sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
+
+    sd_calc = 1  # number of standard deviations for outlier calculation. options: int or None
 
     main(sDir, plotting_sDir, url_list, sd_calc)
