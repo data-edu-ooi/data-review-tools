@@ -272,7 +272,6 @@ def main(sDir, url_list, preferred_only):
                                 ax=[ax]
                             t = 1
                             for ny in range(len(groups)):
-
                                 # prepare data for plotting
                                 y_data = g_data[ny + (t + 1)].dropna(axis=0)
                                 x_time = g_data[ny+t].dropna(axis=0)
@@ -288,107 +287,141 @@ def main(sDir, url_list, preferred_only):
                                     # plot histogram
                                     # serie_n.plot.hist(ax=ax0[0], bins=bin_range,
                                     #                   histtype='bar', color=colors[ny], stacked=True)
-                                    serie_n.plot.kde(ax=ax0[0], color=colors[ny])
-                                    ax0[0].legend(fontsize=8, bbox_to_anchor=(0., 1.12, 1., .102), loc=3,
-                                                  ncol=len(groups), mode="expand", borderaxespad=0.)
 
-                                    # ax0[0].set_xticks(bin_range)
-                                    ax0[0].set_xlabel('Observation Ranges', fontsize=8)
-                                    ax0[0].set_ylabel('Density', fontsize=8) #'Number of Observations'
-                                    ax0[0].set_title(ms.split('-')[0] + ' (' + sv + ', ' + sv_units+')' +
-                                                     '  Kernel Density Estimates', fontsize=8)
+                                    if len(serie_n) != 1:
+                                        serie_n.plot.kde(ax=ax0[0], color=colors[ny])
+                                        ax0[0].legend(fontsize=8, bbox_to_anchor=(0., 1.12, 1., .102), loc=3,
+                                                      ncol=len(groups), mode="expand", borderaxespad=0.)
 
-                                    # plot data
-                                    serie_n.plot(ax=ax[ny], linestyle='None', marker='.', markersize=0.5, color=colors[ny])
-                                    ax[ny].legend().set_visible(False)
+                                        # ax0[0].set_xticks(bin_range)
+                                        ax0[0].set_xlabel('Observation Ranges', fontsize=8)
+                                        ax0[0].set_ylabel('Density', fontsize=8) #'Number of Observations'
+                                        ax0[0].set_title(ms.split('-')[0] + ' (' + sv + ', ' + sv_units+')' +
+                                                         '  Kernel Density Estimates', fontsize=8)
 
-                                    # plot Mean and Standard deviation
-                                    ma = serie_n.rolling('86400s').mean()
-                                    mstd = serie_n.rolling('86400s').std()
+                                        # plot data
+                                        serie_n.plot(ax=ax[ny], linestyle='None', marker='.', markersize=0.5, color=colors[ny])
+                                        ax[ny].legend().set_visible(False)
 
-                                    ax[ny].plot(ma.index, ma[col_name].values, 'k', linewidth=0.15)
-                                    ax[ny].fill_between(mstd.index, ma[col_name].values - 2 * mstd[col_name].values,
-                                                        ma[col_name].values + 2 * mstd[col_name].values,
-                                                        color='b', alpha=0.2)
+                                        # plot Mean and Standard deviation
+                                        ma = serie_n.rolling('86400s').mean()
+                                        mstd = serie_n.rolling('86400s').std()
 
-                                    # prepare the time axis parameters
-                                    datemin = datetime.date(n_year, 1, 1)
-                                    datemax = datetime.date(n_year, 12, 31)
-                                    ax[ny].set_xlim(datemin, datemax)
-                                    xlocator = mdates.MonthLocator()  # every month
-                                    myFmt = mdates.DateFormatter('%m')
-                                    ax[ny].xaxis.set_minor_locator(xlocator)
-                                    ax[ny].xaxis.set_major_formatter(myFmt)
+                                        ax[ny].plot(ma.index, ma[col_name].values, 'k', linewidth=0.15)
+                                        ax[ny].fill_between(mstd.index, ma[col_name].values - 2 * mstd[col_name].values,
+                                                            ma[col_name].values + 2 * mstd[col_name].values,
+                                                            color='b', alpha=0.2)
 
-                                    # prepare the time axis parameters
-                                    # ax[ny].set_yticks(bin_range)
-                                    ylocator = MaxNLocator(prune='both', nbins=3)
-                                    ax[ny].yaxis.set_major_locator(ylocator)
+                                        # prepare the time axis parameters
+                                        datemin = datetime.date(n_year, 1, 1)
+                                        datemax = datetime.date(n_year, 12, 31)
+                                        ax[ny].set_xlim(datemin, datemax)
+                                        xlocator = mdates.MonthLocator()  # every month
+                                        myFmt = mdates.DateFormatter('%m')
+                                        ax[ny].xaxis.set_minor_locator(xlocator)
+                                        ax[ny].xaxis.set_major_formatter(myFmt)
 
-                                    # format figure
-                                    ax[ny].tick_params(axis='both', color='r', labelsize=7, labelcolor='m')
+                                        # prepare the time axis parameters
+                                        # ax[ny].set_yticks(bin_range)
+                                        ylocator = MaxNLocator(prune='both', nbins=3)
+                                        ax[ny].yaxis.set_major_locator(ylocator)
 
-                                    if ny < len(groups)-1:
-                                        ax[ny].tick_params(which='both', pad=0.1, length=1, labelbottom=False)
-                                        ax[ny].set_xlabel(' ')
-                                    else:
-                                        ax[ny].tick_params(which='both', color='r', labelsize=7, labelcolor='m',
-                                                           pad=0.1, length=1, rotation=0)
-                                        ax[ny].set_xlabel('Months', rotation=0, fontsize=8, color='b')
+                                        # format figure
+                                        ax[ny].tick_params(axis='both', color='r', labelsize=7, labelcolor='m')
 
-                                    ax[ny].set_ylabel(n_year, rotation=0, fontsize=8, color='b', labelpad=20)
-                                    ax[ny].yaxis.set_label_position("right")
-
-                                    if ny == 0:
-                                        if global_min and global_max:
-
-                                            ax[ny].set_title(sv + '( '+ sv_units + ') -- Global Range: [' + str(int(global_min)) +
-                                                             ',' + str(int(global_max)) + '] \n'
-                                                             'Plotted: Data, Mean and 2STD (Method: One day rolling window calculations) \n',
-                                                             fontsize=8)
+                                        if ny < len(groups)-1:
+                                            ax[ny].tick_params(which='both', pad=0.1, length=1, labelbottom=False)
+                                            ax[ny].set_xlabel(' ')
                                         else:
-                                            ax[ny].set_title(
-                                             sv + '( ' + sv_units + ') -- Global Range: [] \n'
-                                            'Plotted: Data, Mean and 2STD (Method: One day rolling window calculations) \n',
-                                                fontsize=8)
+                                            ax[ny].tick_params(which='both', color='r', labelsize=7, labelcolor='m',
+                                                               pad=0.1, length=1, rotation=0)
+                                            ax[ny].set_xlabel('Months', rotation=0, fontsize=8, color='b')
 
-                                    # plot global ranges
-                                    # ax[ny].axhline(y=global_min, color='r', linestyle='--', linewidth=.6)
-                                    # ax[ny].axhline(y=global_max, color='r', linestyle='--', linewidth=.6)
+                                        ax[ny].set_ylabel(n_year, rotation=0, fontsize=8, color='b', labelpad=20)
+                                        ax[ny].yaxis.set_label_position("right")
 
-                                    # mark deployment end times on figure
-                                    ymin, ymax = ax[ny].get_ylim()
-                                    dep = 1
-                                    for etimes in end_times:
-                                        if etimes.year == n_year:
-                                            ax[ny].axvline(x=etimes, color='b', linestyle='--', linewidth=.6)
-                                            ax[ny].text(etimes, ymin, 'End' + str(dep), fontsize=6, style='italic',
-                                                        bbox=dict(boxstyle='round',
-                                                                  ec=(0., 0.5, 0.5),
-                                                                  fc=(1., 1., 1.))
-                                                        )
-                                        dep += 1
+                                        if ny == 0:
+                                            if global_min and global_max:
 
-                                    # ax[ny].set_ylim(5, 12)
+                                                ax[ny].set_title(sv + '( '+ sv_units + ') -- Global Range: [' + str(int(global_min)) +
+                                                                 ',' + str(int(global_max)) + '] \n'
+                                                                 'Plotted: Data, Mean and 2STD (Method: One day rolling window calculations) \n',
+                                                                 fontsize=8)
+                                            else:
+                                                ax[ny].set_title(
+                                                 sv + '( ' + sv_units + ') -- Global Range: [] \n'
+                                                'Plotted: Data, Mean and 2STD (Method: One day rolling window calculations) \n',
+                                                    fontsize=8)
 
-                                # save figure to a file
-                                sfile = '_'.join(('all', sname))
-                                save_file = os.path.join(save_dir, sfile)
-                                fig.savefig(str(save_file), dpi=150)
+                                        # plot global ranges
+                                        # ax[ny].axhline(y=global_min, color='r', linestyle='--', linewidth=.6)
+                                        # ax[ny].axhline(y=global_max, color='r', linestyle='--', linewidth=.6)
 
-                                sfile = '_'.join(('Statistics', sname))
-                                save_file = os.path.join(save_dir, sfile)
-                                fig0.savefig(str(save_file), dpi=150)
+                                        # mark deployment end times on figure
+                                        ymin, ymax = ax[ny].get_ylim()
+                                        dep = 1
+                                        for etimes in end_times:
+                                            if etimes.year == n_year:
+                                                ax[ny].axvline(x=etimes, color='b', linestyle='--', linewidth=.6)
+                                                ax[ny].text(etimes, ymin, 'End' + str(dep), fontsize=6, style='italic',
+                                                            bbox=dict(boxstyle='round',
+                                                                      ec=(0., 0.5, 0.5),
+                                                                      fc=(1., 1., 1.))
+                                                            )
+                                            dep += 1
 
-                                pyplot.close()
+                                        # ax[ny].set_ylim(5, 12)
+
+                                    # save figure to a file
+                                    sfile = '_'.join(('all', sname))
+                                    save_file = os.path.join(save_dir, sfile)
+                                    fig.savefig(str(save_file), dpi=150)
+
+                                    sfile = '_'.join(('Statistics', sname))
+                                    save_file = os.path.join(save_dir, sfile)
+                                    fig0.savefig(str(save_file), dpi=150)
+
+                                    pyplot.close()
 
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
     preferred_only = 'yes'
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T193331-CP01CNSM-RID26-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T193320-CP01CNSM-RID26-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
-                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T193307-CP01CNSM-RID26-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html']
+
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181127T041614-GI01SUMO-RII11-02-PHSENE041-telemetered-phsen_abcdef_imodem_instrument/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181127T041559-GI01SUMO-RII11-02-PHSENE041-recovered_host-phsen_abcdef_imodem_instrument_recovered/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181127T041546-GI01SUMO-RII11-02-PHSENE041-recovered_inst-phsen_abcdef_instrument/catalog.html']
+
+    # url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181127T041658-GI01SUMO-RII11-02-PHSENE042-telemetered-phsen_abcdef_imodem_instrument/catalog.html',
+    # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181127T041646-GI01SUMO-RII11-02-PHSENE042-recovered_host-phsen_abcdef_imodem_instrument_recovered/catalog.html',
+    # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181127T041629-GI01SUMO-RII11-02-PHSENE042-recovered_inst-phsen_abcdef_instrument/catalog.html']
+
+    # url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181219T140600-GA03FLMB-RIS01-04-PHSENF000-telemetered-phsen_abcdef_sio_mule_instrument/catalog.html',
+    #             'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181219T140542-GA03FLMB-RIS01-04-PHSENF000-recovered_host-phsen_abcdef_imodem_instrument_recovered/catalog.html',
+    #             'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181219T140523-GA03FLMB-RIS01-04-PHSENF000-recovered_inst-phsen_abcdef_instrument/catalog.html']
+
+        # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181219T135600-GA03FLMA-RIS01-04-PHSENF000-telemetered-phsen_abcdef_sio_mule_instrument/catalog.html',
+        # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181219T135543-GA03FLMA-RIS01-04-PHSENF000-recovered_host-phsen_abcdef_imodem_instrument_recovered/catalog.html',
+        # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181219T135522-GA03FLMA-RIS01-04-PHSENF000-recovered_inst-phsen_abcdef_instrument/catalog.html']
+
+
+        # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T164956-CP04OSSM-RID26-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T164943-CP04OSSM-RID26-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T164931-CP04OSSM-RID26-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html']
+
+        #
+        # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T164918-CP04OSSM-MFD35-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T164906-CP04OSSM-MFD35-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181218T164853-CP04OSSM-MFD35-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html']
+
+        # 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T193255-CP01CNSM-MFD35-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T193220-CP01CNSM-MFD35-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
+        #         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T193208-CP01CNSM-MFD35-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html']
+
+
+    # url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T193331-CP01CNSM-RID26-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html',
+    #             'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T193320-CP01CNSM-RID26-06-PHSEND000-recovered_inst-phsen_abcdef_instrument/catalog.html',
+    #             'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181212T193307-CP01CNSM-RID26-06-PHSEND000-recovered_host-phsen_abcdef_dcl_instrument_recovered/catalog.html']
 
 
         # ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190111T190642-CE06ISSM-MFD35-06-PHSEND000-telemetered-phsen_abcdef_dcl_instrument/catalog.html',
