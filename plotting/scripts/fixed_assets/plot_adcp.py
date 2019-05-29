@@ -83,81 +83,97 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
 
             for var in sci_vars:
                 print(var)
-                if var != 'bin_depths':
-                    v = ds[var]
-                    fv = v._FillValue
+                v = ds[var]
+                fv = v._FillValue
 
-                    if len(v.dims) == 1:
-                        # Check if the array is all NaNs
-                        if sum(np.isnan(v.values)) == len(v.values):
-                            print('Array of all NaNs - skipping plot.')
+                if len(v.dims) == 1:
+                    # Check if the array is all NaNs
+                    if sum(np.isnan(v.values)) == len(v.values):
+                        print('Array of all NaNs - skipping plot.')
 
-                        # Check if the array is all fill values
-                        elif len(v[v != fv]) == 0:
-                            print('Array of all fill values - skipping plot.')
-
-                        else:
-                            # reject fill values
-                            ind = v.values != fv
-                            t = tm[ind]
-                            v = v[ind]
-
-                            # Plot all data
-                            fig, ax = pf.plot_timeseries(t, v, stdev=None)
-                            ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-                            sfile = '-'.join((filename, v.name, t0[:10]))
-                            pf.save_fig(save_dir, sfile)
-
-                            # Plot data with outliers removed
-                            fig, ax = pf.plot_timeseries(t, v, stdev=5)
-                            ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-                            sfile = '-'.join((filename, v.name, t0[:10])) + '_rmoutliers'
-                            pf.save_fig(save_dir, sfile)
+                    # Check if the array is all fill values
+                    elif len(v[v != fv]) == 0:
+                        print('Array of all fill values - skipping plot.')
 
                     else:
-                        v = v.values.T.astype(float)
+                        # reject fill values
+                        ind = v.values != fv
+                        t = tm[ind]
+                        v = v[ind]
 
-                        #convert -9999 and fill values to nans
-                        v[v == fv] = np.nan
-                        v[v == -9999] = np.nan
-
-                        # remove data outside of 5 standard deviations
-                        stdev = np.nanstd(v)
-                        ul = np.nanmean(v) + stdev * 5
-                        ll = np.nanmean(v) - stdev * 5
-                        v[v < ll] = np.nan
-                        v[v > ul] = np.nan
-
-                        clabel = '{} ({})'.format(var, ds[var].units)
-                        ylabel = 'bin_depths ({})'.format(ds['bin_depths'].units)
-
-                        if 'echo' in var:
-                            color = 'BuGn'
-                        else:
-                            color = 'RdBu'
-
-                        fig, ax = plt.subplots()
-                        pcm = ax.pcolormesh(tm, ds['bin_depths'].values.T, v, cmap=color)
-                        plt.gca().set_ylim(bottom=-1)
-                        ax.invert_yaxis()
-
-                        bar = fig.colorbar(pcm, ax=ax, label=clabel, extend='both')
-                        bar.formatter.set_useOffset(False)
-                        bar.ax.tick_params(labelsize=8)
-
-                        ax.set_ylabel(ylabel, fontsize=9)
-                        pf.format_date_axis(ax, fig)
-
-                        outliers = 'removed outliers +/- 5 SD'
-
-                        ax.set_title((title + '\n' + t0 + ' - ' + t1 + '\n' + outliers), fontsize=9)
-                        sfile = '-'.join((filename, var, t0[:10]))
+                        # Plot all data
+                        fig, ax = pf.plot_timeseries(t, v, stdev=None)
+                        ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+                        sfile = '-'.join((filename, v.name, t0[:10]))
                         pf.save_fig(save_dir, sfile)
+
+                        # Plot data with outliers removed
+                        fig, ax = pf.plot_timeseries(t, v, stdev=5)
+                        ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+                        sfile = '-'.join((filename, v.name, t0[:10])) + '_rmoutliers'
+                        pf.save_fig(save_dir, sfile)
+
+                else:
+                    v = v.values.T.astype(float)
+                    n_nan = np.sum(np.isnan(v))
+
+                    #convert -9999 and fill values to nans
+                    v[v == fv] = np.nan
+                    v[v == -9999] = np.nan
+                    n_fv = np.sum(np.isnan(v)) - n_nan
+
+                    # reject data outside of global ranges
+                    [g_min, g_max] = cf.get_global_ranges(r, var)
+                    if g_min is not None and g_max is not None:
+                        v[v < g_min] = np.nan
+                        v[v > g_max] = np.nan
+                        n_grange = np.sum(np.isnan(v)) - n_fv - n_nan
+                    else:
+                        n_grange = 'no global ranges'
+
+                    ylabel = 'bin_depths ({})'.format(ds['bin_depths'].units)
+                    clabel = '{} ({})'.format(var, ds[var].units)
+                    y = ds['bin_depths'].values.T
+                    y_nan = np.sum(np.isnan(y))
+
+                    # remove extreme bin_depths
+                    # y[y > 6000] = np.nan
+                    # bin_nan = np.sum(np.isnan(y)) - y_nan
+                    # bin_title = 'removed: {} bin depths > 6000'.format(bin_nan)
+
+                    if 'echo' in var:
+                        color = 'BuGn'
+                    else:
+                        color = 'RdBu'
+
+                    fig, ax, __ = pf.plot_adcp(tm, y, v, ylabel, clabel, color)
+                    # if bin_nan > 0:
+                    #     ax.set_title((title + '\n' + t0 + ' - ' + t1 + '\n' + bin_title), fontsize=9)
+                    # else:
+                    #     ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+                    ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+                    sfile = '-'.join((filename, var, t0[:10]))
+                    pf.save_fig(save_dir, sfile)
+
+                    fig, ax, n_nans_all = pf.plot_adcp(tm, y, v, ylabel, clabel, color, stdev=5)
+                    if type(n_grange) == str:
+                        outl = n_nans_all - n_fv - n_nan
+                    else:
+                        outl = n_nans_all - n_grange - n_fv - n_nan
+                    title2 = 'removed: {} fill values, {} GR [{}, {}], {} outliers +/- 5 SD'.format(n_fv, n_grange,
+                                                                                                    g_min, g_max, outl)
+                    # if bin_nan > 0:
+                    #     ax.set_title((title + '\n' + t0 + ' - ' + t1 + '\n' + title2 + '\n' + bin_title), fontsize=8)
+                    # else:
+                    #     ax.set_title((title + '\n' + t0 + ' - ' + t1 + '\n' + title2), fontsize=8)
+                    ax.set_title((title + '\n' + t0 + ' - ' + t1 + '\n' + title2), fontsize=8)
+                    sfile = '-'.join((filename, var, t0[:10])) + '_rmoutliers'
+                    pf.save_fig(save_dir, sfile)
 
 
 if __name__ == '__main__':
     sDir = '/Users/lgarzio/Documents/OOI/DataReviews'
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190524T180115-CE01ISSM-MFD35-04-ADCPTM000-recovered_inst-adcp_velocity_earth/catalog.html']
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190524T175913-CP01CNSM-MFD35-01-ADCPTF000-recovered_inst-adcp_velocity_earth/catalog.html']
     start_time = None  # dt.datetime(2015, 4, 20, 0, 0, 0)  # optional, set to None if plotting all data
     end_time = None  # dt.datetime(2017, 5, 20, 0, 0, 0)  # optional, set to None if plotting all data
     preferred_only = 'yes'  # options: 'yes', 'no'
