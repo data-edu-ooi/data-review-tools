@@ -1,6 +1,7 @@
 from .mobile_assets import map_gliders
 from .mobile_assets import plot_profile_xsection
 from .mobile_assets import plot_profile_xsection_rm_suspect_data
+from .fixed_assets import plot_adcp
 from .fixed_assets import plot_compare_timeseries
 from .fixed_assets import plot_timeseries
 from .fixed_assets import plot_timeseries_all
