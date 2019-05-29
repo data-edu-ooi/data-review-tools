@@ -1,0 +1,4 @@
+deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
+deployment0002,recovered_host-flort_o_glider_data,telemetered-flort_o_glider_data,Total Scattering Coefficient of Pure Seawater,seawater_scattering_coefficient,m-1,pass,458643,0,no missing data,32819,0.0,1.5254e-06,0.0,0.0
+deployment0002,recovered_host-flort_o_glider_data,telemetered-flort_o_glider_data,Optical Backscatter,flort_o_bback_b660_total,m-1,pass,458643,458643,No valid data to compare,0,,,,
+deployment0002,recovered_host-flort_o_glider_data,telemetered-flort_o_glider_data,Total Volume Scattering Coefficient,sci_bb3slo_b660_units,m-1 sr-1,pass,458643,458643,No valid data to compare,0,,,,
