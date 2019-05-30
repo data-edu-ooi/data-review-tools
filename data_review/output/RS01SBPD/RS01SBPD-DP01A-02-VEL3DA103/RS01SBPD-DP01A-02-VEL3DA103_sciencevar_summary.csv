@@ -1,0 +1,9 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0002,recovered_inst,dpc_acm_instrument_recovered,vel3d_a_va,cm s-1,-9999999.0,"[None, None]",1013666,0,0,no global ranges,4,1013662,100.0,3.9415,-10.56,19.76,3.1841
+deployment0002,recovered_inst,dpc_acm_instrument_recovered,vel3d_a_vb,cm s-1,-9999999.0,"[None, None]",1013666,0,0,no global ranges,0,1013666,100.0,-0.203,-22.99,17.43,10.9742
+deployment0002,recovered_inst,dpc_acm_instrument_recovered,vel3d_a_vc,cm s-1,-9999999.0,"[None, None]",1013666,0,0,no global ranges,199,1013467,99.98,0.8706,-5.16,6.71,1.2009
+deployment0002,recovered_inst,dpc_acm_instrument_recovered,vel3d_a_vd,cm s-1,-9999999.0,"[None, None]",1013666,0,0,no global ranges,0,1013666,100.0,1.4224,-22.89,22.88,11.3528
+deployment0002,recovered_inst,dpc_acm_instrument_recovered,vel3d_a_eastward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",1013666,0,0,0,6,1013660,100.0,0.0148,-0.1204,0.1464,0.0271
+deployment0002,recovered_inst,dpc_acm_instrument_recovered,vel3d_a_northward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",1013666,0,0,0,3,1013663,100.0,0.0158,-0.1569,0.1893,0.0398
+deployment0002,recovered_inst,dpc_acm_instrument_recovered,vel3d_a_upward_velocity_ascending,m s-1,-9999999.0,"[-1.0, 1.0]",1013666,0,0,0,1,1013665,100.0,-0.0541,-0.3717,0.2956,0.153
+deployment0002,recovered_inst,dpc_acm_instrument_recovered,vel3d_a_upward_velocity_descending,m s-1,-9999999.0,"[-1.0, 1.0]",1013666,0,0,0,0,1013666,100.0,0.0311,-0.7155,0.289,0.1577
