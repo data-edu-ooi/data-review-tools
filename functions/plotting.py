@@ -26,6 +26,31 @@ def format_date_axis(axis, figure):
     figure.autofmt_xdate()
 
 
+def plot_adcp(tm, bins, v, ylabel, clabel, color, stdev=None):
+    if type(stdev) == int:
+        # remove data outside of 5 standard deviations
+        stdev = np.nanstd(v)
+        ul = np.nanmean(v) + stdev * 5
+        ll = np.nanmean(v) - stdev * 5
+        v[v < ll] = np.nan
+        v[v > ul] = np.nan
+
+    fig, ax = plt.subplots()
+    pcm = ax.pcolormesh(tm, bins, v, cmap=color)
+    plt.gca().set_ylim(bottom=-1)
+    ax.invert_yaxis()
+
+    bar = fig.colorbar(pcm, ax=ax, label=clabel, extend='both')
+    bar.formatter.set_useOffset(False)
+    bar.ax.tick_params(labelsize=8)
+
+    ax.set_ylabel(ylabel, fontsize=9)
+    format_date_axis(ax, fig)
+    n_nans_all = np.sum(np.isnan(v))
+
+    return fig, ax, n_nans_all
+
+
 def plot_profiles(x, y, t, ylabel, xlabel, clabel, stdev=None):
     """
     Create a profile plot for mobile instruments

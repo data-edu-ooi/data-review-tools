@@ -343,7 +343,7 @@ def variable_statistics(var_data, stdev=None):
         varD = var[ind2]
         varD = varD.astype('float64')  # force variables to be float64 (float32 is not JSON serializable)
         try:
-            num_outliers = int(np.sum(~ind2))
+            num_outliers = int(np.sum(~ind) + np.sum(~ind2))
         except TypeError:
             num_outliers = int(np.sum(~np.array(ind2)))
 
