@@ -1,0 +1,4 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_inst,dpc_optode_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",840979,0,0,0,2357,838622,99.72,37.2657,15.5245,155.8052,22.5753
+deployment0001,recovered_inst,dpc_optode_instrument_recovered,optode_temperature,ºC,-9999999.0,"[-2.0, 40.0]",840979,0,0,0,0,840979,100.0,3.989,2.544,7.764,1.0928
+deployment0001,recovered_inst,dpc_optode_instrument_recovered,dosta_abcdjm_cspp_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",840979,0,0,0,2932,838047,99.65,46.0664,19.5418,191.6507,27.3237
