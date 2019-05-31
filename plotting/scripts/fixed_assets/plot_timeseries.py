@@ -61,7 +61,7 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
             ds = xr.open_dataset(fd, mask_and_scale=False)
             ds = ds.swap_dims({'obs': 'time'})
             ds_vars = list(ds.data_vars.keys()) + [x for x in ds.coords.keys() if 'pressure' in x]  # get pressure variable from coordinates
-            raw_vars = cf.return_raw_vars(ds_vars)
+            #raw_vars = cf.return_raw_vars(ds_vars)
 
             if start_time is not None and end_time is not None:
                 ds = ds.sel(time=slice(start_time, end_time))
@@ -70,6 +70,10 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                     continue
 
             fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(fd)
+            if 'NUTNR' in refdes:
+                vars = cf.return_science_vars(stream)
+            else:
+                vars = cf.return_raw_vars(ds_vars)
             print('\nPlotting {} {}'.format(r, deployment))
             array = subsite[0:2]
             filename = '_'.join(fname.split('_')[:-1])
@@ -81,7 +85,7 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
             t1 = pd.to_datetime(tm.max()).strftime('%Y-%m-%dT%H:%M:%S')
             title = ' '.join((deployment, refdes, method))
 
-            for var in raw_vars:
+            for var in vars:
                 print(var)
                 if var != 'id':
                     y = ds[var]

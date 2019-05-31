@@ -231,13 +231,19 @@ def get_ds_variable_info(dataset, variable_name, rename):
         n = None
         n_nan = None
     else:
-        ds_df = pd.DataFrame({'time': dataset['time'].values, variable_name: dataset[variable_name].values})
-        ds_df.rename(columns={str(variable_name): rename}, inplace=True)
-        n = len(ds_df[rename])
-        n_nan = sum(ds_df[rename].isnull())
+        if 'time' in list(dataset[variable_name].coords):  # only add if time is a coordinate
+            ds_df = pd.DataFrame({'time': dataset['time'].values, variable_name: dataset[variable_name].values})
+            ds_df.rename(columns={str(variable_name): rename}, inplace=True)
+            n = len(ds_df[rename])
+            n_nan = sum(ds_df[rename].isnull())
 
-        # round to the nearest second
-        ds_df['time'] = ds_df['time'].map(lambda t: t.replace(microsecond=0) + timedelta(seconds=(round(t.microsecond / 1000000.0))))
+            # round to the nearest second
+            ds_df['time'] = ds_df['time'].map(lambda t: t.replace(microsecond=0) + timedelta(seconds=(round(t.microsecond / 1000000.0))))
+        else:
+            print('time is not a coordinate')
+            ds_df = 'time is not a coordinate'
+            n = None
+            n_nan = None
 
     return [ds_df, ds_units, n, n_nan]
 

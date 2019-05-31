@@ -282,7 +282,8 @@ def return_science_vars(stream):
     params = r.json()['stream']['parameters']
     for p in params:
         if p['data_product_type'] == 'Science Data':
-            sci_vars.append(p['name'])
+            if 'optaa' in stream and p['name'] != 'wavelength':
+                sci_vars.append(p['name'])
     return sci_vars
 
 
