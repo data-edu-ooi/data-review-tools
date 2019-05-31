@@ -2,6 +2,7 @@
 
 import matplotlib
 matplotlib.use('TkAgg')
+import matplotlib.cm as cm
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import matplotlib.dates as mdates
@@ -95,6 +96,22 @@ def plot_profiles(x, y, t, ylabel, xlabel, clabel, stdev=None):
     ax.set_xlabel(xlabel, fontsize=9)
     ax.set_ylabel(ylabel, fontsize=9)
     ax.legend(leg_text, loc='best', fontsize=6)
+
+    return fig, ax
+
+
+def plot_spkir(tm, var, varname, varunits):
+    wavelengths = ['412nm', '443nm', '490nm', '510nm', '555nm', '620nm', '683nm']
+    colors = cm.rainbow(np.linspace(0, 1, len(var)))
+    fig, ax = plt.subplots()
+    for i in range(len(var)):
+        plt.plot(tm, var[i], c=colors[i], label=wavelengths[i], linewidth=.75, marker='.', markersize=1, alpha=.5)
+        if i == len(var) - 1:  # if the last wavelength has been plotted
+            plt.grid()
+            format_date_axis(ax, fig)
+
+    plt.legend(loc='best', fontsize=7)
+    ax.set_ylabel((varname + " (" + varunits + ")"), fontsize=9)
 
     return fig, ax
 

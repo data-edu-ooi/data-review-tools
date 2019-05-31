@@ -16,9 +16,9 @@ import datetime as dt
 import scripts
 
 sDir = '/Users/lgarzio/Documents/OOI/DataReviews'
-f = '/Users/lgarzio/Documents/OOI/DataReviews/GA/GA03FLMA/data_request_summary_run1.csv'
-start_time = None  # dt.datetime(2015, 5, 16, 20, 0, 0)  # optional, set to None if plotting all data
-end_time = None  # dt.datetime(2015, 5, 18, 0, 0, 0)  # optional, set to None if plotting all data
+f = '/Users/lgarzio/Documents/OOI/DataReviews/CE/CE01ISSM/data_request_summary_spkir.csv'
+start_time = None  # dt.datetime(2017, 1, 25, 0, 0, 0)  # optional, set to None if plotting all data
+end_time = None  # dt.datetime(2017, 1, 30, 0, 0, 0)  # optional, set to None if plotting all data
 preferred_only = 'yes'  # options: 'yes', 'no'
 
 ff = pd.read_csv(f)
@@ -33,3 +33,4 @@ scripts.plot_compare_timeseries.main(sDir, url_list, start_time, end_time)
 scripts.plot_ts.main(sDir, url_list, start_time, end_time, preferred_only)
 scripts.plot_timeseries_monthly.main(sDir, url_list)
 scripts.plot_timeseries_daily.main(sDir, url_list)
+scripts.plot_spkir.main(sDir, url_list, start_time, end_time, preferred_only)
