@@ -118,7 +118,7 @@ def main(sDir, url_list):
                         elif len(datasets) > 1:
                             ds = xr.open_mfdataset(datasets, mask_and_scale=False)
                             ds = ds.swap_dims({'obs': 'time'})
-                            ds = ds.chunk({'time': 100})
+                            #ds = ds.chunk({'time': 100})
                             fname, subsite, refdes, method, data_stream, deployment = cf.nc_attributes(datasets[0])
                             fname = fname.split('_20')[0]
                             notes.append('multiple deployment .nc files')
@@ -133,6 +133,13 @@ def main(sDir, url_list):
                         dr_data = cf.refdes_datareview_json(refdes)
                         stream_vars = cf.return_stream_vars(data_stream)
                         sci_vars = cf.return_science_vars(data_stream)
+                        if 'FDCHP' in refdes:
+                            remove_vars = ['fdchp_wind_x', 'fdchp_wind_y', 'fdchp_wind_z', 'fdchp_speed_of_sound_sonic',
+                                           'fdchp_x_accel_g', 'fdchp_y_accel_g', 'fdchp_z_accel_g']
+                            rv_regex = re.compile('|'.join(remove_vars))
+                            rv_sci_vars = [nn for nn in sci_vars if not rv_regex.search(nn)]
+                            sci_vars = rv_sci_vars
+
                         deploy_info = get_deployment_information(dr_data, int(deployment[-4:]))
 
                         # Grab deployment Variables
@@ -366,14 +373,39 @@ def main(sDir, url_list):
 
                         # calculate statistics for science variables, excluding outliers +/- 5 SD
                         for sv in sci_vars:
-                            if sv != 'wavelength':  # for OPTAA
-                                if sv != 't_max':  # for ADCP
-                                    print(sv)
-                                    try:
-                                        var = ds[sv]
-                                        if 'timedelta' not in str(var.values.dtype):
+                            if sv != 't_max':  # for ADCP
+                                print(sv)
+                                try:
+                                    var = ds[sv]
+                                    if 'timedelta' not in str(var.values.dtype):
+                                        # for OPTAA wavelengths: when multiple files are opened with xr.open_mfdataset
+                                        # xarray automatically forces all variables to have the same number of
+                                        # dimensions. So in this case wavelength_a and wavelength_c have 1 dimension
+                                        # in the individual files, so I'm forcing the analysis to treat them like
+                                        # they have 1 dimension (when there are multiple files for 1 deployment)
+                                        if sv == 'wavelength_a' or sv == 'wavelength_c':
+                                            [g_min, g_max] = cf.get_global_ranges(r, sv)
                                             vnum_dims = len(var.dims)
+                                            if vnum_dims == 1:
+                                                n_all = len(var)
+                                                mean = list(var.values)
+                                            else:
+                                                vnum_dims = 1
+                                                n_all = len(var.values[0])
+                                                mean = list(var.values[0])
+                                            num_outliers = None
+                                            vmin = None
+                                            vmax = None
+                                            sd = None
+                                            n_stats = 'not calculated'
+                                            var_units = var.units
+                                            n_nan = None
+                                            n_fv = None
+                                            n_grange = 'no global ranges'
+                                            fv = var._FillValue
 
+                                        else:
+                                            vnum_dims = len(var.dims)
                                             if vnum_dims > 2:
                                                 print('variable has more than 2 dimensions')
                                                 num_outliers = None
@@ -421,31 +453,31 @@ def main(sDir, url_list):
                                                     n_stats = 0
                                                 var_units = var.units
 
-                                    except KeyError:
-                                        num_outliers = None
-                                        mean = None
-                                        vmin = None
-                                        vmax = None
-                                        sd = None
-                                        n_stats = 'variable not found in file'
-                                        var_units = None
-                                        n_nan = None
-                                        n_fv = None
-                                        fv = None
-                                        n_grange = None
-                                        n_all = None
+                                except KeyError:
+                                    num_outliers = None
+                                    mean = None
+                                    vmin = None
+                                    vmax = None
+                                    sd = None
+                                    n_stats = 'variable not found in file'
+                                    var_units = None
+                                    n_nan = None
+                                    n_fv = None
+                                    fv = None
+                                    n_grange = None
+                                    n_all = None
 
-                                    if vnum_dims > 1:
-                                        sv = '{} (dims: {})'.format(sv, list(var.dims))
-                                    else:
-                                        sv = sv
-                                    if 'timedelta' not in str(var.values.dtype):
-                                        data['deployments'][deployment]['method'][method]['stream'][data_stream]['file'][
-                                            fname]['sci_var_stats'][sv] = dict(n_outliers=num_outliers, mean=mean, min=vmin,
-                                                                               max=vmax, stdev=sd, n_stats=n_stats, units=var_units,
-                                                                               n_nans=n_nan, n_fillvalues=n_fv, fill_value=str(fv),
-                                                                               global_ranges=[g_min, g_max], n_grange=n_grange,
-                                                                               n_all=n_all)
+                                if vnum_dims > 1:
+                                    sv = '{} (dims: {})'.format(sv, list(var.dims))
+                                else:
+                                    sv = sv
+                                if 'timedelta' not in str(var.values.dtype):
+                                    data['deployments'][deployment]['method'][method]['stream'][data_stream]['file'][
+                                        fname]['sci_var_stats'][sv] = dict(n_outliers=num_outliers, mean=mean, min=vmin,
+                                                                           max=vmax, stdev=sd, n_stats=n_stats, units=var_units,
+                                                                           n_nans=n_nan, n_fillvalues=n_fv, fill_value=str(fv),
+                                                                           global_ranges=[g_min, g_max], n_grange=n_grange,
+                                                                           n_all=n_all)
 
 
         sfile = os.path.join(save_dir, '{}-file_analysis.json'.format(r))

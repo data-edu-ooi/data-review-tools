@@ -178,7 +178,9 @@ def main(f, ps, mc):
                             else:
                                 percent_valid_data = round((float(n_stats)/float(n_all) * 100), 2)
 
-                            valid_list.append(percent_valid_data)
+                            # Don't include OPTAA wavelengths in valid data summary
+                            if v not in ['wavelength_a', 'wavelength_c']:
+                                valid_list.append(percent_valid_data)
 
                             vsummary_rows.append([d, m, s, v, units, fv, gr, n_all, n_nan, n_fv, n_gr, n_o, n_stats,
                                                   percent_valid_data, mean, min, max, stdev])
