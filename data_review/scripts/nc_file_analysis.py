@@ -377,6 +377,13 @@ def main(sDir, url_list):
                                 print(sv)
                                 try:
                                     var = ds[sv]
+                                    # need to round SPKIR values to 1 decimal place to match the global ranges.
+                                    # otherwise, values that round to zero (e.g. 1.55294e-05) will be excluded by
+                                    # the global range test
+                                    if 'spkir' in sv:
+                                        vD = np.round(var.values, 1)
+                                    else:
+                                        vD = var.values
                                     if 'timedelta' not in str(var.values.dtype):
                                         # for OPTAA wavelengths: when multiple files are opened with xr.open_mfdataset
                                         # xarray automatically forces all variables to have the same number of
@@ -388,11 +395,11 @@ def main(sDir, url_list):
                                             vnum_dims = len(var.dims)
                                             if vnum_dims == 1:
                                                 n_all = len(var)
-                                                mean = list(var.values)
+                                                mean = list(vD)
                                             else:
                                                 vnum_dims = 1
-                                                n_all = len(var.values[0])
-                                                mean = list(var.values[0])
+                                                n_all = len(vD[0])
+                                                mean = list(vD[0])
                                             num_outliers = None
                                             vmin = None
                                             vmax = None
@@ -422,10 +429,10 @@ def main(sDir, url_list):
                                                 n_all = None
                                             else:
                                                 if vnum_dims > 1:
-                                                    n_all = [len(var), len(var.values.flatten())]
+                                                    n_all = [len(vD), len(vD.flatten())]
                                                 else:
-                                                    n_all = len(var)
-                                                n_nan = int(np.sum(np.isnan(var.values)))
+                                                    n_all = len(vD)
+                                                n_nan = int(np.sum(np.isnan(vD)))
                                                 fv = var._FillValue
                                                 var_nofv = var.where(var != fv)
                                                 n_fv = int(np.sum(np.isnan(var_nofv.values))) - n_nan
@@ -434,12 +441,12 @@ def main(sDir, url_list):
                                                 [g_min, g_max] = cf.get_global_ranges(r, sv)
                                                 if g_min is not None and g_max is not None:
                                                     var_gr = var_nofv.where((var_nofv >= g_min) & (var_nofv <= g_max))
-                                                    n_grange = int(np.sum(np.isnan(var_gr)) - n_fv - n_nan)
+                                                    n_grange = int(np.sum(np.isnan(vD)) - n_fv - n_nan)
                                                 else:
                                                     n_grange = 'no global ranges'
                                                     var_gr = var_nofv
 
-                                                if list(np.unique(np.isnan(var_gr.values))) != [True]:
+                                                if list(np.unique(np.isnan(vD))) != [True]:
                                                     if 'SPKIR' in r:
                                                         # don't remove outliers from dataset
                                                         [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics_spkir(var_gr)
@@ -447,7 +454,7 @@ def main(sDir, url_list):
                                                         if vnum_dims == 1:
                                                             [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_gr, 5)
                                                         else:
-                                                            [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_gr.values.flatten(), 5)
+                                                            [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_gr.flatten(), 5)
                                                 else:
                                                     num_outliers = None
                                                     mean = None

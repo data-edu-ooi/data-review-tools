@@ -84,7 +84,9 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                 print(var)
                 vv = ds[var]
                 fv = vv._FillValue
-                v = vv.values.T  # transpose 2D array
+                # need to round SPKIR values to 1 decimal place to match the global ranges. otherwise, values that
+                # round to zero (e.g. 1.55294e-05) will be excluded by the global range test
+                v = np.round(vv.values.T, 1)  # .T = transpose 2D array
                 n_nan = np.sum(np.isnan(v))
 
                 # convert fill values to nans
