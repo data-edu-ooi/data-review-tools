@@ -1,0 +1,2 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_inst,dpc_flcdrtd_instrument_recovered,flcdr_x_mmp_cds_fluorometric_cdom,ppb,-9999999.0,"[0.0, 375.0]",960475,0,0,0,1544,958931,99.84,3.6307,2.3177,5.8394,0.165

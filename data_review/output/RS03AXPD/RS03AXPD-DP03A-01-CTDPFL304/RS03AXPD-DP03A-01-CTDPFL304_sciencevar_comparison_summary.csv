@@ -1,0 +1,7 @@
+deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
+deployment0001,recovered_inst-dpc_ctd_instrument_recovered,recovered_wfp-dpc_ctd_instrument_recovered,Seawater Pressure,pressure,dbar,pass,888747,0,no missing data,53710,0.0,0.3100585938,0,0.0
+deployment0001,recovered_inst-dpc_ctd_instrument_recovered,recovered_wfp-dpc_ctd_instrument_recovered,Seawater Density,density,kg m-3,pass,888747,0,no missing data,53710,0.0,0.0020625936,0,0.0
+deployment0001,recovered_inst-dpc_ctd_instrument_recovered,recovered_wfp-dpc_ctd_instrument_recovered,Seawater Temperature,temp,ºC,pass,888747,0,no missing data,53710,0.0,0.0028998852,0,0.0
+deployment0001,recovered_inst-dpc_ctd_instrument_recovered,recovered_wfp-dpc_ctd_instrument_recovered,Practical Salinity,practical_salinity,1,pass,888747,0,no missing data,53710,0.0,0.0009453637,0,0.0
+deployment0001,recovered_inst-dpc_ctd_instrument_recovered,recovered_wfp-dpc_ctd_instrument_recovered,Seawater Conductivity Measurement,conductivity_millisiemens,mS cm-1,pass,888747,0,no missing data,53710,0.0,0.0023994446,0,0.0
+deployment0001,recovered_inst-dpc_ctd_instrument_recovered,recovered_wfp-dpc_ctd_instrument_recovered,Seawater Conductivity,dpc_ctd_seawater_conductivity,S m-1,pass,888747,0,no missing data,53710,0.0,0.0002399445,0,0.0

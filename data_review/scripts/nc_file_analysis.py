@@ -118,7 +118,7 @@ def main(sDir, url_list):
                         elif len(datasets) > 1:
                             ds = xr.open_mfdataset(datasets, mask_and_scale=False)
                             ds = ds.swap_dims({'obs': 'time'})
-                            ds = ds.chunk({'time': 100})
+                            #ds = ds.chunk({'time': 100})
                             fname, subsite, refdes, method, data_stream, deployment = cf.nc_attributes(datasets[0])
                             fname = fname.split('_20')[0]
                             notes.append('multiple deployment .nc files')
@@ -133,6 +133,13 @@ def main(sDir, url_list):
                         dr_data = cf.refdes_datareview_json(refdes)
                         stream_vars = cf.return_stream_vars(data_stream)
                         sci_vars = cf.return_science_vars(data_stream)
+                        if 'FDCHP' in refdes:
+                            remove_vars = ['fdchp_wind_x', 'fdchp_wind_y', 'fdchp_wind_z', 'fdchp_speed_of_sound_sonic',
+                                           'fdchp_x_accel_g', 'fdchp_y_accel_g', 'fdchp_z_accel_g']
+                            rv_regex = re.compile('|'.join(remove_vars))
+                            rv_sci_vars = [nn for nn in sci_vars if not rv_regex.search(nn)]
+                            sci_vars = rv_sci_vars
+
                         deploy_info = get_deployment_information(dr_data, int(deployment[-4:]))
 
                         # Grab deployment Variables
@@ -366,59 +373,89 @@ def main(sDir, url_list):
 
                         # calculate statistics for science variables, excluding outliers +/- 5 SD
                         for sv in sci_vars:
-                            if sv != 't_max':
+                            if sv != 't_max':  # for ADCP
                                 print(sv)
                                 try:
                                     var = ds[sv]
                                     if 'timedelta' not in str(var.values.dtype):
-                                        vnum_dims = len(var.dims)
-
-                                        if vnum_dims > 2:
-                                            print('variable has more than 2 dimensions')
+                                        # for OPTAA wavelengths: when multiple files are opened with xr.open_mfdataset
+                                        # xarray automatically forces all variables to have the same number of
+                                        # dimensions. So in this case wavelength_a and wavelength_c have 1 dimension
+                                        # in the individual files, so I'm forcing the analysis to treat them like
+                                        # they have 1 dimension (when there are multiple files for 1 deployment)
+                                        if sv == 'wavelength_a' or sv == 'wavelength_c':
+                                            [g_min, g_max] = cf.get_global_ranges(r, sv)
+                                            vnum_dims = len(var.dims)
+                                            if vnum_dims == 1:
+                                                n_all = len(var)
+                                                mean = list(var.values)
+                                            else:
+                                                vnum_dims = 1
+                                                n_all = len(var.values[0])
+                                                mean = list(var.values[0])
                                             num_outliers = None
-                                            mean = None
                                             vmin = None
                                             vmax = None
                                             sd = None
-                                            n_stats = 'variable has more than 2 dimensions'
+                                            n_stats = 'not calculated'
                                             var_units = var.units
                                             n_nan = None
                                             n_fv = None
-                                            n_grange = None
-                                            fv = None
-                                            n_all = None
-                                        else:
-                                            if vnum_dims > 1:
-                                                n_all = [len(var), len(var.values.flatten())]
-                                            else:
-                                                n_all = len(var)
-                                            n_nan = int(np.sum(np.isnan(var.values)))
+                                            n_grange = 'no global ranges'
                                             fv = var._FillValue
-                                            var_nofv = var.where(var != fv)
-                                            n_fv = int(np.sum(np.isnan(var_nofv.values))) - n_nan
 
-                                            # reject data outside of global ranges
-                                            [g_min, g_max] = cf.get_global_ranges(r, sv)
-                                            if g_min is not None and g_max is not None:
-                                                var_gr = var_nofv.where((var_nofv >= g_min) & (var_nofv <= g_max))
-                                                n_grange = int(np.sum(np.isnan(var_gr)) - n_fv - n_nan)
-                                            else:
-                                                n_grange = 'no global ranges'
-                                                var_gr = var_nofv
-
-                                            if list(np.unique(np.isnan(var_gr.values))) != [True]:
-                                                if vnum_dims == 1:
-                                                    [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_gr, 5)
-                                                else:
-                                                    [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_gr.values.flatten(), 5)
-                                            else:
+                                        else:
+                                            vnum_dims = len(var.dims)
+                                            if vnum_dims > 2:
+                                                print('variable has more than 2 dimensions')
                                                 num_outliers = None
                                                 mean = None
                                                 vmin = None
                                                 vmax = None
                                                 sd = None
-                                                n_stats = 0
-                                            var_units = var.units
+                                                n_stats = 'variable has more than 2 dimensions'
+                                                var_units = var.units
+                                                n_nan = None
+                                                n_fv = None
+                                                n_grange = None
+                                                fv = None
+                                                n_all = None
+                                            else:
+                                                if vnum_dims > 1:
+                                                    n_all = [len(var), len(var.values.flatten())]
+                                                else:
+                                                    n_all = len(var)
+                                                n_nan = int(np.sum(np.isnan(var.values)))
+                                                fv = var._FillValue
+                                                var_nofv = var.where(var != fv)
+                                                n_fv = int(np.sum(np.isnan(var_nofv.values))) - n_nan
+
+                                                # reject data outside of global ranges
+                                                [g_min, g_max] = cf.get_global_ranges(r, sv)
+                                                if g_min is not None and g_max is not None:
+                                                    var_gr = var_nofv.where((var_nofv >= g_min) & (var_nofv <= g_max))
+                                                    n_grange = int(np.sum(np.isnan(var_gr)) - n_fv - n_nan)
+                                                else:
+                                                    n_grange = 'no global ranges'
+                                                    var_gr = var_nofv
+
+                                                if list(np.unique(np.isnan(var_gr.values))) != [True]:
+                                                    if 'SPKIR' in r:
+                                                        # don't remove outliers from dataset
+                                                        [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics_spkir(var_gr)
+                                                    else:
+                                                        if vnum_dims == 1:
+                                                            [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_gr, 5)
+                                                        else:
+                                                            [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_gr.values.flatten(), 5)
+                                                else:
+                                                    num_outliers = None
+                                                    mean = None
+                                                    vmin = None
+                                                    vmax = None
+                                                    sd = None
+                                                    n_stats = 0
+                                                var_units = var.units
 
                                 except KeyError:
                                     num_outliers = None

@@ -1,0 +1,25 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,streamed,tmpsf_sample,temperature01,ºC,-9999999.0,"[0.0, 400.0]",9182250,0,0,0,103,9182147,100.0,3.9126,2.3553,9.6809,1.1538
+deployment0001,streamed,tmpsf_sample,temperature02,ºC,-9999999.0,"[0.0, 400.0]",9182250,0,0,0,0,9182250,100.0,15.6063,2.4279,72.5912,16.7491
+deployment0001,streamed,tmpsf_sample,temperature03,ºC,-9999999.0,"[0.0, 400.0]",9182250,0,0,0,1000,9181250,99.99,3.7196,2.377,9.4971,1.1536
+deployment0001,streamed,tmpsf_sample,temperature04,ºC,-9999999.0,"[0.0, 400.0]",9182250,0,0,0,2100,9180150,99.98,2.8935,2.4246,4.5446,0.3291
+deployment0001,streamed,tmpsf_sample,temperature05,ºC,-9999999.0,"[0.0, 400.0]",9182250,0,0,0,3761,9178489,99.96,3.293,2.3803,7.7249,0.8809
+deployment0001,streamed,tmpsf_sample,temperature06,ºC,-9999999.0,"[0.0, 400.0]",9182250,0,0,0,0,9182250,100.0,37.6651,2.3329,113.7119,49.9164
+deployment0001,streamed,tmpsf_sample,temperature07,ºC,-9999999.0,"[0.0, 400.0]",9182250,0,0,0,0,9182250,100.0,4.4063,2.3992,10.3571,1.3285
+deployment0001,streamed,tmpsf_sample,temperature08,ºC,-9999999.0,"[0.0, 400.0]",9182250,0,0,0,0,9182250,100.0,3.6533,2.4005,8.0403,0.9574
+deployment0001,streamed,tmpsf_sample,temperature09,ºC,-9999999.0,"[0.0, 400.0]",9182250,0,0,0,55870,9126380,99.39,2.6758,2.2821,3.9537,0.2165
+deployment0001,streamed,tmpsf_sample,temperature10,ºC,-9999999.0,"[0.0, 400.0]",9182250,0,0,0,2809,9179441,99.97,2.84,2.2688,5.0234,0.4347
+deployment0001,streamed,tmpsf_sample,temperature11,ºC,-9999999.0,"[0.0, 400.0]",9182250,0,0,0,3476,9178774,99.96,2.8944,2.4136,4.9842,0.4155
+deployment0001,streamed,tmpsf_sample,temperature12,ºC,-9999999.0,"[0.0, 400.0]",9182250,0,0,0,0,9182250,100.0,3.7283,2.2946,10.6461,1.4117
+deployment0001,streamed,tmpsf_sample,temperature13,ºC,-9999999.0,"[0.0, 400.0]",9182250,0,0,0,0,9182250,100.0,5.2182,2.3777,15.0595,2.1703
+deployment0001,streamed,tmpsf_sample,temperature14,ºC,-9999999.0,"[0.0, 400.0]",9182250,0,0,0,371,9181879,100.0,3.2059,2.3461,7.0247,0.7634
+deployment0001,streamed,tmpsf_sample,temperature15,ºC,-9999999.0,"[0.0, 400.0]",9182250,0,0,0,23993,9158257,99.74,2.9315,2.382,5.2675,0.4474
+deployment0001,streamed,tmpsf_sample,temperature16,ºC,-9999999.0,"[0.0, 400.0]",9182250,0,0,0,0,9182250,100.0,3.6485,2.3133,8.9987,1.1415
+deployment0001,streamed,tmpsf_sample,temperature17,ºC,-9999999.0,"[0.0, 400.0]",9182250,0,0,0,17911,9164339,99.8,3.0528,2.2873,6.8868,0.7439
+deployment0001,streamed,tmpsf_sample,temperature18,ºC,-9999999.0,"[0.0, 400.0]",9182250,0,0,0,589,9181661,99.99,2.6981,2.2427,4.5716,0.3744
+deployment0001,streamed,tmpsf_sample,temperature19,ºC,-9999999.0,"[0.0, 400.0]",9182250,0,0,0,33669,9148581,99.63,2.6461,2.2739,3.9888,0.2508
+deployment0001,streamed,tmpsf_sample,temperature20,ºC,-9999999.0,"[0.0, 400.0]",9182250,0,0,0,58359,9123891,99.36,2.5644,2.2593,3.5421,0.1639
+deployment0001,streamed,tmpsf_sample,temperature21,ºC,-9999999.0,"[0.0, 400.0]",9182250,0,0,0,18668,9163582,99.8,2.9495,2.3447,5.5922,0.511
+deployment0001,streamed,tmpsf_sample,temperature22,ºC,-9999999.0,"[0.0, 400.0]",9182250,0,0,0,59591,9122659,99.35,2.5146,2.2499,3.2784,0.1294
+deployment0001,streamed,tmpsf_sample,temperature23,ºC,-9999999.0,"[0.0, 400.0]",9182250,0,0,0,38133,9144117,99.58,2.5553,2.257,3.4713,0.1691
+deployment0001,streamed,tmpsf_sample,temperature24,ºC,-9999999.0,"[0.0, 400.0]",9182250,0,0,0,10204,9172046,99.89,2.7754,2.3326,4.4321,0.3249

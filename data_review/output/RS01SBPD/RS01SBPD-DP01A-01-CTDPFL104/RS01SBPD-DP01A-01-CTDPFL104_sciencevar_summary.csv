@@ -1,0 +1,7 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0002,recovered_inst,dpc_ctd_instrument_recovered,pressure,dbar,-9999999.0,"[0.0, 6000.0]",505960,0,0,0,0.0,505960,100.0,1855.546,470.39,2930.55,755.3188
+deployment0002,recovered_inst,dpc_ctd_instrument_recovered,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",505960,0,0,0,0.0,505960,100.0,1036.0892,1029.0593,1041.1328,3.6471
+deployment0002,recovered_inst,dpc_ctd_instrument_recovered,temp,ºC,-9999999.0,"[-2.0, 40.0]",505960,0,0,0,0.0,505960,100.0,2.5518,1.7022,5.66,1.0165
+deployment0002,recovered_inst,dpc_ctd_instrument_recovered,practical_salinity,1,-9999999.0,"[0.0, 42.0]",505960,0,0,0,0.0,505960,100.0,34.5205,34.1016,34.6509,0.1471
+deployment0002,recovered_inst,dpc_ctd_instrument_recovered,conductivity_millisiemens,mS cm-1,-9999999.0,"[0.0, 6.0]",505960,0,0,505960,,0,0.0,,,,
+deployment0002,recovered_inst,dpc_ctd_instrument_recovered,dpc_ctd_seawater_conductivity,S m-1,-9999999.0,"[0.0, 6.0]",505960,0,0,0,0.0,505960,100.0,3.1672,3.1194,3.3477,0.0492

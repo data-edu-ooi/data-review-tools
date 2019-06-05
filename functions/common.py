@@ -282,7 +282,11 @@ def return_science_vars(stream):
     params = r.json()['stream']['parameters']
     for p in params:
         if p['data_product_type'] == 'Science Data':
-            sci_vars.append(p['name'])
+            if 'optaa' in stream:
+                if p['name'] != 'wavelength':
+                    sci_vars.append(p['name'])
+            else:
+                sci_vars.append(p['name'])
     return sci_vars
 
 
@@ -352,6 +356,23 @@ def variable_statistics(var_data, stdev=None):
     max = round(np.nanmax(varD), 4)
     sd = round(np.nanstd(varD), 4)
     n = len(varD)
+
+    return [num_outliers, mean, min, max, sd, n]
+
+
+def variable_statistics_spkir(var_data):
+    mean = []
+    min = []
+    max = []
+    sd = []
+    n = int(len(var_data.values.flatten()) - np.sum(np.isnan(var_data.values)))
+    num_outliers = None
+    for i in range(len(var_data['spectra'])):
+        vd = var_data.sel(spectra=i).values
+        mean.append(round(np.nanmean(vd), 2))
+        min.append(round(np.nanmin(vd), 2))
+        max.append(round(np.nanmax(vd), 2))
+        sd.append(round(np.nanstd(vd), 2))
 
     return [num_outliers, mean, min, max, sd, n]
 
