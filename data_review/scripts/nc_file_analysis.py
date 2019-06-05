@@ -440,10 +440,14 @@ def main(sDir, url_list):
                                                     var_gr = var_nofv
 
                                                 if list(np.unique(np.isnan(var_gr.values))) != [True]:
-                                                    if vnum_dims == 1:
-                                                        [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_gr, 5)
+                                                    if 'SPKIR' in r:
+                                                        # don't remove outliers from dataset
+                                                        [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics_spkir(var_gr)
                                                     else:
-                                                        [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_gr.values.flatten(), 5)
+                                                        if vnum_dims == 1:
+                                                            [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_gr, 5)
+                                                        else:
+                                                            [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_gr.values.flatten(), 5)
                                                 else:
                                                     num_outliers = None
                                                     mean = None

@@ -360,6 +360,23 @@ def variable_statistics(var_data, stdev=None):
     return [num_outliers, mean, min, max, sd, n]
 
 
+def variable_statistics_spkir(var_data):
+    mean = []
+    min = []
+    max = []
+    sd = []
+    n = int(len(var_data.values.flatten()) - np.sum(np.isnan(var_data.values)))
+    num_outliers = None
+    for i in range(len(var_data['spectra'])):
+        vd = var_data.sel(spectra=i).values
+        mean.append(round(np.nanmean(vd), 2))
+        min.append(round(np.nanmin(vd), 2))
+        max.append(round(np.nanmax(vd), 2))
+        sd.append(round(np.nanstd(vd), 2))
+
+    return [num_outliers, mean, min, max, sd, n]
+
+
 def format_dates(dd):
     fd = dt.datetime.strptime(dd.replace(',', ''), '%m/%d/%y %I:%M %p')
     fd2 = dt.datetime.strftime(fd, '%Y-%m-%dT%H:%M:%S')
