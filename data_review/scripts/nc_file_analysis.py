@@ -133,12 +133,12 @@ def main(sDir, url_list):
                         dr_data = cf.refdes_datareview_json(refdes)
                         stream_vars = cf.return_stream_vars(data_stream)
                         sci_vars = cf.return_science_vars(data_stream)
-                        if 'FDCHP' in refdes:
-                            remove_vars = ['fdchp_wind_x', 'fdchp_wind_y', 'fdchp_wind_z', 'fdchp_speed_of_sound_sonic',
-                                           'fdchp_x_accel_g', 'fdchp_y_accel_g', 'fdchp_z_accel_g']
-                            rv_regex = re.compile('|'.join(remove_vars))
-                            rv_sci_vars = [nn for nn in sci_vars if not rv_regex.search(nn)]
-                            sci_vars = rv_sci_vars
+                        # if 'FDCHP' in refdes:
+                        #     remove_vars = ['fdchp_wind_x', 'fdchp_wind_y', 'fdchp_wind_z', 'fdchp_speed_of_sound_sonic',
+                        #                    'fdchp_x_accel_g', 'fdchp_y_accel_g', 'fdchp_z_accel_g']
+                        #     rv_regex = re.compile('|'.join(remove_vars))
+                        #     rv_sci_vars = [nn for nn in sci_vars if not rv_regex.search(nn)]
+                        #     sci_vars = rv_sci_vars
 
                         deploy_info = get_deployment_information(dr_data, int(deployment[-4:]))
 
@@ -374,7 +374,6 @@ def main(sDir, url_list):
                         # calculate statistics for science variables, excluding outliers +/- 5 SD
                         for sv in sci_vars:
                             if sv != 't_max':  # for ADCP
-                            #if sv == 'fdchp_a_tmpatur':
                                 print(sv)
                                 try:
                                     var = ds[sv]
@@ -439,25 +438,35 @@ def main(sDir, url_list):
                                                 var_nofv = var.where(var != fv)
                                                 n_fv = int(np.sum(np.isnan(var_nofv.values))) - n_nan
 
-                                                # reject data outside of global ranges
+                                                var_units = var.units
                                                 [g_min, g_max] = cf.get_global_ranges(r, sv)
-                                                if g_min is not None and g_max is not None:
-                                                    var_gr = var_nofv.where((var_nofv >= g_min) & (var_nofv <= g_max))
-                                                    n_grange = int(np.sum(np.isnan(var_gr)) - n_fv - n_nan)
-                                                else:
-                                                    n_grange = 'no global ranges'
-                                                    var_gr = var_nofv
-
-                                                if list(np.unique(np.isnan(vD))) != [True]:
-                                                    if 'SPKIR' in r:
-                                                        # don't remove outliers from dataset
-                                                        [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics_spkir(var_gr)
+                                                if list(np.unique(np.isnan(var_nofv))) != [True]:
+                                                    # reject data outside of global ranges
+                                                    if g_min is not None and g_max is not None:
+                                                        var_gr = var_nofv.where((var_nofv >= g_min) & (var_nofv <= g_max))
+                                                        n_grange = int(np.sum(np.isnan(var_gr)) - n_fv - n_nan)
                                                     else:
-                                                        if vnum_dims > 1:
-                                                            var_gr = var_gr.flatten()
-                                                        # drop nans before calculating stats
-                                                        var_gr = var_gr[~np.isnan(var_gr)]
-                                                        [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_gr, 5)
+                                                        n_grange = 'no global ranges'
+                                                        var_gr = var_nofv
+
+                                                    if list(np.unique(np.isnan(var_gr))) != [True]:
+                                                        if 'SPKIR' in r:
+                                                            # don't remove outliers from dataset
+                                                            [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics_spkir(var_gr)
+                                                        else:
+                                                            if vnum_dims > 1:
+                                                                var_gr = var_gr.flatten()
+                                                            # drop nans before calculating stats
+                                                            var_gr = var_gr[~np.isnan(var_gr)]
+                                                            [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_gr, 5)
+                                                    else:
+                                                        num_outliers = None
+                                                        mean = None
+                                                        vmin = None
+                                                        vmax = None
+                                                        sd = None
+                                                        n_stats = 0
+                                                        n_grange = None
                                                 else:
                                                     num_outliers = None
                                                     mean = None
@@ -465,7 +474,7 @@ def main(sDir, url_list):
                                                     vmax = None
                                                     sd = None
                                                     n_stats = 0
-                                                var_units = var.units
+                                                    n_grange = None
 
                                 except KeyError:
                                     num_outliers = None
