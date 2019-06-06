@@ -105,11 +105,12 @@ def plot_spkir(tm, var, varname, varunits):
     colors = cm.rainbow(np.linspace(0, 1, len(var)))
     fig, ax = plt.subplots()
     for i in range(len(var)):
-        plt.plot(tm, var[i], c=colors[i], label=wavelengths[i], linewidth=.75, marker='.', markersize=1, alpha=.5)
+        plt.scatter(tm, var[i], c=colors[[i]], label=wavelengths[i], marker='.', s=.5)
         if i == len(var) - 1:  # if the last wavelength has been plotted
             plt.grid()
             format_date_axis(ax, fig)
 
+    # plt.ylim(-.5, .5)
     plt.legend(loc='best', fontsize=7)
     ax.set_ylabel((varname + " (" + varunits + ")"), fontsize=9)
 

@@ -374,16 +374,18 @@ def main(sDir, url_list):
                         # calculate statistics for science variables, excluding outliers +/- 5 SD
                         for sv in sci_vars:
                             if sv != 't_max':  # for ADCP
+                            #if sv == 'fdchp_a_tmpatur':
                                 print(sv)
                                 try:
                                     var = ds[sv]
                                     # need to round SPKIR values to 1 decimal place to match the global ranges.
                                     # otherwise, values that round to zero (e.g. 1.55294e-05) will be excluded by
                                     # the global range test
-                                    if 'spkir' in sv:
-                                        vD = np.round(var.values, 1)
-                                    else:
-                                        vD = var.values
+                                    # if 'spkir' in sv:
+                                    #     vD = np.round(var.values, 1)
+                                    # else:
+                                    #     vD = var.values
+                                    vD = var.values
                                     if 'timedelta' not in str(var.values.dtype):
                                         # for OPTAA wavelengths: when multiple files are opened with xr.open_mfdataset
                                         # xarray automatically forces all variables to have the same number of
@@ -441,7 +443,7 @@ def main(sDir, url_list):
                                                 [g_min, g_max] = cf.get_global_ranges(r, sv)
                                                 if g_min is not None and g_max is not None:
                                                     var_gr = var_nofv.where((var_nofv >= g_min) & (var_nofv <= g_max))
-                                                    n_grange = int(np.sum(np.isnan(vD)) - n_fv - n_nan)
+                                                    n_grange = int(np.sum(np.isnan(var_gr)) - n_fv - n_nan)
                                                 else:
                                                     n_grange = 'no global ranges'
                                                     var_gr = var_nofv
@@ -451,10 +453,11 @@ def main(sDir, url_list):
                                                         # don't remove outliers from dataset
                                                         [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics_spkir(var_gr)
                                                     else:
-                                                        if vnum_dims == 1:
-                                                            [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_gr, 5)
-                                                        else:
-                                                            [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_gr.flatten(), 5)
+                                                        if vnum_dims > 1:
+                                                            var_gr = var_gr.flatten()
+                                                        # drop nans before calculating stats
+                                                        var_gr = var_gr[~np.isnan(var_gr)]
+                                                        [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_gr, 5)
                                                 else:
                                                     num_outliers = None
                                                     mean = None
