@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 """
 Created on May 29 2019
 
@@ -14,10 +15,30 @@ import xarray as xr
 import datetime as dt
 import numpy as np
 import itertools
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import functions.common as cf
 import functions.plotting as pf
 
+def dropna(arr, *args, **kwarg):
+    # turn 2D numpy array into a data frame and drop nan
+    assert isinstance(arr, np.ndarray)
+    dropped=pd.DataFrame(arr).dropna(*args, **kwarg)
+
+    if arr.ndim==1:
+        dropped=dropped.values.flatten()
+    return dropped
+
+def in_list(x, ix):
+    # keep listed entries with specific words.
+    y = [el for el in x if any(ignore in el for ignore in ix)]
+    return y
+
+def notin_list(x, ix):
+    # filter out list entries with specific words.
+    y = [el for el in x if not any(ignore in el for ignore in ix)]
+    return y
 
 def main(sDir, url_list, start_time, end_time, preferred_only):
     rd_list = []
@@ -70,6 +91,10 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
 
             fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(fd)
             sci_vars = cf.return_science_vars(stream)
+            sci_vars = notin_list(sci_vars, ['bin_depths', 'salinity', 'temperature', 'beam'])
+            sci_vars = [name for name in sci_vars if ds[name].units != 'mm s-1']
+
+
             print('\nPlotting {} {}'.format(r, deployment))
             array = subsite[0:2]
             filename = '_'.join(fname.split('_')[:-1])
@@ -79,7 +104,7 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
             tm = ds['time'].values
             t0 = pd.to_datetime(tm.min()).strftime('%Y-%m-%dT%H:%M:%S')
             t1 = pd.to_datetime(tm.max()).strftime('%Y-%m-%dT%H:%M:%S')
-            title = ' '.join((deployment, refdes, method))
+            title_text = ' '.join((deployment, refdes, method))
 
             for var in sci_vars:
                 print(var)
@@ -103,13 +128,13 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
 
                         # Plot all data
                         fig, ax = pf.plot_timeseries(t, v, stdev=None)
-                        ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+                        ax.set_title((title_text + '\n' + t0 + ' - ' + t1), fontsize=9)
                         sfile = '-'.join((filename, v.name, t0[:10]))
                         pf.save_fig(save_dir, sfile)
 
                         # Plot data with outliers removed
                         fig, ax = pf.plot_timeseries(t, v, stdev=5)
-                        ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+                        ax.set_title((title_text + '\n' + t0 + ' - ' + t1), fontsize=9)
                         sfile = '-'.join((filename, v.name, t0[:10])) + '_rmoutliers'
                         pf.save_fig(save_dir, sfile)
 
@@ -137,42 +162,53 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                     y_nan = np.sum(np.isnan(y))
 
                     # remove extreme bin_depths
+                    y = np.where(y < 6000, y, np.nan)
                     # y[y > 6000] = np.nan
-                    # bin_nan = np.sum(np.isnan(y)) - y_nan
-                    # bin_title = 'removed: {} bin depths > 6000'.format(bin_nan)
+                    bin_nan = np.sum(np.isnan(y)) - y_nan
+
+                    bin_title = 'removed: {} bin depths > 6000'.format(bin_nan)
 
                     if 'echo' in var:
                         color = 'BuGn'
                     else:
                         color = 'RdBu'
 
-                    fig, ax, __ = pf.plot_adcp(tm, y, v, ylabel, clabel, color)
-                    # if bin_nan > 0:
-                    #     ax.set_title((title + '\n' + t0 + ' - ' + t1 + '\n' + bin_title), fontsize=9)
-                    # else:
-                    #     ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-                    ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+                    new_y = dropna(y, axis=1)
+                    y_mask = new_y.loc[list(new_y.index), list(new_y.columns)]
+                    v_new = pd.DataFrame(v)
+                    v_mask = v_new.loc[list(new_y.index), list(new_y.columns)]
+                    tm_mask = tm[new_y.columns]
+
+                    fig, ax, __ = pf.plot_adcp(tm_mask, np.array(y_mask), np.array(v_mask), ylabel, clabel, color)
+                    if bin_nan > 0:
+                        ax.set_title((title_text + '\n' + t0 + ' - ' + t1 + '\n' + bin_title), fontsize=9)
+                    else:
+                        ax.set_title((title_text + '\n' + t0 + ' - ' + t1), fontsize=9)
+                    # ax.set_title((title_text + '\n' + t0 + ' - ' + t1), fontsize=9)
                     sfile = '-'.join((filename, var, t0[:10]))
                     pf.save_fig(save_dir, sfile)
 
-                    fig, ax, n_nans_all = pf.plot_adcp(tm, y, v, ylabel, clabel, color, stdev=5)
+                    fig, ax, n_nans_all = pf.plot_adcp(tm_mask, np.array(y_mask), np.array(v_mask), ylabel, clabel, color, stdev=5)
                     if type(n_grange) == str:
                         outl = n_nans_all - n_fv - n_nan
                     else:
                         outl = n_nans_all - n_grange - n_fv - n_nan
                     title2 = 'removed: {} fill values, {} GR [{}, {}], {} outliers +/- 5 SD'.format(n_fv, n_grange,
                                                                                                     g_min, g_max, outl)
-                    # if bin_nan > 0:
-                    #     ax.set_title((title + '\n' + t0 + ' - ' + t1 + '\n' + title2 + '\n' + bin_title), fontsize=8)
-                    # else:
-                    #     ax.set_title((title + '\n' + t0 + ' - ' + t1 + '\n' + title2), fontsize=8)
-                    ax.set_title((title + '\n' + t0 + ' - ' + t1 + '\n' + title2), fontsize=8)
+                    if bin_nan > 0:
+                        ax.set_title((title_text + '\n' + t0 + ' - ' + t1 + '\n' + title2 + '\n' + bin_title), fontsize=8)
+                    else:
+                        ax.set_title((title_text + '\n' + t0 + ' - ' + t1 + '\n' + title2), fontsize=8)
+                    # ax.set_title((title_text + '\n' + t0 + ' - ' + t1 + '\n' + title2), fontsize=8)
                     sfile = '-'.join((filename, var, t0[:10])) + '_rmoutliers'
                     pf.save_fig(save_dir, sfile)
 
 
 if __name__ == '__main__':
-    sDir = '/Users/lgarzio/Documents/OOI/DataReviews'
+    sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
+    url_list =['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190524T180207-CE06ISSM-MFD35-04-ADCPTM000-telemetered-adcp_velocity_earth/catalog.html',
+               'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190524T180205-CE06ISSM-MFD35-04-ADCPTM000-recovered_inst-adcp_velocity_earth/catalog.html',
+               '']
     url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190524T175913-CP01CNSM-MFD35-01-ADCPTF000-recovered_inst-adcp_velocity_earth/catalog.html']
     start_time = None  # dt.datetime(2015, 4, 20, 0, 0, 0)  # optional, set to None if plotting all data
     end_time = None  # dt.datetime(2017, 5, 20, 0, 0, 0)  # optional, set to None if plotting all data
