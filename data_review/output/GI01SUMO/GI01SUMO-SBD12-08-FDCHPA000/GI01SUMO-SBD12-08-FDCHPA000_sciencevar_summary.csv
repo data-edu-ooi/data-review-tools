@@ -1,0 +1,12 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0003,recovered_inst,fdchp_a_instrument_recovered,fdchp_wind_x,cm s-1,-9999,"[-3300.0, 3300.0]",67433857,0,0,1164784.0,10352.0,66258721,98.26,-427.4525,-2179.0,1323.0,349.5918
+deployment0003,recovered_inst,fdchp_a_instrument_recovered,fdchp_wind_y,cm s-1,-9999,"[-3300.0, 3300.0]",67433857,0,0,1166068.0,20611.0,66247178,98.24,613.8618,-1451.0,2681.0,411.446
+deployment0003,recovered_inst,fdchp_a_instrument_recovered,fdchp_wind_z,cm s-1,-9999,"[-1000.0, 1000.0]",67433857,0,0,1185786.0,235480.0,66012591,97.89,78.6271,-412.0,573.0,91.6259
+deployment0003,recovered_inst,fdchp_a_instrument_recovered,fdchp_speed_of_sound_sonic,cm s-1,0,"[13800.0, 15800.0]",67433857,0,0,,,0,0.0,,,,
+deployment0003,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_tmpatur,ºC,-9999999.0,"[-50.0, 50.0]",67433857,0,67433857,,,0,0.0,,,,
+deployment0003,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_windtur_north,m s-1,-9999999.0,"[-33.0, 33.0]",67433857,0,67433857,,,0,0.0,,,,
+deployment0003,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_windtur_up,m s-1,-9999999.0,"[-10.0, 10.0]",67433857,0,67433857,,,0,0.0,,,,
+deployment0003,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_windtur_west,m s-1,-9999999.0,"[-33.0, 33.0]",67433857,0,67433857,,,0,0.0,,,,
+deployment0003,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_fluxhot,m s-1 * K,-9999999.0,"[None, None]",67433857,0,67433857,,,0,0.0,,,,
+deployment0003,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_fluxmom_alongwind,m2 s-2,-9999999.0,"[None, None]",67433857,0,67433857,,,0,0.0,,,,
+deployment0003,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_fluxmom_crosswind,m2 s-2,-9999999.0,"[None, None]",67433857,0,67433857,,,0,0.0,,,,
