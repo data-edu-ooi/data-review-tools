@@ -343,19 +343,30 @@ def variable_statistics(var_data, stdev=None):
         ind = reject_extreme_values(var_data)
         var = var_data[ind]
 
-        ind2 = reject_outliers(var, stdev)
-        varD = var[ind2]
-        varD = varD.astype('float64')  # force variables to be float64 (float32 is not JSON serializable)
-        try:
-            num_outliers = int(np.sum(~ind) + np.sum(~ind2))
-        except TypeError:
-            num_outliers = int(np.sum(~np.array(ind2)))
+        if len(var) > 0:
+            ind2 = reject_outliers(var, stdev)
+            varD = var[ind2]
+            varD = varD.astype('float64')  # force variables to be float64 (float32 is not JSON serializable)
+            try:
+                num_outliers = int(np.sum(~ind) + np.sum(~ind2))
+            except TypeError:
+                num_outliers = int(np.sum(~np.array(ind2)))
+        else:
+            num_outliers = int(np.sum(~np.array(ind)))
+            varD = var
 
-    mean = round(np.nanmean(varD), 4)
-    min = round(np.nanmin(varD), 4)
-    max = round(np.nanmax(varD), 4)
-    sd = round(np.nanstd(varD), 4)
-    n = len(varD)
+    if len(varD) > 0:
+        mean = round(np.nanmean(varD), 4)
+        min = round(np.nanmin(varD), 4)
+        max = round(np.nanmax(varD), 4)
+        sd = round(np.nanstd(varD), 4)
+        n = len(varD)
+    else:
+        mean = None
+        min = None
+        max = None
+        sd = None
+        n = 0
 
     return [num_outliers, mean, min, max, sd, n]
 
