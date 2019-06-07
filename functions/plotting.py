@@ -105,10 +105,29 @@ def plot_spkir(tm, var, varname, varunits):
     colors = cm.rainbow(np.linspace(0, 1, len(var)))
     fig, ax = plt.subplots()
     for i in range(len(var)):
-        plt.scatter(tm, var[i], c=colors[[i]], label=wavelengths[i], marker='.', s=.5)
+        ci = colors[[i]]
+        vari = var[i]
+        plt.scatter(tm, vari, c=ci, label=wavelengths[i], marker='.', s=.5)
         if i == len(var) - 1:  # if the last wavelength has been plotted
             plt.grid()
             format_date_axis(ax, fig)
+
+    # plt.ylim(-.5, .5)
+    plt.legend(loc='best', fontsize=7)
+    ax.set_ylabel((varname + " (" + varunits + ")"), fontsize=9)
+
+    return fig, ax
+
+
+def plot_spkir_wv(tm, var, varname, varunits, wv_i):
+    # plot individual spkir wavelengths
+    wavelengths = ['412nm', '443nm', '490nm', '510nm', '555nm', '620nm', '683nm']
+    colors = cm.rainbow(np.linspace(0, 1, len(wavelengths)))
+    fig, ax = plt.subplots()
+    ci = colors[[wv_i]]
+    plt.scatter(tm, var, c=ci, label=wavelengths[wv_i], marker='.', s=.5)
+    plt.grid()
+    format_date_axis(ax, fig)
 
     # plt.ylim(-.5, .5)
     plt.legend(loc='best', fontsize=7)
