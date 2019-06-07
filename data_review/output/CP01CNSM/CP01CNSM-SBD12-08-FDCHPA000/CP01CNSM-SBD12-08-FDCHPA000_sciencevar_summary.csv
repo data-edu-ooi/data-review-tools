@@ -1,0 +1,56 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0003,recovered_inst,fdchp_a_instrument_recovered,fdchp_wind_x,cm s-1,-9999,"[-3300.0, 3300.0]",48740209,0,0,360030.0,7218.0,48372961,99.25,-315.4188,-2098.0,1466.0,355.3
+deployment0003,recovered_inst,fdchp_a_instrument_recovered,fdchp_wind_y,cm s-1,-9999,"[-3300.0, 3300.0]",48740209,0,0,363916.0,7692.0,48368601,99.24,370.296,-1420.0,2162.0,357.0774
+deployment0003,recovered_inst,fdchp_a_instrument_recovered,fdchp_wind_z,cm s-1,-9999,"[-1000.0, 1000.0]",48740209,0,0,345220.0,101013.0,48293976,99.08,51.669,-373.0,478.0,81.5649
+deployment0003,recovered_inst,fdchp_a_instrument_recovered,fdchp_speed_of_sound_sonic,cm s-1,0,"[13800.0, 15800.0]",48740209,0,29328,48707130.0,0.0,3751,0.01,14681.4481,13819.0,15752.0,584.7797
+deployment0003,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_tmpatur,ºC,-9999999.0,"[-50.0, 50.0]",48740209,0,48740209,,,0,0.0,,,,
+deployment0003,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_windtur_north,m s-1,-9999999.0,"[-33.0, 33.0]",48740209,0,48740209,,,0,0.0,,,,
+deployment0003,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_windtur_up,m s-1,-9999999.0,"[-10.0, 10.0]",48740209,0,48740209,,,0,0.0,,,,
+deployment0003,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_windtur_west,m s-1,-9999999.0,"[-33.0, 33.0]",48740209,0,48740209,,,0,0.0,,,,
+deployment0003,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_fluxhot,m s-1 * K,-9999999.0,"[None, None]",48740209,0,48740209,,,0,0.0,,,,
+deployment0003,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_fluxmom_alongwind,m2 s-2,-9999999.0,"[None, None]",48740209,0,48740209,,,0,0.0,,,,
+deployment0003,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_fluxmom_crosswind,m2 s-2,-9999999.0,"[None, None]",48740209,0,48740209,,,0,0.0,,,,
+deployment0005,recovered_inst,fdchp_a_instrument_recovered,fdchp_wind_x,cm s-1,-9999,"[-3300.0, 3300.0]",42334793,0,0,193485.0,27886.0,42113422,99.48,446.876,-1166.0,2072.0,321.4346
+deployment0005,recovered_inst,fdchp_a_instrument_recovered,fdchp_wind_y,cm s-1,-9999,"[-3300.0, 3300.0]",42334793,0,0,210893.0,4035.0,42119865,99.49,72.3281,-1406.0,1551.0,295.0553
+deployment0005,recovered_inst,fdchp_a_instrument_recovered,fdchp_wind_z,cm s-1,-9999,"[-1000.0, 1000.0]",42334793,0,0,192228.0,152718.0,41989847,99.19,50.8419,-324.0,429.0,69.4716
+deployment0005,recovered_inst,fdchp_a_instrument_recovered,fdchp_speed_of_sound_sonic,cm s-1,0,"[13800.0, 15800.0]",42334793,0,11198,42320495.0,0.0,3100,0.01,14899.7384,13822.0,15620.0,566.9815
+deployment0005,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_tmpatur,ºC,-9999999.0,"[-50.0, 50.0]",42334793,0,42334793,,,0,0.0,,,,
+deployment0005,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_windtur_north,m s-1,-9999999.0,"[-33.0, 33.0]",42334793,0,42334793,,,0,0.0,,,,
+deployment0005,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_windtur_up,m s-1,-9999999.0,"[-10.0, 10.0]",42334793,0,42334793,,,0,0.0,,,,
+deployment0005,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_windtur_west,m s-1,-9999999.0,"[-33.0, 33.0]",42334793,0,42334793,,,0,0.0,,,,
+deployment0005,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_fluxhot,m s-1 * K,-9999999.0,"[None, None]",42334793,0,42334793,,,0,0.0,,,,
+deployment0005,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_fluxmom_alongwind,m2 s-2,-9999999.0,"[None, None]",42334793,0,42334793,,,0,0.0,,,,
+deployment0005,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_fluxmom_crosswind,m2 s-2,-9999999.0,"[None, None]",42334793,0,42334793,,,0,0.0,,,,
+deployment0006,recovered_inst,fdchp_a_instrument_recovered,fdchp_wind_x,cm s-1,-9999,"[-3300.0, 3300.0]",68763382,0,0,462145.0,147.0,68301090,99.33,-375.9375,-2459.0,1707.0,416.7746
+deployment0006,recovered_inst,fdchp_a_instrument_recovered,fdchp_wind_y,cm s-1,-9999,"[-3300.0, 3300.0]",68763382,0,0,462145.0,585.0,68300652,99.33,529.2679,-1544.0,2608.0,415.7088
+deployment0006,recovered_inst,fdchp_a_instrument_recovered,fdchp_wind_z,cm s-1,-9999,"[-1000.0, 1000.0]",68763382,0,0,474724.0,30689.0,68257969,99.26,151.1046,-590.0,893.0,147.5153
+deployment0006,recovered_inst,fdchp_a_instrument_recovered,fdchp_speed_of_sound_sonic,cm s-1,0,"[13800.0, 15800.0]",68763382,0,0,,,0,0.0,,,,
+deployment0006,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_tmpatur,ºC,-9999999.0,"[-50.0, 50.0]",68763382,0,68763382,,,0,0.0,,,,
+deployment0006,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_windtur_north,m s-1,-9999999.0,"[-33.0, 33.0]",68763382,0,68763382,,,0,0.0,,,,
+deployment0006,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_windtur_up,m s-1,-9999999.0,"[-10.0, 10.0]",68763382,0,68763382,,,0,0.0,,,,
+deployment0006,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_windtur_west,m s-1,-9999999.0,"[-33.0, 33.0]",68763382,0,68763382,,,0,0.0,,,,
+deployment0006,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_fluxhot,m s-1 * K,-9999999.0,"[None, None]",68763382,0,68763382,,,0,0.0,,,,
+deployment0006,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_fluxmom_alongwind,m2 s-2,-9999999.0,"[None, None]",68763382,0,68763382,,,0,0.0,,,,
+deployment0006,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_fluxmom_crosswind,m2 s-2,-9999999.0,"[None, None]",68763382,0,68763382,,,0,0.0,,,,
+deployment0007,recovered_inst,fdchp_a_instrument_recovered,fdchp_wind_x,cm s-1,-9999,"[-3300.0, 3300.0]",41845663,0,0,290055.0,11531.0,41544077,99.28,525.8572,-1225.0,2278.0,349.0274
+deployment0007,recovered_inst,fdchp_a_instrument_recovered,fdchp_wind_y,cm s-1,-9999,"[-3300.0, 3300.0]",41845663,0,0,290055.0,1555.0,41554053,99.3,24.1453,-1584.0,1633.0,321.6463
+deployment0007,recovered_inst,fdchp_a_instrument_recovered,fdchp_wind_z,cm s-1,-9999,"[-1000.0, 1000.0]",41845663,0,0,292849.0,124376.0,41428438,99.0,76.3436,-423.0,579.0,94.6018
+deployment0007,recovered_inst,fdchp_a_instrument_recovered,fdchp_speed_of_sound_sonic,cm s-1,0,"[13800.0, 15800.0]",41845663,0,0,,,0,0.0,,,,
+deployment0007,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_tmpatur,ºC,-9999999.0,"[-50.0, 50.0]",41845663,0,41845663,,,0,0.0,,,,
+deployment0007,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_windtur_north,m s-1,-9999999.0,"[-33.0, 33.0]",41845663,0,41845663,,,0,0.0,,,,
+deployment0007,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_windtur_up,m s-1,-9999999.0,"[-10.0, 10.0]",41845663,0,41845663,,,0,0.0,,,,
+deployment0007,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_windtur_west,m s-1,-9999999.0,"[-33.0, 33.0]",41845663,0,41845663,,,0,0.0,,,,
+deployment0007,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_fluxhot,m s-1 * K,-9999999.0,"[None, None]",41845663,0,41845663,,,0,0.0,,,,
+deployment0007,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_fluxmom_alongwind,m2 s-2,-9999999.0,"[None, None]",41845663,0,41845663,,,0,0.0,,,,
+deployment0007,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_fluxmom_crosswind,m2 s-2,-9999999.0,"[None, None]",41845663,0,41845663,,,0,0.0,,,,
+deployment0008,recovered_inst,fdchp_a_instrument_recovered,fdchp_wind_x,cm s-1,-9999,"[-3300.0, 3300.0]",43551884,0,0,447532.0,698.0,43103654,98.97,758.7241,-1389.0,2910.0,430.3206
+deployment0008,recovered_inst,fdchp_a_instrument_recovered,fdchp_wind_y,cm s-1,-9999,"[-3300.0, 3300.0]",43551884,0,0,447527.0,27.0,43104330,98.97,97.9538,-2050.0,2244.0,429.8828
+deployment0008,recovered_inst,fdchp_a_instrument_recovered,fdchp_wind_z,cm s-1,-9999,"[-1000.0, 1000.0]",43551884,0,0,458624.0,25832.0,43067428,98.89,162.5597,-544.0,872.0,140.797
+deployment0008,recovered_inst,fdchp_a_instrument_recovered,fdchp_speed_of_sound_sonic,cm s-1,0,"[13800.0, 15800.0]",43551884,0,0,,,0,0.0,,,,
+deployment0008,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_tmpatur,ºC,-9999999.0,"[-50.0, 50.0]",43551884,0,43551884,,,0,0.0,,,,
+deployment0008,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_windtur_north,m s-1,-9999999.0,"[-33.0, 33.0]",43551884,0,43551884,,,0,0.0,,,,
+deployment0008,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_windtur_up,m s-1,-9999999.0,"[-10.0, 10.0]",43551884,0,43551884,,,0,0.0,,,,
+deployment0008,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_windtur_west,m s-1,-9999999.0,"[-33.0, 33.0]",43551884,0,43551884,,,0,0.0,,,,
+deployment0008,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_fluxhot,m s-1 * K,-9999999.0,"[None, None]",43551884,0,43551884,,,0,0.0,,,,
+deployment0008,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_fluxmom_alongwind,m2 s-2,-9999999.0,"[None, None]",43551884,0,43551884,,,0,0.0,,,,
+deployment0008,recovered_inst,fdchp_a_instrument_recovered,fdchp_a_fluxmom_crosswind,m2 s-2,-9999999.0,"[None, None]",43551884,0,43551884,,,0,0.0,,,,
