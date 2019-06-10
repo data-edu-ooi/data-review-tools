@@ -21,6 +21,59 @@ import matplotlib.pyplot as plt
 import functions.common as cf
 import functions.plotting as pf
 
+
+def reject_err_data_1_dims(y, y_fill, r, sv, n=None):
+    n_nan = np.sum(np.isnan(y)) # count nans in data
+    n_nan = n_nan.item()
+    y = np.where(y != y_fill, y, np.nan) # replace fill_values by nans in data
+    y = np.where(y != -9999, y, np.nan) # replace -9999 by nans in data
+    n_fv = np.sum(np.isnan(y)) - n_nan # re-count nans in data
+    n_fv = n_fv.item()
+    y = np.where(y > -1e10, y, np.nan) # replace extreme values by nans in data
+    y = np.where(y < 1e10, y, np.nan)
+    n_ev = np.sum(np.isnan(y)) - n_fv - n_nan # re-count nans in data
+    n_ev = n_ev.item()
+
+    g_min, g_max = cf.get_global_ranges(r, sv) # get global ranges:
+    if g_min and g_max:
+        y = np.where(y >= g_min, y, np.nan) # replace extreme values by nans in data
+        y = np.where(y <= g_max, y, np.nan)
+        n_grange = np.sum(np.isnan(y)) - n_ev - n_fv - n_nan # re-count nans in data
+        n_grange = n_grange.item()
+    else:
+        n_grange = np.nan
+
+    stdev = np.nanstd(y)
+    if stdev > 0.0:
+        y = np.where(abs(y - np.nanmean(y)) < n * stdev, y, np.nan) # replace 5 STD by nans in data
+        n_std = np.sum(np.isnan(y)) - n_grange - n_ev - n_fv - n_nan # re-count nans in data
+        n_std = n_std.item()
+
+    return  y, n_nan, n_fv, n_ev, n_grange, g_min, g_max, n_std
+
+
+def reject_err_data_2_dims(y, y_bad_beams, y_fill, r, sv):
+    n_nan = np.sum(np.isnan(y)) # count nans in data
+    y[y == y_fill] = np.nan # replace fill_values by nans in data
+    y[y == -9999] = np.nan # replace -99999 by nans in data
+    n_fv = np.sum(np.isnan(y)) - n_nan # re-count nans in data
+    y[y < -1e10] = np.nan # replace extreme values by nans in data
+    y[y > 1e10] = np.nan
+    n_ev = np.sum(np.isnan(y)) - n_fv - n_nan  # re-count nans in data
+    y[y_bad_beams > 25] = np.nan # replace bad beams by nans in data
+    n_bb = np.sum(np.isnan(y)) - n_ev - n_fv - n_nan # re-count nans in data
+
+    [g_min, g_max] = cf.get_global_ranges(r, sv) # get global ranges
+    if g_min is not None and g_max is not None:
+        y[y < g_min] = np.nan # replace extreme values by nans in data
+        y[y > g_max] = np.nan
+        n_grange = np.sum(np.isnan(y)) - n_bb - n_ev - n_fv - n_nan  # re-count nans in data
+    else:
+        n_grange = np.nan
+
+    return  y, n_nan, n_fv, n_ev, n_bb, n_grange, g_min, g_max
+
+
 def dropna(arr, *args, **kwarg):
     # turn 2D numpy array into a data frame and drop nan
     assert isinstance(arr, np.ndarray)
@@ -30,15 +83,18 @@ def dropna(arr, *args, **kwarg):
         dropped=dropped.values.flatten()
     return dropped
 
+
 def in_list(x, ix):
     # keep listed entries with specific words.
     y = [el for el in x if any(ignore in el for ignore in ix)]
     return y
 
+
 def notin_list(x, ix):
     # filter out list entries with specific words.
     y = [el for el in x if not any(ignore in el for ignore in ix)]
     return y
+
 
 def main(sDir, url_list, start_time, end_time, preferred_only):
     rd_list = []
@@ -91,6 +147,7 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
 
             fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(fd)
             sci_vars = cf.return_science_vars(stream)
+            # drop the following list of key words from science variables list
             sci_vars = notin_list(sci_vars, ['bin_depths', 'salinity', 'temperature', 'beam'])
             sci_vars = [name for name in sci_vars if ds[name].units != 'mm s-1']
 
@@ -98,7 +155,7 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
             print('\nPlotting {} {}'.format(r, deployment))
             array = subsite[0:2]
             filename = '_'.join(fname.split('_')[:-1])
-            save_dir = os.path.join(sDir, array, subsite, refdes, 'plots', deployment)
+            save_dir = os.path.join(sDir, array, subsite, refdes, 'preferred_method_plots', deployment)
             cf.create_dir(save_dir)
 
             tm = ds['time'].values
@@ -110,62 +167,43 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                 print(var)
                 v = ds[var]
                 fv = v._FillValue
+                v_name = v.long_name
 
                 if len(v.dims) == 1:
-                    # Check if the array is all NaNs
-                    if sum(np.isnan(v.values)) == len(v.values):
-                        print('Array of all NaNs - skipping plot.')
+                    v, n_nan, n_fv, n_ev, n_grange, g_min, g_max, n_std  = reject_err_data_1_dims(v, fv, r, var, n=5)
 
-                    # Check if the array is all fill values
-                    elif len(v[v != fv]) == 0:
-                        print('Array of all fill values - skipping plot.')
+                    # Plot all data
+                    fig, ax = pf.plot_timeseries(tm, v, v_name, stdev=None)
+                    ax.set_title((title_text + '\n' + t0 + ' - ' + t1), fontsize=9)
+                    sfile = '-'.join((filename, v_name, t0[:10]))
+                    pf.save_fig(save_dir, sfile)
 
-                    else:
-                        # reject fill values
-                        ind = v.values != fv
-                        t = tm[ind]
-                        v = v[ind]
+                    # Plot data with outliers removed
+                    fig, ax = pf.plot_timeseries(tm, v, v_name, stdev=5)
+                    title_i = 'removed: {} nans, {} fill values, {} extreme values, {} GR [{}, {}],' \
+                              ' {} outliers +/- 5 SD'.format(n_nan, n_fv , n_ev, n_grange, g_min, g_max, n_std)
 
-                        # Plot all data
-                        fig, ax = pf.plot_timeseries(t, v, stdev=None)
-                        ax.set_title((title_text + '\n' + t0 + ' - ' + t1), fontsize=9)
-                        sfile = '-'.join((filename, v.name, t0[:10]))
-                        pf.save_fig(save_dir, sfile)
-
-                        # Plot data with outliers removed
-                        fig, ax = pf.plot_timeseries(t, v, stdev=5)
-                        ax.set_title((title_text + '\n' + t0 + ' - ' + t1), fontsize=9)
-                        sfile = '-'.join((filename, v.name, t0[:10])) + '_rmoutliers'
-                        pf.save_fig(save_dir, sfile)
+                    ax.set_title((title_text + '\n' + t0 + ' - ' + t1 + '\n' + title_i), fontsize=8)
+                    sfile = '-'.join((filename, v_name, t0[:10])) + '_rmoutliers'
+                    pf.save_fig(save_dir, sfile)
 
                 else:
                     v = v.values.T.astype(float)
-                    n_nan = np.sum(np.isnan(v))
+                    v_bad_beams = ds['percent_bad_beams'] # get bad beams percent
+                    fv_bad_beam = v_bad_beams._FillValue
+                    v_bad_beams = v_bad_beams.values.T.astype(float)
+                    v_bad_beams[v_bad_beams == fv_bad_beam] = np.nan # mask fill values
 
-                    #convert -9999 and fill values to nans
-                    v[v == fv] = np.nan
-                    v[v == -9999] = np.nan
-                    n_fv = np.sum(np.isnan(v)) - n_nan
-
-                    # reject data outside of global ranges
-                    [g_min, g_max] = cf.get_global_ranges(r, var)
-                    if g_min is not None and g_max is not None:
-                        v[v < g_min] = np.nan
-                        v[v > g_max] = np.nan
-                        n_grange = np.sum(np.isnan(v)) - n_fv - n_nan
-                    else:
-                        n_grange = 'no global ranges'
+                    v, n_nan, n_fv , n_ev, n_bb, n_grange, g_min, g_max = reject_err_data_2_dims(v, v_bad_beams, fv, r, var)
 
                     ylabel = 'bin_depths ({})'.format(ds['bin_depths'].units)
                     clabel = '{} ({})'.format(var, ds[var].units)
+
+                    # check bin depths for extreme values
                     y = ds['bin_depths'].values.T
                     y_nan = np.sum(np.isnan(y))
-
-                    # remove extreme bin_depths
-                    y = np.where(y < 6000, y, np.nan)
-                    # y[y > 6000] = np.nan
+                    y = np.where(y < 6000, y, np.nan) # replace extreme bin_depths by nans
                     bin_nan = np.sum(np.isnan(y)) - y_nan
-
                     bin_title = 'removed: {} bin depths > 6000'.format(bin_nan)
 
                     if 'echo' in var:
@@ -173,33 +211,32 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                     else:
                         color = 'RdBu'
 
-                    new_y = dropna(y, axis=1)
+                    new_y = dropna(y, axis=1) # convert to DataFrame to drop nan
                     y_mask = new_y.loc[list(new_y.index), list(new_y.columns)]
                     v_new = pd.DataFrame(v)
                     v_mask = v_new.loc[list(new_y.index), list(new_y.columns)]
                     tm_mask = tm[new_y.columns]
 
-                    fig, ax, __ = pf.plot_adcp(tm_mask, np.array(y_mask), np.array(v_mask), ylabel, clabel, color)
+                    fig, ax, __ = pf.plot_adcp(tm_mask, np.array(y_mask), np.array(v_mask), ylabel, clabel, color,
+                                               n_stdev = None)
+
                     if bin_nan > 0:
-                        ax.set_title((title_text + '\n' + t0 + ' - ' + t1 + '\n' + bin_title), fontsize=9)
+                        ax.set_title((title_text + '\n' + t0 + ' - ' + t1 + '\n' + bin_title), fontsize=8)
                     else:
-                        ax.set_title((title_text + '\n' + t0 + ' - ' + t1), fontsize=9)
-                    # ax.set_title((title_text + '\n' + t0 + ' - ' + t1), fontsize=9)
+                        ax.set_title((title_text + '\n' + t0 + ' - ' + t1), fontsize=8)
+
                     sfile = '-'.join((filename, var, t0[:10]))
                     pf.save_fig(save_dir, sfile)
 
-                    fig, ax, n_nans_all = pf.plot_adcp(tm_mask, np.array(y_mask), np.array(v_mask), ylabel, clabel, color, stdev=5)
-                    if type(n_grange) == str:
-                        outl = n_nans_all - n_fv - n_nan
-                    else:
-                        outl = n_nans_all - n_grange - n_fv - n_nan
-                    title2 = 'removed: {} fill values, {} GR [{}, {}], {} outliers +/- 5 SD'.format(n_fv, n_grange,
-                                                                                                    g_min, g_max, outl)
+                    fig, ax, n_nans_all = pf.plot_adcp(tm_mask, np.array(y_mask), np.array(v_mask), ylabel, clabel, color, n_stdev=5)
+                    title_i = 'removed: {} nans {} fill values, {} extreme values, {} bad beams, {} GR [{}, {}]'.format(
+                        n_nan, n_fv , n_ev, n_bb, n_grange, g_min, g_max)
+
                     if bin_nan > 0:
-                        ax.set_title((title_text + '\n' + t0 + ' - ' + t1 + '\n' + title2 + '\n' + bin_title), fontsize=8)
+                        ax.set_title((title_text + '\n' + t0 + ' - ' + t1 + '\n' + title_i + '\n' + bin_title), fontsize=8)
                     else:
-                        ax.set_title((title_text + '\n' + t0 + ' - ' + t1 + '\n' + title2), fontsize=8)
-                    # ax.set_title((title_text + '\n' + t0 + ' - ' + t1 + '\n' + title2), fontsize=8)
+                        ax.set_title((title_text + '\n' + t0 + ' - ' + t1 + '\n' + title_i), fontsize=8)
+
                     sfile = '-'.join((filename, var, t0[:10])) + '_rmoutliers'
                     pf.save_fig(save_dir, sfile)
 
@@ -208,8 +245,12 @@ if __name__ == '__main__':
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
     url_list =['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190524T180207-CE06ISSM-MFD35-04-ADCPTM000-telemetered-adcp_velocity_earth/catalog.html',
                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190524T180205-CE06ISSM-MFD35-04-ADCPTM000-recovered_inst-adcp_velocity_earth/catalog.html',
-               '']
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190524T175913-CP01CNSM-MFD35-01-ADCPTF000-recovered_inst-adcp_velocity_earth/catalog.html']
+               'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190524T180204-CE06ISSM-MFD35-04-ADCPTM000-recovered_host-adcp_velocity_earth/catalog.html']
+
+    # url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190524T180120-CE01ISSM-MFD35-04-ADCPTM000-telemetered-adcp_velocity_earth/catalog.html',
+    #             'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190524T180115-CE01ISSM-MFD35-04-ADCPTM000-recovered_inst-adcp_velocity_earth/catalog.html',
+    #             'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190524T180110-CE01ISSM-MFD35-04-ADCPTM000-recovered_host-adcp_velocity_earth/catalog.html']
+    # url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190524T175913-CP01CNSM-MFD35-01-ADCPTF000-recovered_inst-adcp_velocity_earth/catalog.html']
     start_time = None  # dt.datetime(2015, 4, 20, 0, 0, 0)  # optional, set to None if plotting all data
     end_time = None  # dt.datetime(2017, 5, 20, 0, 0, 0)  # optional, set to None if plotting all data
     preferred_only = 'yes'  # options: 'yes', 'no'
