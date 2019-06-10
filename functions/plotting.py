@@ -27,12 +27,12 @@ def format_date_axis(axis, figure):
     figure.autofmt_xdate()
 
 
-def plot_adcp(tm, bins, v, ylabel, clabel, color, stdev=None):
-    if type(stdev) == int:
-        # remove data outside of 5 standard deviations
+def plot_adcp(tm, bins, v, ylabel, clabel, color, n_stdev=None):
+    if type(n_stdev) == int:
+        # remove data outside of n standard deviations
         stdev = np.nanstd(v)
-        ul = np.nanmean(v) + stdev * 5
-        ll = np.nanmean(v) - stdev * 5
+        ul = np.nanmean(v) + stdev * n_stdev
+        ll = np.nanmean(v) - stdev * n_stdev
         v[v < ll] = np.nan
         v[v > ul] = np.nan
 
@@ -175,24 +175,31 @@ def plot_timeseries_all(x, y, y_name, y_units, stdev=None):
     return fig, ax
 
 
-def plot_timeseries(x, y, stdev=None):
+def plot_timeseries(x, y, y_name, stdev=None):
     """
     Create a simple timeseries plot
     :param x: array containing data for x-axis (e.g. time)
     :param y: .nc data array for plotting on the y-axis, including data values, coordinates, and variable attributes
     :param stdev: desired standard deviation to exclude from plotting
     """
+
+    if type(y) is not np.ndarray:
+        y = y.values
+
+    if type(x) is not np.ndarray:
+        x = x.values
+
     if stdev is None:
         xD = x
-        yD = y.values
+        yD = y
         leg_text = ()
     else:
-        ind = cf.reject_extreme_values(y.values)
+        ind = cf.reject_extreme_values(y)
         ydata = y[ind]
         xdata = x[ind]
 
-        ind2 = cf.reject_outliers(ydata.values, stdev)
-        yD = ydata[ind2].values
+        ind2 = cf.reject_outliers(ydata, stdev)
+        yD = ydata[ind2]
         xD = xdata[ind2]
         outliers = str(len(y) - len(yD))
         leg_text = ('removed {} outliers (SD={})'.format(outliers, stdev),)
@@ -203,7 +210,7 @@ def plot_timeseries(x, y, stdev=None):
 
     y_units = get_units(y)
 
-    ax.set_ylabel((y.name + " (" + y_units + ")"), fontsize=9)
+    ax.set_ylabel((y_name + " (" + y_units + ")"), fontsize=9)
     format_date_axis(ax, fig)
     y_axis_disable_offset(ax)
     ax.legend(leg_text, loc='best', fontsize=6)
