@@ -100,7 +100,7 @@ def main(sDir, url_list, start_time, end_time):
 
         # get science variable long names from the Data Review Database
         #stream_sci_vars = cd.sci_var_long_names(r)
-        if 'SPKIR' in r:  # only get the main science variable for SPKIR
+        if 'SPKIR' in r or 'PRESF' in r:  # only get the main science variable for SPKIR
             stream_vars = cd.sci_var_long_names(r)
         else:
             stream_vars = var_long_names(r)
@@ -148,7 +148,7 @@ def main(sDir, url_list, start_time, end_time):
                     t = vinfo['t']
                     if len(t) > 1:
                         data = vinfo['values']
-                        [spkirdata, g_min, g_max] = index_dataset_2d(r, vinfo['var_name'], data, fill_value)
+                        [dd_data, g_min, g_max] = index_dataset_2d(r, 'spkir_abj_cspp_downwelling_vector', data, fill_value)
                         t0 = pd.to_datetime(min(t)).strftime('%Y-%m-%dT%H:%M:%S')
                         t1 = pd.to_datetime(max(t)).strftime('%Y-%m-%dT%H:%M:%S')
                         deploy_final = vinfo['deployments']
@@ -156,7 +156,7 @@ def main(sDir, url_list, start_time, end_time):
                         deployments = [int(dd) for dd in deploy]
 
                         sname = '-'.join((r, sv))
-                        fig, ax = pf.plot_spkir(t, spkirdata, sv, sv_units[0])
+                        fig, ax = pf.plot_spkir(t, dd_data, sv, sv_units[0])
                         ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1 + '\n'
                                       + 'removed global ranges +/- [{} - {}]'.format(g_min, g_max)), fontsize=8)
                         for etimes in dend_times:
@@ -165,8 +165,8 @@ def main(sDir, url_list, start_time, end_time):
 
                         # plot each wavelength
                         wavelengths = ['412nm', '443nm', '490nm', '510nm', '555nm', '620nm', '683nm']
-                        for wvi in range(len(spkirdata)):
-                            fig, ax = pf.plot_spkir_wv(t, spkirdata[wvi], sv, sv_units[0], wvi)
+                        for wvi in range(len(dd_data)):
+                            fig, ax = pf.plot_spkir_wv(t, dd_data[wvi], sv, sv_units[0], wvi)
                             ax.set_title(
                                 (r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1 + '\n'
                                  + 'removed global ranges +/- [{} - {}]'.format(g_min, g_max)), fontsize=8)
@@ -174,6 +174,34 @@ def main(sDir, url_list, start_time, end_time):
                                 ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
                             snamewvi = '-'.join((sname, wavelengths[wvi]))
                             pf.save_fig(save_dir, snamewvi)
+
+                elif 'presf_abc_wave_burst' in m:
+                    fv_lst = np.unique(vinfo['fv']).tolist()
+                    if len(fv_lst) == 1:
+                        fill_value = fv_lst[0]
+                    else:
+                        print(fv_lst)
+                        print('No unique fill value for {}'.format(sv))
+
+                    sv_units = np.unique(vinfo['units']).tolist()
+
+                    t = vinfo['t']
+                    if len(t) > 1:
+                        data = vinfo['values']
+                        [dd_data, g_min, g_max] = index_dataset_2d(r, 'presf_wave_burst_pressure', data, fill_value)
+                        t0 = pd.to_datetime(min(t)).strftime('%Y-%m-%dT%H:%M:%S')
+                        t1 = pd.to_datetime(max(t)).strftime('%Y-%m-%dT%H:%M:%S')
+                        deploy_final = vinfo['deployments']
+                        deploy = list(np.unique(deploy_final))
+                        deployments = [int(dd) for dd in deploy]
+
+                        sname = '-'.join((r, sv))
+                        fig, ax = pf.plot_presf_2d(t, dd_data, sv, sv_units[0])
+                        ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1 + '\n'
+                                      + 'removed global ranges +/- [{} - {}]'.format(g_min, g_max)), fontsize=8)
+                        for etimes in dend_times:
+                            ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
+                        pf.save_fig(save_dir, sname)
 
                 else:
                     if 'Spectra' not in sv:

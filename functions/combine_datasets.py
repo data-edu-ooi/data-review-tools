@@ -57,8 +57,8 @@ def append_variable_data(ds, variable_dict, common_stream_name, exclude_times):
             x = [x for x in list(vars_dict.keys()) if long_name in x]
             if len(x) != 0:
                 long_name = x[0]
-                print('______', long_name)
                 if ds[var].units == vars_dict[long_name]['db_units']:
+                    print('______', long_name)
                     if ds[var]._FillValue not in vars_dict[long_name]['fv']:
                         vars_dict[long_name]['fv'].append(ds[var]._FillValue)
                     if ds[var].units not in vars_dict[long_name]['units']:
@@ -94,15 +94,27 @@ def append_variable_data(ds, variable_dict, common_stream_name, exclude_times):
                             vars_dict[long_name].pop('values')
                             vars_dict[long_name].update({'values': dict()})
                         varD = varD.T
-                        for i in range(len(varD)):
+
+                        # for presf_wave_burst data, telemetered and recovered_host pressure data have a matrix of 20,
+                        # while recovered_inst data have a matrix of 1024. for DCL data, whatever is above 20 will
+                        # be an array of nans as placeholders (so the indices match between DCL and recovered_inst
+                        if common_stream_name == 'presf_abc_wave_burst':
+                            lendims = 1024
+                        else:
+                            lendims = len(varD)
+                        for i in range(lendims):
                             tD = ds['time'].values  # reset the time variable
                             deployD = ds['deployment'].values
                             pDi = pD
-                            varDi = varD[i]
                             try:
                                 vars_dict[long_name]['values'][i]
                             except KeyError:
                                 vars_dict[long_name]['values'].update({i: np.array([])})
+                            try:
+                                varDi = varD[i]
+                            except IndexError:
+                                varDi = np.empty(np.shape(tD))
+                                varDi[:] = np.nan
                             if len(exclude_times) > 0:
                                 for et in exclude_times:
                                     tD, pDi, varDi, deployD = exclude_time_ranges(tD, pDi, varDi, deployD, et)

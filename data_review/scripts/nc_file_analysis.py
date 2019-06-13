@@ -455,7 +455,7 @@ def main(sDir, url_list):
                                                             [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics_spkir(var_gr)
                                                         else:
                                                             if vnum_dims > 1:
-                                                                var_gr = var_gr.flatten()
+                                                                var_gr = var_gr.values.flatten()
                                                             # drop nans before calculating stats
                                                             var_gr = var_gr[~np.isnan(var_gr)]
                                                             [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_gr, 5)

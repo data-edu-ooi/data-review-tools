@@ -1,12 +1,10 @@
 #!/usr/bin/env python
 """
-Created on Oct 2 2018
+Created on June 13 2019
 
 @author: Lori Garzio
-@brief: This script is used create two timeseries plots of raw and science variables for a reference designator by
-deployment and delivery method: 1) plot all data, 2) plot data, omitting outliers beyond 5 standard deviations.
-The user has the option of selecting a specific time range to plot and only plotting data from the preferred
-method/stream.
+@brief: This script is used create plots of PRESF data by deployment and delivery method. The user has the option of
+selecting a specific time range to plot and only plotting data from the preferred method/stream.
 """
 
 import os
@@ -14,7 +12,7 @@ import pandas as pd
 import xarray as xr
 import datetime as dt
 import numpy as np
-import itertools
+import matplotlib.pyplot as plt
 import functions.common as cf
 import functions.plotting as pf
 
@@ -24,7 +22,7 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
     for uu in url_list:
         elements = uu.split('/')[-2].split('-')
         rd = '-'.join((elements[1], elements[2], elements[3], elements[4]))
-        if rd not in rd_list:
+        if rd not in rd_list and 'PRESF' in rd:
             rd_list.append(rd)
 
     for r in rd_list:
@@ -35,8 +33,9 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
             rd_check = '-'.join((splitter[1], splitter[2], splitter[3], splitter[4]))
             if rd_check == r:
                 udatasets = cf.get_nc_urls([u])
-                datasets.append(udatasets)
-        datasets = list(itertools.chain(*datasets))
+                for ud in udatasets:  # filter out collocated data files
+                    if 'PRESF' in ud.split('/')[-1]:
+                        datasets.append(ud)
         fdatasets = []
         if preferred_only == 'yes':
             # get the preferred stream information
@@ -60,8 +59,6 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
         for fd in fdatasets:
             ds = xr.open_dataset(fd, mask_and_scale=False)
             ds = ds.swap_dims({'obs': 'time'})
-            ds_vars = list(ds.data_vars.keys()) + [x for x in ds.coords.keys() if 'pressure' in x]  # get pressure variable from coordinates
-            #raw_vars = cf.return_raw_vars(ds_vars)
 
             if start_time is not None and end_time is not None:
                 ds = ds.sel(time=slice(start_time, end_time))
@@ -70,10 +67,7 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                     continue
 
             fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(fd)
-            if 'NUTNR' in refdes:
-                vars = cf.return_science_vars(stream)
-            else:
-                vars = cf.return_raw_vars(ds_vars)
+            sci_vars = cf.return_science_vars(stream)
             print('\nPlotting {} {}'.format(r, deployment))
             array = subsite[0:2]
             filename = '_'.join(fname.split('_')[:-1])
@@ -85,12 +79,14 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
             t1 = pd.to_datetime(tm.max()).strftime('%Y-%m-%dT%H:%M:%S')
             title = ' '.join((deployment, refdes, method))
 
-            for var in vars:
+            for var in sci_vars:
                 print(var)
                 if var != 'id':
+                #if var == 'presf_wave_burst_pressure':
                     y = ds[var]
                     fv = y._FillValue
                     if len(y.dims) == 1:
+
                         # Check if the array is all NaNs
                         if sum(np.isnan(y.values)) == len(y.values):
                             print('Array of all NaNs - skipping plot.')
@@ -116,15 +112,49 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                             ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
                             sfile = '-'.join((filename, y.name, t0[:10])) + '_rmoutliers'
                             pf.save_fig(save_dir, sfile)
+                    else:
+                        v = y.values.T
+                        n_nan = np.sum(np.isnan(v))
+
+                        # convert fill values to nans
+                        try:
+                            v[v == fv] = np.nan
+                        except ValueError:
+                            v = v.astype(float)
+                            v[v == fv] = np.nan
+                        n_fv = np.sum(np.isnan(v)) - n_nan
+
+                        # plot before global ranges are removed
+                        fig, ax = pf.plot_presf_2d(tm, v, y.name, y.units)
+                        ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+                        sfile = '-'.join((filename, var, t0[:10]))
+                        pf.save_fig(save_dir, sfile)
+
+                        # reject data outside of global ranges
+                        [g_min, g_max] = cf.get_global_ranges(r, var)
+                        if g_min is not None and g_max is not None:
+                            v[v < g_min] = np.nan
+                            v[v > g_max] = np.nan
+                            n_grange = np.sum(np.isnan(v)) - n_fv - n_nan
+
+                            if n_grange > 0:
+                                # don't plot if the array is all nans
+                                if len(np.unique(np.isnan(v))) == 1 and np.unique(np.isnan(v))[0] == True:
+                                    continue
+                                else:
+                                    # plot after global ranges are removed
+                                    fig, ax = pf.plot_presf_2d(tm, v, y.name, y.units)
+                                    title2 = 'removed: {} global ranges [{}, {}]'.format(n_grange, g_min, g_max)
+                                    ax.set_title((title + '\n' + t0 + ' - ' + t1 + '\n' + title2), fontsize=9)
+                                    sfile = '-'.join((filename, var, t0[:10], 'rmgr'))
+                                    pf.save_fig(save_dir, sfile)
 
 
 if __name__ == '__main__':
     sDir = '/Users/lgarzio/Documents/OOI/DataReviews'
-    url_list = [
-        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181128T172034-GP03FLMA-RIM01-02-CTDMOG040-recovered_inst-ctdmo_ghqr_instrument_recovered/catalog.html',
-        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181128T172050-GP03FLMA-RIM01-02-CTDMOG040-recovered_host-ctdmo_ghqr_sio_mule_instrument/catalog.html',
-        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181128T172104-GP03FLMA-RIM01-02-CTDMOG040-telemetered-ctdmo_ghqr_sio_mule_instrument/catalog.html']
-    start_time = None  # dt.datetime(2015, 4, 20, 0, 0, 0)  # optional, set to None if plotting all data
-    end_time = None  # dt.datetime(2017, 5, 20, 0, 0, 0)  # optional, set to None if plotting all data
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190607T172311-CP01CNSM-MFD35-02-PRESFB000-recovered_inst-presf_abc_wave_burst_recovered/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190607T172311-CP01CNSM-MFD35-02-PRESFB000-recovered_inst-presf_abc_tide_measurement_recovered/catalog.html']
+    start_time = None  # dt.datetime(2015, 6, 3, 0, 0, 0)  # optional, set to None if plotting all data
+    end_time = None  # dt.datetime(2019, 1, 1, 0, 0, 0)  # optional, set to None if plotting all data
     preferred_only = 'yes'  # options: 'yes', 'no'
     main(sDir, url_list, start_time, end_time, preferred_only)

@@ -526,7 +526,11 @@ def add_pressure_to_dictionary_of_sci_vars(ds):
             y_empty[:] = np.nan
             y = y_empty.ravel()
 
-
+    try:
+        if len(ds[pressure].dims) == 2:
+            y = y.flatten()
+    except KeyError:
+        placeholder = None
     if sum(np.isnan(y)) == len(y) or len(y[y != 0]) == 0 or len(y[y != ds[pressure]._FillValue]) == 0:
         print('Pressure array of all  NaNs or zeros or fill values - ... trying to use pressure coordinate')
         pressure = [pressure for pressure in ds.coords.keys() if 'pressure' in ds.coords[pressure].name]

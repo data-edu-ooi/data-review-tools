@@ -52,6 +52,23 @@ def plot_adcp(tm, bins, v, ylabel, clabel, color, n_stdev=None):
     return fig, ax, n_nans_all
 
 
+def plot_presf_2d(tm, var, varname, varunits):
+    colors = cm.rainbow(np.linspace(0, 1, len(var)))
+    fig, ax = plt.subplots()
+    for i in range(len(var)):
+        ci = colors[[i]]
+        vari = var[i]
+        plt.scatter(tm, vari, c=ci, marker='.', s=.5)
+        if i == len(var) - 1:  # if the last wavelength has been plotted
+            plt.grid()
+            format_date_axis(ax, fig)
+
+    # plt.ylim(-.5, .5)
+    ax.set_ylabel((varname + " (" + varunits + ")"), fontsize=9)
+
+    return fig, ax
+
+
 def plot_profiles(x, y, t, ylabel, xlabel, clabel, stdev=None):
     """
     Create a profile plot for mobile instruments
@@ -184,36 +201,43 @@ def plot_timeseries(x, y, y_name, stdev=None):
     """
 
     if type(y) is not np.ndarray:
-        y = y.values
+        yval = y.values
+    else:
+        yval = y
 
     if type(x) is not np.ndarray:
         x = x.values
 
     if stdev is None:
         xD = x
-        yD = y
+        yD = yval
         leg_text = ()
     else:
-        ind = cf.reject_extreme_values(y)
-        ydata = y[ind]
+        ind = cf.reject_extreme_values(yval)
+        ydata = yval[ind]
         xdata = x[ind]
 
-        ind2 = cf.reject_outliers(ydata, stdev)
-        yD = ydata[ind2]
-        xD = xdata[ind2]
-        outliers = str(len(y) - len(yD))
-        leg_text = ('removed {} outliers (SD={})'.format(outliers, stdev),)
+        if len(xdata) > 0:
+            ind2 = cf.reject_outliers(ydata, stdev)
+            yD = ydata[ind2]
+            xD = xdata[ind2]
+            outliers = str(len(y) - len(yD))
+            leg_text = ('removed {} outliers (SD={})'.format(outliers, stdev),)
+        else:
+            xD = []
 
     fig, ax = plt.subplots()
     plt.grid()
-    plt.plot(xD, yD, '.', markersize=2)
+    if len(xD) > 0:
+        plt.plot(xD, yD, '.', markersize=2)
 
-    y_units = get_units(y)
+        y_units = get_units(y)
 
-    ax.set_ylabel((y_name + " (" + y_units + ")"), fontsize=9)
-    format_date_axis(ax, fig)
-    y_axis_disable_offset(ax)
-    ax.legend(leg_text, loc='best', fontsize=6)
+        ax.set_ylabel((y_name + " (" + y_units + ")"), fontsize=9)
+        format_date_axis(ax, fig)
+        y_axis_disable_offset(ax)
+        ax.legend(leg_text, loc='best', fontsize=6)
+
     return fig, ax
 
 
