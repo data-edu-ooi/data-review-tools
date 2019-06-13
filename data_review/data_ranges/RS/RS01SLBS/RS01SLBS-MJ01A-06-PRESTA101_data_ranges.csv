@@ -1,0 +1,2 @@
+common_stream_name,preferred_methods_streams,deployments,long_name,units,t0,t1,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,define_stdev,n_outliers,n_stats,mean,min,max,stdev
+prest_real_time,['streamed-prest_real_time'],[1],Seafloor Pressure,['dbar'],2014-09-13T00:00:03,2018-06-26T03:47:52,[-9999999.0],"[0.0, 6000.0]",7795476,283,0,0,,,7795193,2959.622,2957.4752,2961.2929,0.7303
