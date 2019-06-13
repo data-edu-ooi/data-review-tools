@@ -133,6 +133,17 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
         save_dir = os.path.join(sDir, array, subsite)
         cf.create_dir(save_dir)
 
+        rows = []
+        if ('FLM' in r) and ('CTDMO' in r):  # calculate Flanking Mooring CTDMO stats based on pressure
+            headers = ['common_stream_name', 'preferred_methods_streams', 'deployments', 'long_name', 'units', 't0',
+                       't1', 'fill_value', 'global_ranges', 'n_all', 'press_min_max', 'n_excluded_forpress',
+                       'n_nans', 'n_fillvalues', 'n_grange', 'define_stdev', 'n_outliers', 'n_stats', 'mean', 'min',
+                       'max', 'stdev', 'note']
+        else:
+            headers = ['common_stream_name', 'preferred_methods_streams', 'deployments', 'long_name', 'units', 't0',
+                       't1', 'fill_value', 'global_ranges', 'n_all', 'n_nans', 'n_fillvalues', 'n_grange',
+                       'define_stdev', 'n_outliers', 'n_stats', 'mean', 'min', 'max', 'stdev']
+
         for m, n in sci_vars_dict.items():
             print('\nSTREAM: ', m)
             if m == 'common_stream_placeholder':
@@ -141,12 +152,6 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                 continue
 
             if ('FLM' in r) and ('CTDMO' in r):  # calculate Flanking Mooring CTDMO stats based on pressure
-                headers = ['common_stream_name', 'preferred_methods_streams', 'deployments', 'long_name', 'units', 't0',
-                           't1', 'fill_value', 'global_ranges', 'n_all', 'press_min_max', 'n_excluded_forpress',
-                           'n_nans', 'n_fillvalues', 'n_grange', 'define_stdev', 'n_outliers', 'n_stats', 'mean', 'min',
-                           'max', 'stdev', 'note']
-                rows = []
-
                 # index the pressure variable to filter and calculate stats on the rest of the variables
                 sv_press = 'Seawater Pressure'
                 vinfo_press = n['vars'][sv_press]
@@ -242,10 +247,6 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                         pf.save_fig(psave_dir, sname)
 
             else:
-                headers = ['common_stream_name', 'preferred_methods_streams', 'deployments', 'long_name', 'units', 't0',
-                           't1', 'fill_value', 'global_ranges', 'n_all', 'n_nans', 'n_fillvalues', 'n_grange',
-                           'define_stdev', 'n_outliers', 'n_stats', 'mean', 'min', 'max', 'stdev']
-                rows = []
                 if not sd_calc:
                     sdcalc = None
 
@@ -267,9 +268,13 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                         data = vinfo['values']
                         n_all = len(t)
 
-                        if 'SPKIR' in r:
-                            [spkirdata, g_min, g_max, n_nan, n_fv, n_grange] = index_dataset_2d(r, vinfo['var_name'],
-                                                                                                data, fill_value)
+                        if 'SPKIR' in r or 'presf_abc_wave_burst' in m:
+                            if 'SPKIR' in r:
+                                [dd_data, g_min, g_max, n_nan, n_fv, n_grange] = index_dataset_2d(r, 'spkir_abj_cspp_downwelling_vector',
+                                                                                                  data, fill_value)
+                            else:
+                                [dd_data, g_min, g_max, n_nan, n_fv, n_grange] = index_dataset_2d(r,'presf_wave_burst_pressure',
+                                                                                                  data, fill_value)
                             t_final = t
                             t0 = pd.to_datetime(min(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
                             t1 = pd.to_datetime(max(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
@@ -283,7 +288,7 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                             vmax = []
                             sd = []
                             n_stats = []
-                            for i in range(len(spkirdata)):
+                            for i in range(len(dd_data)):
                                 dd = data[i]
                                 # drop nans before calculating stats
                                 dd = dd[~np.isnan(dd)]
@@ -294,6 +299,7 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                                 vmax.append(vmaxi)
                                 sd.append(sdi)
                                 n_stats.append(n_statsi)
+
                         else:
                             [dataind, g_min, g_max, n_nan, n_fv, n_grange] = index_dataset(r, vinfo['var_name'], data,
                                                                                            fill_value)
@@ -387,7 +393,7 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                             pf.save_fig(psave_dir, sname)
 
                         elif 'SPKIR' in r:
-                            fig, ax = pf.plot_spkir(t_final, spkirdata, sv, lunits[0])
+                            fig, ax = pf.plot_spkir(t_final, dd_data, sv, lunits[0])
                             ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
                                          fontsize=8)
                             for etimes in end_times:
@@ -396,8 +402,8 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
 
                             # plot each wavelength
                             wavelengths = ['412nm', '443nm', '490nm', '510nm', '555nm', '620nm', '683nm']
-                            for wvi in range(len(spkirdata)):
-                                fig, ax = pf.plot_spkir_wv(t_final, spkirdata[wvi], sv, lunits[0], wvi)
+                            for wvi in range(len(dd_data)):
+                                fig, ax = pf.plot_spkir_wv(t_final, dd_data[wvi], sv, lunits[0], wvi)
                                 ax.set_title(
                                     (r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
                                     fontsize=8)
@@ -405,6 +411,14 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                                     ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
                                 snamewvi = '-'.join((sname, wavelengths[wvi]))
                                 pf.save_fig(psave_dir, snamewvi)
+                        elif 'presf_abc_wave_burst' in m:
+                            fig, ax = pf.plot_presf_2d(t_final, dd_data, sv, lunits[0])
+                            ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
+                                         fontsize=8)
+                            for etimes in end_times:
+                                ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
+                            snamewave = '-'.join((sname, m))
+                            pf.save_fig(psave_dir, snamewave)
 
                         else:  # plot all data if not streamed
                             fig, ax = pf.plot_timeseries_all(t_final, data_final, sv, lunits[0], stdev=None)
