@@ -391,7 +391,7 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                             for etimes in end_times:
                                 ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
                             pf.save_fig(psave_dir, sname)
-
+                            
                             if sd_calc:
                                 sname = '-'.join((sname, 'hourlyavg_rmoutliers'))
                                 fig, ax = pf.plot_timeseries_all(dfr.index, dfr['dfy'], sv, lunits[0], stdev=sd_calc)
@@ -400,6 +400,7 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                                 for etimes in end_times:
                                     ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
                                 pf.save_fig(psave_dir, sname)
+                                
                         elif 'SPKIR' in r:
                             fig, ax = pf.plot_spkir(t_final, dd_data, sv, lunits[0])
                             ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
