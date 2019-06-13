@@ -484,6 +484,7 @@ def reject_timestamps_dataportal(subsite, r, tt, yy, zz, lat=None, lon=None):
 def add_pressure_to_dictionary_of_sci_vars(ds):
     y_unit = []
     y_name = []
+    y_fillvalue = []
     if 'MOAS' in ds.subsite:
         if 'CTD' in ds.sensor:  # for glider CTDs, pressure is a coordinate
             pressure = 'sci_water_pressure_dbar'
@@ -519,10 +520,12 @@ def add_pressure_to_dictionary_of_sci_vars(ds):
     if sum(np.isnan(y)) == len(y) or len(y[y != 0]) == 0 or len(y[y != ds[pressure]._FillValue]) == 0:
         print('Pressure array of all  NaNs or zeros or fill values - ... trying to use pressure coordinate')
         pressure = [pressure for pressure in ds.coords.keys() if 'pressure' in ds.coords[pressure].name]
-        if len(pressure) != 0:
-            y = ds.coords[pressure[0]].values
+
+        if len(pressure) == 1:
+            pressure = pressure[0]
+            y = ds.coords[pressure].values
         else:
-            print('no pressure coordinate')
+            print('Missing pressure coordinate: ', pressure)
             y_empty = np.empty((1, len(ds['time'].values)))
             y_empty[:] = np.nan
             y = y_empty.ravel()
@@ -545,7 +548,16 @@ def add_pressure_to_dictionary_of_sci_vars(ds):
         if 'pressure long name missing' not in y_name:
             y_name.append('pressure long name missing')
 
-    return y, y_unit, y_name
+    try:
+        ds[pressure]._FillValue
+        if ds[pressure]._FillValue not in y_fillvalue:
+            y_fillvalue.append(ds[pressure]._FillValue)
+    except AttributeError:
+        print('pressure attributes missing _FillValue')
+        if 'pressure Fill Value missing' not in y_fillvalue:
+            y_fillvalue.append('pressure Fill Value missing')
+
+    return y, y_unit, y_name, y_fillvalue
 
 
 def reject_erroneous_data(r, v, t, y, z, fz, lat=None, lon=None):
@@ -636,3 +648,15 @@ def reject_suspect_data(t, y, z, timestamps):
         print('rejected suspect data', len(data['tt']), 'out < - > in', l0)
 
     return data['tt'], data['zz'].values, data['yy'].values
+
+
+def in_list(x, ix):
+    # keep listed entries with specific words.
+    y = [el for el in x if any(ignore in el for ignore in ix)]
+    return y
+
+
+def notin_list(x, ix):
+    # filter out list entries with specific words.
+    y = [el for el in x if not any(ignore in el for ignore in ix)]
+    return y
