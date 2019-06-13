@@ -68,7 +68,7 @@ def append_variable_data(ds, variable_dict, common_stream_name, exclude_times):
                     deployD = ds['deployment'].values
 
                     # find the pressure to use from the data file
-                    pD, p_unit, p_name = cf.add_pressure_to_dictionary_of_sci_vars(ds)
+                    pD, p_unit, p_name, p_fv = cf.add_pressure_to_dictionary_of_sci_vars(ds)
                     if p_unit not in pressure_unit:
                         pressure_unit.append(p_unit)
                     if p_name not in pressure_name:
