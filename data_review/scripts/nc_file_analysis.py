@@ -350,7 +350,7 @@ def main(sDir, url_list):
                         if fname not in filenames:
                             data['deployments'][deployment]['method'][method]['stream'][data_stream]['file'][
                                 fname] = OrderedDict(
-                                file_downloaded=pd.to_datetime(splitter[0]).strftime('%Y-%m-%dT%H:%M:%S'),
+                                file_downloaded=pd.to_datetime(splitter[0][0:15]).strftime('%Y-%m-%dT%H:%M:%S'),
                                 file_coordinates=list(ds.coords.keys()),
                                 sampling_rate_seconds=sampling_rt_sec,
                                 sampling_rate_details=rates,
