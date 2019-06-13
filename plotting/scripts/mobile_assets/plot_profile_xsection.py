@@ -147,7 +147,8 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                 print('No longitude variable in file')
 
             # get pressure variable
-            y, y_units, press = cf.add_pressure_to_dictionary_of_sci_vars(ds)
+            y, y_units, press, y_fillvalue = cf.add_pressure_to_dictionary_of_sci_vars(ds)
+
 
             for sv in sci_vars:
                 print(sv)
@@ -366,8 +367,9 @@ if __name__ == '__main__':
     output directory, and data files URL location
     '''
     sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021222-CE09OSPM-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html']
-    #url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021350-CE09OSPM-WFP01-04-FLORTK000-telemetered-flort_sample/catalog.html']
+    url_list = [
+        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021729-CE09OSPM-WFP01-01-VEL3DK000-recovered_wfp-vel3d_k_wfp_instrument/catalog.html',
+        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021754-CE09OSPM-WFP01-01-VEL3DK000-telemetered-vel3d_k_wfp_stc_instrument/catalog.html']
 
     '''
     call in main function with the above attributes
