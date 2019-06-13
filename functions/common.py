@@ -343,19 +343,30 @@ def variable_statistics(var_data, stdev=None):
         ind = reject_extreme_values(var_data)
         var = var_data[ind]
 
-        ind2 = reject_outliers(var, stdev)
-        varD = var[ind2]
-        varD = varD.astype('float64')  # force variables to be float64 (float32 is not JSON serializable)
-        try:
-            num_outliers = int(np.sum(~ind) + np.sum(~ind2))
-        except TypeError:
-            num_outliers = int(np.sum(~np.array(ind2)))
+        if len(var) > 0:
+            ind2 = reject_outliers(var, stdev)
+            varD = var[ind2]
+            varD = varD.astype('float64')  # force variables to be float64 (float32 is not JSON serializable)
+            try:
+                num_outliers = int(np.sum(~ind) + np.sum(~ind2))
+            except TypeError:
+                num_outliers = int(np.sum(~np.array(ind2)))
+        else:
+            num_outliers = int(np.sum(~np.array(ind)))
+            varD = var
 
-    mean = round(np.nanmean(varD), 4)
-    min = round(np.nanmin(varD), 4)
-    max = round(np.nanmax(varD), 4)
-    sd = round(np.nanstd(varD), 4)
-    n = len(varD)
+    if len(varD) > 0:
+        mean = round(np.nanmean(varD), 4)
+        min = round(np.nanmin(varD), 4)
+        max = round(np.nanmax(varD), 4)
+        sd = round(np.nanstd(varD), 4)
+        n = len(varD)
+    else:
+        mean = None
+        min = None
+        max = None
+        sd = None
+        n = 0
 
     return [num_outliers, mean, min, max, sd, n]
 
@@ -510,12 +521,16 @@ def add_pressure_to_dictionary_of_sci_vars(ds):
         try:
             pressure = pf.pressure_var(ds, ds.data_vars.keys())
             y = ds[pressure].values
+            if len(ds[pressure].dims) > 1:
+                print('Pressure has >1 dimension')
+                y_empty = np.empty((1, len(ds['time'].values)))
+                y_empty[:] = np.nan
+                y = y_empty.ravel()
         except KeyError:
             print('no pressure variable in file - replacing by a nan array')
             y_empty = np.empty((1, len(ds['time'].values)))
             y_empty[:] = np.nan
             y = y_empty.ravel()
-
 
     if sum(np.isnan(y)) == len(y) or len(y[y != 0]) == 0 or len(y[y != ds[pressure]._FillValue]) == 0:
         print('Pressure array of all  NaNs or zeros or fill values - ... trying to use pressure coordinate')

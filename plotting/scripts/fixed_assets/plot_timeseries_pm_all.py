@@ -27,6 +27,24 @@ def get_deployment_information(data, deployment):
         return None
 
 
+def index_dataset_2d(refdes, var_name, var_data, fv):
+    [g_min, g_max] = cf.get_global_ranges(refdes, var_name)
+    fdata = dict()
+    for i in range(len(var_data)):
+        vd = var_data[i]
+
+        # convert fill values to nans
+        vd[vd == fv] = np.nan
+
+        if g_min is not None and g_max is not None:
+            vd[vd < g_min] = np.nan
+            vd[vd > g_max] = np.nan
+
+        fdata.update({i: vd})
+
+    return [fdata, g_min, g_max]
+
+
 def var_long_names(refdes):
     # get science variable long names from the Data Review Database
     stream_vars_dict = dict()
@@ -82,7 +100,10 @@ def main(sDir, url_list, start_time, end_time):
 
         # get science variable long names from the Data Review Database
         #stream_sci_vars = cd.sci_var_long_names(r)
-        stream_vars = var_long_names(r)
+        if 'SPKIR' in r or 'PRESF' in r:  # only get the main science variable for SPKIR
+            stream_vars = cd.sci_var_long_names(r)
+        else:
+            stream_vars = var_long_names(r)
 
         # check if the science variable long names are the same for each stream and initialize empty arrays
         sci_vars_dict = cd.sci_var_long_names_check(stream_vars)
@@ -114,122 +135,190 @@ def main(sDir, url_list, start_time, end_time):
         for m, n in sci_vars_dict.items():
             for sv, vinfo in n['vars'].items():
                 print(sv)
-                if 'Spectra' not in sv:
-                    if len(vinfo['t']) < 1:
-                        print('no variable data to plot')
+                if 'SPKIR' in r:
+                    fv_lst = np.unique(vinfo['fv']).tolist()
+                    if len(fv_lst) == 1:
+                        fill_value = fv_lst[0]
                     else:
-                        sv_units = vinfo['units'][0]
-                        sv_name = vinfo['var_name']
-                        t0 = pd.to_datetime(min(vinfo['t'])).strftime('%Y-%m-%dT%H:%M:%S')
-                        t1 = pd.to_datetime(max(vinfo['t'])).strftime('%Y-%m-%dT%H:%M:%S')
-                        x = vinfo['t']
-                        y = vinfo['values']
+                        print(fv_lst)
+                        print('No unique fill value for {}'.format(sv))
 
-                        # reject NaNs and values of 0.0
-                        nan_ind = (~np.isnan(y)) & (y != 0.0)
-                        x_nonan = x[nan_ind]
-                        y_nonan = y[nan_ind]
+                    sv_units = np.unique(vinfo['units']).tolist()
 
-                        # reject fill values
-                        fv_ind = y_nonan != vinfo['fv'][0]
-                        x_nonan_nofv = x_nonan[fv_ind]
-                        y_nonan_nofv = y_nonan[fv_ind]
+                    t = vinfo['t']
+                    if len(t) > 1:
+                        data = vinfo['values']
+                        [dd_data, g_min, g_max] = index_dataset_2d(r, 'spkir_abj_cspp_downwelling_vector', data, fill_value)
+                        t0 = pd.to_datetime(min(t)).strftime('%Y-%m-%dT%H:%M:%S')
+                        t1 = pd.to_datetime(max(t)).strftime('%Y-%m-%dT%H:%M:%S')
+                        deploy_final = vinfo['deployments']
+                        deploy = list(np.unique(deploy_final))
+                        deployments = [int(dd) for dd in deploy]
 
-                        # reject extreme values
-                        Ev_ind = cf.reject_extreme_values(y_nonan_nofv)
-                        y_nonan_nofv_nE = y_nonan_nofv[Ev_ind]
-                        x_nonan_nofv_nE = x_nonan_nofv[Ev_ind]
+                        sname = '-'.join((r, sv))
+                        fig, ax = pf.plot_spkir(t, dd_data, sv, sv_units[0])
+                        ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1 + '\n'
+                                      + 'removed global ranges +/- [{} - {}]'.format(g_min, g_max)), fontsize=8)
+                        for etimes in dend_times:
+                            ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
+                        pf.save_fig(save_dir, sname)
 
-                        # reject values outside global ranges:
-                        global_min, global_max = cf.get_global_ranges(r, sv_name)
-                        if any(e is None for e in [global_min, global_max]):
-                            y_nonan_nofv_nE_nogr = y_nonan_nofv_nE
-                            x_nonan_nofv_nE_nogr = x_nonan_nofv_nE
+                        # plot each wavelength
+                        wavelengths = ['412nm', '443nm', '490nm', '510nm', '555nm', '620nm', '683nm']
+                        for wvi in range(len(dd_data)):
+                            fig, ax = pf.plot_spkir_wv(t, dd_data[wvi], sv, sv_units[0], wvi)
+                            ax.set_title(
+                                (r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1 + '\n'
+                                 + 'removed global ranges +/- [{} - {}]'.format(g_min, g_max)), fontsize=8)
+                            for etimes in dend_times:
+                                ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
+                            snamewvi = '-'.join((sname, wavelengths[wvi]))
+                            pf.save_fig(save_dir, snamewvi)
+
+                elif 'presf_abc_wave_burst' in m:
+                    fv_lst = np.unique(vinfo['fv']).tolist()
+                    if len(fv_lst) == 1:
+                        fill_value = fv_lst[0]
+                    else:
+                        print(fv_lst)
+                        print('No unique fill value for {}'.format(sv))
+
+                    sv_units = np.unique(vinfo['units']).tolist()
+
+                    t = vinfo['t']
+                    if len(t) > 1:
+                        data = vinfo['values']
+                        [dd_data, g_min, g_max] = index_dataset_2d(r, 'presf_wave_burst_pressure', data, fill_value)
+                        t0 = pd.to_datetime(min(t)).strftime('%Y-%m-%dT%H:%M:%S')
+                        t1 = pd.to_datetime(max(t)).strftime('%Y-%m-%dT%H:%M:%S')
+                        deploy_final = vinfo['deployments']
+                        deploy = list(np.unique(deploy_final))
+                        deployments = [int(dd) for dd in deploy]
+
+                        sname = '-'.join((r, sv))
+                        fig, ax = pf.plot_presf_2d(t, dd_data, sv, sv_units[0])
+                        ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1 + '\n'
+                                      + 'removed global ranges +/- [{} - {}]'.format(g_min, g_max)), fontsize=8)
+                        for etimes in dend_times:
+                            ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
+                        pf.save_fig(save_dir, sname)
+
+                else:
+                    if 'Spectra' not in sv:
+                        if len(vinfo['t']) < 1:
+                            print('no variable data to plot')
                         else:
-                            gr_ind = cf.reject_global_ranges(y_nonan_nofv_nE, global_min, global_max)
-                            y_nonan_nofv_nE_nogr = y_nonan_nofv_nE[gr_ind]
-                            x_nonan_nofv_nE_nogr = x_nonan_nofv_nE[gr_ind]
+                            sv_units = vinfo['units'][0]
+                            sv_name = vinfo['var_name']
+                            t0 = pd.to_datetime(min(vinfo['t'])).strftime('%Y-%m-%dT%H:%M:%S')
+                            t1 = pd.to_datetime(max(vinfo['t'])).strftime('%Y-%m-%dT%H:%M:%S')
+                            x = vinfo['t']
+                            y = vinfo['values']
 
-                        if len(y_nonan_nofv) > 0:
-                            if m == 'common_stream_placeholder':
-                                sname = '-'.join((r, sv))
+                            # reject NaNs and values of 0.0
+                            nan_ind = (~np.isnan(y)) & (y != 0.0)
+                            x_nonan = x[nan_ind]
+                            y_nonan = y[nan_ind]
+
+                            # reject fill values
+                            fv_ind = y_nonan != vinfo['fv'][0]
+                            x_nonan_nofv = x_nonan[fv_ind]
+                            y_nonan_nofv = y_nonan[fv_ind]
+
+                            # reject extreme values
+                            Ev_ind = cf.reject_extreme_values(y_nonan_nofv)
+                            y_nonan_nofv_nE = y_nonan_nofv[Ev_ind]
+                            x_nonan_nofv_nE = x_nonan_nofv[Ev_ind]
+
+                            # reject values outside global ranges:
+                            global_min, global_max = cf.get_global_ranges(r, sv_name)
+                            if any(e is None for e in [global_min, global_max]):
+                                y_nonan_nofv_nE_nogr = y_nonan_nofv_nE
+                                x_nonan_nofv_nE_nogr = x_nonan_nofv_nE
                             else:
-                                sname = '-'.join((r, m, sv))
+                                gr_ind = cf.reject_global_ranges(y_nonan_nofv_nE, global_min, global_max)
+                                y_nonan_nofv_nE_nogr = y_nonan_nofv_nE[gr_ind]
+                                x_nonan_nofv_nE_nogr = x_nonan_nofv_nE[gr_ind]
 
-                            plt_deploy = [int(x) for x in list(np.unique(vinfo['deployments']))]
-
-                            # plot hourly averages for streaming data
-                            if 'streamed' in sci_vars_dict[list(sci_vars_dict.keys())[0]]['ms'][0]:
-                                sname = '-'.join((sname, 'hourlyavg'))
-                                df = pd.DataFrame({'dfx': x_nonan_nofv_nE_nogr, 'dfy': y_nonan_nofv_nE_nogr})
-                                dfr = df.resample('H', on='dfx').mean()
-
-                                # Plot all data
-                                fig, ax = pf.plot_timeseries_all(dfr.index, dfr['dfy'], sv, sv_units, stdev=None)
-                                ax.set_title((r + '\nDeployments: ' + str(plt_deploy) + '\n' + t0 + ' - ' + t1),
-                                             fontsize=8)
-
-                                # if plotting a specific time range, plot deployment lines only for those deployments
-                                if type(start_time) == dt.datetime:
-                                    for e in list(np.unique(vinfo['deployments'])):
-                                        etime = dend_times[int(e) - 1]
-                                        ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
+                            if len(y_nonan_nofv) > 0:
+                                if m == 'common_stream_placeholder':
+                                    sname = '-'.join((r, sv))
                                 else:
-                                    for etime in dend_times:
-                                        ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
-                                pf.save_fig(save_dir, sname)
-                            else:
-                                # Plot all data
-                                fig, ax = pf.plot_timeseries_all(x_nonan_nofv, y_nonan_nofv, sv, sv_units, stdev=None)
-                                ax.set_title((r + '\nDeployments: ' + str(plt_deploy) + '\n' + t0 + ' - ' + t1),
-                                             fontsize=8)
+                                    sname = '-'.join((r, m, sv))
 
-                                # if plotting a specific time range, plot deployment lines only for those deployments
-                                if type(start_time) == dt.datetime:
-                                    # for e in list(np.unique(vinfo['deployments'])):
-                                    #     etime = dend_times[int(e) - 1]
-                                    #     ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
-                                    etime = dend_times[int(list(np.unique(vinfo['deployments']))[0]) - 1]
-                                    ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
+                                plt_deploy = [int(x) for x in list(np.unique(vinfo['deployments']))]
+
+                                # plot hourly averages for cabled and FDCHP data
+                                if 'streamed' in sci_vars_dict[list(sci_vars_dict.keys())[0]]['ms'][0] or 'FDCHP' in r:
+                                    sname = '-'.join((sname, 'hourlyavg'))
+                                    df = pd.DataFrame({'dfx': x_nonan_nofv_nE_nogr, 'dfy': y_nonan_nofv_nE_nogr})
+                                    dfr = df.resample('H', on='dfx').mean()
+
+                                    # Plot all data
+                                    fig, ax = pf.plot_timeseries_all(dfr.index, dfr['dfy'], sv, sv_units, stdev=None)
+                                    ax.set_title((r + '\nDeployments: ' + str(plt_deploy) + '\n' + t0 + ' - ' + t1),
+                                                 fontsize=8)
+
+                                    # if plotting a specific time range, plot deployment lines only for those deployments
+                                    if type(start_time) == dt.datetime:
+                                        for e in list(np.unique(vinfo['deployments'])):
+                                            etime = dend_times[int(e) - 1]
+                                            ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
+                                    else:
+                                        for etime in dend_times:
+                                            ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
+                                    pf.save_fig(save_dir, sname)
                                 else:
-                                    for etime in dend_times:
+                                    # Plot all data
+                                    fig, ax = pf.plot_timeseries_all(x_nonan_nofv, y_nonan_nofv, sv, sv_units, stdev=None)
+                                    ax.set_title((r + '\nDeployments: ' + str(plt_deploy) + '\n' + t0 + ' - ' + t1),
+                                                 fontsize=8)
+
+                                    # if plotting a specific time range, plot deployment lines only for those deployments
+                                    if type(start_time) == dt.datetime:
+                                        # for e in list(np.unique(vinfo['deployments'])):
+                                        #     etime = dend_times[int(e) - 1]
+                                        #     ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
+                                        etime = dend_times[int(list(np.unique(vinfo['deployments']))[0]) - 1]
                                         ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
-                                # if not any(e is None for e in [global_min, global_max]):
-                                #     ax.axhline(y=global_min, color='r', linestyle='--', linewidth=.6)
-                                #     ax.axhline(y=global_max, color='r', linestyle='--', linewidth=.6)
-                                # else:
-                                #     maxpoint = x[np.argmax(y_nonan_nofv)], max(y_nonan_nofv)
-                                #     ax.annotate('No Global Ranges', size=8,
-                                #                 xy=maxpoint, xytext=(5, 5), textcoords='offset points')
-                                pf.save_fig(save_dir, sname)
+                                    else:
+                                        for etime in dend_times:
+                                            ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
+                                    # if not any(e is None for e in [global_min, global_max]):
+                                    #     ax.axhline(y=global_min, color='r', linestyle='--', linewidth=.6)
+                                    #     ax.axhline(y=global_max, color='r', linestyle='--', linewidth=.6)
+                                    # else:
+                                    #     maxpoint = x[np.argmax(y_nonan_nofv)], max(y_nonan_nofv)
+                                    #     ax.annotate('No Global Ranges', size=8,
+                                    #                 xy=maxpoint, xytext=(5, 5), textcoords='offset points')
+                                    pf.save_fig(save_dir, sname)
 
-                                # Plot data with outliers removed
-                                fig, ax = pf.plot_timeseries_all(x_nonan_nofv_nE_nogr, y_nonan_nofv_nE_nogr, sv, sv_units,
-                                                                 stdev=5)
-                                ax.set_title((r + '\nDeployments: ' + str(plt_deploy) + '\n' + t0 + ' - ' + t1),
-                                             fontsize=8)
+                                    # Plot data with outliers removed
+                                    fig, ax = pf.plot_timeseries_all(x_nonan_nofv_nE_nogr, y_nonan_nofv_nE_nogr, sv, sv_units,
+                                                                     stdev=5)
+                                    ax.set_title((r + '\nDeployments: ' + str(plt_deploy) + '\n' + t0 + ' - ' + t1),
+                                                 fontsize=8)
 
-                                # if plotting a specific time range, plot deployment lines only for those deployments
-                                if type(start_time) == dt.datetime:
-                                    # for e in list(np.unique(vinfo['deployments'])):
-                                    #     etime = dend_times[int(e) - 1]
-                                    #     ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
-                                    etime = dend_times[int(list(np.unique(vinfo['deployments']))[0]) - 1]
-                                    ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
-                                else:
-                                    for etime in dend_times:
+                                    # if plotting a specific time range, plot deployment lines only for those deployments
+                                    if type(start_time) == dt.datetime:
+                                        # for e in list(np.unique(vinfo['deployments'])):
+                                        #     etime = dend_times[int(e) - 1]
+                                        #     ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
+                                        etime = dend_times[int(list(np.unique(vinfo['deployments']))[0]) - 1]
                                         ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
-                                # if not any(e is None for e in [global_min, global_max]):
-                                #     ax.axhline(y=global_min, color='r', linestyle='--', linewidth=.6)
-                                #     ax.axhline(y=global_max, color='r', linestyle='--', linewidth=.6)
-                                # else:
-                                #     maxpoint = x[np.argmax(y_nonan_nofv_nE_nogr)], max(y_nonan_nofv_nE_nogr)
-                                #     ax.annotate('No Global Ranges', size=8,
-                                #                 xy=maxpoint, xytext=(5, 5), textcoords='offset points')
+                                    else:
+                                        for etime in dend_times:
+                                            ax.axvline(x=etime, color='b', linestyle='--', linewidth=.6)
+                                    # if not any(e is None for e in [global_min, global_max]):
+                                    #     ax.axhline(y=global_min, color='r', linestyle='--', linewidth=.6)
+                                    #     ax.axhline(y=global_max, color='r', linestyle='--', linewidth=.6)
+                                    # else:
+                                    #     maxpoint = x[np.argmax(y_nonan_nofv_nE_nogr)], max(y_nonan_nofv_nE_nogr)
+                                    #     ax.annotate('No Global Ranges', size=8,
+                                    #                 xy=maxpoint, xytext=(5, 5), textcoords='offset points')
 
-                                sfile = '_'.join((sname, 'rmoutliers'))
-                                pf.save_fig(save_dir, sfile)
-
+                                    sfile = '_'.join((sname, 'rmoutliers'))
+                                    pf.save_fig(save_dir, sfile)
 
 
 if __name__ == '__main__':

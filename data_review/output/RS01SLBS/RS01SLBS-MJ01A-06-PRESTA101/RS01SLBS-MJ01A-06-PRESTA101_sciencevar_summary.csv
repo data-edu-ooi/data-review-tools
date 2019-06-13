@@ -1,0 +1,3 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,streamed,prest_real_time,absolute_pressure,psi,-9999999.0,"[0.0, 8800.0]",7795476,283,0,0,0,7795193,100.0,4292.5688,4289.4551,4294.9922,1.0592
+deployment0001,streamed,prest_real_time,seafloor_pressure,dbar,-9999999.0,"[0.0, 6000.0]",7795476,283,0,0,0,7795193,100.0,2959.622,2957.4752,2961.2929,0.7303

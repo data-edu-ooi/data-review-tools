@@ -21,16 +21,44 @@ import functions.combine_datasets as cd
 def index_dataset(refdes, var_name, var_data, fv):
     n_nan = np.sum(np.isnan(var_data))
     n_fv = np.sum(var_data == fv)
-
     [g_min, g_max] = cf.get_global_ranges(refdes, var_name)
     if g_min is not None and g_max is not None:
         dataind = (~np.isnan(var_data)) & (var_data != fv) & (var_data >= g_min) & (var_data <= g_max)
-        n_grange = np.sum((var_data < g_min) & (var_data > g_max))
+        n_grange = np.sum((var_data < g_min) | (var_data > g_max))
     else:
         dataind = (~np.isnan(var_data)) & (var_data != fv)
         n_grange = 'no global ranges'
 
     return [dataind, g_min, g_max, n_nan, n_fv, n_grange]
+
+
+def index_dataset_2d(refdes, var_name, var_data, fv):
+    [g_min, g_max] = cf.get_global_ranges(refdes, var_name)
+    fdata = dict()
+    n_nan = []
+    n_fv = []
+    n_grange = []
+    for i in range(len(var_data)):
+        vd = var_data[i]
+        n_nani = np.sum(np.isnan(vd))
+
+        # convert fill values to nans
+        vd[vd == fv] = np.nan
+        n_fvi = np.sum(np.isnan(vd)) - n_nani
+
+        if g_min is not None and g_max is not None:
+            vd[vd < g_min] = np.nan
+            vd[vd > g_max] = np.nan
+            n_grangei = np.sum(np.isnan(vd) - n_fvi - n_nani)
+        else:
+            n_grangei = 'no global ranges'
+
+        fdata.update({i: vd})
+        n_nan.append(int(n_nani))
+        n_fv.append(int(n_fvi))
+        n_grange.append(int(n_grangei))
+
+    return [fdata, g_min, g_max, n_nan, n_fv, n_grange]
 
 
 def main(sDir, plotting_sDir, url_list, sd_calc):
@@ -105,6 +133,17 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
         save_dir = os.path.join(sDir, array, subsite)
         cf.create_dir(save_dir)
 
+        rows = []
+        if ('FLM' in r) and ('CTDMO' in r):  # calculate Flanking Mooring CTDMO stats based on pressure
+            headers = ['common_stream_name', 'preferred_methods_streams', 'deployments', 'long_name', 'units', 't0',
+                       't1', 'fill_value', 'global_ranges', 'n_all', 'press_min_max', 'n_excluded_forpress',
+                       'n_nans', 'n_fillvalues', 'n_grange', 'define_stdev', 'n_outliers', 'n_stats', 'mean', 'min',
+                       'max', 'stdev', 'note']
+        else:
+            headers = ['common_stream_name', 'preferred_methods_streams', 'deployments', 'long_name', 'units', 't0',
+                       't1', 'fill_value', 'global_ranges', 'n_all', 'n_nans', 'n_fillvalues', 'n_grange',
+                       'define_stdev', 'n_outliers', 'n_stats', 'mean', 'min', 'max', 'stdev']
+
         for m, n in sci_vars_dict.items():
             print('\nSTREAM: ', m)
             if m == 'common_stream_placeholder':
@@ -113,12 +152,6 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                 continue
 
             if ('FLM' in r) and ('CTDMO' in r):  # calculate Flanking Mooring CTDMO stats based on pressure
-                headers = ['common_stream_name', 'preferred_methods_streams', 'deployments', 'long_name', 'units', 't0',
-                           't1', 'fill_value', 'global_ranges', 'n_all', 'press_min_max', 'n_excluded_forpress',
-                           'n_nans', 'n_fillvalues', 'n_grange', 'define_stdev', 'n_outliers', 'n_stats', 'mean', 'min',
-                           'max', 'stdev', 'note']
-                rows = []
-
                 # index the pressure variable to filter and calculate stats on the rest of the variables
                 sv_press = 'Seawater Pressure'
                 vinfo_press = n['vars'][sv_press]
@@ -214,10 +247,6 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                         pf.save_fig(psave_dir, sname)
 
             else:
-                headers = ['common_stream_name', 'preferred_methods_streams', 'deployments', 'long_name', 'units', 't0',
-                           't1', 'fill_value', 'global_ranges', 'n_all', 'n_nans', 'n_fillvalues', 'n_grange',
-                           'define_stdev', 'n_outliers', 'n_stats', 'mean', 'min', 'max', 'stdev']
-                rows = []
                 if not sd_calc:
                     sdcalc = None
 
@@ -239,27 +268,68 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                         data = vinfo['values']
                         n_all = len(t)
 
-                        [dataind, g_min, g_max, n_nan, n_fv, n_grange] = index_dataset(r, vinfo['var_name'], data, fill_value)
-
-                        t_final = t[dataind]
-                        if len(t_final) > 0:
+                        if 'SPKIR' in r or 'presf_abc_wave_burst' in m:
+                            if 'SPKIR' in r:
+                                [dd_data, g_min, g_max, n_nan, n_fv, n_grange] = index_dataset_2d(r, 'spkir_abj_cspp_downwelling_vector',
+                                                                                                  data, fill_value)
+                            else:
+                                [dd_data, g_min, g_max, n_nan, n_fv, n_grange] = index_dataset_2d(r,'presf_wave_burst_pressure',
+                                                                                                  data, fill_value)
+                            t_final = t
                             t0 = pd.to_datetime(min(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
                             t1 = pd.to_datetime(max(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
-                            data_final = data[dataind]
-                            # if sv == 'Dissolved Oxygen Concentration':
-                            #     xx = (data_final > 0) & (data_final < 400)
-                            #     data_final = data_final[xx]
-                            #     t_final = t_final[xx]
-                            # if sv == 'Seawater Conductivity':
-                            #     xx = (data_final > 1) & (data_final < 400)
-                            #     data_final = data_final[xx]
-                            #     t_final = t_final[xx]
-                            deploy_final = vinfo['deployments'][dataind]
+                            deploy_final = vinfo['deployments']
                             deploy = list(np.unique(deploy_final))
                             deployments = [int(dd) for dd in deploy]
 
-                            if len(data_final) > 1:
-                                [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(data_final, sd_calc)
+                            num_outliers = []
+                            mean = []
+                            vmin = []
+                            vmax = []
+                            sd = []
+                            n_stats = []
+                            for i in range(len(dd_data)):
+                                dd = data[i]
+                                # drop nans before calculating stats
+                                dd = dd[~np.isnan(dd)]
+                                [num_outliersi, meani, vmini, vmaxi, sdi, n_statsi] = cf.variable_statistics(dd, sd_calc)
+                                num_outliers.append(num_outliersi)
+                                mean.append(meani)
+                                vmin.append(vmini)
+                                vmax.append(vmaxi)
+                                sd.append(sdi)
+                                n_stats.append(n_statsi)
+
+                        else:
+                            [dataind, g_min, g_max, n_nan, n_fv, n_grange] = index_dataset(r, vinfo['var_name'], data,
+                                                                                           fill_value)
+                            t_final = t[dataind]
+                            if len(t_final) > 0:
+                                t0 = pd.to_datetime(min(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
+                                t1 = pd.to_datetime(max(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
+                                data_final = data[dataind]
+                                # if sv == 'Dissolved Oxygen Concentration':
+                                #     xx = (data_final > 0) & (data_final < 400)
+                                #     data_final = data_final[xx]
+                                #     t_final = t_final[xx]
+                                # if sv == 'Seawater Conductivity':
+                                #     xx = (data_final > 1) & (data_final < 400)
+                                #     data_final = data_final[xx]
+                                #     t_final = t_final[xx]
+                                deploy_final = vinfo['deployments'][dataind]
+                                deploy = list(np.unique(deploy_final))
+                                deployments = [int(dd) for dd in deploy]
+
+                                if len(data_final) > 1:
+                                    [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(data_final, sd_calc)
+                                else:
+                                    sdcalc = None
+                                    num_outliers = None
+                                    mean = None
+                                    vmin = None
+                                    vmax = None
+                                    sd = None
+                                    n_stats = None
                             else:
                                 sdcalc = None
                                 num_outliers = None
@@ -268,17 +338,9 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                                 vmax = None
                                 sd = None
                                 n_stats = None
-                        else:
-                            sdcalc = None
-                            num_outliers = None
-                            mean = None
-                            vmin = None
-                            vmax = None
-                            sd = None
-                            n_stats = None
-                            deployments = None
-                            t0 = None
-                            t1 = None
+                                deployments = None
+                                t0 = None
+                                t1 = None
                     else:
                         sdcalc = None
                         num_outliers = None
@@ -338,6 +400,33 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                                 for etimes in end_times:
                                     ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
                                 pf.save_fig(psave_dir, sname)
+                        elif 'SPKIR' in r:
+                            fig, ax = pf.plot_spkir(t_final, dd_data, sv, lunits[0])
+                            ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
+                                         fontsize=8)
+                            for etimes in end_times:
+                                ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
+                            pf.save_fig(psave_dir, sname)
+
+                            # plot each wavelength
+                            wavelengths = ['412nm', '443nm', '490nm', '510nm', '555nm', '620nm', '683nm']
+                            for wvi in range(len(dd_data)):
+                                fig, ax = pf.plot_spkir_wv(t_final, dd_data[wvi], sv, lunits[0], wvi)
+                                ax.set_title(
+                                    (r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
+                                    fontsize=8)
+                                for etimes in end_times:
+                                    ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
+                                snamewvi = '-'.join((sname, wavelengths[wvi]))
+                                pf.save_fig(psave_dir, snamewvi)
+                        elif 'presf_abc_wave_burst' in m:
+                            fig, ax = pf.plot_presf_2d(t_final, dd_data, sv, lunits[0])
+                            ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
+                                         fontsize=8)
+                            for etimes in end_times:
+                                ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
+                            snamewave = '-'.join((sname, m))
+                            pf.save_fig(psave_dir, snamewave)
 
                         else:  # plot all data if not streamed
                             fig, ax = pf.plot_timeseries_all(t_final, data_final, sv, lunits[0], stdev=None)

@@ -8,6 +8,7 @@ import os
 from os import listdir
 from os.path import isfile, join
 
+
 def append_science_data(preferred_stream_df, n_streams, refdes, dataset_list, sci_vars_dict, et=[], stime=None, etime=None):
     # build dictionary of science data from the preferred dataset for each deployment
     for index, row in preferred_stream_df.iterrows():
@@ -41,7 +42,6 @@ def append_science_data(preferred_stream_df, n_streams, refdes, dataset_list, sc
                             variable_dict, pressure_unit, pressure_name = append_variable_data(ds, sci_vars_dict,
                                                                                                strm, et)
 
-
     return sci_vars_dict, pressure_unit, pressure_name
 
 
@@ -57,8 +57,8 @@ def append_variable_data(ds, variable_dict, common_stream_name, exclude_times):
             x = [x for x in list(vars_dict.keys()) if long_name in x]
             if len(x) != 0:
                 long_name = x[0]
-                print('______', long_name)
                 if ds[var].units == vars_dict[long_name]['db_units']:
+                    print('______', long_name)
                     if ds[var]._FillValue not in vars_dict[long_name]['fv']:
                         vars_dict[long_name]['fv'].append(ds[var]._FillValue)
                     if ds[var].units not in vars_dict[long_name]['units']:
@@ -74,21 +74,66 @@ def append_variable_data(ds, variable_dict, common_stream_name, exclude_times):
                     if p_name not in pressure_name:
                         pressure_name.append(p_name)
 
-                    if len(exclude_times) > 0:
-                        for et in exclude_times:
-                            tD, pD, varD, deployD = exclude_time_ranges(tD, pD, varD, deployD, et)
-                        if len(tD) > 0:
+                    if len(ds[var].dims) == 1:
+                        if len(exclude_times) > 0:
+                            for et in exclude_times:
+                                tD, pD, varD, deployD = exclude_time_ranges(tD, pD, varD, deployD, et)
+                            if len(tD) > 0:
+                                vars_dict[long_name]['t'] = np.append(vars_dict[long_name]['t'], tD)
+                                vars_dict[long_name]['pressure'] = np.append(vars_dict[long_name]['pressure'], pD)
+                                vars_dict[long_name]['values'] = np.append(vars_dict[long_name]['values'], varD)
+                                vars_dict[long_name]['deployments'] = np.append(vars_dict[long_name]['deployments'], deployD)
+                        else:
                             vars_dict[long_name]['t'] = np.append(vars_dict[long_name]['t'], tD)
                             vars_dict[long_name]['pressure'] = np.append(vars_dict[long_name]['pressure'], pD)
                             vars_dict[long_name]['values'] = np.append(vars_dict[long_name]['values'], varD)
                             vars_dict[long_name]['deployments'] = np.append(vars_dict[long_name]['deployments'], deployD)
                     else:
-                        vars_dict[long_name]['t'] = np.append(vars_dict[long_name]['t'], tD)
-                        vars_dict[long_name]['pressure'] = np.append(vars_dict[long_name]['pressure'], pD)
-                        vars_dict[long_name]['values'] = np.append(vars_dict[long_name]['values'], varD)
-                        vars_dict[long_name]['deployments'] = np.append(vars_dict[long_name]['deployments'], deployD)
+                        # appending 2D datasets
+                        if type(vars_dict[long_name]['values']) != dict:
+                            vars_dict[long_name].pop('values')
+                            vars_dict[long_name].update({'values': dict()})
+                        varD = varD.T
 
-
+                        # for presf_wave_burst data, telemetered and recovered_host pressure data have a matrix of 20,
+                        # while recovered_inst data have a matrix of 1024. for DCL data, whatever is above 20 will
+                        # be an array of nans as placeholders (so the indices match between DCL and recovered_inst
+                        if common_stream_name == 'presf_abc_wave_burst':
+                            lendims = 1024
+                        else:
+                            lendims = len(varD)
+                        for i in range(lendims):
+                            tD = ds['time'].values  # reset the time variable
+                            deployD = ds['deployment'].values
+                            pDi = pD
+                            try:
+                                vars_dict[long_name]['values'][i]
+                            except KeyError:
+                                vars_dict[long_name]['values'].update({i: np.array([])})
+                            try:
+                                varDi = varD[i]
+                            except IndexError:
+                                varDi = np.empty(np.shape(tD))
+                                varDi[:] = np.nan
+                            if len(exclude_times) > 0:
+                                for et in exclude_times:
+                                    tD, pDi, varDi, deployD = exclude_time_ranges(tD, pDi, varDi, deployD, et)
+                                if len(tD) > 0:
+                                    if i == 0:
+                                        vars_dict[long_name]['t'] = np.append(vars_dict[long_name]['t'], tD)
+                                        vars_dict[long_name]['pressure'] = np.append(vars_dict[long_name]['pressure'], pDi)
+                                        vars_dict[long_name]['values'][i] = np.append(vars_dict[long_name]['values'][i], varDi)
+                                        vars_dict[long_name]['deployments'] = np.append(vars_dict[long_name]['deployments'], deployD)
+                                    else:
+                                        vars_dict[long_name]['values'][i] = np.append(vars_dict[long_name]['values'][i],varDi)
+                            else:
+                                if i == 0:
+                                    vars_dict[long_name]['t'] = np.append(vars_dict[long_name]['t'], tD)
+                                    vars_dict[long_name]['pressure'] = np.append(vars_dict[long_name]['pressure'], pDi)
+                                    vars_dict[long_name]['values'][i] = np.append(vars_dict[long_name]['values'][i], varDi)
+                                    vars_dict[long_name]['deployments'] = np.append(vars_dict[long_name]['deployments'], deployD)
+                                else:
+                                    vars_dict[long_name]['values'][i] = np.append(vars_dict[long_name]['values'][i], varDi)
         except AttributeError:
             continue
 
@@ -199,6 +244,7 @@ def var_long_names(refdes):
             stream_vars_dict.update({dr_ms: sci_vars})
     return stream_vars_dict
 
+
 def append_evaluated_science_data(sDir, preferred_stream_df, n_streams, refdes, dataset_list, sci_vars_dict, zdbar, stime=None, etime=None):
     # build dictionary of science data from the preferred dataset for each deployment
     for index, row in preferred_stream_df.iterrows():
@@ -233,7 +279,6 @@ def append_evaluated_science_data(sDir, preferred_stream_df, n_streams, refdes, 
                         elif fmethod_stream in sci_vars_dict[strm]['ms']:
                             variable_dict, pressure_unit, pressure_name, l0 = append_evaluated_data(sDir, row['deployment'],
                                                                         ds, sci_vars_dict, strm, zdbar)
-
 
     return sci_vars_dict, pressure_unit, pressure_name, l0
 
@@ -309,7 +354,6 @@ def append_evaluated_data(sDir, deployment, ds, variable_dict, common_stream_nam
 
 
 def reject_erroneous_data(r, v, t, y, z, d, fz):
-
     """
     :param r: reference designator
     :param v: data parameter name
@@ -366,7 +410,6 @@ def reject_erroneous_data(r, v, t, y, z, d, fz):
 
 
 def reject_timestamps_data_portal(subsite, r, tt, yy, zz, dd):
-
     dr = pd.read_csv('https://datareview.marine.rutgers.edu/notes/export')
     drn = dr.loc[dr.type == 'exclusion']
     t_ex = tt
@@ -398,6 +441,7 @@ def reject_timestamps_data_portal(subsite, r, tt, yy, zz, dd):
 
     return t_ex, y_ex, z_ex, d_ex
 
+
 def reject_timestamps_from_stat_analysis(Dpath, deployment, var, tt, yy, zz, dd):
 
     onlyfiles = []
@@ -422,6 +466,7 @@ def reject_timestamps_from_stat_analysis(Dpath, deployment, var, tt, yy, zz, dd)
         tt, yy, zz, dd = reject_suspect_data(tt, yy, zz, dd, u_time_list)
 
     return tt, yy, zz, dd
+
 
 def reject_data_in_depth_range(tt, yy, zz, dd, zdbar):
     if zdbar is not None:

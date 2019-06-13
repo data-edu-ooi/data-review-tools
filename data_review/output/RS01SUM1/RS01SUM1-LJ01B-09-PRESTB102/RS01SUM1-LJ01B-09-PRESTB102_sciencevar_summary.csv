@@ -1,0 +1,5 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,streamed,prest_real_time,absolute_pressure,psi,-9999999.0,"[0.0, 8800.0]",4078025,306370,0,0,0,3771655,92.49,1150.3937,1147.5408,1152.8259,1.0591
+deployment0001,streamed,prest_real_time,seafloor_pressure,dbar,-9999999.0,"[0.0, 6000.0]",4078025,306370,0,0,0,3771655,92.49,793.1685,791.2015,794.8455,0.7302
+deployment0002,streamed,prest_real_time,absolute_pressure,psi,-9999999.0,"[0.0, 8800.0]",2181947,0,0,0,0,2181947,100.0,1150.4498,1147.4473,1152.8892,1.0589
+deployment0002,streamed,prest_real_time,seafloor_pressure,dbar,-9999999.0,"[0.0, 6000.0]",2181947,0,0,0,0,2181947,100.0,793.2072,791.137,794.8891,0.7301

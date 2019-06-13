@@ -90,32 +90,32 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                 if var != 'id':
                     y = ds[var]
                     fv = y._FillValue
+                    if len(y.dims) == 1:
+                        # Check if the array is all NaNs
+                        if sum(np.isnan(y.values)) == len(y.values):
+                            print('Array of all NaNs - skipping plot.')
 
-                    # Check if the array is all NaNs
-                    if sum(np.isnan(y.values)) == len(y.values):
-                        print('Array of all NaNs - skipping plot.')
+                        # Check if the array is all fill values
+                        elif len(y[y != fv]) == 0:
+                            print('Array of all fill values - skipping plot.')
 
-                    # Check if the array is all fill values
-                    elif len(y[y != fv]) == 0:
-                        print('Array of all fill values - skipping plot.')
+                        else:
+                            # reject fill values
+                            ind = y.values != fv
+                            t = tm[ind]
+                            y = y[ind]
 
-                    else:
-                        # reject fill values
-                        ind = y.values != fv
-                        t = tm[ind]
-                        y = y[ind]
+                            # Plot all data
+                            fig, ax = pf.plot_timeseries(t, y, y.name, stdev=None)
+                            ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+                            sfile = '-'.join((filename, y.name, t0[:10]))
+                            pf.save_fig(save_dir, sfile)
 
-                        # Plot all data
-                        fig, ax = pf.plot_timeseries(t, y, stdev=None)
-                        ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-                        sfile = '-'.join((filename, y.name, t0[:10]))
-                        pf.save_fig(save_dir, sfile)
-
-                        # Plot data with outliers removed
-                        fig, ax = pf.plot_timeseries(t, y, stdev=5)
-                        ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-                        sfile = '-'.join((filename, y.name, t0[:10])) + '_rmoutliers'
-                        pf.save_fig(save_dir, sfile)
+                            # Plot data with outliers removed
+                            fig, ax = pf.plot_timeseries(t, y, y.name, stdev=5)
+                            ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+                            sfile = '-'.join((filename, y.name, t0[:10])) + '_rmoutliers'
+                            pf.save_fig(save_dir, sfile)
 
 
 if __name__ == '__main__':
