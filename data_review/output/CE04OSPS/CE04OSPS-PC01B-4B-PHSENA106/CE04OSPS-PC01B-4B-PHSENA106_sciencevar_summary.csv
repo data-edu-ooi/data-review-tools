@@ -1,0 +1,5 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0002,streamed,phsen_data_record,phsen_thermistor_temperature,V,-9999999.0,"[None, None]",6079,0,0,no global ranges,0,6079,100.0,7.9222,6.2973,9.8687,0.7002
+deployment0002,streamed,phsen_data_record,ph_seawater,1,-9999999.0,"[7.3, 8.5]",6079,1,0,337,0,5741,94.44,7.8805,7.3322,8.4994,0.2328
+deployment0004,streamed,phsen_data_record,phsen_thermistor_temperature,V,-9999999.0,"[None, None]",1030,0,0,no global ranges,0,1030,100.0,7.5154,6.9388,8.0683,0.2838
+deployment0004,streamed,phsen_data_record,ph_seawater,1,-9999999.0,"[7.3, 8.5]",1030,2,0,14,11,1003,97.38,7.6762,7.3948,7.9469,0.0366
