@@ -1,0 +1,9 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,streamed,phsen_data_record,phsen_thermistor_temperature,V,-9999999.0,"[None, None]",6272,0,0,no global ranges,0,6272,100.0,7.6382,6.9167,8.6452,0.2419
+deployment0001,streamed,phsen_data_record,ph_seawater,1,-9999999.0,"[7.3, 8.5]",6272,768,0,399,0,5105,81.39,7.7627,7.3007,8.4956,0.1547
+deployment0002,streamed,phsen_data_record,phsen_thermistor_temperature,V,-9999999.0,"[None, None]",8570,0,0,no global ranges,0,8570,100.0,7.7086,6.8061,9.1562,0.3411
+deployment0002,streamed,phsen_data_record,ph_seawater,1,-9999999.0,"[7.3, 8.5]",8570,4253,0,307,23,3987,46.52,7.7481,7.5595,7.9531,0.0265
+deployment0003,streamed,phsen_data_record,phsen_thermistor_temperature,V,-9999999.0,"[None, None]",8841,0,0,no global ranges,0,8841,100.0,7.5906,6.6955,8.5564,0.3322
+deployment0003,streamed,phsen_data_record,ph_seawater,1,-9999999.0,"[7.3, 8.5]",8841,0,0,2,5,8834,99.92,7.7314,7.5451,7.8697,0.0405
+deployment0004,streamed,phsen_data_record,phsen_thermistor_temperature,V,-9999999.0,"[None, None]",7565,0,0,no global ranges,0,7565,100.0,7.6759,7.0052,8.6896,0.2604
+deployment0004,streamed,phsen_data_record,ph_seawater,1,-9999999.0,"[7.3, 8.5]",7565,353,0,34,29,7149,94.5,7.7147,7.512,7.8956,0.0366
