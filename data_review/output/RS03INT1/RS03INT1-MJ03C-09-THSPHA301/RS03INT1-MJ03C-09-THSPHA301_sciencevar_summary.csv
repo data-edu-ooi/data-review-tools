@@ -1,0 +1,21 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,streamed,thsph_sample,thsph_temp_th,ºC,-9999999.0,"[0.0, 400.0]",3956562,0,0,0.0,0.0,3956562,100.0,108.883,3.3854,319.2671,133.8697
+deployment0001,streamed,thsph_sample,thsph_temp_tl,ºC,-9999999.0,"[0.0, 400.0]",3956562,0,0,0.0,62881.0,3893681,98.41,5.7453,1.9519,85.3924,7.4632
+deployment0001,streamed,thsph_sample,thsph_temp_tch,ºC,-9999999.0,"[0.0, 400.0]",3956562,0,0,237.0,0.0,3956325,99.99,105.0853,0.0412,317.2311,134.506
+deployment0001,streamed,thsph_sample,thsph_temp_tcl,ºC,-9999999.0,"[0.0, 400.0]",3956562,0,0,2321675.0,12594.0,1622293,41.0,7.3844,0.0661,115.4476,18.0226
+deployment0001,streamed,thsph_sample,thsph_ph,1,-9999.0,"[7.3, 8.5]",3956562,3952479,4083,,,0,0.0,,,,
+deployment0001,streamed,thsph_sample,thsph_ph_acl,1,-9999.0,"[7.3, 8.5]",3956562,3956562,0,,,0,0.0,,,,
+deployment0001,streamed,thsph_sample,thsph_ph_noref,1,-9999.0,"[7.3, 8.5]",3956562,3952479,4083,,,0,0.0,,,,
+deployment0001,streamed,thsph_sample,thsph_ph_noref_acl,1,-9999.0,"[7.3, 8.5]",3956562,3956562,0,,,0,0.0,,,,
+deployment0001,streamed,thsph_sample,thsph_sulfide,mmol kg-1,-9999999.0,"[0.0, 600.0]",3956562,0,0,0.0,23947.0,3932615,99.39,0.0,0.0,0.0003,0.0
+deployment0001,streamed,thsph_sample,thsph_hydrogen,mmol kg-1,-9999999.0,"[0.0, 600.0]",3956562,0,0,0.0,7766.0,3948796,99.8,0.0,0.0,0.0,0.0
+deployment0002,streamed,thsph_sample,thsph_temp_th,ºC,-9999999.0,"[0.0, 400.0]",4790,0,0,4746.0,0.0,44,0.92,127.4978,14.1598,371.7962,102.3941
+deployment0002,streamed,thsph_sample,thsph_temp_tl,ºC,-9999999.0,"[0.0, 400.0]",4790,0,0,,,0,0.0,,,,
+deployment0002,streamed,thsph_sample,thsph_temp_tch,ºC,-9999999.0,"[0.0, 400.0]",4790,0,0,4746.0,0.0,44,0.92,125.225,11.5412,369.9007,102.5968
+deployment0002,streamed,thsph_sample,thsph_temp_tcl,ºC,-9999999.0,"[0.0, 400.0]",4790,0,0,,,0,0.0,,,,
+deployment0002,streamed,thsph_sample,thsph_ph,1,-9999.0,"[7.3, 8.5]",4790,0,4790,,,0,0.0,,,,
+deployment0002,streamed,thsph_sample,thsph_ph_acl,1,-9999.0,"[7.3, 8.5]",4790,4790,0,,,0,0.0,,,,
+deployment0002,streamed,thsph_sample,thsph_ph_noref,1,-9999.0,"[7.3, 8.5]",4790,0,4790,,,0,0.0,,,,
+deployment0002,streamed,thsph_sample,thsph_ph_noref_acl,1,-9999.0,"[7.3, 8.5]",4790,4790,0,,,0,0.0,,,,
+deployment0002,streamed,thsph_sample,thsph_sulfide,mmol kg-1,-9999999.0,"[0.0, 600.0]",4790,0,0,2752.0,4.0,2034,42.46,0.0,0.0,0.0,0.0
+deployment0002,streamed,thsph_sample,thsph_hydrogen,mmol kg-1,-9999999.0,"[0.0, 600.0]",4790,0,0,2752.0,4.0,2034,42.46,0.0,0.0,0.0,0.0
