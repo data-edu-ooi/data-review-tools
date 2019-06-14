@@ -1,0 +1,3 @@
+common_stream_name,preferred_methods_streams,deployments,long_name,units,t0,t1,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,define_stdev,n_outliers,n_stats,mean,min,max,stdev
+phsen_data_record,['streamed-phsen_data_record'],"[2, 4]",Thermistor Temperature at End of Measurement,['V'],2016-01-15T00:00:00,2017-08-31T23:00:00,[-9999999.0],"[None, None]",4090,0,0,no global ranges,1,1325,2765,7.7612,7.1159,8.512,0.4462
+phsen_data_record,['streamed-phsen_data_record'],"[2, 4]",pH,['1'],2016-01-15T00:00:00,2017-08-31T23:00:00,[-9999999.0],"[7.3, 8.5]",4090,0,0,11,1,708,3371,7.729,7.6774,7.78,0.029
