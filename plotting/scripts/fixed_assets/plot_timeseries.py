@@ -57,6 +57,9 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
             fdatasets = datasets
 
         fdatasets = np.unique(fdatasets).tolist()
+        main_sensor = r.split('-')[-1]
+        fdatasets = cf.filter_collocated_instruments(main_sensor, fdatasets)
+
         for fd in fdatasets:
             ds = xr.open_dataset(fd, mask_and_scale=False)
             ds = ds.swap_dims({'obs': 'time'})
@@ -89,7 +92,10 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                 print(var)
                 if var != 'id':
                     y = ds[var]
-                    fv = y._FillValue
+                    try:
+                        fv = y._FillValue
+                    except AttributeError:
+                        fv = np.nan
                     if len(y.dims) == 1:
                         # Check if the array is all NaNs
                         if sum(np.isnan(y.values)) == len(y.values):
