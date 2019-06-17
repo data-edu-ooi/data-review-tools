@@ -1,9 +1,7 @@
 deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
-deployment0002,recovered_host,pco2w_abc_imodem_instrument_blank_recovered,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",9,0,0,0,0,9,100.0,7.9186,5.7444,8.5564,0.8151
 deployment0002,recovered_host,pco2w_abc_imodem_instrument_recovered,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",280,0,0,0,0,280,100.0,7.8993,5.479,8.8229,0.6788
-deployment0002,recovered_host,pco2w_abc_imodem_instrument_recovered,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",280,0,143,0,0,137,48.93,266.8294,257.6082,271.6169,2.8692
+deployment0002,recovered_host,pco2w_abc_imodem_instrument_recovered,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",280,0,143,0,0,137,48.93,352.4071,338.7864,369.3417,5.6516
 deployment0003,recovered_host,pco2w_abc_imodem_instrument_recovered,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",14,0,0,0,0,14,100.0,4.8264,4.4171,5.5233,0.3282
-deployment0003,recovered_host,pco2w_abc_imodem_instrument_recovered,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",14,0,4,0,0,10,71.43,222.8138,221.1707,226.6279,1.7802
+deployment0003,recovered_host,pco2w_abc_imodem_instrument_recovered,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",14,0,4,0,0,10,71.43,407.1603,392.2837,413.7515,5.7409
 deployment0004,telemetered,pco2w_abc_imodem_instrument,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",792,0,0,0,0,792,100.0,7.0308,5.2579,8.7784,0.7716
-deployment0004,telemetered,pco2w_abc_imodem_instrument,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",792,0,14,0,0,778,98.23,248.4325,234.5158,259.3789,5.4519
-deployment0004,telemetered,pco2w_abc_imodem_instrument_blank,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",19,0,0,0,0,19,100.0,6.9554,6.054,7.9797,0.6158
+deployment0004,telemetered,pco2w_abc_imodem_instrument,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",792,0,14,0,0,778,98.23,383.8804,348.2422,458.3599,23.3165

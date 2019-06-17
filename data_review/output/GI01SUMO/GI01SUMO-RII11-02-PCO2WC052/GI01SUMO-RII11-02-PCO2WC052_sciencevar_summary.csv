@@ -1,10 +1,7 @@
 deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
-deployment0002,recovered_host,pco2w_abc_imodem_instrument_blank_recovered,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",4,0,0,0,0.0,4,100.0,6.8799,4.9482,9.4455,1.6923
-deployment0002,recovered_host,pco2w_abc_imodem_instrument_recovered,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",186,0,0,0,0.0,186,100.0,6.6857,2.9317,12.4486,1.8919
-deployment0002,recovered_host,pco2w_abc_imodem_instrument_recovered,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",186,0,94,92,,0,0.0,,,,
-deployment0003,recovered_host,pco2w_abc_imodem_instrument_blank_recovered,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",5,0,0,0,0.0,5,100.0,4.1336,3.9742,4.2399,0.0964
-deployment0003,recovered_host,pco2w_abc_imodem_instrument_recovered,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",361,0,0,0,0.0,361,100.0,4.4833,3.9742,5.7223,0.4557
-deployment0003,recovered_host,pco2w_abc_imodem_instrument_recovered,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",361,0,245,0,0.0,116,32.13,195.8318,190.0467,204.7493,4.5549
-deployment0004,telemetered,pco2w_abc_imodem_instrument,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",68,0,0,0,0.0,68,100.0,4.6185,4.1735,5.1915,0.2026
-deployment0004,telemetered,pco2w_abc_imodem_instrument,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",68,0,14,0,0.0,54,79.41,257.1724,254.9046,261.0281,1.2668
-deployment0004,telemetered,pco2w_abc_imodem_instrument_blank,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",1,0,0,0,0.0,1,100.0,4.4392,,,
+deployment0002,recovered_host,pco2w_abc_imodem_instrument_recovered,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",186,0,0,0.0,0.0,186,100.0,6.6857,2.9317,12.4486,1.8919
+deployment0002,recovered_host,pco2w_abc_imodem_instrument_recovered,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",186,0,94,,,0,0.0,,,,
+deployment0003,recovered_host,pco2w_abc_imodem_instrument_recovered,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",361,0,0,0.0,0.0,361,100.0,4.4833,3.9742,5.7223,0.4557
+deployment0003,recovered_host,pco2w_abc_imodem_instrument_recovered,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",361,110,245,3.0,0.0,3,0.83,457.7692,287.4232,560.435,121.2967
+deployment0004,telemetered,pco2w_abc_imodem_instrument,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",68,0,0,0.0,0.0,68,100.0,4.6185,4.1735,5.1915,0.2026
+deployment0004,telemetered,pco2w_abc_imodem_instrument,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",68,0,14,0.0,0.0,54,79.41,452.9447,446.0063,463.3214,3.563
