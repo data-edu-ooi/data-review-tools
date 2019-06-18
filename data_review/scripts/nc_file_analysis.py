@@ -133,6 +133,10 @@ def main(sDir, url_list):
                         dr_data = cf.refdes_datareview_json(refdes)
                         stream_vars = cf.return_stream_vars(data_stream)
                         sci_vars = cf.return_science_vars(data_stream)
+                        node = refdes.split('-')[1]
+                        if 'cspp' in data_stream or 'WFP' in node:
+                            sci_vars.append('int_ctd_pressure')
+
                         # if 'FDCHP' in refdes:
                         #     remove_vars = ['fdchp_wind_x', 'fdchp_wind_y', 'fdchp_wind_z', 'fdchp_speed_of_sound_sonic',
                         #                    'fdchp_x_accel_g', 'fdchp_y_accel_g', 'fdchp_z_accel_g']
@@ -268,6 +272,7 @@ def main(sDir, url_list):
                                 if (len(np.unique(pressure)) == 1) & (np.unique(pressure)[0] == 0.0):
                                     try:
                                         pressure = ds['int_ctd_pressure']
+                                        press = 'int_ctd_pressure'
                                     except KeyError:
                                         pressure = pressure
 
@@ -316,7 +321,6 @@ def main(sDir, url_list):
                                 pressure_units = 'no units attribute for pressure'
 
                             if pressure_mean:
-                                node = refdes.split('-')[1]
                                 if ('WFP' in node) or ('MOAS' in subsite) or ('SP' in node):
                                     pressure_compare = int(round(pressure_max))
                                 else:
@@ -486,18 +490,21 @@ def main(sDir, url_list):
                                                         n_grange = None
 
                                     except KeyError:
-                                        num_outliers = None
-                                        mean = None
-                                        vmin = None
-                                        vmax = None
-                                        sd = None
-                                        n_stats = 'variable not found in file'
-                                        var_units = None
-                                        n_nan = None
-                                        n_fv = None
-                                        fv = None
-                                        n_grange = None
-                                        n_all = None
+                                        if sv == 'int_ctd_pressure':
+                                            continue
+                                        else:
+                                            num_outliers = None
+                                            mean = None
+                                            vmin = None
+                                            vmax = None
+                                            sd = None
+                                            n_stats = 'variable not found in file'
+                                            var_units = None
+                                            n_nan = None
+                                            n_fv = None
+                                            fv = None
+                                            n_grange = None
+                                            n_all = None
 
                                     if vnum_dims > 1:
                                         sv = '{} (dims: {})'.format(sv, list(var.dims))
