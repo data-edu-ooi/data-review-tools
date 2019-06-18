@@ -386,6 +386,7 @@ def main(sDir, url_list, preferred_only):
 
                                     pyplot.close()
 
+
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
     preferred_only = 'yes'
@@ -396,5 +397,4 @@ if __name__ == '__main__':
     #             'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190111T191157-CE06ISSM-RID16-04-VELPTA000-recovered_host-velpt_ab_instrument_recovered/catalog.html']
     url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190613T205912385Z-CE04OSPS-PC01B-4B-PHSENA106-streamed-phsen_data_record/catalog.html']
 
-
-main(sDir, url_list, preferred_only)
+    main(sDir, url_list, preferred_only)
