@@ -263,6 +263,14 @@ def main(sDir, url_list):
                             pressure = ds[press]
                             num_dims = len(pressure.dims)
                             if len(pressure) > 1:
+                                # if the pressure variable is an array of all zeros (as in the case of pressure_depth
+                                # for OPTAAs on surface piercing profilers
+                                if (len(np.unique(pressure)) == 1) & (np.unique(pressure)[0] == 0.0):
+                                    try:
+                                        pressure = ds['int_ctd_pressure']
+                                    except KeyError:
+                                        pressure = pressure
+
                                 # reject NaNs
                                 p_nonan = pressure.values[~np.isnan(pressure.values)]
 
@@ -309,7 +317,7 @@ def main(sDir, url_list):
 
                             if pressure_mean:
                                 node = refdes.split('-')[1]
-                                if ('WFP' in node) or ('MOAS' in subsite):
+                                if ('WFP' in node) or ('MOAS' in subsite) or ('SP' in node):
                                     pressure_compare = int(round(pressure_max))
                                 else:
                                     pressure_compare = int(round(pressure_mean))
@@ -451,7 +459,7 @@ def main(sDir, url_list):
                                                             var_gr = var_nofv
 
                                                         if list(np.unique(np.isnan(var_gr))) != [True]:
-                                                            if 'SPKIR' in r:
+                                                            if sv == 'spkir_abj_cspp_downwelling_vector':
                                                                 # don't remove outliers from dataset
                                                                 [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics_spkir(var_gr)
                                                             else:
