@@ -4,42 +4,42 @@ deployment0001,recovered_wfp-flort_sample,telemetered-flort_sample,Chlorophyll-a
 deployment0001,recovered_wfp-flort_sample,telemetered-flort_sample,CDOM Concentration,fluorometric_cdom,ppb,pass,170603.0,0.0,no missing data,94213.0,0.0,0.0,0.0,0.0
 deployment0001,recovered_wfp-flort_sample,telemetered-flort_sample,Total Volume Scattering Coefficient,total_volume_scattering_coefficient,m-1 sr-1,pass,170603.0,0.0,no missing data,94213.0,0.0,0.0,0.0,0.0
 deployment0001,recovered_wfp-flort_sample,telemetered-flort_sample,Optical Backscatter,optical_backscatter,m-1,pass,170603.0,0.0,no missing data,94213.0,0.0,1.75e-07,0.0,0.0
-deployment0001,recovered_wfp-flort_sample,telemetered-flort_sample,Seawater Pressure,pressure_depth,dbar,pass,170603.0,170603.0,No valid data to compare,0.0,,,,
+deployment0001,recovered_wfp-flort_sample,telemetered-flort_sample,CTD Seawater Pressure,pressure_depth,dbar,pass,170603.0,170603.0,No valid data to compare,0.0,,,,
 deployment0002,telemetered-flort_sample,no other methods available for comparison,,,,,,,,,,,,
 deployment0003,recovered_wfp-flort_sample,telemetered-flort_sample,Total Scattering Coefficient of Pure Seawater,seawater_scattering_coefficient,m-1,pass,130105.0,0.0,no missing data,130093.0,0.0,3.2793e-06,0.0,0.0
 deployment0003,recovered_wfp-flort_sample,telemetered-flort_sample,Chlorophyll-a Concentration,fluorometric_chlorophyll_a,µg L-1,pass,130105.0,0.0,no missing data,130093.0,0.0,0.0,0.0,0.0
 deployment0003,recovered_wfp-flort_sample,telemetered-flort_sample,CDOM Concentration,fluorometric_cdom,ppb,pass,130105.0,0.0,no missing data,130093.0,0.0,0.0,0.0,0.0
 deployment0003,recovered_wfp-flort_sample,telemetered-flort_sample,Total Volume Scattering Coefficient,total_volume_scattering_coefficient,m-1 sr-1,pass,130105.0,0.0,no missing data,130093.0,0.0,0.0,0.0,0.0
 deployment0003,recovered_wfp-flort_sample,telemetered-flort_sample,Optical Backscatter,optical_backscatter,m-1,pass,130105.0,0.0,no missing data,130093.0,0.0,9.89e-08,0.0,0.0
-deployment0003,recovered_wfp-flort_sample,telemetered-flort_sample,Seawater Pressure,pressure_depth,dbar,pass,130105.0,130105.0,No valid data to compare,0.0,,,,
+deployment0003,recovered_wfp-flort_sample,telemetered-flort_sample,CTD Seawater Pressure,pressure_depth,dbar,pass,130105.0,130105.0,No valid data to compare,0.0,,,,
 deployment0004,recovered_wfp-flort_sample,telemetered-flort_sample,Total Scattering Coefficient of Pure Seawater,seawater_scattering_coefficient,m-1,pass,459601.0,0.0,no missing data,459420.0,0.0,0.0,0.0,0.0
 deployment0004,recovered_wfp-flort_sample,telemetered-flort_sample,Chlorophyll-a Concentration,fluorometric_chlorophyll_a,µg L-1,pass,459601.0,0.0,no missing data,459420.0,0.0,0.0,0.0,0.0
 deployment0004,recovered_wfp-flort_sample,telemetered-flort_sample,CDOM Concentration,fluorometric_cdom,ppb,pass,459601.0,0.0,no missing data,459420.0,0.0,0.0,0.0,0.0
 deployment0004,recovered_wfp-flort_sample,telemetered-flort_sample,Total Volume Scattering Coefficient,total_volume_scattering_coefficient,m-1 sr-1,pass,459601.0,0.0,no missing data,459420.0,0.0,0.0,0.0,0.0
 deployment0004,recovered_wfp-flort_sample,telemetered-flort_sample,Optical Backscatter,optical_backscatter,m-1,pass,459601.0,0.0,no missing data,459420.0,0.0,0.0,0.0,0.0
-deployment0004,recovered_wfp-flort_sample,telemetered-flort_sample,Seawater Pressure,pressure_depth,dbar,pass,459601.0,459601.0,No valid data to compare,0.0,,,,
+deployment0004,recovered_wfp-flort_sample,telemetered-flort_sample,CTD Seawater Pressure,pressure_depth,dbar,pass,459601.0,459601.0,No valid data to compare,0.0,,,,
 deployment0005,telemetered-flort_sample,no other methods available for comparison,,,,,,,,,,,,
 deployment0006,recovered_wfp-flort_sample,telemetered-flort_sample,Total Scattering Coefficient of Pure Seawater,seawater_scattering_coefficient,m-1,pass,96323.0,0.0,no missing data,96323.0,0.0,0.0,0.0,0.0
 deployment0006,recovered_wfp-flort_sample,telemetered-flort_sample,Chlorophyll-a Concentration,fluorometric_chlorophyll_a,µg L-1,pass,96323.0,0.0,no missing data,96323.0,0.0,0.0,0.0,0.0
 deployment0006,recovered_wfp-flort_sample,telemetered-flort_sample,CDOM Concentration,fluorometric_cdom,ppb,pass,96323.0,0.0,no missing data,96323.0,0.0,0.0,0.0,0.0
 deployment0006,recovered_wfp-flort_sample,telemetered-flort_sample,Total Volume Scattering Coefficient,total_volume_scattering_coefficient,m-1 sr-1,pass,96323.0,0.0,no missing data,96323.0,0.0,0.0,0.0,0.0
 deployment0006,recovered_wfp-flort_sample,telemetered-flort_sample,Optical Backscatter,optical_backscatter,m-1,pass,96323.0,0.0,no missing data,96323.0,0.0,0.0,0.0,0.0
-deployment0006,recovered_wfp-flort_sample,telemetered-flort_sample,Seawater Pressure,pressure_depth,dbar,pass,96323.0,96323.0,No valid data to compare,0.0,,,,
+deployment0006,recovered_wfp-flort_sample,telemetered-flort_sample,CTD Seawater Pressure,pressure_depth,dbar,pass,96323.0,96323.0,No valid data to compare,0.0,,,,
 deployment0007,recovered_wfp-flort_sample,telemetered-flort_sample,Total Scattering Coefficient of Pure Seawater,seawater_scattering_coefficient,m-1,pass,237975.0,0.0,no missing data,112115.0,0.0,2.5625e-06,0.0,0.0
 deployment0007,recovered_wfp-flort_sample,telemetered-flort_sample,Chlorophyll-a Concentration,fluorometric_chlorophyll_a,µg L-1,pass,237975.0,0.0,no missing data,112115.0,0.0,0.0,0.0,0.0
 deployment0007,recovered_wfp-flort_sample,telemetered-flort_sample,CDOM Concentration,fluorometric_cdom,ppb,pass,237975.0,0.0,no missing data,112115.0,0.0,0.0,0.0,0.0
 deployment0007,recovered_wfp-flort_sample,telemetered-flort_sample,Total Volume Scattering Coefficient,total_volume_scattering_coefficient,m-1 sr-1,pass,237975.0,0.0,no missing data,112115.0,0.0,0.0,0.0,0.0
 deployment0007,recovered_wfp-flort_sample,telemetered-flort_sample,Optical Backscatter,optical_backscatter,m-1,pass,237975.0,0.0,no missing data,112115.0,0.0,7.73e-08,0.0,0.0
-deployment0007,recovered_wfp-flort_sample,telemetered-flort_sample,Seawater Pressure,pressure_depth,dbar,pass,237975.0,237975.0,No valid data to compare,0.0,,,,
+deployment0007,recovered_wfp-flort_sample,telemetered-flort_sample,CTD Seawater Pressure,pressure_depth,dbar,pass,237975.0,237975.0,No valid data to compare,0.0,,,,
 deployment0008,recovered_wfp-flort_sample,telemetered-flort_sample,Total Scattering Coefficient of Pure Seawater,seawater_scattering_coefficient,m-1,pass,128503.0,0.0,no missing data,128435.0,0.0,0.0,0.0,0.0
 deployment0008,recovered_wfp-flort_sample,telemetered-flort_sample,Chlorophyll-a Concentration,fluorometric_chlorophyll_a,µg L-1,pass,128503.0,0.0,no missing data,128435.0,0.0,0.0,0.0,0.0
 deployment0008,recovered_wfp-flort_sample,telemetered-flort_sample,CDOM Concentration,fluorometric_cdom,ppb,pass,128503.0,0.0,no missing data,128435.0,0.0,0.0,0.0,0.0
 deployment0008,recovered_wfp-flort_sample,telemetered-flort_sample,Total Volume Scattering Coefficient,total_volume_scattering_coefficient,m-1 sr-1,pass,128503.0,0.0,no missing data,128435.0,0.0,0.0,0.0,0.0
 deployment0008,recovered_wfp-flort_sample,telemetered-flort_sample,Optical Backscatter,optical_backscatter,m-1,pass,128503.0,0.0,no missing data,128435.0,0.0,0.0,0.0,0.0
-deployment0008,recovered_wfp-flort_sample,telemetered-flort_sample,Seawater Pressure,pressure_depth,dbar,pass,128503.0,128503.0,No valid data to compare,0.0,,,,
+deployment0008,recovered_wfp-flort_sample,telemetered-flort_sample,CTD Seawater Pressure,pressure_depth,dbar,pass,128503.0,128503.0,No valid data to compare,0.0,,,,
 deployment0009,recovered_wfp-flort_sample,telemetered-flort_sample,Total Scattering Coefficient of Pure Seawater,seawater_scattering_coefficient,m-1,pass,118541.0,0.0,no missing data,118541.0,0.0,1.8e-06,0.0,0.0
 deployment0009,recovered_wfp-flort_sample,telemetered-flort_sample,Chlorophyll-a Concentration,fluorometric_chlorophyll_a,µg L-1,pass,118541.0,0.0,no missing data,118541.0,0.0,0.0,0.0,0.0
 deployment0009,recovered_wfp-flort_sample,telemetered-flort_sample,CDOM Concentration,fluorometric_cdom,ppb,pass,118541.0,0.0,no missing data,118541.0,0.0,0.0,0.0,0.0
 deployment0009,recovered_wfp-flort_sample,telemetered-flort_sample,Total Volume Scattering Coefficient,total_volume_scattering_coefficient,m-1 sr-1,pass,118541.0,0.0,no missing data,118541.0,0.0,0.0,0.0,0.0
 deployment0009,recovered_wfp-flort_sample,telemetered-flort_sample,Optical Backscatter,optical_backscatter,m-1,pass,118541.0,0.0,no missing data,118541.0,0.0,5.43e-08,0.0,0.0
-deployment0009,recovered_wfp-flort_sample,telemetered-flort_sample,Seawater Pressure,pressure_depth,dbar,pass,118541.0,118541.0,No valid data to compare,0.0,,,,
+deployment0009,recovered_wfp-flort_sample,telemetered-flort_sample,CTD Seawater Pressure,pressure_depth,dbar,pass,118541.0,118541.0,No valid data to compare,0.0,,,,
