@@ -1,0 +1,20 @@
+deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
+deployment0001,telemetered-flort_dj_cspp_instrument,no other methods available for comparison,,,,,,,,,,,,
+deployment0004,telemetered-flort_dj_cspp_instrument,no other methods available for comparison,,,,,,,,,,,,
+deployment0005,recovered_cspp-flort_sample,telemetered-flort_dj_cspp_instrument,Total Scattering Coefficient of Pure Seawater,seawater_scattering_coefficient,m-1,pass,24582.0,0.0,no missing data,83.0,0.0,3.5632e-06,0.0,0.0
+deployment0005,recovered_cspp-flort_sample,telemetered-flort_dj_cspp_instrument,Chlorophyll-a Concentration,fluorometric_chlorophyll_a,µg L-1,pass,24582.0,0.0,no missing data,83.0,0.0,0.0,0.0,0.0
+deployment0005,recovered_cspp-flort_sample,telemetered-flort_dj_cspp_instrument,CDOM Concentration,fluorometric_cdom,ppb,pass,24582.0,0.0,no missing data,83.0,0.0,0.0,0.0,0.0
+deployment0005,recovered_cspp-flort_sample,telemetered-flort_dj_cspp_instrument,Total Volume Scattering Coefficient,total_volume_scattering_coefficient,m-1 sr-1,pass,24582.0,0.0,no missing data,83.0,0.0,0.0,0.0,0.0
+deployment0005,recovered_cspp-flort_sample,telemetered-flort_dj_cspp_instrument,Optical Backscatter,optical_backscatter,m-1,pass,24582.0,0.0,no missing data,83.0,0.0,1.074e-07,0.0,0.0
+deployment0005,recovered_cspp-flort_sample,telemetered-flort_dj_cspp_instrument,CTD Seawater Pressure,pressure_depth,dbar,pass,24582.0,0.0,no missing data,83.0,0.0,0.1009998322,0.0,0.0
+deployment0006,telemetered-flort_dj_cspp_instrument,no other methods available for comparison,,,,,,,,,,,,
+deployment0007,telemetered-flort_dj_cspp_instrument,no other methods available for comparison,,,,,,,,,,,,
+deployment0008,recovered_cspp-flort_sample,telemetered-flort_dj_cspp_instrument,Total Scattering Coefficient of Pure Seawater,seawater_scattering_coefficient,m-1,pass,16809.0,0.0,no missing data,894.0,0.0,3.727e-07,0.0,0.0
+deployment0008,recovered_cspp-flort_sample,telemetered-flort_dj_cspp_instrument,Chlorophyll-a Concentration,fluorometric_chlorophyll_a,µg L-1,pass,16809.0,0.0,no missing data,894.0,0.0,1.6348,4.0,0.45
+deployment0008,recovered_cspp-flort_sample,telemetered-flort_dj_cspp_instrument,CDOM Concentration,fluorometric_cdom,ppb,pass,16809.0,0.0,no missing data,894.0,0.0,0.2727,0.0,0.0
+deployment0008,recovered_cspp-flort_sample,telemetered-flort_dj_cspp_instrument,Total Volume Scattering Coefficient,total_volume_scattering_coefficient,m-1 sr-1,pass,16809.0,0.0,no missing data,894.0,0.0,0.00049467,0.0,0.0
+deployment0008,recovered_cspp-flort_sample,telemetered-flort_dj_cspp_instrument,Optical Backscatter,optical_backscatter,m-1,pass,16809.0,0.0,no missing data,894.0,0.0,0.0033443191,0.0,0.0
+deployment0008,recovered_cspp-flort_sample,telemetered-flort_dj_cspp_instrument,CTD Seawater Pressure,pressure_depth,dbar,pass,16809.0,0.0,no missing data,894.0,0.0,0.398999989,0.0,0.0
+deployment0009,recovered_cspp-flort_sample,no other methods available for comparison,,,,,,,,,,,,
+deployment0010,recovered_cspp-flort_sample,no other methods available for comparison,,,,,,,,,,,,
+deployment0011,recovered_cspp-flort_sample,no other methods available for comparison,,,,,,,,,,,,
