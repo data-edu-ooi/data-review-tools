@@ -46,6 +46,6 @@ url_list = ff['outputUrl'].tolist()
 url_list = [u for u in url_list if u not in 'no_output_url']
 
 scripts.map_gliders.main(url_list, sDir, 'glider_track', start_time, end_time, deployment_num, bathy_files)
-scripts.plot_profile_xsection.main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n_std, inpercentile, zcell_size)
+scripts.plot_profile_xsection.main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n_std, inpercentile, zcell_size, zdbar)
 #scripts.plot_profile_xsection_rm_suspect_data.main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, zdbar, n_std, inpercentile, zcell_size)
 #data_review.scripts.mobile_data_range.main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time)

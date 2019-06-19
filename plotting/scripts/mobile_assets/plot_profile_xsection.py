@@ -23,7 +23,7 @@ import functions.group_by_timerange as gt
 import functions.profile_xsection_spkir_optaa as pxso
 
 
-def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n_std, inpercentile, zcell_size):
+def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n_std, inpercentile, zcell_size, zdbar):
     rd_list = []
     for uu in url_list:
         elements = uu.split('/')[-2].split('-')
@@ -116,8 +116,8 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
             #     t_eng = None
 
             if deployment_num is not None:
-                if int(deployment.split('0')[-1]) is not deployment_num:
-                    print(type(int(deployment.split('0')[-1])), type(deployment_num))
+                if int(int(deployment[-4:])) is not deployment_num:
+                    print(type(int(deployment[-4:])), type(deployment_num))
                     continue
 
             if start_time is not None and end_time is not None:
@@ -136,48 +136,63 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                 save_dir_xsection = os.path.join(sDir, array, subsite, refdes, 'xsection_plots', deployment)
                 save_dir_4d = os.path.join(sDir, array, subsite, refdes, 'xsection_plots_4d', deployment)
 
-            tm = ds['time'].values
+            time1 = ds['time'].values
             try:
-                ds_lat = ds['lat'].values
+                ds_lat1 = ds['lat'].values
             except KeyError:
-                ds_lat = None
+                ds_lat1 = None
                 print('No latitude variable in file')
             try:
-                ds_lon = ds['lon'].values
+                ds_lon1 = ds['lon'].values
             except KeyError:
-                ds_lon = None
+                ds_lon1 = None
                 print('No longitude variable in file')
 
             # get pressure variable
-            y, y_units, press, y_fillvalue = cf.add_pressure_to_dictionary_of_sci_vars(ds)
+            y1, y_units, press, y_fillvalue = cf.add_pressure_to_dictionary_of_sci_vars(ds)
 
             for sv in sci_vars:
                 print('')
                 print(sv)
                 if 'pressure' not in sv:
                     if sv == 'spkir_abj_cspp_downwelling_vector':
-                        pxso.pf_xs_spkir(ds, sv, tm, y, ds_lat, ds_lon, zcell_size, inpercentile, save_dir_profile,
+                        pxso.pf_xs_spkir(ds, sv, time1, y1, ds_lat1, ds_lon1, zcell_size, inpercentile, save_dir_profile,
                                          save_dir_xsection, deployment, press, y_units, n_std)
                     elif 'OPTAA' in r:
                         if sv not in ['wavelength_a', 'wavelength_c']:
-                            pxso.pf_xs_optaa(ds, sv, tm, y, ds_lat, ds_lon, zcell_size, inpercentile, save_dir_profile,
+                            pxso.pf_xs_optaa(ds, sv, time1, y1, ds_lat1, ds_lon1, zcell_size, inpercentile, save_dir_profile,
                                              save_dir_xsection, deployment, press, y_units, n_std)
                     else:
-                        z = ds[sv].values
+                        z1 = ds[sv].values
                         fv = ds[sv]._FillValue
                         sv_units = ds[sv].units
 
                         # Check if the array is all NaNs
-                        if sum(np.isnan(z)) == len(z):
+                        if sum(np.isnan(z1)) == len(z1):
                             print('Array of all NaNs - skipping plot.')
                             continue
 
                         # Check if the array is all fill values
-                        elif len(z[z != fv]) == 0:
+                        elif len(z1[z1 != fv]) == 0:
                             print('Array of all fill values - skipping plot.')
                             continue
 
                         else:
+                            # for surface piercing profilers, reject unreasonable pressure data
+                            if zdbar:
+                                po_ind = y1 < zdbar
+                                tm = time1[po_ind]
+                                y = y1[po_ind]
+                                z = z1[po_ind]
+                                ds_lat = ds_lat1[po_ind]
+                                ds_lon = ds_lon1[po_ind]
+                            else:
+                                tm = time1
+                                y = y1
+                                z = z1
+                                ds_lat = ds_lat1
+                                ds_lon = ds_lon1
+
                             # reject erroneous data
                             dtime, zpressure, ndata, lenfv, lennan, lenev, lengr, global_min, global_max, lat, lon = \
                                 cf.reject_erroneous_data(r, sv, tm, y, z, fv, ds_lat, ds_lon)
@@ -242,13 +257,13 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                             """
                             Plot all data
                             """
-                            if len(tm) > 0:
+                            if len(time1) > 0:
                                 cf.create_dir(save_dir_profile)
                                 cf.create_dir(save_dir_xsection)
                                 sname = '-'.join((r, method, sv))
-                                sfileall = '_'.join(('all_data', sname, pd.to_datetime(tm.min()).strftime('%Y%m%d')))
-                                tm0 = pd.to_datetime(tm.min()).strftime('%Y-%m-%dT%H:%M:%S')
-                                tm1 = pd.to_datetime(tm.max()).strftime('%Y-%m-%dT%H:%M:%S')
+                                sfileall = '_'.join(('all_data', sname, pd.to_datetime(time1.min()).strftime('%Y%m%d')))
+                                tm0 = pd.to_datetime(time1.min()).strftime('%Y-%m-%dT%H:%M:%S')
+                                tm1 = pd.to_datetime(time1.max()).strftime('%Y-%m-%dT%H:%M:%S')
                                 title = ' '.join((deployment, refdes, method)) + '\n' + tm0 + ' to ' + tm1
                                 if 'SPKIR' in r:
                                     title = title + '\nWavelength = 510 nm'
@@ -260,7 +275,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                                 ylabel = press[0] + " (" + y_units[0] + ")"
                                 clabel = 'Time'
 
-                                fig, ax = pf.plot_profiles(z, y, tm, ylabel, xlabel, clabel, stdev=None)
+                                fig, ax = pf.plot_profiles(z1, y1, time1, ylabel, xlabel, clabel, stdev=None)
 
                                 ax.set_title(title, fontsize=9)
                                 fig.tight_layout()
@@ -272,7 +287,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                                 clabel = sv + " (" + sv_units + ")"
                                 ylabel = press[0] + " (" + y_units[0] + ")"
 
-                                fig, ax, bar = pf.plot_xsection(subsite, tm, y, z, clabel, ylabel, t_eng=None,
+                                fig, ax, bar = pf.plot_xsection(subsite, time1, y1, z1, clabel, ylabel, t_eng=None,
                                                                 m_water_depth=None, inpercentile=None, stdev=None)
 
                                 if fig:
