@@ -178,7 +178,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                             continue
 
                         else:
-                            # for surface piercing profilers, reject unreasonable pressure data
+                            # remove unreasonable pressure data (e.g. for surface piercing profilers)
                             if zdbar:
                                 po_ind = y1 < zdbar
                                 tm = time1[po_ind]
