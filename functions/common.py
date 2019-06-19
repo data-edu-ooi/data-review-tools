@@ -572,7 +572,7 @@ def add_pressure_to_dictionary_of_sci_vars(ds):
         if 'pressure Fill Value missing' not in y_fillvalue:
             y_fillvalue.append('pressure Fill Value missing')
 
-    return y, y_unit, y_name, y_fillvalue
+    return pressure, y, y_unit, y_name, y_fillvalue
 
 
 def reject_erroneous_data(r, v, t, y, z, fz, lat=None, lon=None):
