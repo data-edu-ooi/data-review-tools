@@ -132,20 +132,20 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
             texclude_dir = os.path.join(sDir, array, subsite, refdes, 'time_to_exclude')
             cf.create_dir(texclude_dir)
 
-            tm = ds['time'].values
+            time1 = ds['time'].values
             try:
-                ds_lat = ds['lat'].values
+                ds_lat1 = ds['lat'].values
             except KeyError:
-                ds_lat = None
+                ds_lat1 = None
                 print('No latitude variable in file')
             try:
-                ds_lon = ds['lon'].values
+                ds_lon1 = ds['lon'].values
             except KeyError:
-                ds_lon = None
+                ds_lon1 = None
                 print('No longitude variable in file')
 
             # get pressure variable
-            y, y_units, press = cf.add_pressure_to_dictionary_of_sci_vars(ds)
+            y1, y_units, press, y_fillvalue = cf.add_pressure_to_dictionary_of_sci_vars(ds)
 
             # prepare file to list timestamps with suspect data  for each data parameter
             stat_data = pd.DataFrame(columns=['deployments', 'time_to_exclude'])
@@ -156,21 +156,38 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
             for sv in sci_vars:
                 print(sv)
                 if 'pressure' not in sv:
-                    z = ds[sv].values
+                    z1 = ds[sv].values
                     fv = ds[sv]._FillValue
                     sv_units = ds[sv].units
 
                     # Check if the array is all NaNs
-                    if sum(np.isnan(z)) == len(z):
+                    if sum(np.isnan(z1)) == len(z1):
                         print('Array of all NaNs - skipping plot.')
                         continue
 
                     # Check if the array is all fill values
-                    elif len(z[z != fv]) == 0:
+                    elif len(z1[z1 != fv]) == 0:
                         print('Array of all fill values - skipping plot.')
                         continue
 
                     else:
+                        # remove unreasonable pressure data (e.g. for surface piercing profilers)
+                        if zdbar:
+                            po_ind = y1 < zdbar
+                            n_zdbar = np.sum(~po_ind)
+                            tm = time1[po_ind]
+                            y = y1[po_ind]
+                            z = z1[po_ind]
+                            ds_lat = ds_lat1[po_ind]
+                            ds_lon = ds_lon1[po_ind]
+                            print('{} in water depth > {} dbar'.format(n_zdbar, zdbar))
+                        else:
+                            tm = time1
+                            y = y1
+                            z = z1
+                            ds_lat = ds_lat1
+                            ds_lon = ds_lon1
+
                         # reject erroneous data
                         dtime, zpressure, ndata, lenfv, lennan, lenev, lengr, global_min, global_max, lat, lon = \
                             cf.reject_erroneous_data(r, sv, tm, y, z, fv, ds_lat, ds_lon)
@@ -238,31 +255,31 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                                 y_nospct = y_portal
 
                             # reject data in a depth range
-                            if zdbar:
-                                y_ind = y_nospct < zdbar
-                                n_zdbar = np.sum(~y_ind)
-                                t_array = t_nospct[y_ind]
-                                y_array = y_nospct[y_ind]
-                                z_array = z_nospct[y_ind]
-                            else:
-                                n_zdbar = 0
-                                t_array = t_nospct
-                                y_array = y_nospct
-                                z_array = z_nospct
-                            print('{} in water depth > {} dbar'.format(n_zdbar, zdbar))
+                            # if zdbar:
+                            #     y_ind = y_nospct < zdbar
+                            #     n_zdbar = np.sum(~y_ind)
+                            #     t_array = t_nospct[y_ind]
+                            #     y_array = y_nospct[y_ind]
+                            #     z_array = z_nospct[y_ind]
+                            # else:
+                            #     n_zdbar = 0
+                            #     t_array = t_nospct
+                            #     y_array = y_nospct
+                            #     z_array = z_nospct
+                            # print('{} in water depth > {} dbar'.format(n_zdbar, zdbar))
 
                             """
                             Plot data
                             """
-                            if len(t_array) > 0:
-                                if len(t_array) != len(dtime):
+                            if len(t_nospct) > 0:
+                                if len(t_nospct) != len(dtime):
                                     cf.create_dir(save_dir_profile)
                                     cf.create_dir(save_dir_xsection)
                                     sname = '-'.join((r, method, sv))
-                                    sfile = '_'.join(('rm_suspect_data', sname, pd.to_datetime(t_array.min()).strftime('%Y%m%d')))
+                                    sfile = '_'.join(('rm_suspect_data', sname, pd.to_datetime(t_nospct.min()).strftime('%Y%m%d')))
 
-                                    t0 = pd.to_datetime(t_array.min()).strftime('%Y-%m-%dT%H:%M:%S')
-                                    t1 = pd.to_datetime(t_array.max()).strftime('%Y-%m-%dT%H:%M:%S')
+                                    t0 = pd.to_datetime(t_nospct.min()).strftime('%Y-%m-%dT%H:%M:%S')
+                                    t1 = pd.to_datetime(t_nospct.max()).strftime('%Y-%m-%dT%H:%M:%S')
                                     title = ' '.join((deployment, refdes, method)) + '\n' + t0 + ' to ' + t1
 
                                     if zdbar:
@@ -277,6 +294,17 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                                             + '\nexcluded {} suspect data in water depth greater than {} dbar'.format(
                                                 n_zdbar, zdbar),
                                         )
+
+                                    elif n_std:
+                                        leg_text = (
+                                            'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
+                                            '{} zeros'.format(lenfv, lennan, lenev, lengr, global_min, global_max,
+                                                              lenzero)
+                                            + '\nremoved {} data points +/- {} SD of data grouped in {} dbar segments'.format(
+                                                len(z_portal) - len(z_nospct), n_std, zcell_size)
+                                            + '\nexcluded {} suspect data points when inspected visually'.format(
+                                                len(ndata) - len(z_portal)),
+                                        )
                                     else:
                                         leg_text = (
                                             'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
@@ -289,23 +317,25 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                                     '''
                                     profile plot
                                     '''
-                                    # xlabel = sv + " (" + sv_units + ")"
-                                    # ylabel = press[0] + " (" + y_units[0] + ")"
-                                    # clabel = 'Time'
-                                    #
-                                    # # plot non-erroneous data
-                                    # fig, ax = pf.plot_profiles(z_array, y_array, t_array, ylabel, xlabel, clabel, stdev=None)
-                                    #
-                                    # ax.set_title(title, fontsize=9)
-                                    # ax.plot(n_avg, y_avg, '-k')
-                                    # #ax.fill_betweenx(y_avg, n0_std, n1_std, color='m', alpha=0.2)
-                                    # ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
-                                    # fig.tight_layout()
-                                    # pf.save_fig(save_dir_profile, sfile)
+                                    xlabel = sv + " (" + sv_units + ")"
+                                    ylabel = press[0] + " (" + y_units[0] + ")"
+                                    clabel = 'Time'
+
+                                    # plot non-erroneous data
+                                    print('plotting profile')
+                                    fig, ax = pf.plot_profiles(z_nospct, y_nospct, t_nospct, ylabel, xlabel, clabel, stdev=None)
+
+                                    ax.set_title(title, fontsize=9)
+                                    ax.plot(n_avg, y_avg, '-k')
+                                    #ax.fill_betweenx(y_avg, n0_std, n1_std, color='m', alpha=0.2)
+                                    ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
+                                    fig.tight_layout()
+                                    pf.save_fig(save_dir_profile, sfile)
 
                                     '''
                                     xsection plot
                                     '''
+                                    print('plotting xsection')
                                     clabel = sv + " (" + sv_units + ")"
                                     ylabel = press[0] + " (" + y_units[0] + ")"
 
@@ -316,7 +346,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                                     #     m_water_depth = m_water_depth[eng_ind]
 
                                     # plot non-erroneous data
-                                    fig, ax, bar = pf.plot_xsection(subsite, t_array, y_array, z_array, clabel, ylabel,
+                                    fig, ax, bar = pf.plot_xsection(subsite, t_nospct, y_nospct, z_nospct, clabel, ylabel,
                                                                     t_eng=None, m_water_depth=None,
                                                                     inpercentile=inpercentile, stdev=None)
 
