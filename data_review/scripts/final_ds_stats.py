@@ -56,7 +56,10 @@ def index_dataset_2d(refdes, var_name, var_data, fv):
         fdata.update({i: vd})
         n_nan.append(int(n_nani))
         n_fv.append(int(n_fvi))
-        n_grange.append(int(n_grangei))
+        try:
+            n_grange.append(int(n_grangei))
+        except ValueError:
+            n_grange.append(n_grangei)
 
     return [fdata, g_min, g_max, n_nan, n_fv, n_grange]
 
@@ -264,6 +267,7 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                     lunits = np.unique(vinfo['units']).tolist()
 
                     t = vinfo['t']
+                    [g_min, g_max] = cf.get_global_ranges(r, vinfo['var_name'])
                     if len(t) > 1:
                         data = vinfo['values']
                         n_all = len(t)
@@ -301,27 +305,64 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                                 n_stats.append(n_statsi)
 
                         else:
-                            [dataind, g_min, g_max, n_nan, n_fv, n_grange] = index_dataset(r, vinfo['var_name'], data,
-                                                                                           fill_value)
-                            t_final = t[dataind]
-                            if len(t_final) > 0:
+                            if type(vinfo['values']) == dict:  # if the variable is a 2D array
+                                [dd_data, g_min, g_max, n_nan, n_fv, n_grange] = index_dataset_2d(r, vinfo['var_name'],
+                                                                                                  data, fill_value)
+                                t_final = t
                                 t0 = pd.to_datetime(min(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
                                 t1 = pd.to_datetime(max(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
-                                data_final = data[dataind]
-                                # if sv == 'Dissolved Oxygen Concentration':
-                                #     xx = (data_final > 0) & (data_final < 400)
-                                #     data_final = data_final[xx]
-                                #     t_final = t_final[xx]
-                                # if sv == 'Seawater Conductivity':
-                                #     xx = (data_final > 1) & (data_final < 400)
-                                #     data_final = data_final[xx]
-                                #     t_final = t_final[xx]
-                                deploy_final = vinfo['deployments'][dataind]
+                                deploy_final = vinfo['deployments']
                                 deploy = list(np.unique(deploy_final))
                                 deployments = [int(dd) for dd in deploy]
 
-                                if len(data_final) > 1:
-                                    [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(data_final, sd_calc)
+                                num_outliers = []
+                                mean = []
+                                vmin = []
+                                vmax = []
+                                sd = []
+                                n_stats = []
+                                for i in range(len(dd_data)):
+                                    dd = data[i]
+                                    # drop nans before calculating stats
+                                    dd = dd[~np.isnan(dd)]
+                                    [num_outliersi, meani, vmini, vmaxi, sdi, n_statsi] = cf.variable_statistics(dd,
+                                                                                                                 sd_calc)
+                                    num_outliers.append(num_outliersi)
+                                    mean.append(meani)
+                                    vmin.append(vmini)
+                                    vmax.append(vmaxi)
+                                    sd.append(sdi)
+                                    n_stats.append(n_statsi)
+                            else:
+                                [dataind, g_min, g_max, n_nan, n_fv, n_grange] = index_dataset(r, vinfo['var_name'],
+                                                                                               data, fill_value)
+                                t_final = t[dataind]
+                                if len(t_final) > 0:
+                                    t0 = pd.to_datetime(min(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
+                                    t1 = pd.to_datetime(max(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
+                                    data_final = data[dataind]
+                                    # if sv == 'Dissolved Oxygen Concentration':
+                                    #     xx = (data_final > 0) & (data_final < 400)
+                                    #     data_final = data_final[xx]
+                                    #     t_final = t_final[xx]
+                                    # if sv == 'Seawater Conductivity':
+                                    #     xx = (data_final > 1) & (data_final < 400)
+                                    #     data_final = data_final[xx]
+                                    #     t_final = t_final[xx]
+                                    deploy_final = vinfo['deployments'][dataind]
+                                    deploy = list(np.unique(deploy_final))
+                                    deployments = [int(dd) for dd in deploy]
+
+                                    if len(data_final) > 1:
+                                        [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(data_final, sd_calc)
+                                    else:
+                                        sdcalc = None
+                                        num_outliers = None
+                                        mean = None
+                                        vmin = None
+                                        vmax = None
+                                        sd = None
+                                        n_stats = None
                                 else:
                                     sdcalc = None
                                     num_outliers = None
@@ -330,17 +371,9 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                                     vmax = None
                                     sd = None
                                     n_stats = None
-                            else:
-                                sdcalc = None
-                                num_outliers = None
-                                mean = None
-                                vmin = None
-                                vmax = None
-                                sd = None
-                                n_stats = None
-                                deployments = None
-                                t0 = None
-                                t1 = None
+                                    deployments = None
+                                    t0 = None
+                                    t1 = None
                     else:
                         sdcalc = None
                         num_outliers = None
@@ -353,6 +386,7 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                         t0 = None
                         t1 = None
                         t_final = []
+                        n_all = None
 
                     if sd_calc:
                         print_sd = sd_calc
@@ -429,22 +463,23 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                             snamewave = '-'.join((sname, m))
                             pf.save_fig(psave_dir, snamewave)
 
-                        else:  # plot all data if not streamed
-                            fig, ax = pf.plot_timeseries_all(t_final, data_final, sv, lunits[0], stdev=None)
-                            ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
-                                         fontsize=8)
-                            for etimes in end_times:
-                                ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
-                            pf.save_fig(psave_dir, sname)
-
-                            if sd_calc:
-                                sname = '-'.join((r, sv, 'rmoutliers'))
-                                fig, ax = pf.plot_timeseries_all(t_final, data_final, sv, lunits[0], stdev=sd_calc)
+                        else:  # plot all data if not streamed or 2D
+                            if type(vinfo['values']) != dict:  # if the variable is not a 2D array
+                                fig, ax = pf.plot_timeseries_all(t_final, data_final, sv, lunits[0], stdev=None)
                                 ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
                                              fontsize=8)
                                 for etimes in end_times:
                                     ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
                                 pf.save_fig(psave_dir, sname)
+
+                                if sd_calc:
+                                    sname = '-'.join((r, sv, 'rmoutliers'))
+                                    fig, ax = pf.plot_timeseries_all(t_final, data_final, sv, lunits[0], stdev=sd_calc)
+                                    ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
+                                                 fontsize=8)
+                                    for etimes in end_times:
+                                        ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
+                                    pf.save_fig(psave_dir, sname)
 
         fsum = pd.DataFrame(rows, columns=headers)
         fsum.to_csv('{}/{}_data_ranges.csv'.format(save_dir, r), index=False)
@@ -459,4 +494,4 @@ if __name__ == '__main__':
     url_list = [
         'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190514T200839-CE04OSBP-LJ01C-10-PHSEND107-streamed-phsen_data_record/catalog.html']
 
-main(sDir, plotting_sDir, url_list, sd_calc)
+    main(sDir, plotting_sDir, url_list, sd_calc)
