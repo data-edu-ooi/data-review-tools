@@ -23,7 +23,7 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
     for uu in url_list:
         elements = uu.split('/')[-2].split('-')
         rd = '-'.join((elements[1], elements[2], elements[3], elements[4]))
-        if rd not in rd_list:
+        if rd not in rd_list and 'OPTAA' in rd:
             rd_list.append(rd)
 
     for r in rd_list:
@@ -81,7 +81,23 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
             t1 = pd.to_datetime(tm.max()).strftime('%Y-%m-%dT%H:%M:%S')
             title = ' '.join((deployment, refdes, method))
 
-            # -------- plot entire deployment --------
+            # # add chl-a data from the collocated fluorometer
+            # flor_url = [s for s in url_list if r.split('-')[0] in s and 'FLOR' in s]
+            # if len(flor_url) == 1:
+            #     flor_datasets = cf.get_nc_urls(flor_url)
+            #     # filter out collocated datasets
+            #     flor_dataset = [j for j in flor_datasets if ('FLOR' in j.split('/')[-1] and deployment in j.split('/')[-1])]
+            #     if len(flor_dataset) > 0:
+            #         ds_flor = xr.open_dataset(flor_dataset[0], mask_and_scale=False)
+            #         ds_flor = ds_flor.swap_dims({'obs': 'time'})
+            #         flor_t0 = dt.datetime.strptime(t0, '%Y-%m-%dT%H:%M:%S')
+            #         flor_t1 = dt.datetime.strptime(t1, '%Y-%m-%dT%H:%M:%S')
+            #         ds_flor = ds_flor.sel(time=slice(flor_t0, flor_t1))
+            #         t_flor = ds_flor['time'].values
+            #         flor_sci_vars = cf.return_science_vars(ds_flor.stream)
+            #         for fsv in flor_sci_vars:
+            #             if ds_flor[fsv].long_name == 'Chlorophyll-a Concentration':
+            #                 chla = ds_flor[fsv]
 
             for var in sci_vars:
                 print(var)
@@ -131,6 +147,10 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
 
                         ax2.scatter(tm, v, c=colors[iw], label='{} nm: rm {} GR'.format(wavelengths[iw], n_grange),
                                     marker='.', s=1)
+                        # if iw == len(wavelengths) - 1:
+                        #     ax2a = ax2.twinx()
+                        #     ax2a.scatter(t_flor, chla.values, c='lime', marker='.', s=1)
+                        #     ax2a.set_ylabel('Fluorometric Chl-a ({})'.format(chla.units))
 
                 if len(plotting) > 0:
                     ax1.grid()
@@ -152,10 +172,13 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                     save_file2 = os.path.join(save_dir, sfile2)
                     fig2.savefig(str(save_file2), dpi=150)
 
+            plt.close('all')
+
 
 if __name__ == '__main__':
     sDir = '/Users/lgarzio/Documents/OOI/DataReviews'
-    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190530T182609-CE01ISSM-MFD37-01-OPTAAD000-recovered_host-optaa_dj_dcl_instrument_recovered/catalog.html']
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190530T182609-CE01ISSM-RID16-01-OPTAAD000-recovered_host-optaa_dj_dcl_instrument_recovered/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190607T165934-CE01ISSM-RID16-02-FLORTD000-recovered_host-flort_sample/catalog.html']
     start_time = None  # dt.datetime(2015, 6, 3, 0, 0, 0)  # optional, set to None if plotting all data
     end_time = None  # dt.datetime(2019, 1, 1, 0, 0, 0)  # optional, set to None if plotting all data
     preferred_only = 'yes'  # options: 'yes', 'no'

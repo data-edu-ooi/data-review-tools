@@ -16,9 +16,11 @@ import datetime as dt
 import itertools
 from mpl_toolkits.mplot3d import Axes3D  # need this for 4D scatter plot
 import matplotlib.pyplot as plt
+import matplotlib.cm as cm
 import functions.common as cf
 import functions.plotting as pf
 import functions.group_by_timerange as gt
+import functions.profile_xsection_spkir_optaa as pxso
 
 
 def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n_std, inpercentile, zcell_size):
@@ -149,190 +151,217 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
             # get pressure variable
             y, y_units, press, y_fillvalue = cf.add_pressure_to_dictionary_of_sci_vars(ds)
 
-
             for sv in sci_vars:
+                print('')
                 print(sv)
                 if 'pressure' not in sv:
-                    z = ds[sv].values
-                    fv = ds[sv]._FillValue
-                    sv_units = ds[sv].units
-
-                    # Check if the array is all NaNs
-                    if sum(np.isnan(z)) == len(z):
-                        print('Array of all NaNs - skipping plot.')
-                        continue
-
-                    # Check if the array is all fill values
-                    elif len(z[z != fv]) == 0:
-                        print('Array of all fill values - skipping plot.')
-                        continue
-
+                    if sv == 'spkir_abj_cspp_downwelling_vector':
+                        pxso.pf_xs_spkir(ds, sv, tm, y, ds_lat, ds_lon, zcell_size, inpercentile, save_dir_profile,
+                                         save_dir_xsection, deployment, press, y_units, n_std)
+                    elif 'OPTAA' in r:
+                        if sv not in ['wavelength_a', 'wavelength_c']:
+                            pxso.pf_xs_optaa(ds, sv, tm, y, ds_lat, ds_lon, zcell_size, inpercentile, save_dir_profile,
+                                             save_dir_xsection, deployment, press, y_units, n_std)
                     else:
-                        # reject erroneous data
-                        dtime, zpressure, ndata, lenfv, lennan, lenev, lengr, global_min, global_max, lat, lon = \
-                            cf.reject_erroneous_data(r, sv, tm, y, z, fv, ds_lat, ds_lon)
+                        z = ds[sv].values
+                        fv = ds[sv]._FillValue
+                        sv_units = ds[sv].units
 
-                        # get rid of 0.0 data
-                        if 'CTD' in r:
-                            ind = zpressure > 0.0
+                        # Check if the array is all NaNs
+                        if sum(np.isnan(z)) == len(z):
+                            print('Array of all NaNs - skipping plot.')
+                            continue
+
+                        # Check if the array is all fill values
+                        elif len(z[z != fv]) == 0:
+                            print('Array of all fill values - skipping plot.')
+                            continue
+
                         else:
-                            ind = ndata > 0.0
+                            # reject erroneous data
+                            dtime, zpressure, ndata, lenfv, lennan, lenev, lengr, global_min, global_max, lat, lon = \
+                                cf.reject_erroneous_data(r, sv, tm, y, z, fv, ds_lat, ds_lon)
 
-                        lenzero = np.sum(~ind)
-                        dtime = dtime[ind]
-                        zpressure = zpressure[ind]
-                        ndata = ndata[ind]
-                        if ds_lat is not None and ds_lon is not None:
-                            lat = lat[ind]
-                            lon = lon[ind]
-                        else:
-                            lat = None
-                            lon = None
+                            # get rid of 0.0 data
+                            # if sv == 'practical_salinity':
+                            #     ind = ndata > 34
+                            # elif sv == 'sci_seawater_density':
+                            #     ind = ndata > 1026
+                            # elif sv == 'sci_water_cond':
+                            #     ind = ndata > 3.1
+                            # else:
+                            #     ind = ndata > 0
+                            # if sv == 'sci_flbbcd_chlor_units':
+                            #     ind = ndata < 7.5
+                            # elif sv == 'sci_flbbcd_cdom_units':
+                            #     ind = ndata < 25
+                            # else:
+                            #     ind = ndata > 0.0
 
-                        if len(dtime) > 0:
-                            # reject time range from data portal file export
-                            t_portal, z_portal, y_portal, lat_portal, lon_portal = \
-                                cf.reject_timestamps_dataportal(subsite, r, dtime, zpressure, ndata, lat, lon)
-
-                            print('removed {} data points using visual inspection of data'.format(
-                                len(ndata) - len(z_portal)))
-
-                            # create data groups
-                            columns = ['tsec', 'dbar', str(sv)]
-                            min_r = int(round(np.nanmin(y_portal) - zcell_size))
-                            max_r = int(round(np.nanmax(y_portal) + zcell_size))
-                            ranges = list(range(min_r, max_r, zcell_size))
-
-                            groups, d_groups = gt.group_by_depth_range(t_portal, y_portal, z_portal, columns, ranges)
-
-                            if 'scatter' in sv:
-                                n_std = None  # to use percentile
+                            if 'CTD' in r:
+                                ind = zpressure > 0.0
                             else:
-                                n_std = n_std
+                                ind = ndata > 0.0
 
-                            #  get percentile analysis for printing on the profile plot
-                            y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_ex = cf.reject_timestamps_in_groups(
-                                groups, d_groups, n_std, inpercentile)
+                            lenzero = np.sum(~ind)
+                            dtime = dtime[ind]
+                            zpressure = zpressure[ind]
+                            ndata = ndata[ind]
+                            if ds_lat is not None and ds_lon is not None:
+                                lat = lat[ind]
+                                lon = lon[ind]
+                            else:
+                                lat = None
+                                lon = None
 
-                        """
-                        Plot all data
-                        """
-                        if len(tm) > 0:
-                            cf.create_dir(save_dir_profile)
-                            cf.create_dir(save_dir_xsection)
-                            sname = '-'.join((r, method, sv))
-                            sfileall = '_'.join(('all_data', sname, pd.to_datetime(tm.min()).strftime('%Y%m%d')))
-                            tm0 = pd.to_datetime(tm.min()).strftime('%Y-%m-%dT%H:%M:%S')
-                            tm1 = pd.to_datetime(tm.max()).strftime('%Y-%m-%dT%H:%M:%S')
-                            title = ' '.join((deployment, refdes, method)) + '\n' + tm0 + ' to ' + tm1
+                            if len(dtime) > 0:
+                                # reject time range from data portal file export
+                                t_portal, z_portal, y_portal, lat_portal, lon_portal = \
+                                    cf.reject_timestamps_dataportal(subsite, r, dtime, zpressure, ndata, lat, lon)
 
-                            '''
-                            profile plot
-                            '''
-                            xlabel = sv + " (" + sv_units + ")"
-                            ylabel = press[0] + " (" + y_units[0] + ")"
-                            clabel = 'Time'
+                                print('removed {} data points using visual inspection of data'.format(
+                                    len(ndata) - len(z_portal)))
 
-                            fig, ax = pf.plot_profiles(z, y, tm, ylabel, xlabel, clabel, stdev=None)
+                                # create data groups
+                                columns = ['tsec', 'dbar', str(sv)]
+                                min_r = int(round(np.nanmin(y_portal) - zcell_size))
+                                max_r = int(round(np.nanmax(y_portal) + zcell_size))
+                                ranges = list(range(min_r, max_r, zcell_size))
 
-                            ax.set_title(title, fontsize=9)
-                            fig.tight_layout()
-                            pf.save_fig(save_dir_profile, sfileall)
+                                groups, d_groups = gt.group_by_depth_range(t_portal, y_portal, z_portal, columns, ranges)
 
-                            '''
-                            xsection plot
-                            '''
-                            clabel = sv + " (" + sv_units + ")"
-                            ylabel = press[0] + " (" + y_units[0] + ")"
+                                if 'scatter' in sv:
+                                    n_std = None  # to use percentile
+                                else:
+                                    n_std = n_std
 
-                            fig, ax, bar = pf.plot_xsection(subsite, tm, y, z, clabel, ylabel, t_eng=None,
-                                                            m_water_depth=None, inpercentile=None, stdev=None)
+                                #  get percentile analysis for printing on the profile plot
+                                y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_ex = cf.reject_timestamps_in_groups(
+                                    groups, d_groups, n_std, inpercentile)
 
-                            if fig:
+                            """
+                            Plot all data
+                            """
+                            if len(tm) > 0:
+                                cf.create_dir(save_dir_profile)
+                                cf.create_dir(save_dir_xsection)
+                                sname = '-'.join((r, method, sv))
+                                sfileall = '_'.join(('all_data', sname, pd.to_datetime(tm.min()).strftime('%Y%m%d')))
+                                tm0 = pd.to_datetime(tm.min()).strftime('%Y-%m-%dT%H:%M:%S')
+                                tm1 = pd.to_datetime(tm.max()).strftime('%Y-%m-%dT%H:%M:%S')
+                                title = ' '.join((deployment, refdes, method)) + '\n' + tm0 + ' to ' + tm1
+                                if 'SPKIR' in r:
+                                    title = title + '\nWavelength = 510 nm'
+
+                                '''
+                                profile plot
+                                '''
+                                xlabel = sv + " (" + sv_units + ")"
+                                ylabel = press[0] + " (" + y_units[0] + ")"
+                                clabel = 'Time'
+
+                                fig, ax = pf.plot_profiles(z, y, tm, ylabel, xlabel, clabel, stdev=None)
+
                                 ax.set_title(title, fontsize=9)
                                 fig.tight_layout()
-                                pf.save_fig(save_dir_xsection, sfileall)
+                                pf.save_fig(save_dir_profile, sfileall)
 
-                        """
-                        Plot cleaned-up data
-                        """
-                        if len(dtime) > 0:
-                            sfile = '_'.join(('rm_erroneous_data', sname, pd.to_datetime(t_portal.min()).strftime('%Y%m%d')))
-                            t0 = pd.to_datetime(t_portal.min()).strftime('%Y-%m-%dT%H:%M:%S')
-                            t1 = pd.to_datetime(t_portal.max()).strftime('%Y-%m-%dT%H:%M:%S')
-                            title = ' '.join((deployment, refdes, method)) + '\n' + t0 + ' to ' + t1
+                                '''
+                                xsection plot
+                                '''
+                                clabel = sv + " (" + sv_units + ")"
+                                ylabel = press[0] + " (" + y_units[0] + ")"
 
-                            '''
-                            profile plot
-                            '''
-                            xlabel = sv + " (" + sv_units + ")"
-                            ylabel = press[0] + " (" + y_units[0] + ")"
-                            clabel = 'Time'
+                                fig, ax, bar = pf.plot_xsection(subsite, tm, y, z, clabel, ylabel, t_eng=None,
+                                                                m_water_depth=None, inpercentile=None, stdev=None)
 
-                            fig, ax = pf.plot_profiles(z_portal, y_portal, t_portal, ylabel, xlabel, clabel, stdev=None)
-
-                            ax.set_title(title, fontsize=9)
-                            ax.plot(n_avg, y_avg, '-k')
-                            ax.fill_betweenx(y_avg, n0_std, n1_std, color='m', alpha=0.2)
-                            leg_text = (
-                                'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
-                                '{} zeros'.format(lenfv, lennan, lenev, lengr, global_min, global_max, lenzero) +
-                                '\nexcluded {} suspect data points when inspected visually'.format(
-                                    len(ndata) - len(z_portal)) +
-                                '\n(black) data average in {} dbar segments'.format(zcell_size) +
-                                '\n(magenta) {} percentile envelope in {} dbar segments'.format(
-                                    int(100 - inpercentile * 2), zcell_size),)
-                            ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
-                            fig.tight_layout()
-                            pf.save_fig(save_dir_profile, sfile)
-
-                            '''
-                            xsection plot
-                            '''
-                            clabel = sv + " (" + sv_units + ")"
-                            ylabel = press[0] + " (" + y_units[0] + ")"
-
-                            # plot non-erroneous data
-                            fig, ax, bar = pf.plot_xsection(subsite, t_portal, y_portal, z_portal, clabel, ylabel,
-                                                            t_eng=None, m_water_depth=None, inpercentile=None,
-                                                            stdev=None)
-
-                            ax.set_title(title, fontsize=9)
-                            leg_text = (
-                                'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
-                                '{} zeros'.format(lenfv, lennan, lenev, lengr, global_min, global_max, lenzero) +
-                                '\nexcluded {} suspect data points when inspected visually'.format(
-                                    len(ndata) - len(z_portal)),
-                            )
-                            ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
-                            fig.tight_layout()
-                            pf.save_fig(save_dir_xsection, sfile)
-
-                            '''
-                            4D plot for gliders only
-                            '''
-                            if 'MOAS' in r:
-                                if ds_lat is not None and ds_lon is not None:
-                                    cf.create_dir(save_dir_4d)
-
-                                    clabel = sv + " (" + sv_units + ")"
-                                    zlabel = press[0] + " (" + y_units[0] + ")"
-
-                                    fig = plt.figure()
-                                    ax = fig.add_subplot(111, projection='3d')
-                                    sct = ax.scatter(lon_portal, lat_portal, y_portal, c=z_portal, s=2)
-                                    cbar = plt.colorbar(sct, label=clabel, extend='both')
-                                    cbar.ax.tick_params(labelsize=8)
-                                    ax.invert_zaxis()
-                                    ax.view_init(25, 32)
-                                    ax.invert_xaxis()
-                                    ax.invert_yaxis()
-                                    ax.set_zlabel(zlabel, fontsize=9)
-                                    ax.set_ylabel('Latitude', fontsize=9)
-                                    ax.set_xlabel('Longitude', fontsize=9)
-
+                                if fig:
                                     ax.set_title(title, fontsize=9)
-                                    pf.save_fig(save_dir_4d, sfile)
+                                    fig.tight_layout()
+                                    pf.save_fig(save_dir_xsection, sfileall)
+
+                            """
+                            Plot cleaned-up data
+                            """
+                            if len(dtime) > 0:
+                                sfile = '_'.join(('rm_erroneous_data', sname, pd.to_datetime(t_portal.min()).strftime('%Y%m%d')))
+                                t0 = pd.to_datetime(t_portal.min()).strftime('%Y-%m-%dT%H:%M:%S')
+                                t1 = pd.to_datetime(t_portal.max()).strftime('%Y-%m-%dT%H:%M:%S')
+                                title = ' '.join((deployment, refdes, method)) + '\n' + t0 + ' to ' + t1
+                                if 'SPKIR' in r:
+                                    title = title + '\nWavelength = 510 nm'
+
+                                '''
+                                profile plot
+                                '''
+                                xlabel = sv + " (" + sv_units + ")"
+                                ylabel = press[0] + " (" + y_units[0] + ")"
+                                clabel = 'Time'
+
+                                fig, ax = pf.plot_profiles(z_portal, y_portal, t_portal, ylabel, xlabel, clabel, stdev=None)
+
+                                ax.set_title(title, fontsize=9)
+                                ax.plot(n_avg, y_avg, '-k')
+                                ax.fill_betweenx(y_avg, n0_std, n1_std, color='m', alpha=0.2)
+                                leg_text = (
+                                    'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
+                                    '{} zeros'.format(lenfv, lennan, lenev, lengr, global_min, global_max, lenzero) +
+                                    '\nexcluded {} suspect data points when inspected visually'.format(
+                                        len(ndata) - len(z_portal)) +
+                                    '\n(black) data average in {} dbar segments'.format(zcell_size) +
+                                    '\n(magenta) {} percentile envelope in {} dbar segments'.format(
+                                        int(100 - inpercentile * 2), zcell_size),)
+                                ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
+                                fig.tight_layout()
+                                pf.save_fig(save_dir_profile, sfile)
+
+                                '''
+                                xsection plot
+                                '''
+                                clabel = sv + " (" + sv_units + ")"
+                                ylabel = press[0] + " (" + y_units[0] + ")"
+
+                                # plot non-erroneous data
+                                fig, ax, bar = pf.plot_xsection(subsite, t_portal, y_portal, z_portal, clabel, ylabel,
+                                                                t_eng=None, m_water_depth=None, inpercentile=None,
+                                                                stdev=None)
+
+                                ax.set_title(title, fontsize=9)
+                                leg_text = (
+                                    'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
+                                    '{} zeros'.format(lenfv, lennan, lenev, lengr, global_min, global_max, lenzero) +
+                                    '\nexcluded {} suspect data points when inspected visually'.format(
+                                        len(ndata) - len(z_portal)),
+                                )
+                                ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
+                                fig.tight_layout()
+                                pf.save_fig(save_dir_xsection, sfile)
+
+                                '''
+                                4D plot for gliders only
+                                '''
+                                if 'MOAS' in r:
+                                    if ds_lat is not None and ds_lon is not None:
+                                        cf.create_dir(save_dir_4d)
+
+                                        clabel = sv + " (" + sv_units + ")"
+                                        zlabel = press[0] + " (" + y_units[0] + ")"
+
+                                        fig = plt.figure()
+                                        ax = fig.add_subplot(111, projection='3d')
+                                        sct = ax.scatter(lon_portal, lat_portal, y_portal, c=z_portal, s=2)
+                                        cbar = plt.colorbar(sct, label=clabel, extend='both')
+                                        cbar.ax.tick_params(labelsize=8)
+                                        ax.invert_zaxis()
+                                        ax.view_init(25, 32)
+                                        ax.invert_xaxis()
+                                        ax.invert_yaxis()
+                                        ax.set_zlabel(zlabel, fontsize=9)
+                                        ax.set_ylabel('Latitude', fontsize=9)
+                                        ax.set_xlabel('Longitude', fontsize=9)
+
+                                        ax.set_title(title, fontsize=9)
+                                        pf.save_fig(save_dir_4d, sfile)
 
 
 if __name__ == '__main__':

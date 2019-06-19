@@ -1,0 +1,52 @@
+deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
+deployment0001,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Conductivity,conductivity,S m-1,pass,143525.0,0.0,no missing data,4901.0,0.0,3.0024199486,7.0,0.14
+deployment0001,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Pressure,pressure,dbar,pass,143525.0,0.0,no missing data,4901.0,0.0,0.4440002441,0.0,0.0
+deployment0001,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Practical Salinity,salinity,1,pass,143525.0,0.0,no missing data,4901.0,0.0,27.1416988373,7.0,0.14
+deployment0001,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Temperature,temperature,ºC,pass,143525.0,0.0,no missing data,4901.0,0.0,1.1072006226,1.0,0.02
+deployment0001,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Density,density,kg m-3,pass,143525.0,0.0,no missing data,4901.0,0.0,21.035072831,7.0,0.14
+deployment0002,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Conductivity,conductivity,S m-1,pass,292385.0,0.0,no missing data,595.0,0.0,0.0147402287,0.0,0.0
+deployment0002,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Pressure,pressure,dbar,pass,292385.0,0.0,no missing data,595.0,0.0,0.2299995422,0.0,0.0
+deployment0002,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Practical Salinity,salinity,1,pass,292385.0,0.0,no missing data,595.0,0.0,0.0257987976,0.0,0.0
+deployment0002,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Temperature,temperature,ºC,pass,292385.0,0.0,no missing data,595.0,0.0,0.1532001495,0.0,0.0
+deployment0002,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Density,density,kg m-3,pass,292385.0,0.0,no missing data,595.0,0.0,0.0297483736,0.0,0.0
+deployment0003,recovered_cspp-ctdpf_j_cspp_instrument_recovered,no other methods available for comparison,,,,,,,,,,,,
+deployment0004,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Conductivity,conductivity,S m-1,pass,976059.0,0.0,no missing data,451.0,0.0,0.0103900433,0.0,0.0
+deployment0004,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Pressure,pressure,dbar,pass,976059.0,0.0,no missing data,451.0,0.0,5131.0952148438,2.0,0.44
+deployment0004,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Practical Salinity,salinity,1,pass,976059.0,0.0,no missing data,451.0,0.0,1.8980979919,1.0,0.22
+deployment0004,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Temperature,temperature,ºC,pass,976059.0,0.0,no missing data,451.0,0.0,0.0024995804,0.0,0.0
+deployment0004,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Density,density,kg m-3,pass,976059.0,0.0,no missing data,451.0,0.0,20.7709861806,2.0,0.44
+deployment0005,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Conductivity,conductivity,S m-1,pass,441219.0,0.0,no missing data,1676.0,0.0,2.816740036,2.0,0.12
+deployment0005,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Pressure,pressure,dbar,pass,441219.0,0.0,no missing data,1676.0,0.0,0.218000412,0.0,0.0
+deployment0005,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Practical Salinity,salinity,1,pass,441219.0,0.0,no missing data,1676.0,0.0,24.6684989929,8.0,0.48
+deployment0005,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Temperature,temperature,ºC,pass,441219.0,0.0,no missing data,1676.0,0.0,0.1705007553,0.0,0.0
+deployment0005,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Density,density,kg m-3,pass,441219.0,0.0,no missing data,1676.0,0.0,19.0002588872,6.0,0.36
+deployment0006,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Conductivity,conductivity,S m-1,pass,1040065.0,0.0,no missing data,7288.0,0.0,0.0495700836,0.0,0.0
+deployment0006,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Pressure,pressure,dbar,pass,1040065.0,0.0,no missing data,7288.0,0.0,0.2049999237,0.0,0.0
+deployment0006,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Practical Salinity,salinity,1,pass,1040065.0,0.0,no missing data,7288.0,0.0,0.4369010925,0.0,0.0
+deployment0006,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Temperature,temperature,ºC,pass,1040065.0,0.0,no missing data,7288.0,0.0,0.089099884,0.0,0.0
+deployment0006,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Density,density,kg m-3,pass,1040065.0,0.0,no missing data,7288.0,0.0,0.3278990942,0.0,0.0
+deployment0007,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Conductivity,conductivity,S m-1,pass,1374341.0,0.0,no missing data,133789.0,0.0,9.0690603256,2.0,0.0
+deployment0007,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Pressure,pressure,dbar,pass,1374341.0,0.0,no missing data,133789.0,0.0,15905.51171875,1199.0,0.9
+deployment0007,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Practical Salinity,salinity,1,pass,1374341.0,0.0,no missing data,133789.0,0.0,109.2603912354,99.0,0.07
+deployment0007,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Temperature,temperature,ºC,pass,1374341.0,0.0,no missing data,133789.0,0.0,1.1494998932,15.0,0.01
+deployment0007,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Density,density,kg m-3,pass,1374341.0,0.0,no missing data,133789.0,0.0,114.2731035017,99.0,0.07
+deployment0008,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Conductivity,conductivity,S m-1,pass,301057.0,0.0,no missing data,22454.0,0.0,0.0730400085,0.0,0.0
+deployment0008,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Pressure,pressure,dbar,pass,301057.0,0.0,no missing data,22454.0,0.0,1.4560012817,23.0,0.1
+deployment0008,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Practical Salinity,salinity,1,pass,301057.0,0.0,no missing data,22454.0,0.0,0.7869987488,0.0,0.0
+deployment0008,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Temperature,temperature,ºC,pass,301057.0,0.0,no missing data,22454.0,0.0,0.5186004639,0.0,0.0
+deployment0008,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Density,density,kg m-3,pass,301057.0,0.0,no missing data,22454.0,0.0,0.6183785178,0.0,0.0
+deployment0009,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Conductivity,conductivity,S m-1,pass,76408.0,0.0,no missing data,3759.0,0.0,0.0384199619,0.0,0.0
+deployment0009,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Pressure,pressure,dbar,pass,76408.0,0.0,no missing data,3759.0,0.0,0.4560012817,0.0,0.0
+deployment0009,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Practical Salinity,salinity,1,pass,76408.0,0.0,no missing data,3759.0,0.0,0.3873996735,0.0,0.0
+deployment0009,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Temperature,temperature,ºC,pass,76408.0,0.0,no missing data,3759.0,0.0,0.1712007523,0.0,0.0
+deployment0009,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Density,density,kg m-3,pass,76408.0,0.0,no missing data,3759.0,0.0,0.3033519538,0.0,0.0
+deployment0010,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Conductivity,conductivity,S m-1,pass,283479.0,0.0,no missing data,27445.0,0.0,0.4036598206,0.0,0.0
+deployment0010,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Pressure,pressure,dbar,pass,283479.0,0.0,no missing data,27445.0,0.0,15901.41015625,881.0,3.21
+deployment0010,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Practical Salinity,salinity,1,pass,283479.0,0.0,no missing data,27445.0,0.0,6.2119998932,18.0,0.07
+deployment0010,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Temperature,temperature,ºC,pass,283479.0,0.0,no missing data,27445.0,0.0,1.1881008148,6.0,0.02
+deployment0010,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Density,density,kg m-3,pass,283479.0,0.0,no missing data,27445.0,0.0,58.3273096382,18.0,0.07
+deployment0011,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Conductivity,conductivity,S m-1,pass,20665.0,0.0,no missing data,1384.0,0.0,0.091809988,0.0,0.0
+deployment0011,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Pressure,pressure,dbar,pass,20665.0,0.0,no missing data,1384.0,0.0,0.1710004807,0.0,0.0
+deployment0011,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Practical Salinity,salinity,1,pass,20665.0,0.0,no missing data,1384.0,0.0,0.9614028931,0.0,0.0
+deployment0011,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Temperature,temperature,ºC,pass,20665.0,0.0,no missing data,1384.0,0.0,0.1711997986,0.0,0.0
+deployment0011,recovered_cspp-ctdpf_j_cspp_instrument_recovered,telemetered-ctdpf_j_cspp_instrument,Seawater Density,density,kg m-3,pass,20665.0,0.0,no missing data,1384.0,0.0,0.751049452,0.0,0.0

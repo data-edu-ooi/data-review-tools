@@ -1,10 +1,7 @@
 deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
-deployment0001,recovered_host,pco2w_abc_dcl_instrument_blank_recovered,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",13,0,0,0,0,13,100.0,5.1624,3.8191,8.2014,1.2813
 deployment0001,recovered_host,pco2w_abc_dcl_instrument_recovered,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",2255,0,0,0,0,2255,100.0,5.1672,3.5531,9.4455,1.3686
-deployment0001,recovered_host,pco2w_abc_dcl_instrument_recovered,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",2255,0,42,0,0,2213,98.14,255.9351,228.0019,292.109,13.2664
-deployment0003,recovered_host,pco2w_abc_dcl_instrument_blank_recovered,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",2,0,0,0,0,2,100.0,8.4233,8.2236,8.623,0.1997
+deployment0001,recovered_host,pco2w_abc_dcl_instrument_recovered,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",2255,1606,42,405,0,202,8.96,271.0021,100.2855,597.1916,134.8542
 deployment0003,recovered_host,pco2w_abc_dcl_instrument_recovered,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",84,0,0,0,0,84,100.0,8.3874,7.9797,8.934,0.1958
-deployment0003,recovered_host,pco2w_abc_dcl_instrument_recovered,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",84,0,0,0,0,84,100.0,299.9801,296.3316,305.1446,2.1317
+deployment0003,recovered_host,pco2w_abc_dcl_instrument_recovered,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",84,0,0,0,0,84,100.0,329.5512,311.3288,345.1732,8.8777
 deployment0004,telemetered,pco2w_abc_dcl_instrument,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",792,0,0,0,0,792,100.0,8.8348,7.4701,9.9803,0.7533
-deployment0004,telemetered,pco2w_abc_dcl_instrument,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",792,0,15,0,0,777,98.11,236.6565,229.0901,242.4724,3.1884
-deployment0004,telemetered,pco2w_abc_dcl_instrument_blank,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",19,0,0,0,0,19,100.0,8.8144,7.4923,9.9579,0.7752
+deployment0004,telemetered,pco2w_abc_dcl_instrument,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",792,0,15,0,0,777,98.11,341.2384,316.4474,363.7135,12.9954

@@ -57,65 +57,72 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
             fdatasets = datasets
 
         fdatasets = np.unique(fdatasets).tolist()
+        main_sensor = r.split('-')[-1]
+        fdatasets = cf.filter_collocated_instruments(main_sensor, fdatasets)
+
         for fd in fdatasets:
-            ds = xr.open_dataset(fd, mask_and_scale=False)
-            ds = ds.swap_dims({'obs': 'time'})
-            ds_vars = list(ds.data_vars.keys()) + [x for x in ds.coords.keys() if 'pressure' in x]  # get pressure variable from coordinates
-            #raw_vars = cf.return_raw_vars(ds_vars)
+            if '_blank' not in fd:
+                ds = xr.open_dataset(fd, mask_and_scale=False)
+                ds = ds.swap_dims({'obs': 'time'})
+                ds_vars = list(ds.data_vars.keys()) + [x for x in ds.coords.keys() if 'pressure' in x]  # get pressure variable from coordinates
+                #raw_vars = cf.return_raw_vars(ds_vars)
 
-            if start_time is not None and end_time is not None:
-                ds = ds.sel(time=slice(start_time, end_time))
-                if len(ds['time'].values) == 0:
-                    print('No data to plot for specified time range: ({} to {})'.format(start_time, end_time))
-                    continue
+                if start_time is not None and end_time is not None:
+                    ds = ds.sel(time=slice(start_time, end_time))
+                    if len(ds['time'].values) == 0:
+                        print('No data to plot for specified time range: ({} to {})'.format(start_time, end_time))
+                        continue
 
-            fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(fd)
-            if 'NUTNR' in refdes:
-                vars = cf.return_science_vars(stream)
-            else:
-                vars = cf.return_raw_vars(ds_vars)
-            print('\nPlotting {} {}'.format(r, deployment))
-            array = subsite[0:2]
-            filename = '_'.join(fname.split('_')[:-1])
-            save_dir = os.path.join(sDir, array, subsite, refdes, 'timeseries_plots', deployment)
-            cf.create_dir(save_dir)
+                fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(fd)
+                if 'NUTNR' in refdes:
+                    vars = cf.return_science_vars(stream)
+                else:
+                    vars = cf.return_raw_vars(ds_vars)
+                print('\nPlotting {} {}'.format(r, deployment))
+                array = subsite[0:2]
+                filename = '_'.join(fname.split('_')[:-1])
+                save_dir = os.path.join(sDir, array, subsite, refdes, 'timeseries_plots', deployment)
+                cf.create_dir(save_dir)
 
-            tm = ds['time'].values
-            t0 = pd.to_datetime(tm.min()).strftime('%Y-%m-%dT%H:%M:%S')
-            t1 = pd.to_datetime(tm.max()).strftime('%Y-%m-%dT%H:%M:%S')
-            title = ' '.join((deployment, refdes, method))
+                tm = ds['time'].values
+                t0 = pd.to_datetime(tm.min()).strftime('%Y-%m-%dT%H:%M:%S')
+                t1 = pd.to_datetime(tm.max()).strftime('%Y-%m-%dT%H:%M:%S')
+                title = ' '.join((deployment, refdes, method))
 
-            for var in vars:
-                print(var)
-                if var != 'id':
-                    y = ds[var]
-                    fv = y._FillValue
-                    if len(y.dims) == 1:
-                        # Check if the array is all NaNs
-                        if sum(np.isnan(y.values)) == len(y.values):
-                            print('Array of all NaNs - skipping plot.')
+                for var in vars:
+                    print(var)
+                    if var != 'id':
+                        y = ds[var]
+                        try:
+                            fv = y._FillValue
+                        except AttributeError:
+                            fv = np.nan
+                        if len(y.dims) == 1:
+                            # Check if the array is all NaNs
+                            if sum(np.isnan(y.values)) == len(y.values):
+                                print('Array of all NaNs - skipping plot.')
 
-                        # Check if the array is all fill values
-                        elif len(y[y != fv]) == 0:
-                            print('Array of all fill values - skipping plot.')
+                            # Check if the array is all fill values
+                            elif len(y[y != fv]) == 0:
+                                print('Array of all fill values - skipping plot.')
 
-                        else:
-                            # reject fill values
-                            ind = y.values != fv
-                            t = tm[ind]
-                            y = y[ind]
+                            else:
+                                # reject fill values
+                                ind = y.values != fv
+                                t = tm[ind]
+                                y = y[ind]
 
-                            # Plot all data
-                            fig, ax = pf.plot_timeseries(t, y, y.name, stdev=None)
-                            ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-                            sfile = '-'.join((filename, y.name, t0[:10]))
-                            pf.save_fig(save_dir, sfile)
+                                # Plot all data
+                                fig, ax = pf.plot_timeseries(t, y, y.name, stdev=None)
+                                ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+                                sfile = '-'.join((filename, y.name, t0[:10]))
+                                pf.save_fig(save_dir, sfile)
 
-                            # Plot data with outliers removed
-                            fig, ax = pf.plot_timeseries(t, y, y.name, stdev=5)
-                            ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-                            sfile = '-'.join((filename, y.name, t0[:10])) + '_rmoutliers'
-                            pf.save_fig(save_dir, sfile)
+                                # Plot data with outliers removed
+                                fig, ax = pf.plot_timeseries(t, y, y.name, stdev=5)
+                                ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+                                sfile = '-'.join((filename, y.name, t0[:10])) + '_rmoutliers'
+                                pf.save_fig(save_dir, sfile)
 
 
 if __name__ == '__main__':

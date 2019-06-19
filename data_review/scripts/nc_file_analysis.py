@@ -133,6 +133,10 @@ def main(sDir, url_list):
                         dr_data = cf.refdes_datareview_json(refdes)
                         stream_vars = cf.return_stream_vars(data_stream)
                         sci_vars = cf.return_science_vars(data_stream)
+                        node = refdes.split('-')[1]
+                        if 'cspp' in data_stream or 'WFP' in node:
+                            sci_vars.append('int_ctd_pressure')
+
                         # if 'FDCHP' in refdes:
                         #     remove_vars = ['fdchp_wind_x', 'fdchp_wind_y', 'fdchp_wind_z', 'fdchp_speed_of_sound_sonic',
                         #                    'fdchp_x_accel_g', 'fdchp_y_accel_g', 'fdchp_z_accel_g']
@@ -263,6 +267,15 @@ def main(sDir, url_list):
                             pressure = ds[press]
                             num_dims = len(pressure.dims)
                             if len(pressure) > 1:
+                                # if the pressure variable is an array of all zeros (as in the case of pressure_depth
+                                # for OPTAAs on surface piercing profilers
+                                if (len(np.unique(pressure)) == 1) & (np.unique(pressure)[0] == 0.0):
+                                    try:
+                                        pressure = ds['int_ctd_pressure']
+                                        press = 'int_ctd_pressure'
+                                    except KeyError:
+                                        pressure = pressure
+
                                 # reject NaNs
                                 p_nonan = pressure.values[~np.isnan(pressure.values)]
 
@@ -308,8 +321,7 @@ def main(sDir, url_list):
                                 pressure_units = 'no units attribute for pressure'
 
                             if pressure_mean:
-                                node = refdes.split('-')[1]
-                                if ('WFP' in node) or ('MOAS' in subsite):
+                                if ('WFP' in node) or ('MOAS' in subsite) or ('SP' in node):
                                     pressure_compare = int(round(pressure_max))
                                 else:
                                     pressure_compare = int(round(pressure_mean))
@@ -374,91 +386,100 @@ def main(sDir, url_list):
                         # calculate statistics for science variables, excluding outliers +/- 5 SD
                         for sv in sci_vars:
                             if sv != 't_max':  # for ADCP
-                                print(sv)
-                                try:
-                                    var = ds[sv]
-                                    # need to round SPKIR values to 1 decimal place to match the global ranges.
-                                    # otherwise, values that round to zero (e.g. 1.55294e-05) will be excluded by
-                                    # the global range test
-                                    # if 'spkir' in sv:
-                                    #     vD = np.round(var.values, 1)
-                                    # else:
-                                    #     vD = var.values
-                                    vD = var.values
-                                    if 'timedelta' not in str(var.values.dtype):
-                                        # for OPTAA wavelengths: when multiple files are opened with xr.open_mfdataset
-                                        # xarray automatically forces all variables to have the same number of
-                                        # dimensions. So in this case wavelength_a and wavelength_c have 1 dimension
-                                        # in the individual files, so I'm forcing the analysis to treat them like
-                                        # they have 1 dimension (when there are multiple files for 1 deployment)
-                                        if sv == 'wavelength_a' or sv == 'wavelength_c':
-                                            [g_min, g_max] = cf.get_global_ranges(r, sv)
-                                            vnum_dims = len(var.dims)
-                                            if vnum_dims == 1:
-                                                n_all = len(var)
-                                                mean = list(vD)
-                                            else:
-                                                vnum_dims = 1
-                                                n_all = len(vD[0])
-                                                mean = list(vD[0])
-                                            num_outliers = None
-                                            vmin = None
-                                            vmax = None
-                                            sd = None
-                                            n_stats = 'not calculated'
-                                            var_units = var.units
-                                            n_nan = None
-                                            n_fv = None
-                                            n_grange = 'no global ranges'
-                                            fv = var._FillValue
-
-                                        else:
-                                            vnum_dims = len(var.dims)
-                                            if vnum_dims > 2:
-                                                print('variable has more than 2 dimensions')
+                                if sv != 'wavss_a_buoymotion_time':
+                                    print(sv)
+                                    try:
+                                        var = ds[sv]
+                                        # need to round SPKIR values to 1 decimal place to match the global ranges.
+                                        # otherwise, values that round to zero (e.g. 1.55294e-05) will be excluded by
+                                        # the global range test
+                                        # if 'spkir' in sv:
+                                        #     vD = np.round(var.values, 1)
+                                        # else:
+                                        #     vD = var.values
+                                        vD = var.values
+                                        if 'timedelta' not in str(var.values.dtype):
+                                            # for OPTAA wavelengths: when multiple files are opened with xr.open_mfdataset
+                                            # xarray automatically forces all variables to have the same number of
+                                            # dimensions. So in this case wavelength_a and wavelength_c have 1 dimension
+                                            # in the individual files, so I'm forcing the analysis to treat them like
+                                            # they have 1 dimension (when there are multiple files for 1 deployment)
+                                            if sv == 'wavelength_a' or sv == 'wavelength_c':
+                                                [g_min, g_max] = cf.get_global_ranges(r, sv)
+                                                vnum_dims = len(var.dims)
+                                                if vnum_dims == 1:
+                                                    n_all = len(var)
+                                                    mean = list(vD)
+                                                else:
+                                                    vnum_dims = 1
+                                                    n_all = len(vD[0])
+                                                    mean = list(vD[0])
                                                 num_outliers = None
-                                                mean = None
                                                 vmin = None
                                                 vmax = None
                                                 sd = None
-                                                n_stats = 'variable has more than 2 dimensions'
+                                                n_stats = 'not calculated'
                                                 var_units = var.units
                                                 n_nan = None
                                                 n_fv = None
-                                                n_grange = None
-                                                fv = None
-                                                n_all = None
-                                            else:
-                                                if vnum_dims > 1:
-                                                    n_all = [len(vD), len(vD.flatten())]
-                                                else:
-                                                    n_all = len(vD)
-                                                n_nan = int(np.sum(np.isnan(vD)))
+                                                n_grange = 'no global ranges'
                                                 fv = var._FillValue
-                                                var_nofv = var.where(var != fv)
-                                                n_fv = int(np.sum(np.isnan(var_nofv.values))) - n_nan
 
-                                                var_units = var.units
-                                                [g_min, g_max] = cf.get_global_ranges(r, sv)
-                                                if list(np.unique(np.isnan(var_nofv))) != [True]:
-                                                    # reject data outside of global ranges
-                                                    if g_min is not None and g_max is not None:
-                                                        var_gr = var_nofv.where((var_nofv >= g_min) & (var_nofv <= g_max))
-                                                        n_grange = int(np.sum(np.isnan(var_gr)) - n_fv - n_nan)
+                                            else:
+                                                vnum_dims = len(var.dims)
+                                                if vnum_dims > 2:
+                                                    print('variable has more than 2 dimensions')
+                                                    num_outliers = None
+                                                    mean = None
+                                                    vmin = None
+                                                    vmax = None
+                                                    sd = None
+                                                    n_stats = 'variable has more than 2 dimensions'
+                                                    var_units = var.units
+                                                    n_nan = None
+                                                    n_fv = None
+                                                    n_grange = None
+                                                    fv = None
+                                                    n_all = None
+                                                else:
+                                                    if vnum_dims > 1:
+                                                        n_all = [len(vD), len(vD.flatten())]
                                                     else:
-                                                        n_grange = 'no global ranges'
-                                                        var_gr = var_nofv
+                                                        n_all = len(vD)
+                                                    n_nan = int(np.sum(np.isnan(vD)))
+                                                    fv = var._FillValue
+                                                    var_nofv = var.where(var != fv)
+                                                    n_fv = int(np.sum(np.isnan(var_nofv.values))) - n_nan
 
-                                                    if list(np.unique(np.isnan(var_gr))) != [True]:
-                                                        if 'SPKIR' in r:
-                                                            # don't remove outliers from dataset
-                                                            [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics_spkir(var_gr)
+                                                    var_units = var.units
+                                                    [g_min, g_max] = cf.get_global_ranges(r, sv)
+                                                    if list(np.unique(np.isnan(var_nofv))) != [True]:
+                                                        # reject data outside of global ranges
+                                                        if g_min is not None and g_max is not None:
+                                                            var_gr = var_nofv.where((var_nofv >= g_min) & (var_nofv <= g_max))
+                                                            n_grange = int(np.sum(np.isnan(var_gr)) - n_fv - n_nan)
                                                         else:
-                                                            if vnum_dims > 1:
-                                                                var_gr = var_gr.values.flatten()
-                                                            # drop nans before calculating stats
-                                                            var_gr = var_gr[~np.isnan(var_gr)]
-                                                            [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_gr, 5)
+                                                            n_grange = 'no global ranges'
+                                                            var_gr = var_nofv
+
+                                                        if list(np.unique(np.isnan(var_gr))) != [True]:
+                                                            if sv == 'spkir_abj_cspp_downwelling_vector':
+                                                                # don't remove outliers from dataset
+                                                                [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics_spkir(var_gr)
+                                                            else:
+                                                                if vnum_dims > 1:
+                                                                    var_gr = var_gr.values.flatten()
+                                                                # drop nans before calculating stats
+                                                                var_gr = var_gr[~np.isnan(var_gr)]
+                                                                [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_gr, 5)
+                                                        else:
+                                                            num_outliers = None
+                                                            mean = None
+                                                            vmin = None
+                                                            vmax = None
+                                                            sd = None
+                                                            n_stats = 0
+                                                            n_grange = None
                                                     else:
                                                         num_outliers = None
                                                         mean = None
@@ -467,40 +488,35 @@ def main(sDir, url_list):
                                                         sd = None
                                                         n_stats = 0
                                                         n_grange = None
-                                                else:
-                                                    num_outliers = None
-                                                    mean = None
-                                                    vmin = None
-                                                    vmax = None
-                                                    sd = None
-                                                    n_stats = 0
-                                                    n_grange = None
 
-                                except KeyError:
-                                    num_outliers = None
-                                    mean = None
-                                    vmin = None
-                                    vmax = None
-                                    sd = None
-                                    n_stats = 'variable not found in file'
-                                    var_units = None
-                                    n_nan = None
-                                    n_fv = None
-                                    fv = None
-                                    n_grange = None
-                                    n_all = None
+                                    except KeyError:
+                                        if sv == 'int_ctd_pressure':
+                                            continue
+                                        else:
+                                            num_outliers = None
+                                            mean = None
+                                            vmin = None
+                                            vmax = None
+                                            sd = None
+                                            n_stats = 'variable not found in file'
+                                            var_units = None
+                                            n_nan = None
+                                            n_fv = None
+                                            fv = None
+                                            n_grange = None
+                                            n_all = None
 
-                                if vnum_dims > 1:
-                                    sv = '{} (dims: {})'.format(sv, list(var.dims))
-                                else:
-                                    sv = sv
-                                if 'timedelta' not in str(var.values.dtype):
-                                    data['deployments'][deployment]['method'][method]['stream'][data_stream]['file'][
-                                        fname]['sci_var_stats'][sv] = dict(n_outliers=num_outliers, mean=mean, min=vmin,
-                                                                           max=vmax, stdev=sd, n_stats=n_stats, units=var_units,
-                                                                           n_nans=n_nan, n_fillvalues=n_fv, fill_value=str(fv),
-                                                                           global_ranges=[g_min, g_max], n_grange=n_grange,
-                                                                           n_all=n_all)
+                                    if vnum_dims > 1:
+                                        sv = '{} (dims: {})'.format(sv, list(var.dims))
+                                    else:
+                                        sv = sv
+                                    if 'timedelta' not in str(var.values.dtype):
+                                        data['deployments'][deployment]['method'][method]['stream'][data_stream]['file'][
+                                            fname]['sci_var_stats'][sv] = dict(n_outliers=num_outliers, mean=mean, min=vmin,
+                                                                               max=vmax, stdev=sd, n_stats=n_stats, units=var_units,
+                                                                               n_nans=n_nan, n_fillvalues=n_fv, fill_value=str(fv),
+                                                                               global_ranges=[g_min, g_max], n_grange=n_grange,
+                                                                               n_all=n_all)
 
 
         sfile = os.path.join(save_dir, '{}-file_analysis.json'.format(r))
