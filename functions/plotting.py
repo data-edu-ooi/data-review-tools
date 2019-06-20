@@ -479,9 +479,13 @@ def pressure_var(dataset, vars):
                         pvars.append(str(press_var))
                 except AttributeError:
                     continue
-
+        print(pvars)
         if len(pvars) > 1:
             print('More than 1 pressure variable found in the file')
+            pvar = [pvar for pvar in pvars if 'pressure' in pvar]
+            print('selected the variable with the keyword pressure')
+            pvar = str(pvar[0])
+
         elif len(pvars) == 1:
             pvar = str(pvars[0])
         else:
