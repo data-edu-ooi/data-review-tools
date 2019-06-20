@@ -306,7 +306,7 @@ def append_evaluated_data(sDir, deployment, ds, variable_dict, common_stream_nam
                     deployD = ds['deployment'].values
 
                     # find the pressure to use from the data file
-                    pD, p_unit, p_name = cf.add_pressure_to_dictionary_of_sci_vars(ds)
+                    pvarname, pD, p_unit, p_name, p_fillvalue = cf.add_pressure_to_dictionary_of_sci_vars(ds)
                     if p_unit not in pressure_unit:
                         pressure_unit.append(p_unit)
                     if p_name not in pressure_name:
@@ -451,26 +451,27 @@ def reject_timestamps_from_stat_analysis(Dpath, deployment, var, tt, yy, zz, dd)
                 onlyfiles.append(join(Dpath, item))
 
     dre = pd.DataFrame()
-    for nn in onlyfiles:
-        dr = pd.read_csv(nn)
-        dre = dre.append(dr, ignore_index=True)
+    if len(onlyfiles) > 0:
+        for nn in onlyfiles:
+            dr = pd.read_csv(nn)
+            dre = dre.append(dr, ignore_index=True)
 
-    drn = dre.loc[dre['Unnamed: 0'] == var]
-    list_time = []
-    for itime in drn.time_to_exclude:
-        ntime = itime.split(', ')
-        list_time.extend(ntime)
+        drn = dre.loc[dre['Unnamed: 0'] == var]
+        list_time = []
+        for itime in drn.time_to_exclude:
+            ntime = itime.split(', ')
+            list_time.extend(ntime)
 
-    u_time_list = np.unique(list_time)
-    if len(u_time_list) != 0:
-        tt, yy, zz, dd = reject_suspect_data(tt, yy, zz, dd, u_time_list)
+        u_time_list = np.unique(list_time)
+        if len(u_time_list) != 0:
+            tt, yy, zz, dd = reject_suspect_data(tt, yy, zz, dd, u_time_list)
 
     return tt, yy, zz, dd
 
 
 def reject_data_in_depth_range(tt, yy, zz, dd, zdbar):
     if zdbar is not None:
-        y_ind = y_portal < zdbar
+        y_ind = (0 < yy) & (yy < zdbar)
         if len(y_ind) != 0:
             tt = tt[y_ind]
             yy = yy[y_ind]
@@ -480,12 +481,13 @@ def reject_data_in_depth_range(tt, yy, zz, dd, zdbar):
 
 
 def reject_suspect_data(t, y, z, d, timestamps):
-
+    t = [(np.datetime64(pd.to_datetime(tx))) for tx in t]
     data = pd.DataFrame({'yy': y, 'zz': z, 'dd': d, 'tt': t}, index=t)
     dtime = [(np.datetime64(pd.to_datetime(row))) for row in timestamps]
+    #dtime = np.array(timestamps, dtype='datetime64[ns]')
 
-    if pd.to_datetime(t.max()) > pd.to_datetime(min(dtime)) or pd.to_datetime(t.min()) < pd.to_datetime(max(dtime)):
-        ind = np.where((dtime >= t.min()) & (dtime <= t.max()))
+    if pd.to_datetime(max(t)) > pd.to_datetime(min(dtime)) or pd.to_datetime(min(t)) < pd.to_datetime(max(dtime)):
+        ind = np.where((dtime >= min(t)) & (dtime <= max(t)))
         if len(dtime) - len(ind[0]) > 0:
             list_to_drop = [value for index, value in enumerate(dtime) if index in list(ind[0])]
             dtime = list_to_drop

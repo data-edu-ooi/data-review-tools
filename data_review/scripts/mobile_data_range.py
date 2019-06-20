@@ -24,7 +24,7 @@ import xarray as xr
 import datetime
 
 
-def main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time, glider):
+def main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time, inpercentile):
 
     """""
     URL : path to instrument data by methods
@@ -172,16 +172,12 @@ def main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time, glider):
                         clabel = sv + " (" + sv_units + ")"
                         ylabel = (y_name[0][0] + " (" + y_unit[0][0] + ")")
 
-
-                        if glider is 'no':
-                            t_eng = None
-                            m_water_depth = None
-
+                        t_eng = None
+                        m_water_depth = None
 
                         # plot non-erroneous -suspect data
                         fig, ax, bar = pf.plot_xsection(subsite, t, y, z, clabel, ylabel, t_eng, m_water_depth,
                                                         inpercentile, stdev=None)
-
 
                         title0 = 'Data colored using the upper and lower {}th percentile.'.format(inpercentile)
                         ax.set_title(r+'\n'+title0, fontsize=9)
@@ -233,11 +229,11 @@ if __name__ == '__main__':
     '''
         define plot type, save-directory name and URL where data files live 
     '''
-    glider = 'no' # options: yes, no
+    #glider = 'no' # options: yes, no
     mainP = '/Users/leila/Documents/NSFEduSupport/'
     mDir = mainP + 'github/data-review-tools/data_review/data_ranges'
     sDir = mainP + 'review/figures'
     url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021222-CE09OSPM-WFP01-04-FLORTK000-recovered_wfp-flort_sample/catalog.html',
                 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20181213T021350-CE09OSPM-WFP01-04-FLORTK000-telemetered-flort_sample/catalog.html']
 
-    main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time, glider)
+    main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time, inpercentile)

@@ -109,8 +109,8 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
             #     t_eng = None
 
             if deployment_num is not None:
-                if int(deployment.split('0')[-1]) is not deployment_num:
-                    print(type(int(deployment.split('0')[-1])), type(deployment_num))
+                if int(int(deployment[-4:])) is not deployment_num:
+                    print(type(int(deployment[-4:])), type(deployment_num))
                     continue
 
             if start_time is not None and end_time is not None:
@@ -145,7 +145,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                 print('No longitude variable in file')
 
             # get pressure variable
-            y1, y_units, press, y_fillvalue = cf.add_pressure_to_dictionary_of_sci_vars(ds)
+            pvarname, y1, y_units, press, y_fillvalue = cf.add_pressure_to_dictionary_of_sci_vars(ds)
 
             # prepare file to list timestamps with suspect data  for each data parameter
             stat_data = pd.DataFrame(columns=['deployments', 'time_to_exclude'])
@@ -173,7 +173,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                     else:
                         # remove unreasonable pressure data (e.g. for surface piercing profilers)
                         if zdbar:
-                            po_ind = y1 < zdbar
+                            po_ind = (0 < y1) & (y1 < zdbar)
                             n_zdbar = np.sum(~po_ind)
                             tm = time1[po_ind]
                             y = y1[po_ind]
@@ -254,20 +254,6 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                                 z_nospct = z_portal
                                 y_nospct = y_portal
 
-                            # reject data in a depth range
-                            # if zdbar:
-                            #     y_ind = y_nospct < zdbar
-                            #     n_zdbar = np.sum(~y_ind)
-                            #     t_array = t_nospct[y_ind]
-                            #     y_array = y_nospct[y_ind]
-                            #     z_array = z_nospct[y_ind]
-                            # else:
-                            #     n_zdbar = 0
-                            #     t_array = t_nospct
-                            #     y_array = y_nospct
-                            #     z_array = z_nospct
-                            # print('{} in water depth > {} dbar'.format(n_zdbar, zdbar))
-
                             """
                             Plot data
                             """
@@ -285,7 +271,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                                     if zdbar:
                                         leg_text = (
                                             'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges '
-                                            '[{} - {}], {} zeros'.format(lenfv, lennan, lenev, lengr, global_min,
+                                            '[{} - {}], {} unreasonable values'.format(lenfv, lennan, lenev, lengr, global_min,
                                                                          global_max, lenzero)
                                             + '\nremoved {} in the upper and lower {} percentile of data grouped in {} '
                                               'dbar segments'.format(len(z_portal) - len(z_nospct), inpercentile, zcell_size)
@@ -298,7 +284,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                                     elif n_std:
                                         leg_text = (
                                             'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
-                                            '{} zeros'.format(lenfv, lennan, lenev, lengr, global_min, global_max,
+                                            '{} unreasonable values'.format(lenfv, lennan, lenev, lengr, global_min, global_max,
                                                               lenzero)
                                             + '\nremoved {} data points +/- {} SD of data grouped in {} dbar segments'.format(
                                                 len(z_portal) - len(z_nospct), n_std, zcell_size)
@@ -308,7 +294,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, z
                                     else:
                                         leg_text = (
                                             'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
-                                            '{} zeros'.format(lenfv, lennan, lenev, lengr, global_min, global_max, lenzero)
+                                            '{} unreasonable values'.format(lenfv, lennan, lenev, lengr, global_min, global_max, lenzero)
                                             + '\nremoved {} in the upper and lower {} percentile of data grouped in {} dbar segments'.format(
                                                 len(z_portal) - len(z_nospct), inpercentile, zcell_size)
                                             + '\nexcluded {} suspect data points when inspected visually'.format(
