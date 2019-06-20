@@ -163,7 +163,7 @@ def main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time, inpercen
                                 t_deploy = '{}, {}'.format(t_deploy, deployments[i])
                             stat_data.insert(loc=1, column='deployments', value=t_deploy, allow_duplicates=False)
 
-                            stat_df = stat_df.append(stat_data, ignore_index=True)
+                            stat_df = stat_df.append(stat_data, ignore_index=False)
 
                         """
                         plot full time range free from errors and suspect data
@@ -179,7 +179,7 @@ def main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time, inpercen
                         fig, ax, bar = pf.plot_xsection(subsite, t, y, z, clabel, ylabel, t_eng, m_water_depth,
                                                         inpercentile, stdev=None)
 
-                        title0 = 'Data colored using the upper and lower {}th percentile.'.format(inpercentile)
+                        title0 = 'Data colored using the upper and lower {} percentile.'.format(inpercentile)
                         ax.set_title(r+'\n'+title0, fontsize=9)
                         leg_text = ('{} % erroneous values removed after Human In the Loop review'.format(
                                                                                                     (len(t)/l0) * 100),)
