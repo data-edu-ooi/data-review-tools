@@ -180,7 +180,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                         else:
                             # remove unreasonable pressure data (e.g. for surface piercing profilers)
                             if zdbar:
-                                po_ind = y1 < zdbar
+                                po_ind = (0 < y1) & (y1 < zdbar)
                                 tm = time1[po_ind]
                                 y = y1[po_ind]
                                 z = z1[po_ind]
@@ -321,7 +321,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                                 if inpercentile:
                                     leg_text = (
                                         'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
-                                        '{} zeros'.format(lenfv, lennan, lenev, lengr, global_min, global_max, lenzero) +
+                                        '{} unreasonable values'.format(lenfv, lennan, lenev, lengr, global_min, global_max, lenzero) +
                                         '\nexcluded {} suspect data points when inspected visually'.format(
                                             len(ndata) - len(z_portal)) +
                                         '\n(black) data average in {} dbar segments'.format(zcell_size) +
@@ -330,7 +330,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                                 elif n_std:
                                     leg_text = (
                                         'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
-                                        '{} zeros'.format(lenfv, lennan, lenev, lengr, global_min, global_max,
+                                        '{} unreasonable values'.format(lenfv, lennan, lenev, lengr, global_min, global_max,
                                                           lenzero) +
                                         '\nexcluded {} suspect data points when inspected visually'.format(
                                             len(ndata) - len(z_portal)) +
@@ -355,7 +355,7 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                                 ax.set_title(title, fontsize=9)
                                 leg_text = (
                                     'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
-                                    '{} zeros'.format(lenfv, lennan, lenev, lengr, global_min, global_max, lenzero) +
+                                    '{} unreasonable values'.format(lenfv, lennan, lenev, lengr, global_min, global_max, lenzero) +
                                     '\nexcluded {} suspect data points when inspected visually'.format(
                                         len(ndata) - len(z_portal)),
                                 )
@@ -412,6 +412,8 @@ if __name__ == '__main__':
     '''
     zcell_size = 10
 
+    zdbar = 75  # remove data below this depth for analysis and plotting
+
     ''''
     define deployment number and indicate if only the preferred data should be plotted
     '''
@@ -429,4 +431,4 @@ if __name__ == '__main__':
     '''
     call in main function with the above attributes
     '''
-    main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n_std, inpercentile, zcell_size)
+    main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n_std, inpercentile, zcell_size, zdbar)
