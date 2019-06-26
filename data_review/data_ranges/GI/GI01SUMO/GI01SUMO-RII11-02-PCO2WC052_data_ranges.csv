@@ -1,0 +1,4 @@
+common_stream_name,preferred_methods_streams,deployments,long_name,units,t0,t1,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,define_stdev,n_outliers,n_stats,mean,min,max,stdev
+pco2w_abc_instrument,"['recovered_host-pco2w_abc_imodem_instrument_recovered', 'telemetered-pco2w_abc_imodem_instrument']",,Thermistor Temperature,['ºC'],,,[-9999999.0],"[-2.0, 40.0]",,0,161,161,,,,,,,
+pco2w_abc_instrument,"['recovered_host-pco2w_abc_imodem_instrument_recovered', 'telemetered-pco2w_abc_imodem_instrument']",,pCO2 Seawater,['µatm'],,,[-9999999.0],"[100.0, 600.0]",,0,161,161,,,,,,,
+pco2w_abc_instrument_blank,"['recovered_host-pco2w_abc_imodem_instrument_recovered', 'telemetered-pco2w_abc_imodem_instrument']",,Thermistor Temperature,[],,,[],"[-2.0, 40.0]",,0,161,161,,,,,,,
