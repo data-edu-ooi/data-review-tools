@@ -1,0 +1,57 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0003,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",35317,0,0,1,0,35316,100.0,123.5527,38.4709,274.6083,47.8806
+deployment0003,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,estimated_oxygen_concentration,µmol L-1,-9999999.0,"[0.0, 400.0]",35317,0,0,0,0,35317,100.0,157.2474,61.001,345.189,59.788
+deployment0003,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,estimated_oxygen_saturation,percent,-9999999.0,"[0.0, 110.0]",35317,0,0,0,0,35317,100.0,43.7199,16.356,104.185,17.6607
+deployment0003,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,optode_temperature,ºC,-9999999.0,"[-2.0, 40.0]",35317,0,0,0,0,35317,100.0,8.8362,7.611,13.911,1.057
+deployment0003,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",35317,0,0,0,800,34517,97.73,34.5151,0.679,69.76,21.3872
+deployment0003,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,dosta_abcdjm_cspp_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",35317,0,0,0,0,35317,100.0,157.2474,61.0015,345.1806,59.788
+deployment0003,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",35317,0,0,no global ranges,789,34528,97.77,36.3571,0.6792,3180.1365,70.9887
+deployment0004,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",22159,0,0,0,0,22159,100.0,196.3598,48.8514,326.0329,37.2628
+deployment0004,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,estimated_oxygen_concentration,µmol L-1,-9999999.0,"[0.0, 400.0]",22159,0,0,0,0,22159,100.0,274.6182,102.536,324.007,49.4513
+deployment0004,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,estimated_oxygen_saturation,percent,-9999999.0,"[0.0, 110.0]",22159,0,0,0,0,22159,100.0,82.6635,27.906,98.955,16.5134
+deployment0004,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,optode_temperature,ºC,-9999999.0,"[-2.0, 40.0]",22159,0,0,0,0,22159,100.0,12.3367,8.278,14.437,1.5627
+deployment0004,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",22159,0,0,345,2,21812,98.43,39.6493,0.567,72.899,22.9096
+deployment0004,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,dosta_abcdjm_cspp_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",22159,0,0,0,0,22159,100.0,245.4973,91.666,289.6547,44.2074
+deployment0004,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",22159,0,0,no global ranges,345,21814,98.44,41.2079,0.5726,5491.2495,81.1228
+deployment0005,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",12954,0,0,1,85,12868,99.34,248.8638,145.489,331.2153,17.7185
+deployment0005,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,estimated_oxygen_concentration,µmol L-1,-9999999.0,"[0.0, 400.0]",12954,0,0,0,0,12954,100.0,313.1381,265.521,364.56,21.4724
+deployment0005,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,estimated_oxygen_saturation,percent,-9999999.0,"[0.0, 110.0]",12954,0,0,0,0,12954,100.0,90.1103,75.988,104.316,6.1937
+deployment0005,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,optode_temperature,ºC,-9999999.0,"[-2.0, 40.0]",12954,0,0,0,0,12954,100.0,10.6183,10.115,10.838,0.1237
+deployment0005,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",12954,0,0,98,0,12856,99.24,47.984,0.667,72.858,23.4703
+deployment0005,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,dosta_abcdjm_cspp_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",12954,0,0,0,0,12954,100.0,313.1389,265.5111,364.5769,21.4725
+deployment0005,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",12954,0,0,no global ranges,98,12856,99.24,48.352,0.6649,2341.8517,36.8038
+deployment0006,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",3872,0,0,1,1,3870,99.95,234.0282,79.3306,291.1786,33.4335
+deployment0006,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,estimated_oxygen_concentration,µmol L-1,-9999999.0,"[0.0, 400.0]",3872,0,0,0,0,3872,100.0,297.4479,254.125,365.987,34.1296
+deployment0006,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,estimated_oxygen_saturation,percent,-9999999.0,"[0.0, 110.0]",3872,0,0,0,0,3872,100.0,85.2318,71.794,106.391,10.5305
+deployment0006,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,optode_temperature,ºC,-9999999.0,"[-2.0, 40.0]",3872,0,0,0,0,3872,100.0,10.3938,9.835,11.078,0.3839
+deployment0006,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",3872,0,0,98,0,3774,97.47,44.2073,0.747,77.693,24.739
+deployment0006,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,dosta_abcdjm_cspp_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",3872,0,0,0,0,3872,100.0,297.4478,254.1299,365.9784,34.1295
+deployment0006,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",3872,0,0,no global ranges,96,3776,97.52,47.5505,0.7422,4411.7051,112.9912
+deployment0007,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",38793,0,0,0,0,38793,100.0,80.0396,2.0992,221.8674,38.6523
+deployment0007,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,estimated_oxygen_concentration,µmol L-1,-9999999.0,"[0.0, 400.0]",38793,0,0,0,0,38793,100.0,114.547,1.35,319.639,55.6902
+deployment0007,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,estimated_oxygen_saturation,percent,-9999999.0,"[0.0, 110.0]",38793,0,0,0,0,38793,100.0,32.1927,0.364,92.446,16.4484
+deployment0007,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,optode_temperature,ºC,-9999999.0,"[-2.0, 40.0]",38793,0,0,0,0,38793,100.0,9.1547,7.808,14.017,1.0998
+deployment0007,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",38793,0,0,0,0,38793,100.0,42.3011,0.8,78.007,25.3597
+deployment0007,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,dosta_abcdjm_cspp_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",38793,0,0,0,0,38793,100.0,101.4267,2.6769,280.3358,48.5828
+deployment0007,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",38793,0,0,no global ranges,0,38793,100.0,42.2884,0.7994,78.0066,25.3412
+deployment0008,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",12770,0,0,0,0,12770,100.0,192.1177,143.1901,250.0897,30.6202
+deployment0008,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,estimated_oxygen_concentration,µmol L-1,-9999999.0,"[0.0, 400.0]",12770,0,0,0,0,12770,100.0,261.2046,195.329,339.55,41.2452
+deployment0008,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,estimated_oxygen_saturation,percent,-9999999.0,"[0.0, 110.0]",12770,0,0,0,0,12770,100.0,75.5134,55.19,97.801,12.4745
+deployment0008,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,optode_temperature,ºC,-9999999.0,"[-2.0, 40.0]",12770,0,0,0,0,12770,100.0,10.7645,9.828,11.603,0.441
+deployment0008,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",12770,0,0,0,0,12770,100.0,45.0198,0.722,77.793,25.0998
+deployment0008,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,dosta_abcdjm_cspp_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",12770,0,0,0,0,12770,100.0,241.6808,180.9846,313.8554,37.9982
+deployment0008,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",12770,0,0,no global ranges,0,12770,100.0,45.0012,0.7273,77.7928,25.0742
+deployment0009,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",12986,0,0,0,0,12986,100.0,186.2975,94.2484,293.3956,64.1255
+deployment0009,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,estimated_oxygen_concentration,µmol L-1,-9999999.0,"[0.0, 400.0]",12986,0,0,0,0,12986,100.0,234.634,120.16,367.307,79.6226
+deployment0009,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,estimated_oxygen_saturation,percent,-9999999.0,"[0.0, 110.0]",12986,0,0,0,0,12986,100.0,66.3894,32.605,105.595,23.5036
+deployment0009,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,optode_temperature,ºC,-9999999.0,"[-2.0, 40.0]",12986,0,0,0,0,12986,100.0,9.6624,8.15,11.908,0.7608
+deployment0009,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",12986,0,0,0,0,12986,100.0,34.4794,0.756,78.235,22.9842
+deployment0009,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,dosta_abcdjm_cspp_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",12986,0,0,0,0,12986,100.0,234.6338,120.1548,367.321,79.6225
+deployment0009,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",12986,0,0,no global ranges,0,12986,100.0,34.4588,0.7636,78.235,22.949
+deployment0010,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",6088,0,0,0,0,6088,100.0,148.4482,87.7238,312.5983,64.7831
+deployment0010,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,estimated_oxygen_concentration,µmol L-1,-9999999.0,"[0.0, 400.0]",6088,0,0,0,0,6088,100.0,187.5488,111.77,391.655,80.7835
+deployment0010,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,estimated_oxygen_saturation,percent,-9999999.0,"[0.0, 110.0]",6088,0,0,18,0,6070,99.7,52.3537,30.401,109.678,23.575
+deployment0010,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,optode_temperature,ºC,-9999999.0,"[-2.0, 40.0]",6088,0,0,0,0,6088,100.0,9.1258,8.006,11.992,0.8456
+deployment0010,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",6088,0,0,0,0,6088,100.0,38.0553,0.514,76.0,25.4732
+deployment0010,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,dosta_abcdjm_cspp_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",6088,0,0,0,0,6088,100.0,187.5486,111.7764,391.672,80.7834
+deployment0010,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",6088,0,0,no global ranges,0,6088,100.0,38.0341,0.5089,75.9992,25.4436
