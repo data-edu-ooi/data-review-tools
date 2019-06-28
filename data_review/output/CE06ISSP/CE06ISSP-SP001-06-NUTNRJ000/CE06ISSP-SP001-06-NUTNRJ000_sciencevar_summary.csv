@@ -1,0 +1,121 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,nitrate_concentration,µMol L-1,-9999999.0,"[0.0, 40.0]",37235,0,0,0,0,37235,100.0,0.0,0.0,0.0,0.0
+deployment0001,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,nutnr_nitrogen_in_nitrate,mg/l,-9999999.0,"[0.0, 2.5]",37235,0,0,0,0,37235,100.0,0.0,0.0,0.0,0.0
+deployment0001,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",37235,0,0,0,0,37235,100.0,0.0,0.0,0.0,0.0
+deployment0001,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,ctd_psu,1,-9999999.0,"[0.0, 42.0]",37235,0,0,37212,0,23,0.06,0.0,0.0,0.001,0.0002
+deployment0001,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,ctd_temp,ºC,-9999999.0,"[-2.0, 40.0]",37235,0,0,9,26,37200,99.91,-1.0,-1.0,-1.0,0.0
+deployment0001,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,ctd_dbar,dbar,-9999999.0,"[0.0, 6000.0]",37235,0,0,37206,0,29,0.08,0.0,0.0,0.0,0.0
+deployment0001,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",37235,0,0,no global ranges,0,37235,100.0,12.8846,0.7057,29.5709,6.0705
+deployment0001,recovered_cspp,nutnr_j_cspp_instrument_recovered,salinity_corrected_nitrate,µmol L-1,-9999999.0,"[0.0, 40.0]",3469,13,0,4,0,3452,99.51,8.1615,4.4567,33.5409,5.353
+deployment0001,recovered_cspp,nutnr_j_cspp_instrument_recovered,nitrate_concentration,µMol L-1,-9999999.0,"[0.0, 40.0]",3469,0,0,2940,0,529,15.25,10.3283,0.001,24.924,7.2883
+deployment0001,recovered_cspp,nutnr_j_cspp_instrument_recovered,nutnr_nitrogen_in_nitrate,mg/l,-9999999.0,"[0.0, 2.5]",3469,0,0,2936,0,533,15.36,0.1436,-0.0,0.349,0.1025
+deployment0001,recovered_cspp,nutnr_j_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",3469,0,0,0,0,3469,100.0,0.0,0.0,0.0,0.0
+deployment0001,recovered_cspp,nutnr_j_cspp_instrument_recovered,ctd_psu,1,-9999999.0,"[0.0, 42.0]",3469,0,0,3453,0,16,0.46,0.0,0.0,0.0,0.0
+deployment0001,recovered_cspp,nutnr_j_cspp_instrument_recovered,ctd_temp,ºC,-9999999.0,"[-2.0, 40.0]",3469,0,0,3,1,3465,99.88,-0.9939,-1.0,0.0,0.0776
+deployment0001,recovered_cspp,nutnr_j_cspp_instrument_recovered,ctd_dbar,dbar,-9999999.0,"[0.0, 6000.0]",3469,0,0,3448,0,21,0.61,2.0977,0.0,44.051,9.3811
+deployment0001,recovered_cspp,nutnr_j_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",3469,0,0,no global ranges,1,3468,99.97,13.1347,0.7114,28.1294,6.2902
+deployment0002,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,nitrate_concentration,µMol L-1,-9999999.0,"[0.0, 40.0]",9248,0,0,0,0,9248,100.0,0.0,0.0,0.0,0.0
+deployment0002,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,nutnr_nitrogen_in_nitrate,mg/l,-9999999.0,"[0.0, 2.5]",9248,0,0,0,0,9248,100.0,0.0,0.0,0.0,0.0
+deployment0002,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",9248,0,0,0,0,9248,100.0,0.0,0.0,0.0,0.0
+deployment0002,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,ctd_psu,1,-9999999.0,"[0.0, 42.0]",9248,0,0,9244,0,4,0.04,0.0,0.0,0.0,0.0
+deployment0002,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,ctd_temp,ºC,-9999999.0,"[-2.0, 40.0]",9248,0,0,3,5,9240,99.91,-1.0,-1.0,-1.0,0.0
+deployment0002,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,ctd_dbar,dbar,-9999999.0,"[0.0, 6000.0]",9248,0,0,9243,0,5,0.05,0.0,0.0,0.0,0.0
+deployment0002,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",9248,0,0,no global ranges,0,9248,100.0,10.1991,0.7428,24.1384,6.0049
+deployment0002,recovered_cspp,nutnr_j_cspp_instrument_recovered,salinity_corrected_nitrate,µmol L-1,-9999999.0,"[0.0, 40.0]",890,0,0,39,0,851,95.62,7.42,0.055,19.9962,6.1661
+deployment0002,recovered_cspp,nutnr_j_cspp_instrument_recovered,nitrate_concentration,µMol L-1,-9999999.0,"[0.0, 40.0]",890,0,0,0,0,890,100.0,10.7516,2.293,24.27,6.9992
+deployment0002,recovered_cspp,nutnr_j_cspp_instrument_recovered,nutnr_nitrogen_in_nitrate,mg/l,-9999999.0,"[0.0, 2.5]",890,0,0,0,0,890,100.0,0.1506,0.032,0.34,0.098
+deployment0002,recovered_cspp,nutnr_j_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",890,0,0,0,0,890,100.0,0.0,0.0,0.0,0.0
+deployment0002,recovered_cspp,nutnr_j_cspp_instrument_recovered,ctd_psu,1,-9999999.0,"[0.0, 42.0]",890,0,0,886,0,4,0.45,0.0,-0.0,-0.0,0.0
+deployment0002,recovered_cspp,nutnr_j_cspp_instrument_recovered,ctd_temp,ºC,-9999999.0,"[-2.0, 40.0]",890,0,0,3,4,883,99.21,-1.0,-1.0,-1.0,0.0
+deployment0002,recovered_cspp,nutnr_j_cspp_instrument_recovered,ctd_dbar,dbar,-9999999.0,"[0.0, 6000.0]",890,0,0,886,0,4,0.45,0.0,0.0,0.0,0.0
+deployment0002,recovered_cspp,nutnr_j_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",890,0,0,no global ranges,0,890,100.0,10.9146,0.7409,22.9276,6.3758
+deployment0003,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,nitrate_concentration,µMol L-1,-9999999.0,"[0.0, 40.0]",13719,0,0,0,0,13719,100.0,0.0,0.0,0.0,0.0
+deployment0003,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,nutnr_nitrogen_in_nitrate,mg/l,-9999999.0,"[0.0, 2.5]",13719,0,0,0,0,13719,100.0,0.0,0.0,0.0,0.0
+deployment0003,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",13719,0,0,0,0,13719,100.0,0.0,0.0,0.0,0.0
+deployment0003,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,ctd_psu,1,-9999999.0,"[0.0, 42.0]",13719,0,0,13577,2,140,1.02,0.0217,0.0,2.035,0.185
+deployment0003,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,ctd_temp,ºC,-9999999.0,"[-2.0, 40.0]",13719,0,0,35,262,13422,97.84,-1.0,-1.0,-1.0,0.0
+deployment0003,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,ctd_dbar,dbar,-9999999.0,"[0.0, 6000.0]",13719,0,0,13453,1,265,1.93,0.1325,0.0,32.561,2.0
+deployment0003,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",13719,0,0,no global ranges,0,13719,100.0,10.9325,0.4017,28.4855,6.9609
+deployment0003,recovered_cspp,nutnr_j_cspp_instrument_recovered,salinity_corrected_nitrate,µmol L-1,-9999999.0,"[0.0, 40.0]",1372,2,0,45,1,1324,96.5,6.4344,0.015,34.4306,6.0984
+deployment0003,recovered_cspp,nutnr_j_cspp_instrument_recovered,nitrate_concentration,µMol L-1,-9999999.0,"[0.0, 40.0]",1372,0,0,0,0,1372,100.0,12.1037,4.133,29.682,7.1459
+deployment0003,recovered_cspp,nutnr_j_cspp_instrument_recovered,nutnr_nitrogen_in_nitrate,mg/l,-9999999.0,"[0.0, 2.5]",1372,0,0,0,0,1372,100.0,0.1695,0.058,0.416,0.1001
+deployment0003,recovered_cspp,nutnr_j_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",1372,0,0,0,0,1372,100.0,0.0,0.0,0.0,0.0
+deployment0003,recovered_cspp,nutnr_j_cspp_instrument_recovered,ctd_psu,1,-9999999.0,"[0.0, 42.0]",1372,0,0,1337,1,34,2.48,0.0009,0.0,0.032,0.0054
+deployment0003,recovered_cspp,nutnr_j_cspp_instrument_recovered,ctd_temp,ºC,-9999999.0,"[-2.0, 40.0]",1372,0,0,22,2,1348,98.25,-0.9773,-1.0,0.509,0.1508
+deployment0003,recovered_cspp,nutnr_j_cspp_instrument_recovered,ctd_dbar,dbar,-9999999.0,"[0.0, 6000.0]",1372,0,0,1338,1,33,2.41,1.9735,0.0,32.563,7.7688
+deployment0003,recovered_cspp,nutnr_j_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",1372,0,0,no global ranges,0,1372,100.0,11.9667,0.795,28.0956,7.4915
+deployment0004,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,nitrate_concentration,µMol L-1,-9999999.0,"[0.0, 40.0]",19003,0,0,0,0,19003,100.0,0.0,0.0,0.0,0.0
+deployment0004,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,nutnr_nitrogen_in_nitrate,mg/l,-9999999.0,"[0.0, 2.5]",19003,0,0,0,0,19003,100.0,0.0,0.0,0.0,0.0
+deployment0004,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",19003,0,0,0,0,19003,100.0,0.0,0.0,0.0,0.0
+deployment0004,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,ctd_psu,1,-9999999.0,"[0.0, 42.0]",19003,0,0,18894,1,108,0.57,0.0003,0.0,0.025,0.0024
+deployment0004,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,ctd_temp,ºC,-9999999.0,"[-2.0, 40.0]",19003,0,0,4,206,18793,98.89,-1.0,-1.0,-1.0,0.0
+deployment0004,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,ctd_dbar,dbar,-9999999.0,"[0.0, 6000.0]",19003,0,0,18801,0,202,1.06,0.0,0.0,0.0,0.0
+deployment0004,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",19003,0,0,no global ranges,79,18924,99.58,13.9228,-27.1145,1014.1893,13.504
+deployment0004,recovered_cspp,nutnr_j_cspp_instrument_recovered,salinity_corrected_nitrate,µmol L-1,-9999999.0,"[0.0, 40.0]",1768,1,0,54,0,1713,96.89,10.6216,0.5102,37.3882,7.2694
+deployment0004,recovered_cspp,nutnr_j_cspp_instrument_recovered,nitrate_concentration,µMol L-1,-9999999.0,"[0.0, 40.0]",1768,0,0,0,0,1768,100.0,13.1245,2.457,28.66,7.8431
+deployment0004,recovered_cspp,nutnr_j_cspp_instrument_recovered,nutnr_nitrogen_in_nitrate,mg/l,-9999999.0,"[0.0, 2.5]",1768,0,0,0,0,1768,100.0,0.1838,0.034,0.401,0.1099
+deployment0004,recovered_cspp,nutnr_j_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",1768,0,0,0,0,1768,100.0,0.0,0.0,0.0,0.0
+deployment0004,recovered_cspp,nutnr_j_cspp_instrument_recovered,ctd_psu,1,-9999999.0,"[0.0, 42.0]",1768,0,0,1717,1,50,2.83,0.054,0.0,2.701,0.3781
+deployment0004,recovered_cspp,nutnr_j_cspp_instrument_recovered,ctd_temp,ºC,-9999999.0,"[-2.0, 40.0]",1768,0,0,10,50,1708,96.61,-1.0,-1.0,-1.0,0.0
+deployment0004,recovered_cspp,nutnr_j_cspp_instrument_recovered,ctd_dbar,dbar,-9999999.0,"[0.0, 6000.0]",1768,0,0,1717,1,50,2.83,0.0,0.0,0.0,0.0
+deployment0004,recovered_cspp,nutnr_j_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",1768,0,0,no global ranges,14,1754,99.21,13.9208,-25.9125,26.9976,7.686
+deployment0005,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,nitrate_concentration,µMol L-1,-9999999.0,"[0.0, 40.0]",10728,0,0,0,0,10728,100.0,0.0,0.0,0.0,0.0
+deployment0005,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,nutnr_nitrogen_in_nitrate,mg/l,-9999999.0,"[0.0, 2.5]",10728,0,0,0,0,10728,100.0,0.0,0.0,0.0,0.0
+deployment0005,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",10728,0,0,0,0,10728,100.0,0.0,0.0,0.0,0.0
+deployment0005,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,ctd_psu,1,-9999999.0,"[0.0, 42.0]",10728,0,0,10581,2,145,1.35,0.0081,0.0,0.862,0.0753
+deployment0005,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,ctd_temp,ºC,-9999999.0,"[-2.0, 40.0]",10728,0,0,18,244,10466,97.56,-1.0,-1.0,-1.0,0.0
+deployment0005,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,ctd_dbar,dbar,-9999999.0,"[0.0, 6000.0]",10728,0,0,10476,2,250,2.33,0.0,0.0,0.0,0.0
+deployment0005,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",10728,0,0,no global ranges,0,10728,100.0,7.2522,0.368,23.3335,6.3803
+deployment0005,recovered_cspp,nutnr_j_cspp_instrument_recovered,salinity_corrected_nitrate,µmol L-1,-9999999.0,"[0.0, 40.0]",1076,4,0,159,0,913,84.85,13.7678,0.1472,39.9266,9.9317
+deployment0005,recovered_cspp,nutnr_j_cspp_instrument_recovered,nitrate_concentration,µMol L-1,-9999999.0,"[0.0, 40.0]",1076,0,0,0,0,1076,100.0,14.8176,4.008,32.776,9.9226
+deployment0005,recovered_cspp,nutnr_j_cspp_instrument_recovered,nutnr_nitrogen_in_nitrate,mg/l,-9999999.0,"[0.0, 2.5]",1076,0,0,0,0,1076,100.0,0.2075,0.056,0.459,0.139
+deployment0005,recovered_cspp,nutnr_j_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",1076,0,0,0,0,1076,100.0,0.0,0.0,0.0,0.0
+deployment0005,recovered_cspp,nutnr_j_cspp_instrument_recovered,ctd_psu,1,-9999999.0,"[0.0, 42.0]",1076,0,0,1048,0,28,2.6,0.0,0.0,0.0,0.0
+deployment0005,recovered_cspp,nutnr_j_cspp_instrument_recovered,ctd_temp,ºC,-9999999.0,"[-2.0, 40.0]",1076,0,0,5,28,1043,96.93,-1.0,-1.0,-1.0,0.0
+deployment0005,recovered_cspp,nutnr_j_cspp_instrument_recovered,ctd_dbar,dbar,-9999999.0,"[0.0, 6000.0]",1076,0,0,1051,0,25,2.32,0.5308,0.0,13.27,2.6004
+deployment0005,recovered_cspp,nutnr_j_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",1076,0,0,no global ranges,0,1076,100.0,8.3804,0.3977,23.326,7.0755
+deployment0006,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,nitrate_concentration,µMol L-1,-9999999.0,"[0.0, 40.0]",6213,0,0,0,0,6213,100.0,0.0,0.0,0.0,0.0
+deployment0006,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,nutnr_nitrogen_in_nitrate,mg/l,-9999999.0,"[0.0, 2.5]",6213,0,0,1,0,6212,99.98,0.0,0.0,0.0,0.0
+deployment0006,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",6213,0,0,0,0,6213,100.0,0.0,0.0,0.0,0.0
+deployment0006,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,ctd_psu,1,-9999999.0,"[0.0, 42.0]",6213,0,0,6169,1,43,0.69,0.0002,0.0,0.008,0.0012
+deployment0006,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,ctd_temp,ºC,-9999999.0,"[-2.0, 40.0]",6213,0,0,1,66,6146,98.92,-1.0,-1.0,-1.0,0.0
+deployment0006,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,ctd_dbar,dbar,-9999999.0,"[0.0, 6000.0]",6213,0,0,6149,0,64,1.03,0.0,0.0,0.0,0.0
+deployment0006,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",6213,0,0,no global ranges,0,6213,100.0,-0.2589,-0.3009,-0.2315,0.0143
+deployment0006,recovered_cspp,nutnr_j_cspp_instrument_recovered,salinity_corrected_nitrate,µmol L-1,-9999999.0,"[0.0, 40.0]",594,1,0,6,1,586,98.65,5.3988,1.7697,13.2334,2.2793
+deployment0006,recovered_cspp,nutnr_j_cspp_instrument_recovered,nitrate_concentration,µMol L-1,-9999999.0,"[0.0, 40.0]",594,0,0,0,0,594,100.0,5.2095,1.76,8.573,1.6157
+deployment0006,recovered_cspp,nutnr_j_cspp_instrument_recovered,nutnr_nitrogen_in_nitrate,mg/l,-9999999.0,"[0.0, 2.5]",594,0,0,0,0,594,100.0,0.073,0.025,0.12,0.0226
+deployment0006,recovered_cspp,nutnr_j_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",594,0,0,0,0,594,100.0,0.0,0.0,0.0,0.0
+deployment0006,recovered_cspp,nutnr_j_cspp_instrument_recovered,ctd_psu,1,-9999999.0,"[0.0, 42.0]",594,0,0,578,0,16,2.69,0.0,0.0,0.0,0.0
+deployment0006,recovered_cspp,nutnr_j_cspp_instrument_recovered,ctd_temp,ºC,-9999999.0,"[-2.0, 40.0]",594,0,0,4,1,589,99.16,-0.9762,-1.0,0.0,0.1523
+deployment0006,recovered_cspp,nutnr_j_cspp_instrument_recovered,ctd_dbar,dbar,-9999999.0,"[0.0, 6000.0]",594,0,0,579,0,15,2.53,0.0,0.0,0.0,0.0
+deployment0006,recovered_cspp,nutnr_j_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",594,0,0,no global ranges,0,594,100.0,-0.2589,-0.296,-0.236,0.0143
+deployment0007,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,nitrate_concentration,µMol L-1,-9999999.0,"[0.0, 40.0]",16169,0,0,0,0,16169,100.0,0.0,0.0,0.0,0.0
+deployment0007,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,nutnr_nitrogen_in_nitrate,mg/l,-9999999.0,"[0.0, 2.5]",16169,0,0,0,0,16169,100.0,0.0,0.0,0.0,0.0
+deployment0007,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",16169,0,0,0,0,16169,100.0,0.0,0.0,0.0,0.0
+deployment0007,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,ctd_psu,1,-9999999.0,"[0.0, 42.0]",16169,0,0,15993,1,175,1.08,0.0625,0.0,5.634,0.5758
+deployment0007,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,ctd_temp,ºC,-9999999.0,"[-2.0, 40.0]",16169,0,0,8,340,15821,97.85,-1.0,-1.0,-1.0,0.0
+deployment0007,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,ctd_dbar,dbar,-9999999.0,"[0.0, 6000.0]",16169,0,0,15828,1,340,2.1,0.1373,0.0,44.051,2.3894
+deployment0007,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",16169,0,0,no global ranges,0,16169,100.0,11.4681,0.7075,24.3839,6.6822
+deployment0007,recovered_cspp,nutnr_j_cspp_instrument_recovered,salinity_corrected_nitrate,µmol L-1,-9999999.0,"[0.0, 40.0]",1496,12,0,69,0,1415,94.59,10.0187,0.0026,38.2402,7.7903
+deployment0007,recovered_cspp,nutnr_j_cspp_instrument_recovered,nitrate_concentration,µMol L-1,-9999999.0,"[0.0, 40.0]",1496,0,0,3,0,1493,99.8,10.681,0.021,30.215,8.6512
+deployment0007,recovered_cspp,nutnr_j_cspp_instrument_recovered,nutnr_nitrogen_in_nitrate,mg/l,-9999999.0,"[0.0, 2.5]",1496,0,0,3,0,1493,99.8,0.1496,0.0,0.423,0.1212
+deployment0007,recovered_cspp,nutnr_j_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",1496,0,0,0,0,1496,100.0,0.0,0.0,0.0,0.0
+deployment0007,recovered_cspp,nutnr_j_cspp_instrument_recovered,ctd_psu,1,-9999999.0,"[0.0, 42.0]",1496,0,0,1416,0,80,5.35,0.0,0.0,0.0,0.0
+deployment0007,recovered_cspp,nutnr_j_cspp_instrument_recovered,ctd_temp,ºC,-9999999.0,"[-2.0, 40.0]",1496,0,0,11,1,1484,99.2,-0.9495,-1.0,0.0,0.2191
+deployment0007,recovered_cspp,nutnr_j_cspp_instrument_recovered,ctd_dbar,dbar,-9999999.0,"[0.0, 6000.0]",1496,0,0,1415,1,80,5.35,0.2292,-0.0,13.27,1.5715
+deployment0007,recovered_cspp,nutnr_j_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",1496,0,0,no global ranges,0,1496,100.0,11.7388,0.8812,24.373,6.769
+deployment0008,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,nitrate_concentration,µMol L-1,-9999999.0,"[0.0, 40.0]",7383,0,0,1,0,7382,99.99,0.0,0.0,0.0,0.0
+deployment0008,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,nutnr_nitrogen_in_nitrate,mg/l,-9999999.0,"[0.0, 2.5]",7383,0,0,0,0,7383,100.0,0.0,0.0,0.0,0.0
+deployment0008,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",7383,0,0,0,0,7383,100.0,0.0,0.0,0.0,0.0
+deployment0008,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,ctd_psu,1,-9999999.0,"[0.0, 42.0]",7383,0,0,7342,1,40,0.54,0.0,0.0,0.001,0.0002
+deployment0008,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,ctd_temp,ºC,-9999999.0,"[-2.0, 40.0]",7383,0,0,9,63,7311,99.02,-1.0,-1.0,-1.0,0.0
+deployment0008,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,ctd_dbar,dbar,-9999999.0,"[0.0, 6000.0]",7383,0,0,7316,0,67,0.91,0.0,0.0,0.0,0.0
+deployment0008,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",7383,0,0,no global ranges,0,7383,100.0,11.1844,0.6459,24.2545,6.5218
+deployment0008,recovered_cspp,nutnr_j_cspp_instrument_recovered,salinity_corrected_nitrate,µmol L-1,-9999999.0,"[0.0, 40.0]",697,1,0,4,0,692,99.28,15.689,0.0844,28.7327,7.7265
+deployment0008,recovered_cspp,nutnr_j_cspp_instrument_recovered,nitrate_concentration,µMol L-1,-9999999.0,"[0.0, 40.0]",697,0,0,2,0,695,99.71,20.4607,2.951,32.458,7.7951
+deployment0008,recovered_cspp,nutnr_j_cspp_instrument_recovered,nutnr_nitrogen_in_nitrate,mg/l,-9999999.0,"[0.0, 2.5]",697,0,0,2,0,695,99.71,0.2866,0.041,0.455,0.1092
+deployment0008,recovered_cspp,nutnr_j_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",697,0,0,0,0,697,100.0,0.0,0.0,0.0,0.0
+deployment0008,recovered_cspp,nutnr_j_cspp_instrument_recovered,ctd_psu,1,-9999999.0,"[0.0, 42.0]",697,0,0,686,0,11,1.58,0.0,0.0,0.0,0.0
+deployment0008,recovered_cspp,nutnr_j_cspp_instrument_recovered,ctd_temp,ºC,-9999999.0,"[-2.0, 40.0]",697,0,0,0,10,687,98.57,-0.9996,-1.0,-0.75,0.0095
+deployment0008,recovered_cspp,nutnr_j_cspp_instrument_recovered,ctd_dbar,dbar,-9999999.0,"[0.0, 6000.0]",697,0,0,688,0,9,1.29,0.0,0.0,0.0,0.0
+deployment0008,recovered_cspp,nutnr_j_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",697,0,0,no global ranges,0,697,100.0,11.6312,0.7783,24.255,6.7412

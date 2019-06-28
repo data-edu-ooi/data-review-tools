@@ -1,0 +1,46 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_cspp,ctdpf_j_cspp_instrument_recovered,conductivity,S m-1,-9999999.0,"[0.0, 6.0]",996981,0,0,0,2,996979,100.0,3.4531,2.9353,3.7955,0.1394
+deployment0001,recovered_cspp,ctdpf_j_cspp_instrument_recovered,pressure,dbar,-9999999.0,"[0.0, 6000.0]",996981,0,0,42,28,996911,99.99,15.2283,0.658,29.709,7.5001
+deployment0001,recovered_cspp,ctdpf_j_cspp_instrument_recovered,salinity,1,-9999999.0,"[0.0, 42.0]",996981,0,0,0,2,996979,100.0,30.3608,24.9469,33.6559,1.8961
+deployment0001,recovered_cspp,ctdpf_j_cspp_instrument_recovered,temperature,ºC,-9999999.0,"[-2.0, 40.0]",996981,0,0,0,0,996981,100.0,11.2533,7.6227,13.6888,1.2596
+deployment0001,recovered_cspp,ctdpf_j_cspp_instrument_recovered,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",996981,0,0,0,60,996921,99.99,1023.192,1018.7502,1030.0252,1.6566
+deployment0002,recovered_cspp,ctdpf_j_cspp_instrument_recovered,conductivity,S m-1,-9999999.0,"[0.0, 6.0]",839953,0,0,11,0,839942,100.0,3.6096,3.3067,4.1186,0.1407
+deployment0002,recovered_cspp,ctdpf_j_cspp_instrument_recovered,pressure,dbar,-9999999.0,"[0.0, 6000.0]",839953,0,0,23,17,839913,100.0,20.7818,0.597,26.125,6.5206
+deployment0002,recovered_cspp,ctdpf_j_cspp_instrument_recovered,salinity,1,-9999999.0,"[0.0, 42.0]",839953,0,0,11,8344,831598,99.01,33.0512,28.7488,35.3498,0.6184
+deployment0002,recovered_cspp,ctdpf_j_cspp_instrument_recovered,temperature,ºC,-9999999.0,"[-2.0, 40.0]",839953,0,0,0,0,839953,100.0,9.9825,7.9322,17.8751,2.1994
+deployment0002,recovered_cspp,ctdpf_j_cspp_instrument_recovered,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",839953,0,0,11,5404,834538,99.36,1025.5058,1020.2531,1029.6867,0.9009
+deployment0003,recovered_cspp,ctdpf_j_cspp_instrument_recovered,conductivity,S m-1,-9999999.0,"[0.0, 6.0]",1106695,0,0,13,101,1106581,99.99,3.6928,3.0734,4.1601,0.1464
+deployment0003,recovered_cspp,ctdpf_j_cspp_instrument_recovered,pressure,dbar,-9999999.0,"[0.0, 6000.0]",1106695,0,0,50,30,1106615,99.99,19.5228,0.341,29.263,7.1347
+deployment0003,recovered_cspp,ctdpf_j_cspp_instrument_recovered,salinity,1,-9999999.0,"[0.0, 42.0]",1106695,0,0,13,436,1106246,99.96,32.3935,28.0885,36.8747,0.8627
+deployment0003,recovered_cspp,ctdpf_j_cspp_instrument_recovered,temperature,ºC,-9999999.0,"[-2.0, 40.0]",1106695,0,0,0,0,1106695,100.0,11.5837,7.8177,16.3227,2.3672
+deployment0003,recovered_cspp,ctdpf_j_cspp_instrument_recovered,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",1106695,0,0,13,144,1106538,99.99,1024.7121,1020.0805,1029.3472,1.0735
+deployment0004,recovered_cspp,ctdpf_j_cspp_instrument_recovered,conductivity,S m-1,-9999999.0,"[0.0, 6.0]",773630,0,0,12,1251,772367,99.84,3.5804,3.2964,3.8837,0.0589
+deployment0004,recovered_cspp,ctdpf_j_cspp_instrument_recovered,pressure,dbar,-9999999.0,"[0.0, 6000.0]",773630,0,0,4,11,773615,100.0,19.9788,0.758,27.421,7.6283
+deployment0004,recovered_cspp,ctdpf_j_cspp_instrument_recovered,salinity,1,-9999999.0,"[0.0, 42.0]",773630,0,0,12,4568,769050,99.41,32.7083,28.6187,33.614,0.7125
+deployment0004,recovered_cspp,ctdpf_j_cspp_instrument_recovered,temperature,ºC,-9999999.0,"[-2.0, 40.0]",773630,0,0,0,0,773630,100.0,10.0069,8.2597,15.2497,1.2919
+deployment0004,recovered_cspp,ctdpf_j_cspp_instrument_recovered,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",773630,0,0,12,3352,770266,99.57,1025.2483,1020.9343,1026.233,0.7994
+deployment0005,recovered_cspp,ctdpf_j_cspp_instrument_recovered,conductivity,S m-1,-9999999.0,"[0.0, 6.0]",274938,0,0,0,0,274938,100.0,3.2821,0.075,4.3826,1.0479
+deployment0005,recovered_cspp,ctdpf_j_cspp_instrument_recovered,pressure,dbar,-9999999.0,"[0.0, 6000.0]",274938,0,0,11,13,274914,99.99,9.2289,0.344,23.343,7.1692
+deployment0005,recovered_cspp,ctdpf_j_cspp_instrument_recovered,salinity,1,-9999999.0,"[0.0, 42.0]",274938,0,0,0,0,274938,100.0,28.5696,0.4656,35.5946,9.5832
+deployment0005,recovered_cspp,ctdpf_j_cspp_instrument_recovered,temperature,ºC,-9999999.0,"[-2.0, 40.0]",274938,0,0,0,0,274938,100.0,12.1588,7.698,18.3523,2.8475
+deployment0005,recovered_cspp,ctdpf_j_cspp_instrument_recovered,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",274938,0,0,965,10,273963,99.65,1021.6922,1000.0001,1052.1376,7.5658
+deployment0006,recovered_cspp,ctdpf_j_cspp_instrument_recovered,conductivity,S m-1,-9999999.0,"[0.0, 6.0]",250947,0,0,0,1,250946,100.0,3.3154,2.463,3.5343,0.2699
+deployment0006,recovered_cspp,ctdpf_j_cspp_instrument_recovered,pressure,dbar,-9999999.0,"[0.0, 6000.0]",250947,0,0,250946,0,1,0.0,4421.0771,4421.0771,4421.0771,0.0
+deployment0006,recovered_cspp,ctdpf_j_cspp_instrument_recovered,salinity,1,-9999999.0,"[0.0, 42.0]",250947,0,0,0,1,250946,100.0,29.7005,20.9604,32.1598,2.8488
+deployment0006,recovered_cspp,ctdpf_j_cspp_instrument_recovered,temperature,ºC,-9999999.0,"[-2.0, 40.0]",250947,0,0,0,0,250947,100.0,10.4085,10.047,11.7118,0.3352
+deployment0006,recovered_cspp,ctdpf_j_cspp_instrument_recovered,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",250947,0,0,0,1,250946,100.0,1022.757,1015.7793,1025.6433,2.2616
+deployment0007,recovered_cspp,ctdpf_j_cspp_instrument_recovered,conductivity,S m-1,-9999999.0,"[0.0, 6.0]",300046,0,0,0,0,300046,100.0,3.4755,2.4996,4.0941,0.2654
+deployment0007,recovered_cspp,ctdpf_j_cspp_instrument_recovered,pressure,dbar,-9999999.0,"[0.0, 6000.0]",300046,0,0,0,0,300046,100.0,11.6999,0.547,26.079,6.5993
+deployment0007,recovered_cspp,ctdpf_j_cspp_instrument_recovered,salinity,1,-9999999.0,"[0.0, 42.0]",300046,0,0,0,0,300046,100.0,30.5846,19.0989,33.6826,3.3623
+deployment0007,recovered_cspp,ctdpf_j_cspp_instrument_recovered,temperature,ºC,-9999999.0,"[-2.0, 40.0]",300046,0,0,0,0,300046,100.0,11.3616,7.945,15.9614,2.0419
+deployment0007,recovered_cspp,ctdpf_j_cspp_instrument_recovered,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",300046,0,0,0,0,300046,100.0,1023.3258,1013.7024,1026.3413,2.8991
+deployment0008,recovered_cspp,ctdpf_j_cspp_instrument_recovered,conductivity,S m-1,-9999999.0,"[0.0, 6.0]",100695,0,0,0,0,100695,100.0,3.6708,3.463,4.0475,0.1395
+deployment0008,recovered_cspp,ctdpf_j_cspp_instrument_recovered,pressure,dbar,-9999999.0,"[0.0, 6000.0]",100695,0,0,0,0,100695,100.0,12.6661,0.624,24.259,7.037
+deployment0008,recovered_cspp,ctdpf_j_cspp_instrument_recovered,salinity,1,-9999999.0,"[0.0, 42.0]",100695,0,0,0,0,100695,100.0,33.4022,32.5672,33.9716,0.2147
+deployment0008,recovered_cspp,ctdpf_j_cspp_instrument_recovered,temperature,ºC,-9999999.0,"[-2.0, 40.0]",100695,0,0,0,0,100695,100.0,10.1927,7.7723,14.7915,1.7438
+deployment0008,recovered_cspp,ctdpf_j_cspp_instrument_recovered,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",100695,0,0,0,0,100695,100.0,1025.7196,1024.4038,1026.5877,0.4854
+deployment0009,telemetered,ctdpf_j_cspp_instrument,conductivity,S m-1,-9999999.0,"[0.0, 6.0]",6698,0,0,0,1,6697,99.99,3.6455,3.0475,3.9626,0.1202
+deployment0009,telemetered,ctdpf_j_cspp_instrument,pressure,dbar,-9999999.0,"[0.0, 6000.0]",6698,0,0,0,0,6698,100.0,12.9462,0.822,26.208,7.4419
+deployment0009,telemetered,ctdpf_j_cspp_instrument,salinity,1,-9999999.0,"[0.0, 42.0]",6698,0,0,0,7,6691,99.9,32.4369,26.3417,33.7783,1.2295
+deployment0009,telemetered,ctdpf_j_cspp_instrument,temperature,ºC,-9999999.0,"[-2.0, 40.0]",6698,0,0,0,0,6698,100.0,11.0458,8.0486,16.9595,2.4295
+deployment0009,telemetered,ctdpf_j_cspp_instrument,density,kg m-3,-9999999.0,"[1000.0, 1100.0]",6698,0,0,0,1,6697,99.99,1024.8071,1018.1911,1026.4229,1.4027

@@ -1,0 +1,100 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_cspp,velpt_j_cspp_instrument_recovered,temperature,ºC,-9999999.0,"[-2.0, 40.0]",57911,0,0,0,5,57906,99.99,11.2873,7.69,12.1,1.146
+deployment0001,recovered_cspp,velpt_j_cspp_instrument_recovered,speed_of_sound,m s-1,-9999999.0,"[1380.0, 1580.0]",57911,0,0,5,0,57906,99.99,1494.2415,1481.2,1497.1,4.0664
+deployment0001,recovered_cspp,velpt_j_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",57911,0,0,0,17,57894,99.97,14.2906,0.716,29.705,6.9363
+deployment0001,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_pressure,dbar,-9999999.0,"[0.0, 6000.0]",57911,0,0,0,5,57906,99.99,14.2262,0.368,29.897,7.0007
+deployment0001,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam1_m_s,m s-1,-9999999.0,"[-3.0, 3.0]",57911,0,0,0,31,57880,99.95,-0.0619,-0.514,0.396,0.0914
+deployment0001,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam2_m_s,m s-1,-9999999.0,"[-3.0, 3.0]",57911,0,0,5,1,57905,99.99,0.1674,-0.634,0.92,0.1645
+deployment0001,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam3_m_s,m s-1,-9999999.0,"[-1.0, 1.0]",57911,0,0,3,15,57893,99.97,-0.0844,-0.477,0.333,0.0837
+deployment0001,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_eastward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",57911,0,0,0,30,57881,99.95,-0.0,-0.0004,0.0004,0.0001
+deployment0001,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_northward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",57911,0,0,0,5,57906,99.99,0.0002,-0.0008,0.001,0.0002
+deployment0001,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_upward_velocity,m s-1,-9999999.0,"[-1.0, 1.0]",57911,0,0,0,17,57894,99.97,-0.0001,-0.0005,0.0003,0.0001
+deployment0001,recovered_cspp,velpt_j_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",57911,0,0,no global ranges,19,57892,99.97,14.2863,0.7165,183.8337,6.966
+deployment0002,recovered_cspp,velpt_j_cspp_instrument_recovered,temperature,ºC,-9999999.0,"[-2.0, 40.0]",16184,0,0,0,3,16181,99.98,9.2999,7.87,13.51,1.2269
+deployment0002,recovered_cspp,velpt_j_cspp_instrument_recovered,speed_of_sound,m s-1,-9999999.0,"[1380.0, 1580.0]",16184,0,0,3,0,16181,99.98,1487.1873,1482.0,1501.8,4.385
+deployment0002,recovered_cspp,velpt_j_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",16184,0,0,68,60,16056,99.21,13.5495,0.646,26.067,7.806
+deployment0002,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_pressure,dbar,-9999999.0,"[0.0, 6000.0]",16184,0,0,0,3,16181,99.98,13.3919,0.315,25.815,7.8434
+deployment0002,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam1_m_s,m s-1,-9999999.0,"[-3.0, 3.0]",16184,0,0,0,32,16152,99.8,-0.0106,-0.417,0.391,0.0806
+deployment0002,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam2_m_s,m s-1,-9999999.0,"[-3.0, 3.0]",16184,0,0,3,7,16174,99.94,0.036,-0.483,0.57,0.1076
+deployment0002,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam3_m_s,m s-1,-9999999.0,"[-1.0, 1.0]",16184,0,0,3,1,16180,99.98,-0.2016,-0.492,0.177,0.1048
+deployment0002,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_eastward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",16184,0,0,0,7,16177,99.96,0.0,-0.0005,0.0005,0.0001
+deployment0002,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_northward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",16184,0,0,0,3,16181,99.98,0.0,-0.0008,0.0006,0.0001
+deployment0002,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_upward_velocity,m s-1,-9999999.0,"[-1.0, 1.0]",16184,0,0,0,4,16180,99.98,-0.0002,-0.0005,0.0002,0.0001
+deployment0002,recovered_cspp,velpt_j_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",16184,0,0,no global ranges,103,16081,99.36,13.8203,-27.2135,2136.3535,25.9842
+deployment0003,recovered_cspp,velpt_j_cspp_instrument_recovered,temperature,ºC,-9999999.0,"[-2.0, 40.0]",23209,0,0,1,0,23208,100.0,10.9619,0.0,15.2,2.1967
+deployment0003,recovered_cspp,velpt_j_cspp_instrument_recovered,speed_of_sound,m s-1,-9999999.0,"[1380.0, 1580.0]",23209,0,0,3,0,23206,99.99,1492.9839,1481.8,1507.2,7.6399
+deployment0003,recovered_cspp,velpt_j_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",23209,0,0,186,78,22945,98.86,12.7707,0.372,28.611,7.6593
+deployment0003,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_pressure,dbar,-9999999.0,"[0.0, 6000.0]",23209,0,0,0,3,23206,99.99,12.3897,0.067,42.31,7.5825
+deployment0003,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam1_m_s,m s-1,-9999999.0,"[-3.0, 3.0]",23209,0,0,1,24,23184,99.89,-0.0103,-0.522,0.494,0.102
+deployment0003,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam2_m_s,m s-1,-9999999.0,"[-3.0, 3.0]",23209,0,0,3,17,23189,99.91,0.0055,-0.642,0.664,0.1301
+deployment0003,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam3_m_s,m s-1,-9999999.0,"[-1.0, 1.0]",23209,0,0,4,9,23196,99.94,-0.1651,-0.582,0.264,0.0942
+deployment0003,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_eastward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",23209,0,0,0,4,23205,99.98,-0.0,-0.0007,0.0007,0.0001
+deployment0003,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_northward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",23209,0,0,0,6,23203,99.97,0.0,-0.0008,0.001,0.0001
+deployment0003,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_upward_velocity,m s-1,-9999999.0,"[-1.0, 1.0]",23209,0,0,0,13,23196,99.94,-0.0002,-0.0006,0.0003,0.0001
+deployment0003,recovered_cspp,velpt_j_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",23209,0,0,no global ranges,214,22995,99.08,14.4767,-25.4984,2915.5089,63.1664
+deployment0004,recovered_cspp,velpt_j_cspp_instrument_recovered,temperature,ºC,-9999999.0,"[-2.0, 40.0]",23042,0,0,2,4,23036,99.97,9.5826,8.27,12.68,0.7186
+deployment0004,recovered_cspp,velpt_j_cspp_instrument_recovered,speed_of_sound,m s-1,-9999999.0,"[1380.0, 1580.0]",23042,0,0,6,0,23036,99.97,1488.2482,1483.4,1499.1,2.5828
+deployment0004,recovered_cspp,velpt_j_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",23042,0,0,35,99,22908,99.42,14.3138,0.8,27.001,7.7315
+deployment0004,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_pressure,dbar,-9999999.0,"[0.0, 6000.0]",23042,0,0,1,3,23038,99.98,13.8651,0.414,26.433,7.6697
+deployment0004,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam1_m_s,m s-1,-9999999.0,"[-3.0, 3.0]",23042,0,0,3,25,23014,99.88,-0.0084,-0.436,0.42,0.0846
+deployment0004,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam2_m_s,m s-1,-9999999.0,"[-3.0, 3.0]",23042,0,0,5,21,23016,99.89,0.0007,-0.464,0.444,0.0937
+deployment0004,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam3_m_s,m s-1,-9999999.0,"[-1.0, 1.0]",23042,0,0,3,3,23036,99.97,-0.1092,-0.436,0.232,0.0711
+deployment0004,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_eastward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",23042,0,0,0,6,23036,99.97,-0.0,-0.0005,0.0006,0.0001
+deployment0004,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_northward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",23042,0,0,0,5,23037,99.98,0.0,-0.0008,0.0012,0.0001
+deployment0004,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_upward_velocity,m s-1,-9999999.0,"[-1.0, 1.0]",23042,0,0,0,3,23039,99.99,-0.0001,-0.0005,0.0004,0.0001
+deployment0004,recovered_cspp,velpt_j_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",23042,0,0,no global ranges,128,22914,99.44,14.5599,-26.9069,1858.4284,19.9606
+deployment0005,recovered_cspp,velpt_j_cspp_instrument_recovered,temperature,ºC,-9999999.0,"[-2.0, 40.0]",18259,0,0,0,0,18259,100.0,9.981,0.0,15.9,2.0661
+deployment0005,recovered_cspp,velpt_j_cspp_instrument_recovered,speed_of_sound,m s-1,-9999999.0,"[1380.0, 1580.0]",18259,0,0,5,0,18254,99.97,1489.5404,1481.5,1509.4,7.2488
+deployment0005,recovered_cspp,velpt_j_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",18259,0,0,1,0,18258,99.99,9.9256,0.36,23.341,7.4755
+deployment0005,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_pressure,dbar,-9999999.0,"[0.0, 6000.0]",18259,0,0,0,5,18254,99.97,10.016,0.436,23.459,7.5039
+deployment0005,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam1_m_s,m s-1,-9999999.0,"[-3.0, 3.0]",18259,0,0,1,116,18142,99.36,-0.0016,-1.516,1.512,0.2693
+deployment0005,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam2_m_s,m s-1,-9999999.0,"[-3.0, 3.0]",18259,0,0,5,106,18148,99.39,0.0245,-1.555,1.603,0.2813
+deployment0005,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam3_m_s,m s-1,-9999999.0,"[-1.0, 1.0]",18259,0,0,468,0,17791,97.44,-0.1774,-0.999,1.0,0.2391
+deployment0005,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_eastward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",18259,0,0,0,100,18159,99.45,0.0,-0.0015,0.0016,0.0003
+deployment0005,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_northward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",18259,0,0,0,42,18217,99.77,0.0,-0.0019,0.002,0.0003
+deployment0005,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_upward_velocity,m s-1,-9999999.0,"[-1.0, 1.0]",18259,0,0,0,95,18164,99.48,-0.0002,-0.0018,0.0015,0.0003
+deployment0005,recovered_cspp,velpt_j_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",18259,0,0,no global ranges,1,18258,99.99,9.9194,0.3441,23.3413,7.4751
+deployment0006,recovered_cspp,velpt_j_cspp_instrument_recovered,temperature,ºC,-9999999.0,"[-2.0, 40.0]",5551,0,0,0,0,5551,100.0,10.4416,10.14,10.88,0.1873
+deployment0006,recovered_cspp,velpt_j_cspp_instrument_recovered,speed_of_sound,m s-1,-9999999.0,"[1380.0, 1580.0]",5551,0,0,0,0,5551,100.0,1491.3387,1490.3,1493.0,0.6676
+deployment0006,recovered_cspp,velpt_j_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",5551,0,0,5550,0,1,0.02,4421.0771,4421.0771,4421.0771,0.0
+deployment0006,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_pressure,dbar,-9999999.0,"[0.0, 6000.0]",5551,0,0,0,0,5551,100.0,13.2849,0.713,26.216,7.7978
+deployment0006,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam1_m_s,m s-1,-9999999.0,"[-3.0, 3.0]",5551,0,0,0,2,5549,99.96,-0.0431,-0.557,0.375,0.1054
+deployment0006,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam2_m_s,m s-1,-9999999.0,"[-3.0, 3.0]",5551,0,0,0,1,5550,99.98,0.0878,-0.432,0.715,0.1574
+deployment0006,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam3_m_s,m s-1,-9999999.0,"[-1.0, 1.0]",5551,0,0,0,0,5551,100.0,-0.1675,-0.471,0.311,0.107
+deployment0006,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_eastward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",5551,0,0,0,2,5549,99.96,-0.0,-0.0005,0.0004,0.0001
+deployment0006,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_northward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",5551,0,0,0,1,5550,99.98,0.0001,-0.0004,0.0007,0.0002
+deployment0006,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_upward_velocity,m s-1,-9999999.0,"[-1.0, 1.0]",5551,0,0,0,0,5551,100.0,-0.0002,-0.0005,0.0003,0.0001
+deployment0006,recovered_cspp,velpt_j_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",5551,0,0,no global ranges,4,5547,99.93,-0.258,-0.2989,-0.2328,0.0146
+deployment0007,recovered_cspp,velpt_j_cspp_instrument_recovered,temperature,ºC,-9999999.0,"[-2.0, 40.0]",19813,0,0,0,3,19810,99.98,9.9316,7.96,14.36,1.5253
+deployment0007,recovered_cspp,velpt_j_cspp_instrument_recovered,speed_of_sound,m s-1,-9999999.0,"[1380.0, 1580.0]",19813,0,0,3,0,19810,99.98,1489.4287,1482.3,1504.6,5.3431
+deployment0007,recovered_cspp,velpt_j_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",19813,0,0,0,0,19813,100.0,12.2335,0.707,26.07,6.8057
+deployment0007,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_pressure,dbar,-9999999.0,"[0.0, 6000.0]",19813,0,0,0,3,19810,99.98,11.5248,0.0,25.269,6.7633
+deployment0007,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam1_m_s,m s-1,-9999999.0,"[-3.0, 3.0]",19813,0,0,0,33,19780,99.83,0.0034,-0.487,0.501,0.0976
+deployment0007,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam2_m_s,m s-1,-9999999.0,"[-3.0, 3.0]",19813,0,0,3,23,19787,99.87,-0.0063,-0.729,0.721,0.1431
+deployment0007,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam3_m_s,m s-1,-9999999.0,"[-1.0, 1.0]",19813,0,0,2,2,19809,99.98,-0.144,-0.488,0.284,0.0878
+deployment0007,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_eastward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",19813,0,0,0,20,19793,99.9,0.0,-0.0005,0.0005,0.0001
+deployment0007,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_northward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",19813,0,0,0,3,19810,99.98,-0.0,-0.001,0.001,0.0002
+deployment0007,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_upward_velocity,m s-1,-9999999.0,"[-1.0, 1.0]",19813,0,0,0,4,19809,99.98,-0.0001,-0.0005,0.0003,0.0001
+deployment0007,recovered_cspp,velpt_j_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",19813,0,0,no global ranges,0,19813,100.0,12.2283,0.707,26.0683,6.8063
+deployment0008,recovered_cspp,velpt_j_cspp_instrument_recovered,temperature,ºC,-9999999.0,"[-2.0, 40.0]",6884,0,0,0,2,6882,99.97,8.6261,7.87,11.13,0.7144
+deployment0008,recovered_cspp,velpt_j_cspp_instrument_recovered,speed_of_sound,m s-1,-9999999.0,"[1380.0, 1580.0]",6884,0,0,2,0,6882,99.97,1484.7673,1482.0,1493.8,2.6103
+deployment0008,recovered_cspp,velpt_j_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",6884,0,0,0,0,6884,100.0,13.5128,0.687,24.257,7.2872
+deployment0008,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_pressure,dbar,-9999999.0,"[0.0, 6000.0]",6884,0,0,0,2,6882,99.97,13.611,0.564,24.407,7.3336
+deployment0008,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam1_m_s,m s-1,-9999999.0,"[-3.0, 3.0]",6884,0,0,0,8,6876,99.88,-0.0047,-0.368,0.37,0.0739
+deployment0008,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam2_m_s,m s-1,-9999999.0,"[-3.0, 3.0]",6884,0,0,2,7,6875,99.87,0.0086,-0.358,0.294,0.0741
+deployment0008,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam3_m_s,m s-1,-9999999.0,"[-1.0, 1.0]",6884,0,0,0,2,6882,99.97,-0.2014,-0.397,0.078,0.1005
+deployment0008,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_eastward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",6884,0,0,0,3,6881,99.96,-0.0,-0.0004,0.0004,0.0001
+deployment0008,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_northward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",6884,0,0,0,2,6882,99.97,0.0,-0.0006,0.0005,0.0001
+deployment0008,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_upward_velocity,m s-1,-9999999.0,"[-1.0, 1.0]",6884,0,0,0,2,6882,99.97,-0.0002,-0.0004,0.0001,0.0001
+deployment0008,recovered_cspp,velpt_j_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",6884,0,0,no global ranges,0,6884,100.0,13.5031,0.6995,24.2573,7.2885
+deployment0009,telemetered,velpt_j_cspp_instrument,temperature,ºC,-9999999.0,"[-2.0, 40.0]",745,0,0,0,0,745,100.0,8.8496,8.1,12.66,0.7636
+deployment0009,telemetered,velpt_j_cspp_instrument,speed_of_sound,m s-1,-9999999.0,"[1380.0, 1580.0]",745,0,0,0,0,745,100.0,1485.5769,1482.9,1499.0,2.7295
+deployment0009,telemetered,velpt_j_cspp_instrument,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",745,0,0,0,0,745,100.0,14.1386,0.942,26.07,7.7638
+deployment0009,telemetered,velpt_j_cspp_instrument,velpt_pressure,dbar,-9999999.0,"[0.0, 6000.0]",745,0,0,0,0,745,100.0,14.2684,1.056,26.231,7.8401
+deployment0009,telemetered,velpt_j_cspp_instrument,velocity_beam1_m_s,m s-1,-9999999.0,"[-3.0, 3.0]",745,0,0,0,1,744,99.87,-0.0004,-0.278,0.272,0.0759
+deployment0009,telemetered,velpt_j_cspp_instrument,velocity_beam2_m_s,m s-1,-9999999.0,"[-3.0, 3.0]",745,0,0,0,0,745,100.0,-0.0049,-0.303,0.421,0.0878
+deployment0009,telemetered,velpt_j_cspp_instrument,velocity_beam3_m_s,m s-1,-9999999.0,"[-1.0, 1.0]",745,0,0,0,0,745,100.0,-0.1619,-0.327,0.102,0.0851
+deployment0009,telemetered,velpt_j_cspp_instrument,velpt_j_eastward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",745,0,0,0,1,744,99.87,-0.0,-0.0003,0.0003,0.0001
+deployment0009,telemetered,velpt_j_cspp_instrument,velpt_j_northward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",745,0,0,0,0,745,100.0,-0.0,-0.0004,0.0004,0.0001
+deployment0009,telemetered,velpt_j_cspp_instrument,velpt_j_upward_velocity,m s-1,-9999999.0,"[-1.0, 1.0]",745,0,0,0,0,745,100.0,-0.0002,-0.0003,0.0001,0.0001
+deployment0009,telemetered,velpt_j_cspp_instrument,int_ctd_pressure,dbar,nan,"[None, None]",745,0,0,no global ranges,0,745,100.0,14.1107,0.9883,26.0711,7.7693
