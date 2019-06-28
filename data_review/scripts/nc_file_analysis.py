@@ -451,7 +451,10 @@ def main(sDir, url_list):
                                                     var_nofv = var.where(var != fv)
                                                     n_fv = int(np.sum(np.isnan(var_nofv.values))) - n_nan
 
-                                                    var_units = var.units
+                                                    try:
+                                                        var_units = var.units
+                                                    except AttributeError:
+                                                        var_units = 'no_units'
                                                     [g_min, g_max] = cf.get_global_ranges(r, sv)
                                                     if list(np.unique(np.isnan(var_nofv))) != [True]:
                                                         # reject data outside of global ranges

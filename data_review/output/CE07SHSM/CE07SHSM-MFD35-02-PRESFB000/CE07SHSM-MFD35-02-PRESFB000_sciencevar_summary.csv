@@ -1,0 +1,22 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_inst,presf_abc_tide_measurement_recovered,presf_tide_pressure,dbar,-9999999.0,"[0.0, 6000.0]",3862,0,0,0,0,3862,100.0,98.1553,96.1886,99.7775,0.7877
+deployment0001,recovered_inst,presf_abc_tide_measurement_recovered,presf_tide_temperature,ºC,-9999999.0,"[-2.0, 40.0]",3862,0,0,0,0,3862,100.0,7.4781,6.564,8.728,0.3981
+deployment0001,recovered_inst,presf_abc_wave_burst_recovered,"presf_wave_burst_pressure (dims: ['time', 'presf_wave_burst_pressure_dim_0'])",dbar,-9999999.0,"[0.0, 6000.0]","[643, 658432]",0,0,0,0,658432,100.0,98.1526,95.9061,99.9451,0.8073
+deployment0002,recovered_inst,presf_abc_tide_measurement_recovered,presf_tide_pressure,dbar,-9999999.0,"[0.0, 6000.0]",5117,0,0,0,0,5117,100.0,98.391,96.284,100.1431,0.8005
+deployment0002,recovered_inst,presf_abc_tide_measurement_recovered,presf_tide_temperature,ºC,-9999999.0,"[-2.0, 40.0]",5117,0,0,0,0,5117,100.0,10.0516,7.242,11.881,1.1706
+deployment0002,recovered_inst,presf_abc_wave_burst_recovered,"presf_wave_burst_pressure (dims: ['time', 'presf_wave_burst_pressure_dim_0'])",dbar,-9999999.0,"[0.0, 6000.0]","[853, 873472]",0,0,0,0,873472,100.0,98.3887,94.5751,101.3655,0.8159
+deployment0003,recovered_inst,presf_abc_tide_measurement_recovered,presf_tide_pressure,dbar,-9999999.0,"[0.0, 6000.0]",3481,0,0,0,1,3480,99.97,97.998,95.8521,99.6963,0.7938
+deployment0003,recovered_inst,presf_abc_tide_measurement_recovered,presf_tide_temperature,ºC,-9999999.0,"[-2.0, 40.0]",3481,0,0,0,1,3480,99.97,7.4205,6.604,7.823,0.2156
+deployment0003,recovered_inst,presf_abc_wave_burst_recovered,"presf_wave_burst_pressure (dims: ['time', 'presf_wave_burst_pressure_dim_0'])",dbar,-9999999.0,"[0.0, 6000.0]","[580, 593920]",0,0,0,0,593920,100.0,97.9978,95.9745,99.9407,0.787
+deployment0004,recovered_inst,presf_abc_tide_measurement_recovered,presf_tide_pressure,dbar,-9999999.0,"[0.0, 6000.0]",4921,0,0,0,1,4920,99.98,98.0841,95.822,99.8727,0.7952
+deployment0004,recovered_inst,presf_abc_tide_measurement_recovered,presf_tide_temperature,ºC,-9999999.0,"[-2.0, 40.0]",4921,0,0,0,0,4921,100.0,10.3272,7.558,13.779,1.5085
+deployment0004,recovered_inst,presf_abc_wave_burst_recovered,"presf_wave_burst_pressure (dims: ['time', 'presf_wave_burst_pressure_dim_0'])",dbar,-9999999.0,"[0.0, 6000.0]","[820, 839680]",0,0,0,0,839680,100.0,98.0812,94.9963,100.9466,0.8385
+deployment0005,telemetered,presf_abc_dcl_tide_measurement,absolute_pressure,psi,-9999999.0,"[0.0, 8800.0]",1272,0,0,0,1,1271,99.92,141.9827,138.8783,144.5122,1.2024
+deployment0005,telemetered,presf_abc_dcl_tide_measurement,seawater_temperature,ºC,-9999999.0,"[-2.0, 40.0]",1272,0,0,0,0,1272,100.0,8.595,6.653,9.9485,1.073
+deployment0005,telemetered,presf_abc_dcl_tide_measurement,abs_seafloor_pressure,dbar,-9999999.0,"[0.0, 6000.0]",1272,0,0,0,1,1271,99.92,97.8936,95.7532,99.6377,0.829
+deployment0006,recovered_inst,presf_abc_tide_measurement_recovered,presf_tide_pressure,dbar,-9999999.0,"[0.0, 6000.0]",4247,0,0,0,1,4246,99.98,97.7635,95.5249,99.5621,0.8033
+deployment0006,recovered_inst,presf_abc_tide_measurement_recovered,presf_tide_temperature,ºC,-9999999.0,"[-2.0, 40.0]",4247,0,0,0,0,4247,100.0,9.5947,8.025,11.748,0.9427
+deployment0006,recovered_inst,presf_abc_wave_burst_recovered,"presf_wave_burst_pressure (dims: ['time', 'presf_wave_burst_pressure_dim_0'])",dbar,-9999999.0,"[0.0, 6000.0]","[707, 723968]",0,0,0,0,723968,100.0,97.7588,95.3709,100.6083,0.8016
+deployment0007,recovered_host,presf_abc_dcl_tide_measurement_recovered,absolute_pressure,psi,-9999999.0,"[0.0, 8800.0]",1392,0,0,0,0,1392,100.0,142.2746,139.2153,144.782,1.1279
+deployment0007,recovered_host,presf_abc_dcl_tide_measurement_recovered,seawater_temperature,ºC,-9999999.0,"[-2.0, 40.0]",1392,0,0,0,0,1392,100.0,8.3551,7.1206,9.7925,0.8645
+deployment0007,recovered_host,presf_abc_dcl_tide_measurement_recovered,abs_seafloor_pressure,dbar,-9999999.0,"[0.0, 6000.0]",1392,0,0,0,0,1392,100.0,98.0949,95.9856,99.8237,0.7776

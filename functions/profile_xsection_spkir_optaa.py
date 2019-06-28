@@ -13,8 +13,8 @@ import functions.plotting as pf
 import functions.group_by_timerange as gt
 
 
-def pf_xs_optaa(ds, sv, tm, y, ds_lat, ds_lon, zcell_size, inpercentile, save_dir_profile, save_dir_xsection,
-                deployment, press, y_units, n_std):
+def pf_xs_optaa(ds, sv, time1, y1, ds_lat1, ds_lon1, zcell_size, inpercentile, save_dir_profile, save_dir_xsection,
+                deployment, press, y_units, n_std, zdbar):
     r = '-'.join((ds.subsite, ds.node, ds.sensor))
     fv = ds[sv]._FillValue
     sv_units = ds[sv].units
@@ -30,19 +30,34 @@ def pf_xs_optaa(ds, sv, tm, y, ds_lat, ds_lon, zcell_size, inpercentile, save_di
             iwavelengths.append(iw)
     zz = ds[sv].values.T
     for i in range(len(iwavelengths)):
-        z = zz[i]
+        z1 = zz[i]
 
         # Check if the array is all NaNs
-        if sum(np.isnan(z)) == len(z):
+        if sum(np.isnan(z1)) == len(z1):
             print('Array of all NaNs - skipping plot.')
             continue
 
         # Check if the array is all fill values
-        elif len(z[z != fv]) == 0:
+        elif len(z1[z1 != fv]) == 0:
             print('Array of all fill values - skipping plot.')
             continue
 
         else:
+            # remove unreasonable pressure data (e.g. for surface piercing profilers)
+            if zdbar:
+                po_ind = (0 < y1) & (y1 < zdbar)
+                tm = time1[po_ind]
+                y = y1[po_ind]
+                z = z1[po_ind]
+                ds_lat = ds_lat1[po_ind]
+                ds_lon = ds_lon1[po_ind]
+            else:
+                tm = time1
+                y = y1
+                z = z1
+                ds_lat = ds_lat1
+                ds_lon = ds_lon1
+
             # reject erroneous data
             dtime, zpressure, ndata, lenfv, lennan, lenev, lengr, global_min, global_max, lat, lon = \
                 cf.reject_erroneous_data(r, sv, tm, y, z, fv, ds_lat, ds_lon)
@@ -111,7 +126,7 @@ def pf_xs_optaa(ds, sv, tm, y, ds_lat, ds_lon, zcell_size, inpercentile, save_di
                 ylabel = press[0] + " (" + y_units[0] + ")"
                 clabel = 'Time'
 
-                fig, ax = pf.plot_profiles(z, y, tm, ylabel, xlabel, clabel, stdev=None)
+                fig, ax = pf.plot_profiles(z1, y1, time1, ylabel, xlabel, clabel, stdev=None)
 
                 ax.set_title(title, fontsize=9)
                 fig.tight_layout()
@@ -123,7 +138,7 @@ def pf_xs_optaa(ds, sv, tm, y, ds_lat, ds_lon, zcell_size, inpercentile, save_di
                 clabel = sv + " (" + sv_units + ")"
                 ylabel = press[0] + " (" + y_units[0] + ")"
 
-                fig, ax, bar = pf.plot_xsection(ds.subsite, tm, y, z, clabel, ylabel, t_eng=None,
+                fig, ax, bar = pf.plot_xsection(ds.subsite, time1, y1, z1, clabel, ylabel, t_eng=None,
                                                 m_water_depth=None, inpercentile=None, stdev=None)
 
                 if fig:
@@ -188,26 +203,41 @@ def pf_xs_optaa(ds, sv, tm, y, ds_lat, ds_lon, zcell_size, inpercentile, save_di
                 pf.save_fig(save_dir_xsection, sfile)
 
 
-def pf_xs_spkir(ds, sv, tm, y, ds_lat, ds_lon, zcell_size, inpercentile, save_dir_profile, save_dir_xsection,
-                deployment, press, y_units, n_std):
+def pf_xs_spkir(ds, sv, time1, y1, ds_lat1, ds_lon1, zcell_size, inpercentile, save_dir_profile, save_dir_xsection,
+                deployment, press, y_units, n_std, zdbar):
     r = '-'.join((ds.subsite, ds.node, ds.sensor))
     fv = ds[sv]._FillValue
     sv_units = ds[sv].units
     wavelengths = ['412nm', '443nm', '490nm', '510nm', '555nm', '620nm', '683nm']
     zz = ds[sv].values.T
     for i in range(len(wavelengths)):
-        z = zz[i]
+        z1 = zz[i]
         # Check if the array is all NaNs
-        if sum(np.isnan(z)) == len(z):
+        if sum(np.isnan(z1)) == len(z1):
             print('Array of all NaNs - skipping plot.')
             continue
 
         # Check if the array is all fill values
-        elif len(z[z != fv]) == 0:
+        elif len(z1[z1 != fv]) == 0:
             print('Array of all fill values - skipping plot.')
             continue
 
         else:
+            # remove unreasonable pressure data (e.g. for surface piercing profilers)
+            if zdbar:
+                po_ind = (0 < y1) & (y1 < zdbar)
+                tm = time1[po_ind]
+                y = y1[po_ind]
+                z = z1[po_ind]
+                ds_lat = ds_lat1[po_ind]
+                ds_lon = ds_lon1[po_ind]
+            else:
+                tm = time1
+                y = y1
+                z = z1
+                ds_lat = ds_lat1
+                ds_lon = ds_lon1
+
             # reject erroneous data
             dtime, zpressure, ndata, lenfv, lennan, lenev, lengr, global_min, global_max, lat, lon = \
                 cf.reject_erroneous_data(r, sv, tm, y, z, fv, ds_lat, ds_lon)
@@ -276,7 +306,7 @@ def pf_xs_spkir(ds, sv, tm, y, ds_lat, ds_lon, zcell_size, inpercentile, save_di
                 ylabel = press[0] + " (" + y_units[0] + ")"
                 clabel = 'Time'
 
-                fig, ax = pf.plot_profiles(z, y, tm, ylabel, xlabel, clabel, stdev=None)
+                fig, ax = pf.plot_profiles(z1, y1, time1, ylabel, xlabel, clabel, stdev=None)
 
                 ax.set_title(title, fontsize=9)
                 fig.tight_layout()
@@ -288,7 +318,7 @@ def pf_xs_spkir(ds, sv, tm, y, ds_lat, ds_lon, zcell_size, inpercentile, save_di
                 clabel = sv + " (" + sv_units + ")"
                 ylabel = press[0] + " (" + y_units[0] + ")"
 
-                fig, ax, bar = pf.plot_xsection(ds.subsite, tm, y, z, clabel, ylabel, t_eng=None,
+                fig, ax, bar = pf.plot_xsection(ds.subsite, time1, y1, z1, clabel, ylabel, t_eng=None,
                                                 m_water_depth=None, inpercentile=None, stdev=None)
 
                 if fig:

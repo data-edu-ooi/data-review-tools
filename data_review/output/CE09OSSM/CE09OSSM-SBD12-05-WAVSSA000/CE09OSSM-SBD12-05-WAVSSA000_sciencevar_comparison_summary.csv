@@ -11,6 +11,14 @@ deployment0001,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss
 deployment0001,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Wave Height - HMO,wave_height_hmo,m,pass,4056.0,0.0,no missing data,4054.0,0.0,0.0,0.0,0.0
 deployment0001,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Mean Direction of Wave Field,mean_direction,degrees,pass,4056.0,0.0,no missing data,4054.0,0.0,0.0,0.0,0.0
 deployment0001,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Mean Spread,mean_spread,degrees,pass,4056.0,0.0,no missing data,4054.0,0.0,0.0,0.0,0.0
+deployment0002,recovered_host-wavss_a_dcl_mean_directional_recovered,no other methods available for comparison,,,,,,,,,,,,
+deployment0002,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Buoy Displacement - Upward,heave_offset_array,m,pass,,,2D dataset,0.0,,,,
+deployment0002,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Buoy Displacement - Northward,north_offset_array,m,pass,,,2D dataset,0.0,,,,
+deployment0002,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Buoy Displacement - Eastward,east_offset_array,m,pass,,,2D dataset,0.0,,,,
+deployment0002,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Buoy Displacement Time,wavss_a_buoymotion_time,no_units,pass,,,2D dataset,0.0,,,,
+deployment0002,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Corrected Buoy Displacement - Eastward,wavss_a_magcor_buoymotion_x,m,pass,,,2D dataset,0.0,,,,
+deployment0002,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Corrected Buoy Displacement - Northward,wavss_a_magcor_buoymotion_y,m,pass,,,2D dataset,0.0,,,,
+deployment0002,recovered_host-wavss_a_dcl_non_directional_recovered,telemetered-wavss_a_dcl_non_directional,Non-Directional Wave Spectral Bins,wavss_a_non_directional_frequency,Hz,pass,,,2D dataset,0.0,,,,
 deployment0002,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Wave Height - Average,average_wave_height,m,pass,4913.0,0.0,no missing data,4910.0,0.0,0.0,0.0,0.0
 deployment0002,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Wave Height - Maximum,max_wave_height,m,pass,4913.0,0.0,no missing data,4910.0,0.0,0.0,0.0,0.0
 deployment0002,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Wave Height - Significant,significant_wave_height,m,pass,4913.0,0.0,no missing data,4910.0,0.0,0.0,0.0,0.0
@@ -23,6 +31,14 @@ deployment0002,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss
 deployment0002,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Wave Height - HMO,wave_height_hmo,m,pass,4913.0,0.0,no missing data,4910.0,0.0,0.0,0.0,0.0
 deployment0002,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Mean Direction of Wave Field,mean_direction,degrees,pass,4913.0,0.0,no missing data,4910.0,0.0,0.0,0.0,0.0
 deployment0002,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Mean Spread,mean_spread,degrees,pass,4913.0,0.0,no missing data,4910.0,0.0,0.0,0.0,0.0
+deployment0003,recovered_host-wavss_a_dcl_mean_directional_recovered,no other methods available for comparison,,,,,,,,,,,,
+deployment0003,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Buoy Displacement - Upward,heave_offset_array,m,pass,,,2D dataset,0.0,,,,
+deployment0003,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Buoy Displacement - Northward,north_offset_array,m,pass,,,2D dataset,0.0,,,,
+deployment0003,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Buoy Displacement - Eastward,east_offset_array,m,pass,,,2D dataset,0.0,,,,
+deployment0003,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Buoy Displacement Time,wavss_a_buoymotion_time,no_units,pass,,,2D dataset,0.0,,,,
+deployment0003,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Corrected Buoy Displacement - Eastward,wavss_a_magcor_buoymotion_x,m,pass,,,2D dataset,0.0,,,,
+deployment0003,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Corrected Buoy Displacement - Northward,wavss_a_magcor_buoymotion_y,m,pass,,,2D dataset,0.0,,,,
+deployment0003,recovered_host-wavss_a_dcl_non_directional_recovered,telemetered-wavss_a_dcl_non_directional,Non-Directional Wave Spectral Bins,wavss_a_non_directional_frequency,Hz,pass,,,2D dataset,0.0,,,,
 deployment0003,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Wave Height - Average,average_wave_height,m,pass,3189.0,0.0,no missing data,3188.0,0.0,0.0,0.0,0.0
 deployment0003,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Wave Height - Maximum,max_wave_height,m,pass,3189.0,0.0,no missing data,3188.0,0.0,0.0,0.0,0.0
 deployment0003,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Wave Height - Significant,significant_wave_height,m,pass,3189.0,0.0,no missing data,3188.0,0.0,0.0,0.0,0.0
@@ -35,6 +51,14 @@ deployment0003,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss
 deployment0003,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Wave Height - HMO,wave_height_hmo,m,pass,3189.0,0.0,no missing data,3188.0,0.0,0.0,0.0,0.0
 deployment0003,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Mean Direction of Wave Field,mean_direction,degrees,pass,3189.0,0.0,no missing data,3188.0,0.0,0.0,0.0,0.0
 deployment0003,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Mean Spread,mean_spread,degrees,pass,3189.0,0.0,no missing data,3188.0,0.0,0.0,0.0,0.0
+deployment0004,recovered_host-wavss_a_dcl_mean_directional_recovered,no other methods available for comparison,,,,,,,,,,,,
+deployment0004,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Buoy Displacement - Upward,heave_offset_array,m,pass,,,2D dataset,0.0,,,,
+deployment0004,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Buoy Displacement - Northward,north_offset_array,m,pass,,,2D dataset,0.0,,,,
+deployment0004,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Buoy Displacement - Eastward,east_offset_array,m,pass,,,2D dataset,0.0,,,,
+deployment0004,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Buoy Displacement Time,wavss_a_buoymotion_time,no_units,pass,,,2D dataset,0.0,,,,
+deployment0004,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Corrected Buoy Displacement - Eastward,wavss_a_magcor_buoymotion_x,m,pass,,,2D dataset,0.0,,,,
+deployment0004,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Corrected Buoy Displacement - Northward,wavss_a_magcor_buoymotion_y,m,pass,,,2D dataset,0.0,,,,
+deployment0004,recovered_host-wavss_a_dcl_non_directional_recovered,telemetered-wavss_a_dcl_non_directional,Non-Directional Wave Spectral Bins,wavss_a_non_directional_frequency,Hz,pass,,,2D dataset,0.0,,,,
 deployment0004,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Wave Height - Average,average_wave_height,m,pass,4861.0,0.0,"{'missing_data_gaps': [['2016-10-02T00:23:00', '2016-10-02T23:23:01'], ['2016-11-29T00:23:00', '2016-11-29T23:23:00'], ['2016-12-02T00:23:01', '2016-12-02T23:23:03']], 'n_missing': [24, 24, 24], 'n_missing_total': 72, 'n_missing_days_total': 3}",4861.0,0.0,0.0,0.0,0.0
 deployment0004,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Wave Height - Maximum,max_wave_height,m,pass,4861.0,0.0,"{'missing_data_gaps': [['2016-10-02T00:23:00', '2016-10-02T23:23:01'], ['2016-11-29T00:23:00', '2016-11-29T23:23:00'], ['2016-12-02T00:23:01', '2016-12-02T23:23:03']], 'n_missing': [24, 24, 24], 'n_missing_total': 72, 'n_missing_days_total': 3}",4861.0,0.0,0.0,0.0,0.0
 deployment0004,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Wave Height - Significant,significant_wave_height,m,pass,4861.0,0.0,"{'missing_data_gaps': [['2016-10-02T00:23:00', '2016-10-02T23:23:01'], ['2016-11-29T00:23:00', '2016-11-29T23:23:00'], ['2016-12-02T00:23:01', '2016-12-02T23:23:03']], 'n_missing': [24, 24, 24], 'n_missing_total': 72, 'n_missing_days_total': 3}",4861.0,0.0,0.0,0.0,0.0
@@ -47,6 +71,14 @@ deployment0004,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss
 deployment0004,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Wave Height - HMO,wave_height_hmo,m,pass,4861.0,0.0,"{'missing_data_gaps': [['2016-10-02T00:23:00', '2016-10-02T23:23:01'], ['2016-11-29T00:23:00', '2016-11-29T23:23:00'], ['2016-12-02T00:23:01', '2016-12-02T23:23:03']], 'n_missing': [24, 24, 24], 'n_missing_total': 72, 'n_missing_days_total': 3}",4861.0,0.0,0.0,0.0,0.0
 deployment0004,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Mean Direction of Wave Field,mean_direction,degrees,pass,4861.0,0.0,"{'missing_data_gaps': [['2016-10-02T00:23:00', '2016-10-02T23:23:01'], ['2016-11-29T00:23:00', '2016-11-29T23:23:00'], ['2016-12-02T00:23:01', '2016-12-02T23:23:03']], 'n_missing': [24, 24, 24], 'n_missing_total': 72, 'n_missing_days_total': 3}",4861.0,0.0,0.0,0.0,0.0
 deployment0004,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Mean Spread,mean_spread,degrees,pass,4861.0,0.0,"{'missing_data_gaps': [['2016-10-02T00:23:00', '2016-10-02T23:23:01'], ['2016-11-29T00:23:00', '2016-11-29T23:23:00'], ['2016-12-02T00:23:01', '2016-12-02T23:23:03']], 'n_missing': [24, 24, 24], 'n_missing_total': 72, 'n_missing_days_total': 3}",4861.0,0.0,0.0,0.0,0.0
+deployment0005,recovered_host-wavss_a_dcl_mean_directional_recovered,no other methods available for comparison,,,,,,,,,,,,
+deployment0005,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Buoy Displacement - Upward,heave_offset_array,m,pass,,,2D dataset,0.0,,,,
+deployment0005,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Buoy Displacement - Northward,north_offset_array,m,pass,,,2D dataset,0.0,,,,
+deployment0005,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Buoy Displacement - Eastward,east_offset_array,m,pass,,,2D dataset,0.0,,,,
+deployment0005,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Buoy Displacement Time,wavss_a_buoymotion_time,no_units,pass,,,2D dataset,0.0,,,,
+deployment0005,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Corrected Buoy Displacement - Eastward,wavss_a_magcor_buoymotion_x,m,pass,,,2D dataset,0.0,,,,
+deployment0005,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Corrected Buoy Displacement - Northward,wavss_a_magcor_buoymotion_y,m,pass,,,2D dataset,0.0,,,,
+deployment0005,recovered_host-wavss_a_dcl_non_directional_recovered,telemetered-wavss_a_dcl_non_directional,Non-Directional Wave Spectral Bins,wavss_a_non_directional_frequency,Hz,pass,,,2D dataset,0.0,,,,
 deployment0005,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Wave Height - Average,average_wave_height,m,pass,4270.0,0.0,no missing data,4269.0,0.0,0.0,0.0,0.0
 deployment0005,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Wave Height - Maximum,max_wave_height,m,pass,4270.0,0.0,no missing data,4269.0,0.0,0.0,0.0,0.0
 deployment0005,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Wave Height - Significant,significant_wave_height,m,pass,4270.0,0.0,no missing data,4269.0,0.0,0.0,0.0,0.0
@@ -59,6 +91,14 @@ deployment0005,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss
 deployment0005,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Wave Height - HMO,wave_height_hmo,m,pass,4270.0,0.0,no missing data,4269.0,0.0,0.0,0.0,0.0
 deployment0005,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Mean Direction of Wave Field,mean_direction,degrees,pass,4270.0,0.0,no missing data,4269.0,0.0,0.0,0.0,0.0
 deployment0005,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Mean Spread,mean_spread,degrees,pass,4270.0,0.0,no missing data,4269.0,0.0,0.0,0.0,0.0
+deployment0006,recovered_host-wavss_a_dcl_mean_directional_recovered,no other methods available for comparison,,,,,,,,,,,,
+deployment0006,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Buoy Displacement - Upward,heave_offset_array,m,pass,,,2D dataset,0.0,,,,
+deployment0006,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Buoy Displacement - Northward,north_offset_array,m,pass,,,2D dataset,0.0,,,,
+deployment0006,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Buoy Displacement - Eastward,east_offset_array,m,pass,,,2D dataset,0.0,,,,
+deployment0006,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Buoy Displacement Time,wavss_a_buoymotion_time,no_units,pass,,,2D dataset,0.0,,,,
+deployment0006,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Corrected Buoy Displacement - Eastward,wavss_a_magcor_buoymotion_x,m,pass,,,2D dataset,0.0,,,,
+deployment0006,recovered_host-wavss_a_dcl_motion_recovered,telemetered-wavss_a_dcl_motion,Corrected Buoy Displacement - Northward,wavss_a_magcor_buoymotion_y,m,pass,,,2D dataset,0.0,,,,
+deployment0006,recovered_host-wavss_a_dcl_non_directional_recovered,telemetered-wavss_a_dcl_non_directional,Non-Directional Wave Spectral Bins,wavss_a_non_directional_frequency,Hz,pass,,,2D dataset,0.0,,,,
 deployment0006,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Wave Height - Average,average_wave_height,m,pass,4243.0,0.0,no missing data,4241.0,0.0,0.0,0.0,0.0
 deployment0006,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Wave Height - Maximum,max_wave_height,m,pass,4243.0,0.0,no missing data,4241.0,0.0,0.0,0.0,0.0
 deployment0006,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Wave Height - Significant,significant_wave_height,m,pass,4243.0,0.0,no missing data,4241.0,0.0,0.0,0.0,0.0
@@ -71,4 +111,6 @@ deployment0006,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss
 deployment0006,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Wave Height - HMO,wave_height_hmo,m,pass,4243.0,0.0,no missing data,4241.0,0.0,0.0,0.0,0.0
 deployment0006,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Mean Direction of Wave Field,mean_direction,degrees,pass,4243.0,0.0,no missing data,4241.0,0.0,0.0,0.0,0.0
 deployment0006,recovered_host-wavss_a_dcl_statistics_recovered,telemetered-wavss_a_dcl_statistics,Mean Spread,mean_spread,degrees,pass,4243.0,0.0,no missing data,4241.0,0.0,0.0,0.0,0.0
+deployment0007,telemetered-wavss_a_dcl_motion,no other methods available for comparison,,,,,,,,,,,,
+deployment0007,telemetered-wavss_a_dcl_non_directional,no other methods available for comparison,,,,,,,,,,,,
 deployment0007,telemetered-wavss_a_dcl_statistics,no other methods available for comparison,,,,,,,,,,,,

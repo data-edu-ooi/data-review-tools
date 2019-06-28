@@ -1,85 +1,146 @@
 deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
-deployment0001,recovered_host,wavss_a_dcl_statistics_recovered,average_wave_height,m,-9999999.0,"[0.0, 12.0]",4056,0,0,0,2,4054,99.95,1.1386,0.41,3.25,0.4362
-deployment0001,recovered_host,wavss_a_dcl_statistics_recovered,max_wave_height,m,-9999999.0,"[0.0, 30.0]",4056,0,0,0,3,4053,99.93,2.8506,0.96,8.48,1.1341
-deployment0001,recovered_host,wavss_a_dcl_statistics_recovered,significant_wave_height,m,-9999999.0,"[0.0, 18.0]",4056,0,0,0,2,4054,99.95,1.7807,0.63,5.13,0.6942
-deployment0001,recovered_host,wavss_a_dcl_statistics_recovered,significant_period,sec,-9999999.0,"[3.0, 20.0]",4056,0,0,0,0,4056,100.0,8.1212,4.4,15.0,1.6348
-deployment0001,recovered_host,wavss_a_dcl_statistics_recovered,wave_height_10,m,-9999999.0,"[0.0, 23.0]",4056,0,0,0,3,4053,99.93,2.2093,0.78,6.33,0.8644
-deployment0001,recovered_host,wavss_a_dcl_statistics_recovered,wave_period_10,sec,-9999999.0,"[3.0, 30.0]",4056,0,0,0,0,4056,100.0,8.446,4.1,16.2,1.8035
-deployment0001,recovered_host,wavss_a_dcl_statistics_recovered,mean_wave_period,sec,-9999999.0,"[3.0, 30.0]",4056,0,0,0,0,4056,100.0,6.2994,3.8,12.0,1.1435
-deployment0001,recovered_host,wavss_a_dcl_statistics_recovered,peak_wave_period,sec,-9999999.0,"[3.0, 30.0]",4056,0,0,0,0,4056,100.0,9.9705,3.6,22.2,3.1362
-deployment0001,recovered_host,wavss_a_dcl_statistics_recovered,wave_period_tp5,sec,-9999999.0,"[3.0, 30.0]",4056,0,0,0,0,4056,100.0,9.6179,3.8,19.5,2.6422
-deployment0001,recovered_host,wavss_a_dcl_statistics_recovered,wave_height_hmo,m,-9999999.0,"[0.0, 30.0]",4056,0,0,0,2,4054,99.95,1.8812,0.69,5.31,0.7115
-deployment0001,recovered_host,wavss_a_dcl_statistics_recovered,mean_direction,degrees,-9999999.0,"[0.0, 360.0]",4056,0,0,0,0,4056,100.0,273.2428,139.4,322.9,28.9443
-deployment0001,recovered_host,wavss_a_dcl_statistics_recovered,mean_spread,degrees,-9999999.0,"[None, None]",4056,0,0,no global ranges,0,4056,100.0,29.4765,17.2,50.2,4.3252
-deployment0002,recovered_host,wavss_a_dcl_statistics_recovered,average_wave_height,m,-9999999.0,"[0.0, 12.0]",4913,0,0,0,4,4909,99.92,2.0534,0.44,6.5,0.9089
-deployment0002,recovered_host,wavss_a_dcl_statistics_recovered,max_wave_height,m,-9999999.0,"[0.0, 30.0]",4913,0,0,0,3,4910,99.94,5.128,1.09,16.2,2.246
-deployment0002,recovered_host,wavss_a_dcl_statistics_recovered,significant_wave_height,m,-9999999.0,"[0.0, 18.0]",4913,0,0,0,2,4911,99.96,3.2525,0.72,10.17,1.4362
-deployment0002,recovered_host,wavss_a_dcl_statistics_recovered,significant_period,sec,-9999999.0,"[3.0, 20.0]",4913,0,0,0,0,4913,100.0,10.4008,4.8,18.8,2.0308
-deployment0002,recovered_host,wavss_a_dcl_statistics_recovered,wave_height_10,m,-9999999.0,"[0.0, 23.0]",4913,0,0,0,3,4910,99.94,4.0418,0.85,12.69,1.7754
-deployment0002,recovered_host,wavss_a_dcl_statistics_recovered,wave_period_10,sec,-9999999.0,"[3.0, 30.0]",4913,0,0,0,0,4913,100.0,10.8122,4.8,19.5,2.1061
-deployment0002,recovered_host,wavss_a_dcl_statistics_recovered,mean_wave_period,sec,-9999999.0,"[3.0, 30.0]",4913,0,0,0,0,4913,100.0,7.8142,4.0,13.8,1.4623
-deployment0002,recovered_host,wavss_a_dcl_statistics_recovered,peak_wave_period,sec,-9999999.0,"[3.0, 30.0]",4913,0,0,0,0,4913,100.0,12.4998,4.1,25.0,2.8803
-deployment0002,recovered_host,wavss_a_dcl_statistics_recovered,wave_period_tp5,sec,-9999999.0,"[3.0, 30.0]",4913,0,0,0,0,4913,100.0,12.173,4.5,21.7,2.6229
-deployment0002,recovered_host,wavss_a_dcl_statistics_recovered,wave_height_hmo,m,-9999999.0,"[0.0, 30.0]",4913,0,0,0,2,4911,99.96,3.4146,0.75,10.59,1.4823
-deployment0002,recovered_host,wavss_a_dcl_statistics_recovered,mean_direction,degrees,-9999999.0,"[0.0, 360.0]",4913,0,0,0,12,4901,99.76,236.1295,41.3,355.0,37.5234
-deployment0002,recovered_host,wavss_a_dcl_statistics_recovered,mean_spread,degrees,-9999999.0,"[None, None]",4913,0,0,no global ranges,0,4913,100.0,30.3359,14.0,50.6,5.0095
-deployment0003,recovered_host,wavss_a_dcl_statistics_recovered,average_wave_height,m,-9999999.0,"[0.0, 12.0]",3189,0,0,0,1,3188,99.97,0.994,0.4,2.56,0.3231
-deployment0003,recovered_host,wavss_a_dcl_statistics_recovered,max_wave_height,m,-9999999.0,"[0.0, 30.0]",3189,0,0,0,1,3188,99.97,2.4942,0.93,6.74,0.846
-deployment0003,recovered_host,wavss_a_dcl_statistics_recovered,significant_wave_height,m,-9999999.0,"[0.0, 18.0]",3189,0,0,0,1,3188,99.97,1.5499,0.62,4.09,0.5098
-deployment0003,recovered_host,wavss_a_dcl_statistics_recovered,significant_period,sec,-9999999.0,"[3.0, 20.0]",3189,0,0,0,0,3189,100.0,7.6273,4.3,12.4,1.2427
-deployment0003,recovered_host,wavss_a_dcl_statistics_recovered,wave_height_10,m,-9999999.0,"[0.0, 23.0]",3189,0,0,0,2,3187,99.94,1.9204,0.73,4.81,0.6334
-deployment0003,recovered_host,wavss_a_dcl_statistics_recovered,wave_period_10,sec,-9999999.0,"[3.0, 30.0]",3189,0,0,0,0,3189,100.0,7.9247,4.3,14.3,1.4084
-deployment0003,recovered_host,wavss_a_dcl_statistics_recovered,mean_wave_period,sec,-9999999.0,"[3.0, 30.0]",3189,0,0,0,0,3189,100.0,5.9473,3.8,9.0,0.8578
-deployment0003,recovered_host,wavss_a_dcl_statistics_recovered,peak_wave_period,sec,-9999999.0,"[3.0, 30.0]",3189,0,0,0,0,3189,100.0,9.565,3.3,20.0,3.0606
-deployment0003,recovered_host,wavss_a_dcl_statistics_recovered,wave_period_tp5,sec,-9999999.0,"[3.0, 30.0]",3189,0,0,0,0,3189,100.0,9.0925,3.7,18.1,2.3383
-deployment0003,recovered_host,wavss_a_dcl_statistics_recovered,wave_height_hmo,m,-9999999.0,"[0.0, 30.0]",3189,0,0,0,2,3187,99.94,1.6398,0.68,4.07,0.5194
-deployment0003,recovered_host,wavss_a_dcl_statistics_recovered,mean_direction,degrees,-9999999.0,"[0.0, 360.0]",3189,0,0,0,0,3189,100.0,271.1854,166.8,329.3,24.0252
-deployment0003,recovered_host,wavss_a_dcl_statistics_recovered,mean_spread,degrees,-9999999.0,"[None, None]",3189,0,0,no global ranges,0,3189,100.0,29.6384,18.2,47.2,4.6971
-deployment0004,recovered_host,wavss_a_dcl_statistics_recovered,average_wave_height,m,-9999999.0,"[0.0, 12.0]",4861,0,0,0,3,4858,99.94,1.9127,0.39,5.73,0.7728
-deployment0004,recovered_host,wavss_a_dcl_statistics_recovered,max_wave_height,m,-9999999.0,"[0.0, 30.0]",4861,0,0,0,4,4857,99.92,4.7763,0.99,14.27,1.9454
-deployment0004,recovered_host,wavss_a_dcl_statistics_recovered,significant_wave_height,m,-9999999.0,"[0.0, 18.0]",4861,0,0,0,1,4860,99.98,3.0199,0.63,9.0,1.2292
-deployment0004,recovered_host,wavss_a_dcl_statistics_recovered,significant_period,sec,-9999999.0,"[3.0, 20.0]",4861,0,0,0,0,4861,100.0,9.4832,4.5,17.3,2.0063
-deployment0004,recovered_host,wavss_a_dcl_statistics_recovered,wave_height_10,m,-9999999.0,"[0.0, 23.0]",4861,0,0,0,2,4859,99.96,3.7529,0.76,10.99,1.5261
-deployment0004,recovered_host,wavss_a_dcl_statistics_recovered,wave_period_10,sec,-9999999.0,"[3.0, 30.0]",4861,0,0,0,0,4861,100.0,9.7841,4.4,17.6,2.0849
-deployment0004,recovered_host,wavss_a_dcl_statistics_recovered,mean_wave_period,sec,-9999999.0,"[3.0, 30.0]",4861,0,0,0,0,4861,100.0,7.2652,4.0,12.4,1.385
-deployment0004,recovered_host,wavss_a_dcl_statistics_recovered,peak_wave_period,sec,-9999999.0,"[3.0, 30.0]",4861,0,0,0,0,4861,100.0,11.308,4.0,22.2,2.8715
-deployment0004,recovered_host,wavss_a_dcl_statistics_recovered,wave_period_tp5,sec,-9999999.0,"[3.0, 30.0]",4861,0,0,0,0,4861,100.0,10.9618,4.3,19.9,2.6128
-deployment0004,recovered_host,wavss_a_dcl_statistics_recovered,wave_height_hmo,m,-9999999.0,"[0.0, 30.0]",4861,0,0,0,1,4860,99.98,3.1704,0.66,9.31,1.2678
-deployment0004,recovered_host,wavss_a_dcl_statistics_recovered,mean_direction,degrees,-9999999.0,"[0.0, 360.0]",4861,0,0,0,0,4861,100.0,222.7539,0.9,358.5,51.6466
-deployment0004,recovered_host,wavss_a_dcl_statistics_recovered,mean_spread,degrees,-9999999.0,"[None, None]",4861,0,0,no global ranges,0,4861,100.0,32.4891,16.4,59.5,6.2349
-deployment0005,recovered_host,wavss_a_dcl_statistics_recovered,average_wave_height,m,-9999999.0,"[0.0, 12.0]",4270,0,0,0,1,4269,99.98,1.0354,0.27,2.98,0.3932
-deployment0005,recovered_host,wavss_a_dcl_statistics_recovered,max_wave_height,m,-9999999.0,"[0.0, 30.0]",4270,0,0,0,1,4269,99.98,2.2609,0.53,6.5,0.8743
-deployment0005,recovered_host,wavss_a_dcl_statistics_recovered,significant_wave_height,m,-9999999.0,"[0.0, 18.0]",4270,0,0,0,1,4269,99.98,1.6058,0.42,4.6,0.6103
-deployment0005,recovered_host,wavss_a_dcl_statistics_recovered,significant_period,sec,-9999999.0,"[3.0, 20.0]",4270,0,0,0,1,4269,99.98,7.7038,4.0,14.6,1.5332
-deployment0005,recovered_host,wavss_a_dcl_statistics_recovered,wave_height_10,m,-9999999.0,"[0.0, 23.0]",4270,0,0,0,2,4268,99.95,1.9691,0.49,5.67,0.7546
-deployment0005,recovered_host,wavss_a_dcl_statistics_recovered,wave_period_10,sec,-9999999.0,"[3.0, 30.0]",4270,0,0,0,0,4270,100.0,7.9414,3.7,15.7,1.6652
-deployment0005,recovered_host,wavss_a_dcl_statistics_recovered,mean_wave_period,sec,-9999999.0,"[3.0, 30.0]",4270,0,0,0,0,4270,100.0,6.0036,3.5,10.7,1.0641
-deployment0005,recovered_host,wavss_a_dcl_statistics_recovered,peak_wave_period,sec,-9999999.0,"[3.0, 30.0]",4270,0,0,0,0,4270,100.0,9.035,3.3,20.0,2.5398
-deployment0005,recovered_host,wavss_a_dcl_statistics_recovered,wave_period_tp5,sec,-9999999.0,"[3.0, 30.0]",4270,0,0,0,0,4270,100.0,8.7633,3.3,18.2,2.1712
-deployment0005,recovered_host,wavss_a_dcl_statistics_recovered,wave_height_hmo,m,-9999999.0,"[0.0, 30.0]",4270,0,0,0,1,4269,99.98,1.7035,0.44,4.76,0.6337
-deployment0005,recovered_host,wavss_a_dcl_statistics_recovered,mean_direction,degrees,-9999999.0,"[0.0, 360.0]",4270,0,0,0,4,4266,99.91,262.7231,110.2,345.8,30.5914
-deployment0005,recovered_host,wavss_a_dcl_statistics_recovered,mean_spread,degrees,-9999999.0,"[None, None]",4270,0,0,no global ranges,0,4270,100.0,26.9943,12.4,47.5,4.6477
-deployment0006,recovered_host,wavss_a_dcl_statistics_recovered,average_wave_height,m,-9999999.0,"[0.0, 12.0]",4243,0,0,0,3,4240,99.93,1.7447,0.33,5.79,0.8083
-deployment0006,recovered_host,wavss_a_dcl_statistics_recovered,max_wave_height,m,-9999999.0,"[0.0, 30.0]",4243,0,0,0,6,4237,99.86,4.3702,0.78,14.44,1.9795
-deployment0006,recovered_host,wavss_a_dcl_statistics_recovered,significant_wave_height,m,-9999999.0,"[0.0, 18.0]",4243,0,0,0,3,4240,99.93,2.7538,0.55,9.02,1.2721
-deployment0006,recovered_host,wavss_a_dcl_statistics_recovered,significant_period,sec,-9999999.0,"[3.0, 20.0]",4243,0,0,0,0,4243,100.0,9.5564,4.5,18.8,2.007
-deployment0006,recovered_host,wavss_a_dcl_statistics_recovered,wave_height_10,m,-9999999.0,"[0.0, 23.0]",4243,0,0,0,5,4238,99.88,3.4226,0.68,11.23,1.5705
-deployment0006,recovered_host,wavss_a_dcl_statistics_recovered,wave_period_10,sec,-9999999.0,"[3.0, 30.0]",4243,0,0,0,0,4243,100.0,9.9014,4.6,20.2,2.0946
-deployment0006,recovered_host,wavss_a_dcl_statistics_recovered,mean_wave_period,sec,-9999999.0,"[3.0, 30.0]",4243,0,0,0,3,4240,99.93,7.2406,4.1,14.1,1.4036
-deployment0006,recovered_host,wavss_a_dcl_statistics_recovered,peak_wave_period,sec,-9999999.0,"[3.0, 30.0]",4243,0,0,0,0,4243,100.0,11.387,3.8,22.2,2.7819
-deployment0006,recovered_host,wavss_a_dcl_statistics_recovered,wave_period_tp5,sec,-9999999.0,"[3.0, 30.0]",4243,0,0,0,0,4243,100.0,11.1078,4.5,21.4,2.569
-deployment0006,recovered_host,wavss_a_dcl_statistics_recovered,wave_height_hmo,m,-9999999.0,"[0.0, 30.0]",4243,0,0,0,4,4239,99.91,2.8897,0.59,9.46,1.3099
-deployment0006,recovered_host,wavss_a_dcl_statistics_recovered,mean_direction,degrees,-9999999.0,"[0.0, 360.0]",4243,0,0,0,4,4239,99.91,240.5013,17.8,353.3,44.2975
-deployment0006,recovered_host,wavss_a_dcl_statistics_recovered,mean_spread,degrees,-9999999.0,"[None, None]",4243,0,0,no global ranges,0,4243,100.0,31.2526,12.8,51.2,6.3149
-deployment0007,telemetered,wavss_a_dcl_statistics,average_wave_height,m,-9999999.0,"[0.0, 12.0]",1401,0,0,0,9,1392,99.36,1.3395,0.46,4.45,0.5953
-deployment0007,telemetered,wavss_a_dcl_statistics,max_wave_height,m,-9999999.0,"[0.0, 30.0]",1401,0,0,0,10,1391,99.29,3.3642,1.1,11.47,1.4709
-deployment0007,telemetered,wavss_a_dcl_statistics,significant_wave_height,m,-9999999.0,"[0.0, 18.0]",1401,0,0,0,9,1392,99.36,2.1112,0.72,7.15,0.9402
-deployment0007,telemetered,wavss_a_dcl_statistics,significant_period,sec,-9999999.0,"[3.0, 20.0]",1401,0,0,0,0,1401,100.0,8.8469,5.2,14.4,1.6123
-deployment0007,telemetered,wavss_a_dcl_statistics,wave_height_10,m,-9999999.0,"[0.0, 23.0]",1401,0,0,0,9,1392,99.36,2.6225,0.87,8.98,1.1662
-deployment0007,telemetered,wavss_a_dcl_statistics,wave_period_10,sec,-9999999.0,"[3.0, 30.0]",1401,0,0,0,0,1401,100.0,9.1084,5.0,14.3,1.6831
-deployment0007,telemetered,wavss_a_dcl_statistics,mean_wave_period,sec,-9999999.0,"[3.0, 30.0]",1401,0,0,0,0,1401,100.0,6.7729,4.2,10.7,1.1383
-deployment0007,telemetered,wavss_a_dcl_statistics,peak_wave_period,sec,-9999999.0,"[3.0, 30.0]",1401,0,0,0,0,1401,100.0,10.4101,4.2,18.2,2.5148
-deployment0007,telemetered,wavss_a_dcl_statistics,wave_period_tp5,sec,-9999999.0,"[3.0, 30.0]",1401,0,0,0,0,1401,100.0,10.1387,4.5,17.4,2.1956
-deployment0007,telemetered,wavss_a_dcl_statistics,wave_height_hmo,m,-9999999.0,"[0.0, 30.0]",1401,0,0,0,9,1392,99.36,2.2189,0.76,7.45,0.9746
-deployment0007,telemetered,wavss_a_dcl_statistics,mean_direction,degrees,-9999999.0,"[0.0, 360.0]",1401,0,0,0,0,1401,100.0,255.0194,158.5,302.8,28.2496
-deployment0007,telemetered,wavss_a_dcl_statistics,mean_spread,degrees,-9999999.0,"[None, None]",1401,0,0,no global ranges,0,1401,100.0,29.3525,16.9,50.0,4.2537
+deployment0001,recovered_host,wavss_a_dcl_statistics_recovered,average_wave_height,m,-9999999.0,"[0.0, 12.0]",4056,0,0,0,2.0,4054,99.95,1.1386,0.41,3.25,0.4362
+deployment0001,recovered_host,wavss_a_dcl_statistics_recovered,max_wave_height,m,-9999999.0,"[0.0, 30.0]",4056,0,0,0,3.0,4053,99.93,2.8506,0.96,8.48,1.1341
+deployment0001,recovered_host,wavss_a_dcl_statistics_recovered,significant_wave_height,m,-9999999.0,"[0.0, 18.0]",4056,0,0,0,2.0,4054,99.95,1.7807,0.63,5.13,0.6942
+deployment0001,recovered_host,wavss_a_dcl_statistics_recovered,significant_period,sec,-9999999.0,"[3.0, 20.0]",4056,0,0,0,0.0,4056,100.0,8.1212,4.4,15.0,1.6348
+deployment0001,recovered_host,wavss_a_dcl_statistics_recovered,wave_height_10,m,-9999999.0,"[0.0, 23.0]",4056,0,0,0,3.0,4053,99.93,2.2093,0.78,6.33,0.8644
+deployment0001,recovered_host,wavss_a_dcl_statistics_recovered,wave_period_10,sec,-9999999.0,"[3.0, 30.0]",4056,0,0,0,0.0,4056,100.0,8.446,4.1,16.2,1.8035
+deployment0001,recovered_host,wavss_a_dcl_statistics_recovered,mean_wave_period,sec,-9999999.0,"[3.0, 30.0]",4056,0,0,0,0.0,4056,100.0,6.2994,3.8,12.0,1.1435
+deployment0001,recovered_host,wavss_a_dcl_statistics_recovered,peak_wave_period,sec,-9999999.0,"[3.0, 30.0]",4056,0,0,0,0.0,4056,100.0,9.9705,3.6,22.2,3.1362
+deployment0001,recovered_host,wavss_a_dcl_statistics_recovered,wave_period_tp5,sec,-9999999.0,"[3.0, 30.0]",4056,0,0,0,0.0,4056,100.0,9.6179,3.8,19.5,2.6422
+deployment0001,recovered_host,wavss_a_dcl_statistics_recovered,wave_height_hmo,m,-9999999.0,"[0.0, 30.0]",4056,0,0,0,2.0,4054,99.95,1.8812,0.69,5.31,0.7115
+deployment0001,recovered_host,wavss_a_dcl_statistics_recovered,mean_direction,degrees,-9999999.0,"[0.0, 360.0]",4056,0,0,0,0.0,4056,100.0,273.2428,139.4,322.9,28.9443
+deployment0001,recovered_host,wavss_a_dcl_statistics_recovered,mean_spread,degrees,-9999999.0,"[None, None]",4056,0,0,no global ranges,0.0,4056,100.0,29.4765,17.2,50.2,4.3252
+deployment0002,recovered_host,wavss_a_dcl_mean_directional_recovered,mean_direction,degrees,-9999999.0,"[0.0, 360.0]",4913,0,0,0,12.0,4901,99.76,236.1292,41.28,355.01,37.5225
+deployment0002,recovered_host,wavss_a_dcl_mean_directional_recovered,"mean_direction_array (dims: ['time', 'wavss_array'])",degrees,-9999999.0,"[0.0, 360.0]","[4913, 604299]",317844,0,7664,0.0,278791,46.13,189.7977,0.0,360.0,83.9285
+deployment0002,recovered_host,wavss_a_dcl_mean_directional_recovered,"wavss_a_directional_frequency (dims: ['time', 'wavss_array'])",Hz,-9999999.0,"[None, None]","[4913, 604299]",0,604299,,,0,0.0,,,,
+deployment0002,recovered_host,wavss_a_dcl_mean_directional_recovered,wavss_a_corrected_mean_wave_direction,deg,-9999999.0,"[0.0, 360.0]",4913,0,0,0,14.0,4899,99.72,252.2329,57.4064,359.0728,37.4555
+deployment0002,recovered_host,wavss_a_dcl_mean_directional_recovered,"wavss_a_corrected_directional_wave_direction (dims: ['time', 'wavss_array'])",deg,-9999999.0,"[0.0, 360.0]","[4913, 604299]",0,317844,0,0.0,286455,47.4,203.6885,0.0,359.9975,84.9525
+deployment0002,recovered_host,wavss_a_dcl_motion_recovered,"heave_offset_array (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 3.0]","[4913, 6789766]",0,0,3420812,0.0,3368954,49.62,0.6535,0.0,3.0,0.5684
+deployment0002,recovered_host,wavss_a_dcl_motion_recovered,"north_offset_array (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 50.0]","[4913, 6789766]",0,0,3538344,11726.0,3239696,47.71,0.4319,0.0,2.75,0.4251
+deployment0002,recovered_host,wavss_a_dcl_motion_recovered,"east_offset_array (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 50.0]","[4913, 6789766]",0,0,3367447,10709.0,3411610,50.25,0.598,0.0,3.55,0.5512
+deployment0002,recovered_host,wavss_a_dcl_motion_recovered,"wavss_a_magcor_buoymotion_x (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 50.0]","[4913, 6789766]",0,0,3527102,10809.0,3251855,47.89,0.4716,0.0,2.9411,0.4569
+deployment0002,recovered_host,wavss_a_dcl_motion_recovered,"wavss_a_magcor_buoymotion_y (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 50.0]","[4913, 6789766]",0,0,3364278,10799.0,3414689,50.29,0.5797,0.0,3.4457,0.532
+deployment0002,recovered_host,wavss_a_dcl_non_directional_recovered,"wavss_a_non_directional_frequency (dims: ['time', 'wavss_array'])",Hz,-9999999.0,"[None, None]","[4913, 604299]",0,0,no global ranges,0.0,604299,100.0,0.335,0.03,0.64,0.1775
+deployment0002,recovered_host,wavss_a_dcl_statistics_recovered,average_wave_height,m,-9999999.0,"[0.0, 12.0]",4913,0,0,0,4.0,4909,99.92,2.0534,0.44,6.5,0.9089
+deployment0002,recovered_host,wavss_a_dcl_statistics_recovered,max_wave_height,m,-9999999.0,"[0.0, 30.0]",4913,0,0,0,3.0,4910,99.94,5.128,1.09,16.2,2.246
+deployment0002,recovered_host,wavss_a_dcl_statistics_recovered,significant_wave_height,m,-9999999.0,"[0.0, 18.0]",4913,0,0,0,2.0,4911,99.96,3.2525,0.72,10.17,1.4362
+deployment0002,recovered_host,wavss_a_dcl_statistics_recovered,significant_period,sec,-9999999.0,"[3.0, 20.0]",4913,0,0,0,0.0,4913,100.0,10.4008,4.8,18.8,2.0308
+deployment0002,recovered_host,wavss_a_dcl_statistics_recovered,wave_height_10,m,-9999999.0,"[0.0, 23.0]",4913,0,0,0,3.0,4910,99.94,4.0418,0.85,12.69,1.7754
+deployment0002,recovered_host,wavss_a_dcl_statistics_recovered,wave_period_10,sec,-9999999.0,"[3.0, 30.0]",4913,0,0,0,0.0,4913,100.0,10.8122,4.8,19.5,2.1061
+deployment0002,recovered_host,wavss_a_dcl_statistics_recovered,mean_wave_period,sec,-9999999.0,"[3.0, 30.0]",4913,0,0,0,0.0,4913,100.0,7.8142,4.0,13.8,1.4623
+deployment0002,recovered_host,wavss_a_dcl_statistics_recovered,peak_wave_period,sec,-9999999.0,"[3.0, 30.0]",4913,0,0,0,0.0,4913,100.0,12.4998,4.1,25.0,2.8803
+deployment0002,recovered_host,wavss_a_dcl_statistics_recovered,wave_period_tp5,sec,-9999999.0,"[3.0, 30.0]",4913,0,0,0,0.0,4913,100.0,12.173,4.5,21.7,2.6229
+deployment0002,recovered_host,wavss_a_dcl_statistics_recovered,wave_height_hmo,m,-9999999.0,"[0.0, 30.0]",4913,0,0,0,2.0,4911,99.96,3.4146,0.75,10.59,1.4823
+deployment0002,recovered_host,wavss_a_dcl_statistics_recovered,mean_direction,degrees,-9999999.0,"[0.0, 360.0]",4913,0,0,0,12.0,4901,99.76,236.1295,41.3,355.0,37.5234
+deployment0002,recovered_host,wavss_a_dcl_statistics_recovered,mean_spread,degrees,-9999999.0,"[None, None]",4913,0,0,no global ranges,0.0,4913,100.0,30.3359,14.0,50.6,5.0095
+deployment0003,recovered_host,wavss_a_dcl_mean_directional_recovered,mean_direction,degrees,-9999999.0,"[0.0, 360.0]",3189,0,0,0,0.0,3189,100.0,271.1847,166.85,329.3,24.0243
+deployment0003,recovered_host,wavss_a_dcl_mean_directional_recovered,"mean_direction_array (dims: ['time', 'wavss_array'])",degrees,-9999999.0,"[0.0, 360.0]","[3189, 392247]",174976,0,6817,0.0,210454,53.65,257.3623,0.0,360.0,78.7418
+deployment0003,recovered_host,wavss_a_dcl_mean_directional_recovered,"wavss_a_directional_frequency (dims: ['time', 'wavss_array'])",Hz,-9999999.0,"[None, None]","[3189, 392247]",0,392247,,,0,0.0,,,,
+deployment0003,recovered_host,wavss_a_dcl_mean_directional_recovered,wavss_a_corrected_mean_wave_direction,deg,-9999999.0,"[0.0, 360.0]",3189,0,0,0,0.0,3189,100.0,287.2546,182.8989,345.383,24.0235
+deployment0003,recovered_host,wavss_a_dcl_mean_directional_recovered,"wavss_a_corrected_directional_wave_direction (dims: ['time', 'wavss_array'])",deg,-9999999.0,"[0.0, 360.0]","[3189, 392247]",0,174976,0,0.0,217271,55.39,267.9141,0.0,359.993,83.9413
+deployment0003,recovered_host,wavss_a_dcl_motion_recovered,"heave_offset_array (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 3.0]","[3189, 4407198]",0,0,2188358,3627.0,2215213,50.26,0.3228,0.0,1.73,0.274
+deployment0003,recovered_host,wavss_a_dcl_motion_recovered,"north_offset_array (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 50.0]","[3189, 4407198]",0,0,2266036,4090.0,2137072,48.49,0.1888,0.0,1.02,0.1616
+deployment0003,recovered_host,wavss_a_dcl_motion_recovered,"east_offset_array (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 50.0]","[3189, 4407198]",0,0,2170016,4164.0,2233018,50.67,0.2888,0.0,1.58,0.2505
+deployment0003,recovered_host,wavss_a_dcl_motion_recovered,"wavss_a_magcor_buoymotion_x (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 50.0]","[3189, 4407198]",0,0,2311441,3833.0,2091924,47.47,0.1849,0.0,0.9915,0.1552
+deployment0003,recovered_host,wavss_a_dcl_motion_recovered,"wavss_a_magcor_buoymotion_y (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 50.0]","[3189, 4407198]",0,0,2187266,4407.0,2215525,50.27,0.3,0.0,1.6484,0.2591
+deployment0003,recovered_host,wavss_a_dcl_non_directional_recovered,"wavss_a_non_directional_frequency (dims: ['time', 'wavss_array'])",Hz,-9999999.0,"[None, None]","[3189, 392247]",0,0,no global ranges,0.0,392247,100.0,0.335,0.03,0.64,0.1775
+deployment0003,recovered_host,wavss_a_dcl_statistics_recovered,average_wave_height,m,-9999999.0,"[0.0, 12.0]",3189,0,0,0,1.0,3188,99.97,0.994,0.4,2.56,0.3231
+deployment0003,recovered_host,wavss_a_dcl_statistics_recovered,max_wave_height,m,-9999999.0,"[0.0, 30.0]",3189,0,0,0,1.0,3188,99.97,2.4942,0.93,6.74,0.846
+deployment0003,recovered_host,wavss_a_dcl_statistics_recovered,significant_wave_height,m,-9999999.0,"[0.0, 18.0]",3189,0,0,0,1.0,3188,99.97,1.5499,0.62,4.09,0.5098
+deployment0003,recovered_host,wavss_a_dcl_statistics_recovered,significant_period,sec,-9999999.0,"[3.0, 20.0]",3189,0,0,0,0.0,3189,100.0,7.6273,4.3,12.4,1.2427
+deployment0003,recovered_host,wavss_a_dcl_statistics_recovered,wave_height_10,m,-9999999.0,"[0.0, 23.0]",3189,0,0,0,2.0,3187,99.94,1.9204,0.73,4.81,0.6334
+deployment0003,recovered_host,wavss_a_dcl_statistics_recovered,wave_period_10,sec,-9999999.0,"[3.0, 30.0]",3189,0,0,0,0.0,3189,100.0,7.9247,4.3,14.3,1.4084
+deployment0003,recovered_host,wavss_a_dcl_statistics_recovered,mean_wave_period,sec,-9999999.0,"[3.0, 30.0]",3189,0,0,0,0.0,3189,100.0,5.9473,3.8,9.0,0.8578
+deployment0003,recovered_host,wavss_a_dcl_statistics_recovered,peak_wave_period,sec,-9999999.0,"[3.0, 30.0]",3189,0,0,0,0.0,3189,100.0,9.565,3.3,20.0,3.0606
+deployment0003,recovered_host,wavss_a_dcl_statistics_recovered,wave_period_tp5,sec,-9999999.0,"[3.0, 30.0]",3189,0,0,0,0.0,3189,100.0,9.0925,3.7,18.1,2.3383
+deployment0003,recovered_host,wavss_a_dcl_statistics_recovered,wave_height_hmo,m,-9999999.0,"[0.0, 30.0]",3189,0,0,0,2.0,3187,99.94,1.6398,0.68,4.07,0.5194
+deployment0003,recovered_host,wavss_a_dcl_statistics_recovered,mean_direction,degrees,-9999999.0,"[0.0, 360.0]",3189,0,0,0,0.0,3189,100.0,271.1854,166.8,329.3,24.0252
+deployment0003,recovered_host,wavss_a_dcl_statistics_recovered,mean_spread,degrees,-9999999.0,"[None, None]",3189,0,0,no global ranges,0.0,3189,100.0,29.6384,18.2,47.2,4.6971
+deployment0004,recovered_host,wavss_a_dcl_mean_directional_recovered,mean_direction,degrees,-9999999.0,"[0.0, 360.0]",4861,0,0,0,0.0,4861,100.0,222.7533,0.95,358.45,51.6462
+deployment0004,recovered_host,wavss_a_dcl_mean_directional_recovered,"mean_direction_array (dims: ['time', 'wavss_array'])",degrees,-9999999.0,"[0.0, 360.0]","[4861, 597903]",306830,0,10495,0.0,280578,46.93,184.4225,0.0,360.0,84.1345
+deployment0004,recovered_host,wavss_a_dcl_mean_directional_recovered,"wavss_a_directional_frequency (dims: ['time', 'wavss_array'])",Hz,-9999999.0,"[None, None]","[4861, 597903]",0,597903,,,0,0.0,,,,
+deployment0004,recovered_host,wavss_a_dcl_mean_directional_recovered,wavss_a_corrected_mean_wave_direction,deg,-9999999.0,"[0.0, 360.0]",4861,0,0,0,0.0,4861,100.0,238.1517,1.2909,358.4366,52.2059
+deployment0004,recovered_host,wavss_a_dcl_mean_directional_recovered,"wavss_a_corrected_directional_wave_direction (dims: ['time', 'wavss_array'])",deg,-9999999.0,"[0.0, 360.0]","[4861, 597903]",0,306830,0,0.0,291073,48.68,197.7236,0.0,359.9985,85.2697
+deployment0004,recovered_host,wavss_a_dcl_motion_recovered,"heave_offset_array (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 3.0]","[4861, 6717902]",0,0,3372541,0.0,3345361,49.8,0.6163,0.0,3.0,0.5358
+deployment0004,recovered_host,wavss_a_dcl_motion_recovered,"north_offset_array (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 50.0]","[4861, 6717902]",0,0,3491994,12257.0,3213651,47.84,0.4175,0.0,2.62,0.4042
+deployment0004,recovered_host,wavss_a_dcl_motion_recovered,"east_offset_array (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 50.0]","[4861, 6717902]",0,0,3334949,7937.0,3375016,50.24,0.5395,0.0,3.08,0.4851
+deployment0004,recovered_host,wavss_a_dcl_motion_recovered,"wavss_a_magcor_buoymotion_x (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 50.0]","[4861, 6717902]",0,0,3492626,10550.0,3214726,47.85,0.442,0.0,2.688,0.4174
+deployment0004,recovered_host,wavss_a_dcl_motion_recovered,"wavss_a_magcor_buoymotion_y (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 50.0]","[4861, 6717902]",0,0,3330396,8470.0,3379036,50.3,0.5346,0.0,3.0507,0.4772
+deployment0004,recovered_host,wavss_a_dcl_non_directional_recovered,"wavss_a_non_directional_frequency (dims: ['time', 'wavss_array'])",Hz,-9999999.0,"[None, None]","[4861, 597903]",0,0,no global ranges,0.0,597903,100.0,0.335,0.03,0.64,0.1775
+deployment0004,recovered_host,wavss_a_dcl_statistics_recovered,average_wave_height,m,-9999999.0,"[0.0, 12.0]",4861,0,0,0,3.0,4858,99.94,1.9127,0.39,5.73,0.7728
+deployment0004,recovered_host,wavss_a_dcl_statistics_recovered,max_wave_height,m,-9999999.0,"[0.0, 30.0]",4861,0,0,0,4.0,4857,99.92,4.7763,0.99,14.27,1.9454
+deployment0004,recovered_host,wavss_a_dcl_statistics_recovered,significant_wave_height,m,-9999999.0,"[0.0, 18.0]",4861,0,0,0,1.0,4860,99.98,3.0199,0.63,9.0,1.2292
+deployment0004,recovered_host,wavss_a_dcl_statistics_recovered,significant_period,sec,-9999999.0,"[3.0, 20.0]",4861,0,0,0,0.0,4861,100.0,9.4832,4.5,17.3,2.0063
+deployment0004,recovered_host,wavss_a_dcl_statistics_recovered,wave_height_10,m,-9999999.0,"[0.0, 23.0]",4861,0,0,0,2.0,4859,99.96,3.7529,0.76,10.99,1.5261
+deployment0004,recovered_host,wavss_a_dcl_statistics_recovered,wave_period_10,sec,-9999999.0,"[3.0, 30.0]",4861,0,0,0,0.0,4861,100.0,9.7841,4.4,17.6,2.0849
+deployment0004,recovered_host,wavss_a_dcl_statistics_recovered,mean_wave_period,sec,-9999999.0,"[3.0, 30.0]",4861,0,0,0,0.0,4861,100.0,7.2652,4.0,12.4,1.385
+deployment0004,recovered_host,wavss_a_dcl_statistics_recovered,peak_wave_period,sec,-9999999.0,"[3.0, 30.0]",4861,0,0,0,0.0,4861,100.0,11.308,4.0,22.2,2.8715
+deployment0004,recovered_host,wavss_a_dcl_statistics_recovered,wave_period_tp5,sec,-9999999.0,"[3.0, 30.0]",4861,0,0,0,0.0,4861,100.0,10.9618,4.3,19.9,2.6128
+deployment0004,recovered_host,wavss_a_dcl_statistics_recovered,wave_height_hmo,m,-9999999.0,"[0.0, 30.0]",4861,0,0,0,1.0,4860,99.98,3.1704,0.66,9.31,1.2678
+deployment0004,recovered_host,wavss_a_dcl_statistics_recovered,mean_direction,degrees,-9999999.0,"[0.0, 360.0]",4861,0,0,0,0.0,4861,100.0,222.7539,0.9,358.5,51.6466
+deployment0004,recovered_host,wavss_a_dcl_statistics_recovered,mean_spread,degrees,-9999999.0,"[None, None]",4861,0,0,no global ranges,0.0,4861,100.0,32.4891,16.4,59.5,6.2349
+deployment0005,recovered_host,wavss_a_dcl_mean_directional_recovered,mean_direction,degrees,-9999999.0,"[0.0, 360.0]",4270,0,0,0,4.0,4266,99.91,262.7229,110.19,345.76,30.5921
+deployment0005,recovered_host,wavss_a_dcl_mean_directional_recovered,"mean_direction_array (dims: ['time', 'wavss_array'])",degrees,-9999999.0,"[0.0, 360.0]","[4270, 525210]",238778,0,0,0.0,286432,54.54,231.1999,0.0,360.0,100.429
+deployment0005,recovered_host,wavss_a_dcl_mean_directional_recovered,"wavss_a_directional_frequency (dims: ['time', 'wavss_array'])",Hz,-9999999.0,"[None, None]","[4270, 525210]",0,525210,,,0,0.0,,,,
+deployment0005,recovered_host,wavss_a_dcl_mean_directional_recovered,wavss_a_corrected_mean_wave_direction,deg,-9999999.0,"[0.0, 360.0]",4270,0,0,0,5.0,4265,99.88,278.6033,126.1273,350.4801,30.5598
+deployment0005,recovered_host,wavss_a_dcl_mean_directional_recovered,"wavss_a_corrected_directional_wave_direction (dims: ['time', 'wavss_array'])",deg,-9999999.0,"[0.0, 360.0]","[4270, 525210]",0,238778,0,0.0,286432,54.54,241.3537,0.0064,359.9988,103.6752
+deployment0005,recovered_host,wavss_a_dcl_motion_recovered,"heave_offset_array (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 3.0]","[4270, 5901140]",0,4432260,729326,1433.0,738121,12.51,0.3349,0.0,1.85,0.2929
+deployment0005,recovered_host,wavss_a_dcl_motion_recovered,"north_offset_array (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 50.0]","[4270, 5901140]",0,4432260,753400,2658.0,712822,12.08,0.2021,0.0,1.23,0.1892
+deployment0005,recovered_host,wavss_a_dcl_motion_recovered,"east_offset_array (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 50.0]","[4270, 5901140]",0,4432260,722344,1663.0,744873,12.62,0.2916,0.0,1.66,0.2609
+deployment0005,recovered_host,wavss_a_dcl_motion_recovered,"wavss_a_magcor_buoymotion_x (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 50.0]","[4270, 5901140]",0,4185216,1011813,2599.0,701512,11.89,0.2082,0.0,1.2548,0.1915
+deployment0005,recovered_host,wavss_a_dcl_motion_recovered,"wavss_a_magcor_buoymotion_y (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 50.0]","[4270, 5901140]",0,4185216,974622,1773.0,739529,12.53,0.2954,0.0,1.6811,0.2625
+deployment0005,recovered_host,wavss_a_dcl_non_directional_recovered,"wavss_a_non_directional_frequency (dims: ['time', 'wavss_array'])",Hz,-9999999.0,"[None, None]","[4270, 525210]",0,0,no global ranges,0.0,525210,100.0,0.335,0.03,0.64,0.1775
+deployment0005,recovered_host,wavss_a_dcl_statistics_recovered,average_wave_height,m,-9999999.0,"[0.0, 12.0]",4270,0,0,0,1.0,4269,99.98,1.0354,0.27,2.98,0.3932
+deployment0005,recovered_host,wavss_a_dcl_statistics_recovered,max_wave_height,m,-9999999.0,"[0.0, 30.0]",4270,0,0,0,1.0,4269,99.98,2.2609,0.53,6.5,0.8743
+deployment0005,recovered_host,wavss_a_dcl_statistics_recovered,significant_wave_height,m,-9999999.0,"[0.0, 18.0]",4270,0,0,0,1.0,4269,99.98,1.6058,0.42,4.6,0.6103
+deployment0005,recovered_host,wavss_a_dcl_statistics_recovered,significant_period,sec,-9999999.0,"[3.0, 20.0]",4270,0,0,0,1.0,4269,99.98,7.7038,4.0,14.6,1.5332
+deployment0005,recovered_host,wavss_a_dcl_statistics_recovered,wave_height_10,m,-9999999.0,"[0.0, 23.0]",4270,0,0,0,2.0,4268,99.95,1.9691,0.49,5.67,0.7546
+deployment0005,recovered_host,wavss_a_dcl_statistics_recovered,wave_period_10,sec,-9999999.0,"[3.0, 30.0]",4270,0,0,0,0.0,4270,100.0,7.9414,3.7,15.7,1.6652
+deployment0005,recovered_host,wavss_a_dcl_statistics_recovered,mean_wave_period,sec,-9999999.0,"[3.0, 30.0]",4270,0,0,0,0.0,4270,100.0,6.0036,3.5,10.7,1.0641
+deployment0005,recovered_host,wavss_a_dcl_statistics_recovered,peak_wave_period,sec,-9999999.0,"[3.0, 30.0]",4270,0,0,0,0.0,4270,100.0,9.035,3.3,20.0,2.5398
+deployment0005,recovered_host,wavss_a_dcl_statistics_recovered,wave_period_tp5,sec,-9999999.0,"[3.0, 30.0]",4270,0,0,0,0.0,4270,100.0,8.7633,3.3,18.2,2.1712
+deployment0005,recovered_host,wavss_a_dcl_statistics_recovered,wave_height_hmo,m,-9999999.0,"[0.0, 30.0]",4270,0,0,0,1.0,4269,99.98,1.7035,0.44,4.76,0.6337
+deployment0005,recovered_host,wavss_a_dcl_statistics_recovered,mean_direction,degrees,-9999999.0,"[0.0, 360.0]",4270,0,0,0,4.0,4266,99.91,262.7231,110.2,345.8,30.5914
+deployment0005,recovered_host,wavss_a_dcl_statistics_recovered,mean_spread,degrees,-9999999.0,"[None, None]",4270,0,0,no global ranges,0.0,4270,100.0,26.9943,12.4,47.5,4.6477
+deployment0006,recovered_host,wavss_a_dcl_mean_directional_recovered,mean_direction,degrees,-9999999.0,"[0.0, 360.0]",4243,0,0,0,4.0,4239,99.91,240.5021,17.85,353.35,44.2973
+deployment0006,recovered_host,wavss_a_dcl_mean_directional_recovered,"mean_direction_array (dims: ['time', 'wavss_array'])",degrees,-9999999.0,"[0.0, 360.0]","[4243, 521889]",265508,0,9340,0.0,247041,47.34,197.2577,0.0,360.0,88.7676
+deployment0006,recovered_host,wavss_a_dcl_mean_directional_recovered,"wavss_a_directional_frequency (dims: ['time', 'wavss_array'])",Hz,-9999999.0,"[None, None]","[4243, 521889]",0,521889,,,0,0.0,,,,
+deployment0006,recovered_host,wavss_a_dcl_mean_directional_recovered,wavss_a_corrected_mean_wave_direction,deg,-9999999.0,"[0.0, 360.0]",4243,0,0,0,8.0,4235,99.81,256.218,33.6812,353.4412,44.1908
+deployment0006,recovered_host,wavss_a_dcl_mean_directional_recovered,"wavss_a_corrected_directional_wave_direction (dims: ['time', 'wavss_array'])",deg,-9999999.0,"[0.0, 360.0]","[4243, 521889]",0,265508,0,0.0,256381,49.13,208.9185,0.0,359.9955,90.3593
+deployment0006,recovered_host,wavss_a_dcl_motion_recovered,"heave_offset_array (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 3.0]","[4243, 5863826]",0,0,2939920,0.0,2923906,49.86,0.5619,0.0,3.0,0.5069
+deployment0006,recovered_host,wavss_a_dcl_motion_recovered,"north_offset_array (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 50.0]","[4243, 5863826]",0,0,3053811,12926.0,2797089,47.7,0.3537,0.0,2.39,0.3629
+deployment0006,recovered_host,wavss_a_dcl_motion_recovered,"east_offset_array (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 50.0]","[4243, 5863826]",0,0,2906029,9352.0,2948445,50.28,0.504,0.0,2.98,0.4611
+deployment0006,recovered_host,wavss_a_dcl_motion_recovered,"wavss_a_magcor_buoymotion_x (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 50.0]","[4243, 5863826]",0,0,3062979,12372.0,2788475,47.55,0.3742,0.0,2.4865,0.3748
+deployment0006,recovered_host,wavss_a_dcl_motion_recovered,"wavss_a_magcor_buoymotion_y (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 50.0]","[4243, 5863826]",0,0,2908613,8956.0,2946257,50.24,0.5027,0.0,2.9568,0.4586
+deployment0006,recovered_host,wavss_a_dcl_non_directional_recovered,"wavss_a_non_directional_frequency (dims: ['time', 'wavss_array'])",Hz,-9999999.0,"[None, None]","[4243, 521889]",0,0,no global ranges,0.0,521889,100.0,0.335,0.03,0.64,0.1775
+deployment0006,recovered_host,wavss_a_dcl_statistics_recovered,average_wave_height,m,-9999999.0,"[0.0, 12.0]",4243,0,0,0,3.0,4240,99.93,1.7447,0.33,5.79,0.8083
+deployment0006,recovered_host,wavss_a_dcl_statistics_recovered,max_wave_height,m,-9999999.0,"[0.0, 30.0]",4243,0,0,0,6.0,4237,99.86,4.3702,0.78,14.44,1.9795
+deployment0006,recovered_host,wavss_a_dcl_statistics_recovered,significant_wave_height,m,-9999999.0,"[0.0, 18.0]",4243,0,0,0,3.0,4240,99.93,2.7538,0.55,9.02,1.2721
+deployment0006,recovered_host,wavss_a_dcl_statistics_recovered,significant_period,sec,-9999999.0,"[3.0, 20.0]",4243,0,0,0,0.0,4243,100.0,9.5564,4.5,18.8,2.007
+deployment0006,recovered_host,wavss_a_dcl_statistics_recovered,wave_height_10,m,-9999999.0,"[0.0, 23.0]",4243,0,0,0,5.0,4238,99.88,3.4226,0.68,11.23,1.5705
+deployment0006,recovered_host,wavss_a_dcl_statistics_recovered,wave_period_10,sec,-9999999.0,"[3.0, 30.0]",4243,0,0,0,0.0,4243,100.0,9.9014,4.6,20.2,2.0946
+deployment0006,recovered_host,wavss_a_dcl_statistics_recovered,mean_wave_period,sec,-9999999.0,"[3.0, 30.0]",4243,0,0,0,3.0,4240,99.93,7.2406,4.1,14.1,1.4036
+deployment0006,recovered_host,wavss_a_dcl_statistics_recovered,peak_wave_period,sec,-9999999.0,"[3.0, 30.0]",4243,0,0,0,0.0,4243,100.0,11.387,3.8,22.2,2.7819
+deployment0006,recovered_host,wavss_a_dcl_statistics_recovered,wave_period_tp5,sec,-9999999.0,"[3.0, 30.0]",4243,0,0,0,0.0,4243,100.0,11.1078,4.5,21.4,2.569
+deployment0006,recovered_host,wavss_a_dcl_statistics_recovered,wave_height_hmo,m,-9999999.0,"[0.0, 30.0]",4243,0,0,0,4.0,4239,99.91,2.8897,0.59,9.46,1.3099
+deployment0006,recovered_host,wavss_a_dcl_statistics_recovered,mean_direction,degrees,-9999999.0,"[0.0, 360.0]",4243,0,0,0,4.0,4239,99.91,240.5013,17.8,353.3,44.2975
+deployment0006,recovered_host,wavss_a_dcl_statistics_recovered,mean_spread,degrees,-9999999.0,"[None, None]",4243,0,0,no global ranges,0.0,4243,100.0,31.2526,12.8,51.2,6.3149
+deployment0007,telemetered,wavss_a_dcl_motion,"heave_offset_array (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 3.0]","[1401, 1936182]",0,0,965038,2663.0,968481,50.02,0.4345,0.0,2.48,0.3907
+deployment0007,telemetered,wavss_a_dcl_motion,"north_offset_array (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 50.0]","[1401, 1936182]",0,0,1004485,5392.0,926305,47.84,0.2569,0.0,1.81,0.2558
+deployment0007,telemetered,wavss_a_dcl_motion,"east_offset_array (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 50.0]","[1401, 1936182]",0,0,957328,3583.0,975271,50.37,0.3959,0.0,2.4,0.3648
+deployment0007,telemetered,wavss_a_dcl_motion,"wavss_a_magcor_buoymotion_x (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 50.0]","[1401, 1936182]",0,0,1009357,5582.0,921243,47.58,0.2776,0.0,1.9692,0.274
+deployment0007,telemetered,wavss_a_dcl_motion,"wavss_a_magcor_buoymotion_y (dims: ['time', 'wavss_move'])",m,-9999999.0,"[0.0, 50.0]","[1401, 1936182]",0,0,960939,3290.0,971953,50.2,0.3905,0.0,2.3174,0.3558
+deployment0007,telemetered,wavss_a_dcl_non_directional,"wavss_a_non_directional_frequency (dims: ['time', 'wavss_array'])",Hz,-9999999.0,"[None, None]","[1401, 172323]",0,0,no global ranges,0.0,172323,100.0,0.335,0.03,0.64,0.1775
+deployment0007,telemetered,wavss_a_dcl_statistics,average_wave_height,m,-9999999.0,"[0.0, 12.0]",1401,0,0,0,9.0,1392,99.36,1.3395,0.46,4.45,0.5953
+deployment0007,telemetered,wavss_a_dcl_statistics,max_wave_height,m,-9999999.0,"[0.0, 30.0]",1401,0,0,0,10.0,1391,99.29,3.3642,1.1,11.47,1.4709
+deployment0007,telemetered,wavss_a_dcl_statistics,significant_wave_height,m,-9999999.0,"[0.0, 18.0]",1401,0,0,0,9.0,1392,99.36,2.1112,0.72,7.15,0.9402
+deployment0007,telemetered,wavss_a_dcl_statistics,significant_period,sec,-9999999.0,"[3.0, 20.0]",1401,0,0,0,0.0,1401,100.0,8.8469,5.2,14.4,1.6123
+deployment0007,telemetered,wavss_a_dcl_statistics,wave_height_10,m,-9999999.0,"[0.0, 23.0]",1401,0,0,0,9.0,1392,99.36,2.6225,0.87,8.98,1.1662
+deployment0007,telemetered,wavss_a_dcl_statistics,wave_period_10,sec,-9999999.0,"[3.0, 30.0]",1401,0,0,0,0.0,1401,100.0,9.1084,5.0,14.3,1.6831
+deployment0007,telemetered,wavss_a_dcl_statistics,mean_wave_period,sec,-9999999.0,"[3.0, 30.0]",1401,0,0,0,0.0,1401,100.0,6.7729,4.2,10.7,1.1383
+deployment0007,telemetered,wavss_a_dcl_statistics,peak_wave_period,sec,-9999999.0,"[3.0, 30.0]",1401,0,0,0,0.0,1401,100.0,10.4101,4.2,18.2,2.5148
+deployment0007,telemetered,wavss_a_dcl_statistics,wave_period_tp5,sec,-9999999.0,"[3.0, 30.0]",1401,0,0,0,0.0,1401,100.0,10.1387,4.5,17.4,2.1956
+deployment0007,telemetered,wavss_a_dcl_statistics,wave_height_hmo,m,-9999999.0,"[0.0, 30.0]",1401,0,0,0,9.0,1392,99.36,2.2189,0.76,7.45,0.9746
+deployment0007,telemetered,wavss_a_dcl_statistics,mean_direction,degrees,-9999999.0,"[0.0, 360.0]",1401,0,0,0,0.0,1401,100.0,255.0194,158.5,302.8,28.2496
+deployment0007,telemetered,wavss_a_dcl_statistics,mean_spread,degrees,-9999999.0,"[None, None]",1401,0,0,no global ranges,0.0,1401,100.0,29.3525,16.9,50.0,4.2537
