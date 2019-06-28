@@ -157,11 +157,11 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                 if 'pressure' not in sv:
                     if sv == 'spkir_abj_cspp_downwelling_vector':
                         pxso.pf_xs_spkir(ds, sv, time1, y1, ds_lat1, ds_lon1, zcell_size, inpercentile, save_dir_profile,
-                                         save_dir_xsection, deployment, press, y_units, n_std)
+                                         save_dir_xsection, deployment, press, y_units, n_std, zdbar)
                     elif 'OPTAA' in r:
                         if sv not in ['wavelength_a', 'wavelength_c']:
                             pxso.pf_xs_optaa(ds, sv, time1, y1, ds_lat1, ds_lon1, zcell_size, inpercentile, save_dir_profile,
-                                             save_dir_xsection, deployment, press, y_units, n_std)
+                                             save_dir_xsection, deployment, press, y_units, n_std, zdbar)
                     else:
                         z1 = ds[sv].values
                         fv = ds[sv]._FillValue
@@ -198,14 +198,14 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                                 cf.reject_erroneous_data(r, sv, tm, y, z, fv, ds_lat, ds_lon)
 
                             # get rid of 0.0 data
-                            # if sv == 'practical_salinity':
-                            #     ind = ndata > 34
-                            # elif sv == 'sci_seawater_density':
-                            #     ind = ndata > 1026
-                            # elif sv == 'sci_water_cond':
-                            #     ind = ndata > 3.1
-                            # else:
-                            #     ind = ndata > 0
+                            if sv == 'salinity':
+                                ind = ndata > 30
+                            elif sv == 'density':
+                                ind = ndata > 1022.5
+                            elif sv == 'conductivity':
+                                ind = ndata > 3.45
+                            else:
+                                ind = ndata > 0
                             # if sv == 'sci_flbbcd_chlor_units':
                             #     ind = ndata < 7.5
                             # elif sv == 'sci_flbbcd_cdom_units':
@@ -213,10 +213,10 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                             # else:
                             #     ind = ndata > 0.0
 
-                            if 'CTD' in r:
-                                ind = zpressure > 0.0
-                            else:
-                                ind = ndata > 0.0
+                            # if 'CTD' in r:
+                            #     ind = zpressure > 0.0
+                            # else:
+                            #     ind = ndata > 0.0
 
                             lenzero = np.sum(~ind)
                             dtime = dtime[ind]
@@ -238,21 +238,22 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                                     len(ndata) - len(z_portal)))
 
                                 # create data groups
-                                columns = ['tsec', 'dbar', str(sv)]
-                                min_r = int(round(np.nanmin(y_portal) - zcell_size))
-                                max_r = int(round(np.nanmax(y_portal) + zcell_size))
-                                ranges = list(range(min_r, max_r, zcell_size))
+                                if len(y_portal) > 0:
+                                    columns = ['tsec', 'dbar', str(sv)]
+                                    min_r = int(round(np.nanmin(y_portal) - zcell_size))
+                                    max_r = int(round(np.nanmax(y_portal) + zcell_size))
+                                    ranges = list(range(min_r, max_r, zcell_size))
 
-                                groups, d_groups = gt.group_by_depth_range(t_portal, y_portal, z_portal, columns, ranges)
+                                    groups, d_groups = gt.group_by_depth_range(t_portal, y_portal, z_portal, columns, ranges)
 
-                                if 'scatter' in sv:
-                                    n_std = None  # to use percentile
-                                else:
-                                    n_std = n_std
+                                    if 'scatter' in sv:
+                                        n_std = None  # to use percentile
+                                    else:
+                                        n_std = n_std
 
-                                #  get percentile analysis for printing on the profile plot
-                                y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_ex = cf.reject_timestamps_in_groups(
-                                    groups, d_groups, n_std, inpercentile)
+                                    #  get percentile analysis for printing on the profile plot
+                                    y_avg, n_avg, n_min, n_max, n0_std, n1_std, l_arr, time_ex = cf.reject_timestamps_in_groups(
+                                        groups, d_groups, n_std, inpercentile)
 
                             """
                             Plot all data
@@ -299,95 +300,96 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                             Plot cleaned-up data
                             """
                             if len(dtime) > 0:
-                                sfile = '_'.join(('rm_erroneous_data', sname, pd.to_datetime(t_portal.min()).strftime('%Y%m%d')))
-                                t0 = pd.to_datetime(t_portal.min()).strftime('%Y-%m-%dT%H:%M:%S')
-                                t1 = pd.to_datetime(t_portal.max()).strftime('%Y-%m-%dT%H:%M:%S')
-                                title = ' '.join((deployment, refdes, method)) + '\n' + t0 + ' to ' + t1
-                                if 'SPKIR' in r:
-                                    title = title + '\nWavelength = 510 nm'
+                                if len(y_portal) > 0:
+                                    sfile = '_'.join(('rm_erroneous_data', sname, pd.to_datetime(t_portal.min()).strftime('%Y%m%d')))
+                                    t0 = pd.to_datetime(t_portal.min()).strftime('%Y-%m-%dT%H:%M:%S')
+                                    t1 = pd.to_datetime(t_portal.max()).strftime('%Y-%m-%dT%H:%M:%S')
+                                    title = ' '.join((deployment, refdes, method)) + '\n' + t0 + ' to ' + t1
+                                    if 'SPKIR' in r:
+                                        title = title + '\nWavelength = 510 nm'
 
-                                '''
-                                profile plot
-                                '''
-                                xlabel = sv + " (" + sv_units + ")"
-                                ylabel = press[0] + " (" + y_units[0] + ")"
-                                clabel = 'Time'
+                                    '''
+                                    profile plot
+                                    '''
+                                    xlabel = sv + " (" + sv_units + ")"
+                                    ylabel = press[0] + " (" + y_units[0] + ")"
+                                    clabel = 'Time'
 
-                                fig, ax = pf.plot_profiles(z_portal, y_portal, t_portal, ylabel, xlabel, clabel, stdev=None)
+                                    fig, ax = pf.plot_profiles(z_portal, y_portal, t_portal, ylabel, xlabel, clabel, stdev=None)
 
-                                ax.set_title(title, fontsize=9)
-                                ax.plot(n_avg, y_avg, '-k')
-                                ax.fill_betweenx(y_avg, n0_std, n1_std, color='m', alpha=0.2)
-                                if inpercentile:
+                                    ax.set_title(title, fontsize=9)
+                                    ax.plot(n_avg, y_avg, '-k')
+                                    ax.fill_betweenx(y_avg, n0_std, n1_std, color='m', alpha=0.2)
+                                    if inpercentile:
+                                        leg_text = (
+                                            'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
+                                            '{} unreasonable values'.format(lenfv, lennan, lenev, lengr, global_min, global_max, lenzero) +
+                                            '\nexcluded {} suspect data points when inspected visually'.format(
+                                                len(ndata) - len(z_portal)) +
+                                            '\n(black) data average in {} dbar segments'.format(zcell_size) +
+                                            '\n(magenta) {} percentile envelope in {} dbar segments'.format(
+                                                int(100 - inpercentile * 2), zcell_size),)
+                                    elif n_std:
+                                        leg_text = (
+                                            'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
+                                            '{} unreasonable values'.format(lenfv, lennan, lenev, lengr, global_min, global_max,
+                                                              lenzero) +
+                                            '\nexcluded {} suspect data points when inspected visually'.format(
+                                                len(ndata) - len(z_portal)) +
+                                            '\n(black) data average in {} dbar segments'.format(zcell_size) +
+                                            '\n(magenta) +/- {} SD envelope in {} dbar segments'.format(
+                                                int(n_std), zcell_size),)
+                                    ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
+                                    fig.tight_layout()
+                                    pf.save_fig(save_dir_profile, sfile)
+
+                                    '''
+                                    xsection plot
+                                    '''
+                                    clabel = sv + " (" + sv_units + ")"
+                                    ylabel = press[0] + " (" + y_units[0] + ")"
+
+                                    # plot non-erroneous data
+                                    fig, ax, bar = pf.plot_xsection(subsite, t_portal, y_portal, z_portal, clabel, ylabel,
+                                                                    t_eng=None, m_water_depth=None, inpercentile=None,
+                                                                    stdev=None)
+
+                                    ax.set_title(title, fontsize=9)
                                     leg_text = (
                                         'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
                                         '{} unreasonable values'.format(lenfv, lennan, lenev, lengr, global_min, global_max, lenzero) +
                                         '\nexcluded {} suspect data points when inspected visually'.format(
-                                            len(ndata) - len(z_portal)) +
-                                        '\n(black) data average in {} dbar segments'.format(zcell_size) +
-                                        '\n(magenta) {} percentile envelope in {} dbar segments'.format(
-                                            int(100 - inpercentile * 2), zcell_size),)
-                                elif n_std:
-                                    leg_text = (
-                                        'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
-                                        '{} unreasonable values'.format(lenfv, lennan, lenev, lengr, global_min, global_max,
-                                                          lenzero) +
-                                        '\nexcluded {} suspect data points when inspected visually'.format(
-                                            len(ndata) - len(z_portal)) +
-                                        '\n(black) data average in {} dbar segments'.format(zcell_size) +
-                                        '\n(magenta) +/- {} SD envelope in {} dbar segments'.format(
-                                            int(n_std), zcell_size),)
-                                ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
-                                fig.tight_layout()
-                                pf.save_fig(save_dir_profile, sfile)
+                                            len(ndata) - len(z_portal)),
+                                    )
+                                    ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
+                                    fig.tight_layout()
+                                    pf.save_fig(save_dir_xsection, sfile)
 
-                                '''
-                                xsection plot
-                                '''
-                                clabel = sv + " (" + sv_units + ")"
-                                ylabel = press[0] + " (" + y_units[0] + ")"
+                                    '''
+                                    4D plot for gliders only
+                                    '''
+                                    if 'MOAS' in r:
+                                        if ds_lat is not None and ds_lon is not None:
+                                            cf.create_dir(save_dir_4d)
 
-                                # plot non-erroneous data
-                                fig, ax, bar = pf.plot_xsection(subsite, t_portal, y_portal, z_portal, clabel, ylabel,
-                                                                t_eng=None, m_water_depth=None, inpercentile=None,
-                                                                stdev=None)
+                                            clabel = sv + " (" + sv_units + ")"
+                                            zlabel = press[0] + " (" + y_units[0] + ")"
 
-                                ax.set_title(title, fontsize=9)
-                                leg_text = (
-                                    'removed {} fill values, {} NaNs, {} Extreme Values (1e7), {} Global ranges [{} - {}], '
-                                    '{} unreasonable values'.format(lenfv, lennan, lenev, lengr, global_min, global_max, lenzero) +
-                                    '\nexcluded {} suspect data points when inspected visually'.format(
-                                        len(ndata) - len(z_portal)),
-                                )
-                                ax.legend(leg_text, loc='upper center', bbox_to_anchor=(0.5, -0.17), fontsize=6)
-                                fig.tight_layout()
-                                pf.save_fig(save_dir_xsection, sfile)
+                                            fig = plt.figure()
+                                            ax = fig.add_subplot(111, projection='3d')
+                                            sct = ax.scatter(lon_portal, lat_portal, y_portal, c=z_portal, s=2)
+                                            cbar = plt.colorbar(sct, label=clabel, extend='both')
+                                            cbar.ax.tick_params(labelsize=8)
+                                            ax.invert_zaxis()
+                                            ax.view_init(25, 32)
+                                            ax.invert_xaxis()
+                                            ax.invert_yaxis()
+                                            ax.set_zlabel(zlabel, fontsize=9)
+                                            ax.set_ylabel('Latitude', fontsize=9)
+                                            ax.set_xlabel('Longitude', fontsize=9)
 
-                                '''
-                                4D plot for gliders only
-                                '''
-                                if 'MOAS' in r:
-                                    if ds_lat is not None and ds_lon is not None:
-                                        cf.create_dir(save_dir_4d)
-
-                                        clabel = sv + " (" + sv_units + ")"
-                                        zlabel = press[0] + " (" + y_units[0] + ")"
-
-                                        fig = plt.figure()
-                                        ax = fig.add_subplot(111, projection='3d')
-                                        sct = ax.scatter(lon_portal, lat_portal, y_portal, c=z_portal, s=2)
-                                        cbar = plt.colorbar(sct, label=clabel, extend='both')
-                                        cbar.ax.tick_params(labelsize=8)
-                                        ax.invert_zaxis()
-                                        ax.view_init(25, 32)
-                                        ax.invert_xaxis()
-                                        ax.invert_yaxis()
-                                        ax.set_zlabel(zlabel, fontsize=9)
-                                        ax.set_ylabel('Latitude', fontsize=9)
-                                        ax.set_xlabel('Longitude', fontsize=9)
-
-                                        ax.set_title(title, fontsize=9)
-                                        pf.save_fig(save_dir_4d, sfile)
+                                            ax.set_title(title, fontsize=9)
+                                            pf.save_fig(save_dir_4d, sfile)
 
 
 if __name__ == '__main__':
