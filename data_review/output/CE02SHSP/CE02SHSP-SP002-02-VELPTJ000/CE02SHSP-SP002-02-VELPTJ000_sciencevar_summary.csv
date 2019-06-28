@@ -1,0 +1,12 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0002,recovered_cspp,velpt_j_cspp_instrument_recovered,temperature,ºC,-9999999.0,"[None, None]",31163,0,0,no global ranges,1,31162,100.0,9.8155,8.64,11.49,0.6274
+deployment0002,recovered_cspp,velpt_j_cspp_instrument_recovered,speed_of_sound,m s-1,-9999999.0,"[None, None]",31163,0,0,no global ranges,1,31162,100.0,1489.097,1484.8,1495.0,2.2623
+deployment0002,recovered_cspp,velpt_j_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[None, None]",31163,0,0,no global ranges,0,31163,100.0,36.4553,0.645,76.678,22.5079
+deployment0002,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_pressure,dbar,-9999999.0,"[None, None]",31163,0,0,no global ranges,0,31163,100.0,36.371,0.238,131.072,22.603
+deployment0002,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam1_m_s,m s-1,-9999999.0,"[None, None]",31163,0,0,no global ranges,45,31118,99.86,-0.0014,-0.342,0.338,0.0665
+deployment0002,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam2_m_s,m s-1,-9999999.0,"[None, None]",31163,0,0,no global ranges,8,31155,99.97,-0.0274,-0.643,0.699,0.1182
+deployment0002,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam3_m_s,m s-1,-9999999.0,"[None, None]",31163,0,0,no global ranges,15,31148,99.95,-0.2331,-0.6,0.221,0.0906
+deployment0002,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_eastward_velocity,m s-1,-9999999.0,"[None, None]",31163,0,0,no global ranges,35,31128,99.89,-0.0,-0.0004,0.0004,0.0001
+deployment0002,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_northward_velocity,m s-1,-9999999.0,"[None, None]",31163,0,0,no global ranges,8,31155,99.97,-0.0,-0.0006,0.0007,0.0001
+deployment0002,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_upward_velocity,m s-1,-9999999.0,"[None, None]",31163,0,0,no global ranges,15,31148,99.95,-0.0002,-0.0006,0.0002,0.0001
+deployment0002,recovered_cspp,velpt_j_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",31163,0,0,no global ranges,0,31163,100.0,36.4422,0.648,76.6764,22.5051

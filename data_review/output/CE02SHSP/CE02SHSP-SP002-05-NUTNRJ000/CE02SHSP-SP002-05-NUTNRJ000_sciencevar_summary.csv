@@ -1,0 +1,16 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0002,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,nitrate_concentration,µMol L-1,-9999999.0,"[None, None]",18487,0,0,no global ranges,0,18486,99.99,0.0,0.0,0.0,0.0
+deployment0002,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,nutnr_nitrogen_in_nitrate,mg/l,-9999999.0,"[None, None]",18487,0,0,no global ranges,0,18487,100.0,0.0,0.0,0.0,0.0
+deployment0002,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,pressure_depth,dbar,-9999999.0,"[None, None]",18487,0,0,no global ranges,0,18487,100.0,0.0,0.0,0.0,0.0
+deployment0002,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,ctd_psu,1,-9999999.0,"[None, None]",18487,0,0,no global ranges,35,18452,99.81,-0.9991,-1.0,0.001,0.0303
+deployment0002,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,ctd_temp,ºC,-9999999.0,"[None, None]",18487,0,0,no global ranges,34,18453,99.82,-0.999,-1.0,0.001,0.0312
+deployment0002,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,ctd_dbar,dbar,-9999999.0,"[None, None]",18487,0,0,no global ranges,36,18451,99.81,-0.9986,-1.0,10.0,0.0858
+deployment0002,recovered_cspp,nutnr_j_cspp_dark_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",18487,0,0,no global ranges,0,18487,100.0,33.0024,0.5594,75.1486,19.8304
+deployment0002,recovered_cspp,nutnr_j_cspp_instrument_recovered,salinity_corrected_nitrate,µmol L-1,-9999999.0,"[None, None]",1674,0,0,no global ranges,0,1674,100.0,12.358,4.3434,28.7234,7.6676
+deployment0002,recovered_cspp,nutnr_j_cspp_instrument_recovered,nitrate_concentration,µMol L-1,-9999999.0,"[None, None]",1674,0,0,no global ranges,0,1674,100.0,-1.0,-1.0,-1.0,0.0
+deployment0002,recovered_cspp,nutnr_j_cspp_instrument_recovered,nutnr_nitrogen_in_nitrate,mg/l,-9999999.0,"[None, None]",1674,0,0,no global ranges,0,1674,100.0,-1.0,-1.0,-1.0,0.0
+deployment0002,recovered_cspp,nutnr_j_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[None, None]",1674,0,0,no global ranges,0,1674,100.0,0.0,0.0,0.0,0.0
+deployment0002,recovered_cspp,nutnr_j_cspp_instrument_recovered,ctd_psu,1,-9999999.0,"[None, None]",1674,0,0,no global ranges,0,1673,99.94,-1.0,-1.0,-1.0,0.0
+deployment0002,recovered_cspp,nutnr_j_cspp_instrument_recovered,ctd_temp,ºC,-9999999.0,"[None, None]",1674,0,0,no global ranges,0,1673,99.94,-1.0,-1.0,-1.0,0.0
+deployment0002,recovered_cspp,nutnr_j_cspp_instrument_recovered,ctd_dbar,dbar,-9999999.0,"[None, None]",1674,0,0,no global ranges,0,1673,99.94,-1.0,-1.0,-1.0,0.0
+deployment0002,recovered_cspp,nutnr_j_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",1674,0,0,no global ranges,0,1674,100.0,33.7975,0.8242,73.3733,20.334

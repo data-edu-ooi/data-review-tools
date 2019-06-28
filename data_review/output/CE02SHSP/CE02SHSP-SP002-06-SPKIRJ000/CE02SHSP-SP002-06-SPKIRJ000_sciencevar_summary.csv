@@ -1,0 +1,4 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0002,recovered_cspp,spkir_abj_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[None, None]",217116,0,0,no global ranges,0.0,217116,100.0,34.4001,0.522,76.678,21.6766
+deployment0002,recovered_cspp,spkir_abj_cspp_instrument_recovered,"spkir_abj_cspp_downwelling_vector (dims: ['time', 'spectra'])",µW cm-2 nm-1,-9999999.0,"[None, None]","[217116, 1519812]",0,0,no global ranges,,1519812,100.0,"[3.04, 4.27, 5.92, 5.62, 4.92, 1.64, 0.87]","[-575.09, -215.28, -145.43, -563.98, -568.84, -329.12, -94.27]","[264.53, 304.03, 342.19, 353.4, 356.45, 278.69, 167.04]","[10.63, 13.15, 15.65, 15.58, 14.49, 8.77, 5.66]"
+deployment0002,recovered_cspp,spkir_abj_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",217116,0,0,no global ranges,0.0,217116,100.0,34.3988,0.5082,76.678,21.675
