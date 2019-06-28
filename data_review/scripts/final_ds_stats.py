@@ -387,6 +387,9 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                         t1 = None
                         t_final = []
                         n_all = None
+                        n_nan = None
+                        n_fv = None
+                        n_grange = None
 
                     if sd_calc:
                         print_sd = sd_calc

@@ -68,12 +68,13 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                     continue
 
             fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(fd)
+            #if deployment == 'deployment0007':
             #sci_vars = cf.return_science_vars(stream)
             sci_vars = ['optical_absorption', 'beam_attenuation']
             print('\nPlotting {} {}'.format(r, deployment))
             array = subsite[0:2]
             filename = '_'.join(fname.split('_')[:-1])
-            save_dir = os.path.join(sDir, array, subsite, refdes, 'timeseries_plots')
+            save_dir = os.path.join(sDir, array, subsite, refdes, 'timeseries_plots', deployment)
             cf.create_dir(save_dir)
 
             tm = ds['time'].values
@@ -172,7 +173,7 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                     save_file2 = os.path.join(save_dir, sfile2)
                     fig2.savefig(str(save_file2), dpi=150)
 
-            plt.close('all')
+                plt.close('all')
 
 
 if __name__ == '__main__':
