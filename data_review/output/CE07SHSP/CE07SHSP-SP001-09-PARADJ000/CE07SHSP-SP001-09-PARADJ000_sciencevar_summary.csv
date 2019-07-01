@@ -1,0 +1,19 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_cspp,parad_j_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",14386,0,0,0,0,14386,100.0,37.4296,0.537,79.699,22.6579
+deployment0001,recovered_cspp,parad_j_cspp_instrument_recovered,parad_j_par_counts_output,µmol photons m-2 s-1,-100000000.0,"[0.0, 2500.0]",14386,0,0,0,148,14238,98.97,9.2446,0.0423,282.5042,30.6876
+deployment0001,recovered_cspp,parad_j_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",14386,0,0,no global ranges,0,14386,100.0,37.4296,0.5207,79.6985,22.6578
+deployment0002,recovered_cspp,parad_j_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",18095,0,0,0,0,18095,100.0,39.5316,0.526,81.115,23.789
+deployment0002,recovered_cspp,parad_j_cspp_instrument_recovered,parad_j_par_counts_output,µmol photons m-2 s-1,-100000000.0,"[0.0, 2500.0]",18095,0,0,0,203,17892,98.88,10.1247,0.056,416.7947,44.3963
+deployment0002,recovered_cspp,parad_j_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",18095,0,0,no global ranges,0,18095,100.0,39.5496,0.5699,95.4856,23.7822
+deployment0003,recovered_cspp,parad_j_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",11397,0,0,0,0,11397,100.0,39.8318,0.539,84.502,25.5142
+deployment0003,recovered_cspp,parad_j_cspp_instrument_recovered,parad_j_par_counts_output,µmol photons m-2 s-1,-100000000.0,"[0.0, 2500.0]",11397,0,0,0,132,11265,98.84,23.9468,0.0368,740.8907,85.9632
+deployment0003,recovered_cspp,parad_j_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",11397,0,0,no global ranges,0,11397,100.0,39.8316,0.5381,84.5012,25.5142
+deployment0004,recovered_cspp,parad_j_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",10409,0,0,0,0,10409,100.0,35.4112,0.702,80.973,24.2896
+deployment0004,recovered_cspp,parad_j_cspp_instrument_recovered,parad_j_par_counts_output,µmol photons m-2 s-1,-100000000.0,"[0.0, 2500.0]",10409,0,0,0,123,10286,98.82,24.1152,0.0369,727.6243,87.7066
+deployment0004,recovered_cspp,parad_j_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",10409,0,0,no global ranges,0,10409,100.0,35.4111,0.7211,80.9726,24.2896
+deployment0005,recovered_cspp,parad_j_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",16445,0,0,0,0,16445,100.0,36.8991,0.663,82.82,23.3662
+deployment0005,recovered_cspp,parad_j_cspp_instrument_recovered,parad_j_par_counts_output,µmol photons m-2 s-1,-100000000.0,"[0.0, 2500.0]",16445,0,0,0,170,16275,98.97,5.8803,0.3037,107.2461,14.7951
+deployment0005,recovered_cspp,parad_j_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",16445,0,0,no global ranges,0,16445,100.0,36.8989,0.6423,82.82,23.3662
+deployment0006,recovered_cspp,parad_j_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",4515,0,0,0,0,4515,100.0,39.5602,0.627,82.572,24.2564
+deployment0006,recovered_cspp,parad_j_cspp_instrument_recovered,parad_j_par_counts_output,µmol photons m-2 s-1,-100000000.0,"[0.0, 2500.0]",4515,0,0,0,53,4462,98.83,11.3697,0.0384,583.9901,53.7664
+deployment0006,recovered_cspp,parad_j_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",4515,0,0,no global ranges,0,4515,100.0,39.56,0.6163,82.5725,24.2564
