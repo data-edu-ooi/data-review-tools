@@ -4,11 +4,11 @@ deployment0001,recovered_host-flort_sample,telemetered-flort_sample,Chlorophyll-
 deployment0001,recovered_host-flort_sample,telemetered-flort_sample,CDOM Concentration,fluorometric_cdom,ppb,pass,23304.0,0.0,no missing data,598.0,0.0,0.0,0.0,0.0
 deployment0001,recovered_host-flort_sample,telemetered-flort_sample,Total Volume Scattering Coefficient,total_volume_scattering_coefficient,m-1 sr-1,pass,23304.0,0.0,no missing data,598.0,0.0,0.0,0.0,0.0
 deployment0001,recovered_host-flort_sample,telemetered-flort_sample,Optical Backscatter,optical_backscatter,m-1,pass,23304.0,23304.0,timestamps rounded to the hour: no missing data,0.0,,,,
-deployment0001,recovered_host-flort_sample,telemetered-flort_sample,Seawater Pressure,pressure_depth,dbar,pass,23304.0,23304.0,No valid data to compare,0.0,,,,
+deployment0001,recovered_host-flort_sample,telemetered-flort_sample,CTD Seawater Pressure,pressure_depth,dbar,pass,23304.0,23304.0,No valid data to compare,0.0,,,,
 deployment0002,recovered_host-flort_sample,telemetered-flort_sample,Total Scattering Coefficient of Pure Seawater,seawater_scattering_coefficient,m-1,pass,15273.0,0.0,no missing data,3.0,3.3e-09,9.201e-07,0.0,0.0
 deployment0002,recovered_host-flort_sample,telemetered-flort_sample,Chlorophyll-a Concentration,fluorometric_chlorophyll_a,µg L-1,pass,15273.0,0.0,no missing data,3.0,0.0,0.0,0.0,0.0
 deployment0002,recovered_host-flort_sample,telemetered-flort_sample,CDOM Concentration,fluorometric_cdom,ppb,pass,15273.0,0.0,no missing data,3.0,0.0,0.0,0.0,0.0
 deployment0002,recovered_host-flort_sample,telemetered-flort_sample,Total Volume Scattering Coefficient,total_volume_scattering_coefficient,m-1 sr-1,pass,15273.0,0.0,no missing data,3.0,0.0,0.0,0.0,0.0
 deployment0002,recovered_host-flort_sample,telemetered-flort_sample,Optical Backscatter,optical_backscatter,m-1,pass,15273.0,0.0,no missing data,3.0,1e-10,2.77e-08,0.0,0.0
-deployment0002,recovered_host-flort_sample,telemetered-flort_sample,Seawater Pressure,pressure_depth,dbar,pass,15273.0,15273.0,No valid data to compare,0.0,,,,
+deployment0002,recovered_host-flort_sample,telemetered-flort_sample,CTD Seawater Pressure,pressure_depth,dbar,pass,15273.0,15273.0,No valid data to compare,0.0,,,,
 deployment0003,recovered_host-flort_sample,no other methods available for comparison,,,,,,,,,,,,
