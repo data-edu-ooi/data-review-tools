@@ -1,3 +1,4 @@
 deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
 deployment0003,telemetered,parad_j_cspp_instrument,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",1013,0,0,0,0,1013,100.0,35.0842,0.929,80.462,22.4002
 deployment0003,telemetered,parad_j_cspp_instrument,parad_j_par_counts_output,µmol photons m-2 s-1,-100000000.0,"[0.0, 2500.0]",1013,0,0,19,0,994,98.12,238.5266,0.0325,2429.9841,472.1426
+deployment0003,telemetered,parad_j_cspp_instrument,int_ctd_pressure,dbar,nan,"[None, None]",1013,0,0,no global ranges,0,1013,100.0,35.0832,0.7951,80.4181,22.3993

@@ -9,3 +9,4 @@ deployment0003,telemetered,velpt_j_cspp_instrument,velocity_beam3_m_s,m s-1,-999
 deployment0003,telemetered,velpt_j_cspp_instrument,velpt_j_eastward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",1204,0,0,0,1,1203,99.92,0.0,-0.0002,0.0003,0.0001
 deployment0003,telemetered,velpt_j_cspp_instrument,velpt_j_northward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",1204,0,0,0,1,1203,99.92,-0.0,-0.0003,0.0004,0.0001
 deployment0003,telemetered,velpt_j_cspp_instrument,velpt_j_upward_velocity,m s-1,-9999999.0,"[-1.0, 1.0]",1204,0,0,0,1,1203,99.92,-0.0002,-0.0005,0.0001,0.0001
+deployment0003,telemetered,velpt_j_cspp_instrument,int_ctd_pressure,dbar,nan,"[None, None]",1204,0,0,no global ranges,0,1204,100.0,36.9542,0.9082,80.5397,23.4976

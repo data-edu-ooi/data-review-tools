@@ -5,3 +5,4 @@ deployment0003,telemetered,dosta_abcdjm_cspp_instrument,estimated_oxygen_saturat
 deployment0003,telemetered,dosta_abcdjm_cspp_instrument,optode_temperature,ºC,-9999999.0,"[-2.0, 40.0]",1626,0,0,0,0,1626,100.0,15.6858,9.621,24.681,4.6201
 deployment0003,telemetered,dosta_abcdjm_cspp_instrument,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",1626,0,0,0,0,1626,100.0,40.0618,0.964,80.56,24.8837
 deployment0003,telemetered,dosta_abcdjm_cspp_instrument,dosta_abcdjm_cspp_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",1626,0,0,0,0,1626,100.0,261.1886,176.617,371.9604,41.2548
+deployment0003,telemetered,dosta_abcdjm_cspp_instrument,int_ctd_pressure,dbar,nan,"[None, None]",1626,0,0,no global ranges,0,1626,100.0,40.0245,0.9178,80.5539,24.8794
