@@ -9,3 +9,4 @@ deployment0004,recovered_cspp,velpt_j_cspp_instrument_recovered,velocity_beam3_m
 deployment0004,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_eastward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",29973,0,0,0,33,29940,99.89,0.0001,-0.0004,0.0006,0.0001
 deployment0004,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_northward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",29973,0,0,0,58,29915,99.81,-0.0,-0.0003,0.0003,0.0001
 deployment0004,recovered_cspp,velpt_j_cspp_instrument_recovered,velpt_j_upward_velocity,m s-1,-9999999.0,"[-1.0, 1.0]",29973,0,0,0,4,29969,99.99,-0.0002,-0.0006,0.0002,0.0001
+deployment0004,recovered_cspp,velpt_j_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",29973,0,0,no global ranges,0,29973,100.0,40.6808,0.6214,99.4794,27.7211

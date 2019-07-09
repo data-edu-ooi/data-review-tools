@@ -5,3 +5,4 @@ deployment0004,telemetered,flort_dj_cspp_instrument,fluorometric_cdom,ppb,-99999
 deployment0004,telemetered,flort_dj_cspp_instrument,total_volume_scattering_coefficient,m-1 sr-1,-9999999.0,"[0.0, 0.0079]",1367,0,0,0,1,1366,99.93,0.0002,0.0001,0.0008,0.0001
 deployment0004,telemetered,flort_dj_cspp_instrument,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",1367,0,0,0,1,1366,99.93,0.0015,0.0008,0.0051,0.0005
 deployment0004,telemetered,flort_dj_cspp_instrument,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",1367,0,0,0,0,1367,100.0,39.2789,0.967,93.766,26.7789
+deployment0004,telemetered,flort_dj_cspp_instrument,int_ctd_pressure,dbar,nan,"[None, None]",1367,0,0,no global ranges,0,1367,100.0,39.2726,0.7905,93.8626,26.7727

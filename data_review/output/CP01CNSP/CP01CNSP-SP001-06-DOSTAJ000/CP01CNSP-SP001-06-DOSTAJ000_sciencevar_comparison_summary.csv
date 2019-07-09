@@ -3,5 +3,5 @@ deployment0004,recovered_cspp-dosta_abcdjm_cspp_instrument_recovered,telemetered
 deployment0004,recovered_cspp-dosta_abcdjm_cspp_instrument_recovered,telemetered-dosta_abcdjm_cspp_instrument,DO,estimated_oxygen_concentration,µmol L-1,pass,33559,0,no missing data,2292,0.0,0.0569915771,0,0.0
 deployment0004,recovered_cspp-dosta_abcdjm_cspp_instrument_recovered,telemetered-dosta_abcdjm_cspp_instrument,Dissolved Oxygen Saturation,estimated_oxygen_saturation,percent,pass,33559,0,no missing data,2292,0.0,0.0180053711,0,0.0
 deployment0004,recovered_cspp-dosta_abcdjm_cspp_instrument_recovered,telemetered-dosta_abcdjm_cspp_instrument,Optode Temperature,optode_temperature,ºC,pass,33559,0,no missing data,2292,0.0,0.0,0,0.0
-deployment0004,recovered_cspp-dosta_abcdjm_cspp_instrument_recovered,telemetered-dosta_abcdjm_cspp_instrument,Seawater Pressure,pressure_depth,dbar,pass,33559,0,no missing data,2292,0.0,0.5080000162,0,0.0
+deployment0004,recovered_cspp-dosta_abcdjm_cspp_instrument_recovered,telemetered-dosta_abcdjm_cspp_instrument,CTD Seawater Pressure,pressure_depth,dbar,pass,33559,0,no missing data,2292,0.0,0.5080000162,0,0.0
 deployment0004,recovered_cspp-dosta_abcdjm_cspp_instrument_recovered,telemetered-dosta_abcdjm_cspp_instrument,DO - Temp Corrected,dosta_abcdjm_cspp_tc_oxygen,µmol L-1,pass,33559,0,no missing data,2292,0.0,0.054129392,0,0.0

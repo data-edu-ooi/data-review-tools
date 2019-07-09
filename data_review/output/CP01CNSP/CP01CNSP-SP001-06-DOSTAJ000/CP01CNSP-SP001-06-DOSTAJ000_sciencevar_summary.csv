@@ -5,3 +5,4 @@ deployment0004,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,estimated_o
 deployment0004,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,optode_temperature,ºC,-9999999.0,"[-2.0, 40.0]",33559,0,0,0,0,33559,100.0,18.7912,8.229,27.212,4.8388
 deployment0004,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",33559,0,0,0,0,33559,100.0,45.5633,0.691,99.573,29.9638
 deployment0004,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,dosta_abcdjm_cspp_tc_oxygen,µmol L-1,-9999999.0,"[0.0, 400.0]",33559,0,0,0,0,33559,100.0,237.1465,188.3777,310.927,26.0283
+deployment0004,recovered_cspp,dosta_abcdjm_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",33559,0,0,no global ranges,0,33559,100.0,45.5264,0.6906,99.573,29.9121

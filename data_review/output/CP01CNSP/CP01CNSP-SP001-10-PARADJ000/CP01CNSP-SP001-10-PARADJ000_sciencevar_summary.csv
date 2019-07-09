@@ -1,3 +1,4 @@
 deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
 deployment0004,recovered_cspp,parad_j_cspp_instrument_recovered,pressure_depth,dbar,-9999999.0,"[0.0, 6000.0]",25782,0,0,0,0.0,25782,100.0,39.3528,0.512,99.528,27.0443
-deployment0004,recovered_cspp,parad_j_cspp_instrument_recovered,parad_j_par_counts_output,µmol photons m-2 s-1,-100000000.0,"[0.0, 2500.0]",25782,0,0,25782,,0,0.0,,,,
+deployment0004,recovered_cspp,parad_j_cspp_instrument_recovered,parad_j_par_counts_output,µmol photons m-2 s-1,-100000000.0,"[0.0, 2500.0]",25782,0,0,,,0,0.0,,,,
+deployment0004,recovered_cspp,parad_j_cspp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",25782,0,0,no global ranges,0.0,25782,100.0,39.3527,0.4958,99.526,27.0442
