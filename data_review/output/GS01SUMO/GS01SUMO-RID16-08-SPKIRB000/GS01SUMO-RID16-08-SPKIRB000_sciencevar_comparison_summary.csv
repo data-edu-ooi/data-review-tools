@@ -1,0 +1,3 @@
+deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
+deployment0001,recovered_host-spkir_abj_dcl_instrument_recovered,telemetered-spkir_abj_dcl_instrument,Downwelling Spectral Irradiance,spkir_abj_cspp_downwelling_vector,µW cm-2 nm-1,pass,,,2D dataset,0,,,,
+deployment0002,recovered_host-spkir_abj_dcl_instrument_recovered,telemetered-spkir_abj_dcl_instrument,Downwelling Spectral Irradiance,spkir_abj_cspp_downwelling_vector,µW cm-2 nm-1,pass,,,2D dataset,0,,,,
