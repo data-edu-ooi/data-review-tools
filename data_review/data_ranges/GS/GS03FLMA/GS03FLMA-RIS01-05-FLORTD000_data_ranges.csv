@@ -1,0 +1,7 @@
+common_stream_name,preferred_methods_streams,deployments,long_name,units,t0,t1,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,define_stdev,n_outliers,n_stats,mean,min,max,stdev
+science_data_stream,['recovered_host-flort_sample'],"[1, 2]",CDOM Concentration,['ppb'],2015-02-26T00:00:01,2016-10-31T23:45:01,[-9999999.0],"[0.0, 375.0]",55332,0,0,28,12,15.0,55289.0,1.1882,0.0,3.5295,0.2037
+science_data_stream,['recovered_host-flort_sample'],,CTD Seawater Pressure,['dbar'],,,[-9999999.0],"[None, None]",55332,0,55332,no global ranges,12,,,,,,
+science_data_stream,['recovered_host-flort_sample'],"[1, 2]",Chlorophyll-a Concentration,['µg L-1'],2015-02-26T00:00:01,2016-10-31T23:45:01,[-9999999.0],"[0.0, 50.0]",55332,0,0,0,12,0.0,55332.0,1.0186,0.0121,7.5988,0.6872
+science_data_stream,['recovered_host-flort_sample'],[2],Optical Backscatter,['m-1'],2015-12-17T20:15:01,2016-10-31T23:45:01,[-9999999.0],"[0.0003, 1.0]",55332,0,24691,24693,12,12.0,30627.0,0.0011,0.0007,0.0083,0.0006
+science_data_stream,['recovered_host-flort_sample'],[2],Total Scattering Coefficient of Pure Seawater,['m-1'],2015-12-17T19:45:01,2016-10-31T23:45:01,[-9999999.0],"[None, None]",55332,0,24691,no global ranges,12,2.0,30639.0,0.0006,0.0006,0.0006,0.0
+science_data_stream,['recovered_host-flort_sample'],"[1, 2]",Total Volume Scattering Coefficient,['m-1 sr-1'],2015-02-26T00:00:01,2016-10-31T23:45:01,[-9999999.0],"[0.0, 0.0079]",55332,0,0,0,12,22.0,55310.0,0.0002,0.0,0.0011,0.0001
