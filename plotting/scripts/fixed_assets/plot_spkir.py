@@ -94,27 +94,28 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                 v[v == fv] = np.nan
                 n_fv = np.sum(np.isnan(v)) - n_nan
 
-                # plot before global ranges are removed
-                fig, ax = pf.plot_spkir(tm, v, vv.name, vv.units)
-                ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
-                sfile = '-'.join((filename, var, t0[:10]))
-                pf.save_fig(save_dir, sfile)
+                if len(v.flatten()) > n_fv + n_nan:  # if array is not all fill values and/or nans
+                    # plot before global ranges are removed
+                    fig, ax = pf.plot_spkir(tm, v, vv.name, vv.units)
+                    ax.set_title((title + '\n' + t0 + ' - ' + t1), fontsize=9)
+                    sfile = '-'.join((filename, var, t0[:10]))
+                    pf.save_fig(save_dir, sfile)
 
-                # reject data outside of global ranges
-                [g_min, g_max] = cf.get_global_ranges(r, var)
-                if g_min is not None and g_max is not None:
-                    v[v < g_min] = np.nan
-                    v[v > g_max] = np.nan
-                    n_grange = np.sum(np.isnan(v)) - n_fv - n_nan
-                else:
-                    n_grange = 'no global ranges'
+                    # reject data outside of global ranges
+                    [g_min, g_max] = cf.get_global_ranges(r, var)
+                    if g_min is not None and g_max is not None:
+                        v[v < g_min] = np.nan
+                        v[v > g_max] = np.nan
+                        n_grange = np.sum(np.isnan(v)) - n_fv - n_nan
+                    else:
+                        n_grange = 'no global ranges'
 
-                # plot after global ranges are removed
-                fig, ax = pf.plot_spkir(tm, v, vv.name, vv.units)
-                title2 = 'removed: {} global ranges [{}, {}]'.format(n_grange, g_min, g_max)
-                ax.set_title((title + '\n' + t0 + ' - ' + t1 + '\n' + title2), fontsize=9)
-                sfile = '-'.join((filename, var, t0[:10], 'rmgr'))
-                pf.save_fig(save_dir, sfile)
+                    # plot after global ranges are removed
+                    fig, ax = pf.plot_spkir(tm, v, vv.name, vv.units)
+                    title2 = 'removed: {} global ranges [{}, {}]'.format(n_grange, g_min, g_max)
+                    ax.set_title((title + '\n' + t0 + ' - ' + t1 + '\n' + title2), fontsize=9)
+                    sfile = '-'.join((filename, var, t0[:10], 'rmgr'))
+                    pf.save_fig(save_dir, sfile)
 
             # -------- break the deployment into months and plot --------
 
@@ -157,21 +158,22 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                     v[v == fv] = np.nan
                     n_fv = np.sum(np.isnan(v)) - n_nan
 
-                    # reject data outside of global ranges
-                    [g_min, g_max] = cf.get_global_ranges(r, var)
-                    if g_min is not None and g_max is not None:
-                        v[v < g_min] = np.nan
-                        v[v > g_max] = np.nan
-                        n_grange = np.sum(np.isnan(v)) - n_fv - n_nan
-                    else:
-                        n_grange = 'no global ranges'
+                    if len(v.flatten()) > n_fv + n_nan:  # if array is not all fill values and/or nans
+                        # reject data outside of global ranges
+                        [g_min, g_max] = cf.get_global_ranges(r, var)
+                        if g_min is not None and g_max is not None:
+                            v[v < g_min] = np.nan
+                            v[v > g_max] = np.nan
+                            n_grange = np.sum(np.isnan(v)) - n_fv - n_nan
+                        else:
+                            n_grange = 'no global ranges'
 
-                    # plot after global ranges are removed
-                    fig, ax = pf.plot_spkir(tm, v, vv.name, vv.units)
-                    title2 = 'removed: {} global ranges [{}, {}]'.format(n_grange, g_min, g_max)
-                    ax.set_title((title + '\n' + t0 + ' - ' + t1 + '\n' + title2), fontsize=9)
-                    sfile = '-'.join((filename, var, t0[:7], 'rmgr'))
-                    pf.save_fig(save_dir, sfile)
+                        # plot after global ranges are removed
+                        fig, ax = pf.plot_spkir(tm, v, vv.name, vv.units)
+                        title2 = 'removed: {} global ranges [{}, {}]'.format(n_grange, g_min, g_max)
+                        ax.set_title((title + '\n' + t0 + ' - ' + t1 + '\n' + title2), fontsize=9)
+                        sfile = '-'.join((filename, var, t0[:7], 'rmgr'))
+                        pf.save_fig(save_dir, sfile)
 
 
 if __name__ == '__main__':
