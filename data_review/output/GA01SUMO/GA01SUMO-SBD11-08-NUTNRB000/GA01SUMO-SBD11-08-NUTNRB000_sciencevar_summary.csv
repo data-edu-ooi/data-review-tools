@@ -1,0 +1,7 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_inst,nutnr_b_instrument_recovered,salinity_corrected_nitrate,µmol L-1,-9999999.0,"[0.0, 40.0]",14494,0,14494,,,0,0.0,,,,
+deployment0001,recovered_inst,nutnr_b_instrument_recovered,nitrate_concentration,µMol L-1,-9999999.0,"[0.0, 40.0]",14494,0,0,922.0,0.0,13572,93.64,3.1786,0.0,12.39,1.9959
+deployment0002,recovered_inst,nutnr_b_instrument_recovered,salinity_corrected_nitrate,µmol L-1,-9999999.0,"[0.0, 40.0]",76868,0,76868,,,0,0.0,,,,
+deployment0002,recovered_inst,nutnr_b_instrument_recovered,nitrate_concentration,µMol L-1,-9999999.0,"[0.0, 40.0]",76868,0,0,13885.0,0.0,62983,81.94,20.2183,0.99,40.0,9.1004
+deployment0003,recovered_inst,nutnr_b_instrument_recovered,salinity_corrected_nitrate,µmol L-1,-9999999.0,"[0.0, 40.0]",114220,0,114220,,,0,0.0,,,,
+deployment0003,recovered_inst,nutnr_b_instrument_recovered,nitrate_concentration,µMol L-1,-9999999.0,"[0.0, 40.0]",114220,0,0,84906.0,11.0,29303,25.65,2.5411,0.0,13.91,2.2945
