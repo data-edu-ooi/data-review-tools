@@ -12,4 +12,4 @@ deployment0005,recovered_inst,nutnr_b_instrument_recovered,nitrate_concentration
 deployment0006,recovered_inst,nutnr_b_instrument_recovered,salinity_corrected_nitrate,µmol L-1,-9999999.0,"[0.0, 40.0]",14669,0,0,6257,0,8412,57.35,4.3559,0.0006,20.2693,4.2426
 deployment0006,recovered_inst,nutnr_b_instrument_recovered,nitrate_concentration,µMol L-1,-9999999.0,"[0.0, 40.0]",14669,0,0,2239,0,12430,84.74,6.8245,-0.0,39.9,7.2119
 deployment0007,telemetered,nutnr_b_dcl_full_instrument,salinity_corrected_nitrate,µmol L-1,-9999999.0,"[0.0, 40.0]",13876,0,0,2553,0,11323,81.6,3.9261,0.0016,13.7886,2.8082
-deployment0007,telemetered,nutnr_b_dcl_full_instrument,nitrate_concentration,µMol L-1,-9999999.0,"[0.0, 40.0]",13876,0,0,2201,1,11674,84.13,3.6329,-0.0,16.39,2.5819
+deployment0007,telemetered,nutnr_b_dcl_full_instrument,nitrate_concentration,µMol L-1,-9999999.0,"[0.0, 40.0]",13876,0,0,2201,1,11674,84.13,3.6329,0.0,16.39,2.5819
