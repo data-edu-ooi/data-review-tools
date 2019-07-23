@@ -1,8 +1,0 @@
-common_stream_name,preferred_methods_streams,deployments,long_name,units,t0,t1,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,define_stdev,n_outliers,n_stats,mean,min,max,stdev
-nutnr_b_conc_instrument,['recovered_inst-nutnr_b_instrument_recovered'],,Dissolved Nitrate Concentration,[],,,[],"[0.0, 40.0]",,,,,,,,,,,
-nutnr_b_dark_conc_instrument,['recovered_inst-nutnr_b_instrument_recovered'],,Dissolved Nitrate Concentration,[],,,[],"[0.0, 40.0]",,,,,,,,,,,
-nutnr_b_dark_instrument,['recovered_inst-nutnr_b_instrument_recovered'],,Dissolved Nitrate Concentration,[],,,[],"[0.0, 40.0]",,,,,,,,,,,
-nutnr_b_full_instrument,['recovered_inst-nutnr_b_instrument_recovered'],,Dissolved Nitrate Concentration,[],,,[],"[0.0, 40.0]",,,,,,,,,,,
-nutnr_b_full_instrument,['recovered_inst-nutnr_b_instrument_recovered'],,Nitrate Concentration - Temp and Sal Corrected,[],,,[],"[0.0, 40.0]",,,,,,,,,,,
-nutnr_b_instrument,['recovered_inst-nutnr_b_instrument_recovered'],[5],Dissolved Nitrate Concentration,['µMol L-1'],2017-10-13T16:30:31,2018-04-03T20:00:42,[-9999999.0],"[0.0, 40.0]",77707.0,0.0,0.0,0.0,,,77707.0,5.7522,1.48,9.62,1.2593
-nutnr_b_instrument,['recovered_inst-nutnr_b_instrument_recovered'],[5],Nitrate Concentration - Temp and Sal Corrected,['µmol L-1'],2017-10-13T16:30:31,2018-04-03T20:00:42,[-9999999.0],"[0.0, 40.0]",77707.0,0.0,0.0,0.0,,,77707.0,3.5902,0.0818,7.017,1.3287
