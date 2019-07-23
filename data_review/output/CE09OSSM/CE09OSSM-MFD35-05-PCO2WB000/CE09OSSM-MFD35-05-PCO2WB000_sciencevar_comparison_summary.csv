@@ -1,15 +1,10 @@
 deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
-deployment0001,recovered_host-pco2w_abc_dcl_instrument_blank_recovered,telemetered-pco2w_abc_dcl_instrument_blank,Thermistor Temperature,pco2w_thermistor_temperature,ºC,pass,3.0,0.0,no missing data,1.0,0.0,0.0,0.0,0.0
 deployment0001,recovered_host-pco2w_abc_dcl_instrument_recovered,telemetered-pco2w_abc_dcl_instrument,Thermistor Temperature,pco2w_thermistor_temperature,ºC,pass,215.0,0.0,no missing data,53.0,0.0,0.0,0.0,0.0
-deployment0001,recovered_host-pco2w_abc_dcl_instrument_recovered,telemetered-pco2w_abc_dcl_instrument,pCO2 Seawater,pco2_seawater,µatm,pass,215.0,0.0,no missing data,53.0,0.0,0.0033218274,0.0,0.0
-deployment0004,recovered_host-pco2w_abc_dcl_instrument_blank_recovered,telemetered-pco2w_abc_dcl_instrument_blank,Thermistor Temperature,pco2w_thermistor_temperature,ºC,pass,31.0,0.0,no missing data,31.0,0.0,0.0,0.0,0.0
+deployment0001,recovered_host-pco2w_abc_dcl_instrument_recovered,telemetered-pco2w_abc_dcl_instrument,pCO2 Seawater,pco2_seawater,µatm,pass,215.0,0.0,no missing data,53.0,0.0,3.7139638438,18.0,33.96
 deployment0004,recovered_host-pco2w_abc_dcl_instrument_recovered,telemetered-pco2w_abc_dcl_instrument,Thermistor Temperature,pco2w_thermistor_temperature,ºC,pass,2570.0,0.0,no missing data,2570.0,0.0,0.0,0.0,0.0
-deployment0004,recovered_host-pco2w_abc_dcl_instrument_recovered,telemetered-pco2w_abc_dcl_instrument,pCO2 Seawater,pco2_seawater,µatm,pass,2570.0,0.0,no missing data,2570.0,0.0,0.0,0.0,0.0
+deployment0004,recovered_host-pco2w_abc_dcl_instrument_recovered,telemetered-pco2w_abc_dcl_instrument,pCO2 Seawater,pco2_seawater,µatm,pass,2570.0,266.0,no missing data,2304.0,0.0,0.0,0.0,0.0
 deployment0005,telemetered-pco2w_abc_dcl_instrument,no other methods available for comparison,,,,,,,,,,,,
-deployment0005,telemetered-pco2w_abc_dcl_instrument_blank,no other methods available for comparison,,,,,,,,,,,,
-deployment0006,recovered_host-pco2w_abc_dcl_instrument_blank_recovered,telemetered-pco2w_abc_dcl_instrument_blank,Thermistor Temperature,pco2w_thermistor_temperature,ºC,pass,36.0,0.0,no missing data,36.0,0.0,0.0,0.0,0.0
 deployment0006,recovered_host-pco2w_abc_dcl_instrument_recovered,telemetered-pco2w_abc_dcl_instrument,Thermistor Temperature,pco2w_thermistor_temperature,ºC,pass,1012.0,0.0,no missing data,997.0,0.0,0.0,0.0,0.0
 deployment0006,recovered_host-pco2w_abc_dcl_instrument_recovered,telemetered-pco2w_abc_dcl_instrument,pCO2 Seawater,pco2_seawater,µatm,pass,1012.0,0.0,no missing data,997.0,0.0,0.0,0.0,0.0
-deployment0007,recovered_host-pco2w_abc_dcl_instrument_blank_recovered,telemetered-pco2w_abc_dcl_instrument_blank,Thermistor Temperature,pco2w_thermistor_temperature,ºC,pass,9.0,0.0,no missing data,9.0,0.0,0.0,0.0,0.0
 deployment0007,recovered_host-pco2w_abc_dcl_instrument_recovered,telemetered-pco2w_abc_dcl_instrument,Thermistor Temperature,pco2w_thermistor_temperature,ºC,pass,735.0,0.0,no missing data,733.0,0.0,0.0,0.0,0.0
 deployment0007,recovered_host-pco2w_abc_dcl_instrument_recovered,telemetered-pco2w_abc_dcl_instrument,pCO2 Seawater,pco2_seawater,µatm,pass,735.0,0.0,no missing data,733.0,0.0,0.0,0.0,0.0
