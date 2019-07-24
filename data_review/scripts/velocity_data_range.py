@@ -242,8 +242,8 @@ def main(sDir, url_list, preferred_only, name_list):
             df_F = df_F.append(df_k)
 
         columns = ['common_stream_name', 'preferred_methods_streams', 'deployments', 'long_name', 'units',
-                   't0', 't1', 'fill_value', 'global_ranges', 'n_all', 'n_pitchroll_err', 'n_nan', 'n_fillvalues',
-                   'n_extremvalues', 'n_grange', 'std', 'n_outliers', 'n_stat', 'mean', 'min', 'max', 'stdev']
+                   't0', 't1', 'fill_values', 'global_ranges', 'n_all', 'n_pitchroll_err', 'n_nans', 'n_fillvalues',
+                   'n_extremvalues', 'n_grange', 'define_stdev', 'n_outliers', 'n_stats', 'mean', 'min', 'max', 'stdev']
 
         df_F.to_csv(sDir+array+'/'+subsite+'/'+r+'_data_ranges.csv', columns=columns, index=False)
 
