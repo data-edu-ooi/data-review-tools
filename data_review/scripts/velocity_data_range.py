@@ -1,78 +1,124 @@
 #!/usr/bin/env python
-"""
-Created on 11/12/2018
-@author Lori Garzio
-@brief Calculate final statistics for science variables in a dataset. Long Names and units for science variables must
-be the same among methods.
-sDir: location to save summary output
-url: list of THREDDs urls containing .nc files to analyze.
-"""
-
-import os
+# import os
 import itertools
 import pandas as pd
+import xarray as xr
 import numpy as np
-import datetime as dt
 import functions.common as cf
-import functions.plotting as pf
-import functions.combine_datasets as cd
+# import matplotlib
+# from matplotlib import pyplot
+# import datetime
+# import matplotlib.dates as mdates
+# import matplotlib.ticker as ticker
+# from matplotlib.dates import (YEARLY, DateFormatter, rrulewrapper, RRuleLocator, drange)
+# from matplotlib.ticker import MaxNLocator
 
 
-def index_dataset(refdes, var_name, var_data, fv):
-    n_nan = np.sum(np.isnan(var_data))
-    n_fv = np.sum(var_data == fv)
-    [g_min, g_max] = cf.get_global_ranges(refdes, var_name)
-    if g_min is not None and g_max is not None:
-        dataind = (~np.isnan(var_data)) & (var_data != fv) & (var_data >= g_min) & (var_data <= g_max)
-        n_grange = np.sum((var_data < g_min) | (var_data > g_max))
+# exist in main function
+def reject_err_data_1_dims(y, y_fill, r, sv, n=None):
+    n_nan = np.sum(np.isnan(y)) # count nans in data
+    n_nan = n_nan.item()
+    y = np.where(y != y_fill, y, np.nan) # replace fill_values by nans in data
+    y = np.where(y != -9999, y, np.nan) # replace -9999 by nans in data
+    n_fv = np.sum(np.isnan(y)) - n_nan# re-count nans in data
+    n_fv = n_fv.item()
+    y = np.where(y > -1e10, y, np.nan) # replace extreme values by nans in data
+    y = np.where(y < 1e10, y, np.nan)
+    n_ev = np.sum(np.isnan(y)) - n_fv - n_nan # re-count nans in data
+    n_ev = n_ev.item()
+
+    g_min, g_max = cf.get_global_ranges(r, sv) # get global ranges:
+    if g_min and g_max:
+        y = np.where(y >= g_min, y, np.nan) # replace extreme values by nans in data
+        y = np.where(y <= g_max, y, np.nan)
+        n_grange = np.sum(np.isnan(y)) - n_ev - n_fv - n_nan # re-count nans in data
+        n_grange = n_grange.item()
     else:
-        dataind = (~np.isnan(var_data)) & (var_data != fv)
-        n_grange = 'no global ranges'
+        n_grange = np.nan
 
-    return [dataind, g_min, g_max, n_nan, n_fv, n_grange]
-
-
-def index_dataset_2d(refdes, var_name, var_data, fv):
-    [g_min, g_max] = cf.get_global_ranges(refdes, var_name)
-    fdata = dict()
-    n_nan = []
-    n_fv = []
-    n_grange = []
-    for i in range(len(var_data)):
-        vd = var_data[i]
-        n_nani = np.sum(np.isnan(vd))
-
-        # convert fill values to nans
-        vd[vd == fv] = np.nan
-        n_fvi = np.sum(np.isnan(vd)) - n_nani
-
-        if g_min is not None and g_max is not None:
-            vd[vd < g_min] = np.nan
-            vd[vd > g_max] = np.nan
-            n_grangei = np.sum(np.isnan(vd) - n_fvi - n_nani)
+    stdev = np.nanstd(y)
+    if stdev != 0:
+        if n is not None:
+            y = np.where(abs(y - np.nanmean(y)) < n * stdev, y, np.nan) # replace 5 STD by nans in data
+            n_std = np.sum(np.isnan(y)) - ~np.isnan(n_grange) - n_ev - n_fv - n_nan # re-count nans in data
+            n_std = n_std.item()
         else:
-            n_grangei = 'no global ranges'
+            n_std = np.nan
 
-        fdata.update({i: vd})
-        n_nan.append(int(n_nani))
-        n_fv.append(int(n_fvi))
-        n_grange.append(int(n_grangei))
-
-    return [fdata, g_min, g_max, n_nan, n_fv, n_grange]
+    err_count = pd.DataFrame({'global_ranges':[[g_min,g_max]], 'n_nans':[n_nan], 'n_fillvalues':[n_fv],
+                              'n_extremvalues':[n_ev], 'n_grange':[n_grange], 'define_stdev':[n],'n_outliers':[n_std],
+                              'n_stats':[np.sum(~np.isnan(y))]}, index=[0])
+    return  y, err_count
 
 
-def main(sDir, plotting_sDir, url_list, sd_calc):
-    dr = pd.read_csv('https://datareview.marine.rutgers.edu/notes/export')
-    drn = dr.loc[dr.type == 'exclusion']
+# exist in sub_function
+def get_variable_data(ds, var_list, keyword):
+    var = [var for var in var_list if keyword in var]
+    if len(var) == 1:
+        var_id = var[0]
+        var_unit = ds[var_id].units
+        var_name = ds[var_id].long_name
+        try:
+            var_fv = ds[var_id]._FillValue
+        except AttributeError:
+            var_fv = ''
+    else:
+        print('more than one matching name exist: ', var)
+
+    return var_id, var_unit, var_name, var_fv
+
+
+# exist in main function
+def compare_variable_attributes(fdatasets, r):
+    vars_df = pd.DataFrame()
+    for ii in range(len(fdatasets)):
+
+        print('\n', fdatasets[ii].split('/')[-1])
+        deployment = fdatasets[ii].split('/')[-1].split('_')[0].split('deployment')[-1]
+        deployment = int(deployment)
+
+        ds = xr.open_dataset(fdatasets[ii], mask_and_scale=False)
+        time = ds['time'].values
+
+        dr_dp = '-'.join((str(deployment))) #,ds.collection_method, ds.stream
+
+        '''
+        variable list
+        '''
+        var_list = cf.notin_list(ds.data_vars.keys(), ['time', '_qc_'])
+
+        z_id, z_data, z_unit, z_name, z_fill = cf.add_pressure_to_dictionary_of_sci_vars(ds)
+        df = pd.DataFrame({'var_id':[z_id], 'units':[z_unit[0]], 'long_name':[z_name[0]], 'fill_values':[z_fill[0]]},index=[dr_dp])
+        vars_df = vars_df.append(df)
+
+        for vname in name_list:
+
+            vname_id, vname_unit, vname_name, vname_fv = get_variable_data(ds, var_list, vname)
+
+            df = pd.DataFrame({'var_id':[vname_id], 'units':[vname_unit],
+                               'long_name':[vname_name], 'fill_values':[str(vname_fv)]},index=[dr_dp])
+            vars_df = vars_df.append(df)
+
+    vars_df = vars_df.drop_duplicates()
+    vars_df.to_csv('{}/{}_velocity_variables.csv'.format(sDir, r), index=True)
+
+    return vars_df
+
+
+def main(sDir, url_list, preferred_only, name_list):
     rd_list = []
     for uu in url_list:
         elements = uu.split('/')[-2].split('-')
         rd = '-'.join((elements[1], elements[2], elements[3], elements[4]))
+        ms = uu.split(rd + '-')[1].split('/')[0]
         if rd not in rd_list:
             rd_list.append(rd)
 
     for r in rd_list:
         print('\n{}'.format(r))
+        subsite = r.split('-')[0]
+        array = subsite[0:2]
+
         datasets = []
         for u in url_list:
             splitter = u.split('/')[-2].split('-')
@@ -80,391 +126,137 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
             if rd_check == r:
                 udatasets = cf.get_nc_urls([u])
                 datasets.append(udatasets)
+
         datasets = list(itertools.chain(*datasets))
-        fdatasets = []
-        # get the preferred stream information
-        ps_df, n_streams = cf.get_preferred_stream_info(r)
-        pms = []
-        for index, row in ps_df.iterrows():
-            for ii in range(n_streams):
-                try:
-                    rms = '-'.join((r, row[ii]))
-                    pms.append(row[ii])
-                except TypeError:
-                    continue
-                for dd in datasets:
-                    spl = dd.split('/')[-2].split('-')
-                    catalog_rms = '-'.join((spl[1], spl[2], spl[3], spl[4], spl[5], spl[6]))
-                    fdeploy = dd.split('/')[-1].split('_')[0]
-                    if rms == catalog_rms and fdeploy == row['deployment']:
-                        fdatasets.append(dd)
+
+        if preferred_only == 'yes':
+
+            ps_df, n_streams = cf.get_preferred_stream_info(r)
+
+            fdatasets = []
+            for index, row in ps_df.iterrows():
+                for ii in range(n_streams):
+                    try:
+                        rms = '-'.join((r, row[ii]))
+                    except TypeError:
+                        continue
+                    for dd in datasets:
+                        spl = dd.split('/')[-2].split('-')
+                        catalog_rms = '-'.join((spl[1], spl[2], spl[3], spl[4], spl[5], spl[6]))
+                        fdeploy = dd.split('/')[-1].split('_')[0]
+                        if rms == catalog_rms and fdeploy == row['deployment']:
+                            fdatasets.append(dd)
+        else:
+            fdatasets = datasets
 
         main_sensor = r.split('-')[-1]
-        fdatasets_sel = cf.filter_collocated_instruments(main_sensor, fdatasets)
+        fdatasets = cf.filter_collocated_instruments(main_sensor, fdatasets)
 
-        # find time ranges to exclude from analysis for data review database
-        subsite = r.split('-')[0]
-        subsite_node = '-'.join((subsite, r.split('-')[1]))
-
-        drne = drn.loc[drn.reference_designator.isin([subsite, subsite_node, r])]
-        et = []
-        for i, row in drne.iterrows():
-            sdate = cf.format_dates(row.start_date)
-            edate = cf.format_dates(row.end_date)
-            et.append([sdate, edate])
-
-        # get science variable long names from the Data Review Database
-        stream_sci_vars = cd.sci_var_long_names(r)
-
-        # check if the science variable long names are the same for each stream
-        sci_vars_dict = cd.sci_var_long_names_check(stream_sci_vars)
-
-        # get the preferred stream information
-        ps_df, n_streams = cf.get_preferred_stream_info(r)
-
-        # build dictionary of science data from the preferred dataset for each deployment
-        print('\nAppending data from files')
-        sci_vars_dict, pressure_unit, pressure_name = cd.append_science_data(ps_df, n_streams, r, fdatasets_sel,
-                                                                             sci_vars_dict, et)
-
-        # analyze combined dataset
-        print('\nAnalyzing combined dataset and writing summary file')
-
-        array = subsite[0:2]
-        save_dir = os.path.join(sDir, array, subsite)
-        cf.create_dir(save_dir)
-
-        rows = []
-        if ('FLM' in r) and ('CTDMO' in r):  # calculate Flanking Mooring CTDMO stats based on pressure
-            headers = ['common_stream_name', 'preferred_methods_streams', 'deployments', 'long_name', 'units', 't0',
-                       't1', 'fill_value', 'global_ranges', 'n_all', 'press_min_max', 'n_excluded_forpress',
-                       'n_nans', 'n_fillvalues', 'n_grange', 'define_stdev', 'n_outliers', 'n_stats', 'mean', 'min',
-                       'max', 'stdev', 'note']
+        vars_df = compare_variable_attributes(fdatasets, r)
+        if len(np.unique(vars_df.index.values)) == 1 and len(vars_df['var_id']) == len(name_list)+1:
+            print('Pass: variables exist in all files')
         else:
-            headers = ['common_stream_name', 'preferred_methods_streams', 'deployments', 'long_name', 'units', 't0',
-                       't1', 'fill_value', 'global_ranges', 'n_all', 'n_nans', 'n_fillvalues', 'n_grange',
-                       'define_stdev', 'n_outliers', 'n_stats', 'mean', 'min', 'max', 'stdev']
+            print('Fail: variables differ in between files')
 
-        for m, n in sci_vars_dict.items():
-            print('\nSTREAM: ', m)
-            if m == 'common_stream_placeholder':
-                m = 'science_data_stream'
-            if m == 'metbk_hourly':  # don't calculate ranges for metbk_hourly
-                continue
+        # all_in_one_df = append_data(vars_df, fdatasets)
 
-            if ('FLM' in r) and ('CTDMO' in r):  # calculate Flanking Mooring CTDMO stats based on pressure
-                # index the pressure variable to filter and calculate stats on the rest of the variables
-                sv_press = 'Seawater Pressure'
-                vinfo_press = n['vars'][sv_press]
+        vars_df.insert(loc=len(vars_df.columns), column='values', value=vars_df['var_id'])
+        vars_df.insert(loc=len(vars_df.columns), column='t0', value=vars_df['var_id'])
+        vars_df.insert(loc=len(vars_df.columns), column='t1', value=vars_df['var_id'])
+        vars_df.insert(loc=len(vars_df.columns), column='deployments', value=vars_df['var_id'])
+        vars_df.insert(loc=len(vars_df.columns), column='preferred_methods_streams', value=vars_df['var_id'])
+        vars_df.insert(loc=len(vars_df.columns), column='common_stream_name', value=vars_df['var_id'])
 
-                # first, index where data are nans, fill values, and outside of global ranges
-                fv_press = list(np.unique(vinfo_press['fv']))[0]
-                pdata = vinfo_press['values']
+        vars_df.index = vars_df['var_id']
 
-                [pind, __, __, __, __, __] = index_dataset(r, vinfo_press['var_name'], pdata, fv_press)
+        add_to_df = pd.DataFrame()
 
-                pdata_filtered = pdata[pind]
-                [__, pmean, __, __, psd, __] = cf.variable_statistics(pdata_filtered, None)
+        for ii in range(len(fdatasets)):
+            print('\n', fdatasets[ii].split('/')[-1])
+            ds = xr.open_dataset(fdatasets[ii], mask_and_scale=False)
+            var_ms = '-'.join((ds.collection_method, ds.stream))
+            var_s = ds.stream
+            var_d = ds['deployment'].values
 
-                # index of pressure = average of all 'valid' pressure data +/- 1 SD
-                ipress_min = pmean - psd
-                ipress_max = pmean + psd
-                ind_press = (pdata >= ipress_min) & (pdata <= ipress_max)
+            time_d = ds['time'].values
 
-                # calculate stats for all variables
-                print('\nPARAMETERS:')
-                for sv, vinfo in n['vars'].items():
-                    print(sv)
-                    fv_lst = np.unique(vinfo['fv']).tolist()
-                    if len(fv_lst) == 1:
-                        fill_value = fv_lst[0]
-                    else:
-                        print('No unique fill value for {}'.format(sv))
+            for vv in range(len(vars_df['var_id'])):
 
-                    lunits = np.unique(vinfo['units']).tolist()
-                    n_all = len(vinfo['t'])
+                if ii == 0:
+                    vD = vars_df[vars_df['values'].values == vars_df['var_id'].values[vv]]
+                    data_v = ds[vD['var_id'][0]].values
+                    if len(np.unique(data_v)) == 1:
+                        data_v = np.unique(data_v)
 
-                    # filter data based on pressure index
-                    t_filtered = vinfo['t'][ind_press]
-                    data_filtered = vinfo['values'][ind_press]
-                    deploy_filtered = vinfo['deployments'][ind_press]
+                    vD.at[vD.index.values[0], 'values'] = data_v
+                    vD.at[vD.index.values[0], 'deployments'] = np.unique(var_d)
+                    vD.at[vD.index.values[0], 't0'] = time_d[0]
+                    vD.at[vD.index.values[0], 't1'] = time_d[len(time_d)-1]
+                    vD.at[vD.index.values[0], 'preferred_methods_streams'] = np.unique(var_ms)
+                    vD.at[vD.index.values[0], 'common_stream_name'] = np.unique(var_s)
+                else:
+                    vD = add_to_df[add_to_df['var_id'].values == vars_df['var_id'].values[vv]]
+                    data_v = ds[vD['var_id'][0]].values
+                    if len(np.unique(data_v)) == 1:
+                        data_v = np.unique(data_v)
 
-                    n_excluded = n_all - len(t_filtered)
+                    vD.at[vD.index.values[0], 'values'] = np.append(vD['values'].values[0], data_v)
+                    vD.at[vD.index.values[0], 'deployments'] = np.unique(np.append(vD['deployments'].values[0], var_d))
+                    vD.at[vD.index.values[0], 't0'] = np.unique(np.append(vD['t0'].values[0],time_d[0]))
+                    vD.at[vD.index.values[0], 't1'] = np.unique(np.append(vD['t1'].values[0],time_d[len(time_d) - 1]))
+                    vD.at[vD.index.values[0], 'preferred_methods_streams'] = np.unique(np.append(
+                        vD['preferred_methods_streams'].values[0], var_ms))
+                    vD.at[vD.index.values[0], 'common_stream_name'] = np.unique(np.append(vD['common_stream_name'].values[0], var_s))
 
-                    [dataind, g_min, g_max, n_nan, n_fv, n_grange] = index_dataset(r, vinfo['var_name'], data_filtered,
-                                                                                   fill_value)
+                add_to_df = add_to_df.append(vD)
 
-                    t_final = t_filtered[dataind]
-                    data_final = data_filtered[dataind]
-                    deploy_final = deploy_filtered[dataind]
+        all_in_one_df = add_to_df[len(add_to_df) - len(vars_df['var_id']):len(add_to_df)]
 
-                    t0 = pd.to_datetime(min(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
-                    t1 = pd.to_datetime(max(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
-                    deploy = list(np.unique(deploy_final))
-                    deployments = [int(dd) for dd in deploy]
+        df_roll = all_in_one_df[all_in_one_df.var_id.str.contains('roll') == True]
+        df_pitch = all_in_one_df[all_in_one_df.var_id.str.contains('pitch') == True]
 
-                    if len(data_final) > 1:
-                        [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(data_final, sd_calc)
-                    else:
-                        mean = None
-                        vmin = None
-                        vmax = None
-                        sd = None
-                        n_stats = None
+        # define indices to select data with pitch or roll less than 20 degrees
+        ind = np.logical_and(df_roll['values'].values[0] < 200, df_pitch['values'].values[0] < 200)
 
-                    note = 'restricted stats calculation to data points where pressure is within defined ranges' \
-                           ' (average of all pressure data +/- 1 SD)'
-                    rows.append([m, list(np.unique(pms)), deployments, sv, lunits, t0, t1, fv_lst, [g_min, g_max],
-                                 n_all, [round(ipress_min, 2), round(ipress_max, 2)], n_excluded, n_nan, n_fv, n_grange,
-                                 sd_calc, num_outliers, n_stats, mean, vmin, vmax, sd, note])
+        df_F = pd.DataFrame()
+        for keyword in ['eastward', 'northward', 'upward', 'pressure']: #
+            df_k = all_in_one_df[all_in_one_df.var_id.str.contains(keyword) == True]
+            df_k.at[df_k.index.values[0], 't1'] = max(df_F['t1'].values[0])
+            df_F.at[df_k.index.values[0], 't0'] = min(df_F['t0'].values[0])
 
-                    # plot CTDMO data used for stats
-                    psave_dir = os.path.join(plotting_sDir, array, subsite, r, 'timeseries_plots_stats')
-                    cf.create_dir(psave_dir)
+            u = df_k['values'].values[0]
+            uu = u[ind]
+            uu_fv = float(df_k['fill_values'].values[0])
+            uu_id = df_k['var_id'].values[0]
+            u_wo_err, u_err = reject_err_data_1_dims(uu, uu_fv, r, uu_id, n=None)
 
-                    dr_data = cf.refdes_datareview_json(r)
-                    deployments = []
-                    end_times = []
-                    for index, row in ps_df.iterrows():
-                        deploy = row['deployment']
-                        deploy_info = cf.get_deployment_information(dr_data, int(deploy[-4:]))
-                        deployments.append(int(deploy[-4:]))
-                        end_times.append(pd.to_datetime(deploy_info['stop_date']))
+            u_err.insert(loc=0, column='n_all', value=len(u))
+            u_err.insert(loc=1, column='n_pitchroll_err', value=len(u) - len(uu))
+            u_err.insert(loc=len(u_err.columns), column='mean', value=np.nanmean(u_wo_err))
+            u_err.insert(loc=len(u_err.columns), column='min', value=np.nanmin(u_wo_err))
+            u_err.insert(loc=len(u_err.columns), column='max', value=np.nanmax(u_wo_err))
+            u_err.insert(loc=len(u_err.columns), column='stdev', value=np.nanstd(u_wo_err))
+            for name in u_err.columns:
+                df_k.insert(loc=len(df_k.columns), column=name, value=u_err[name].values)
 
-                    sname = '-'.join((r, sv))
-                    fig, ax = pf.plot_timeseries_all(t_final, data_final, sv, lunits[0], stdev=None)
-                    ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
-                                 fontsize=8)
-                    for etimes in end_times:
-                        ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
-                    pf.save_fig(psave_dir, sname)
+            df_F = df_F.append(df_k)
 
-                    if sd_calc:
-                        sname = '-'.join((r, sv, 'rmoutliers'))
-                        fig, ax = pf.plot_timeseries_all(t_final, data_final, sv, lunits[0], stdev=sd_calc)
-                        ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
-                                     fontsize=8)
-                        for etimes in end_times:
-                            ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
-                        pf.save_fig(psave_dir, sname)
+        columns = ['common_stream_name', 'preferred_methods_streams', 'deployments', 'long_name', 'units',
+                   't0', 't1', 'fill_value', 'global_ranges', 'n_all', 'n_pitchroll_err', 'n_nan', 'n_fillvalues',
+                   'n_extremvalues', 'n_grange', 'std', 'n_outliers', 'n_stat', 'mean', 'min', 'max', 'stdev']
 
-            else:
-                if not sd_calc:
-                    sdcalc = None
-
-                print('\nPARAMETERS: ')
-                for sv, vinfo in n['vars'].items():
-                    print(sv)
-
-                    fv_lst = np.unique(vinfo['fv']).tolist()
-                    if len(fv_lst) == 1:
-                        fill_value = fv_lst[0]
-                    else:
-                        print(fv_lst)
-                        print('No unique fill value for {}'.format(sv))
-
-                    lunits = np.unique(vinfo['units']).tolist()
-
-                    t = vinfo['t']
-                    if len(t) > 1:
-                        data = vinfo['values']
-                        n_all = len(t)
-
-                        if 'SPKIR' in r or 'presf_abc_wave_burst' in m:
-                            if 'SPKIR' in r:
-                                [dd_data, g_min, g_max, n_nan, n_fv, n_grange] = index_dataset_2d(r,
-                                                                                                  'spkir_abj_cspp_downwelling_vector',
-                                                                                                  data, fill_value)
-                            else:
-                                [dd_data, g_min, g_max, n_nan, n_fv, n_grange] = index_dataset_2d(r,
-                                                                                                  'presf_wave_burst_pressure',
-                                                                                                  data, fill_value)
-                            t_final = t
-                            t0 = pd.to_datetime(min(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
-                            t1 = pd.to_datetime(max(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
-                            deploy_final = vinfo['deployments']
-                            deploy = list(np.unique(deploy_final))
-                            deployments = [int(dd) for dd in deploy]
-
-                            num_outliers = []
-                            mean = []
-                            vmin = []
-                            vmax = []
-                            sd = []
-                            n_stats = []
-                            for i in range(len(dd_data)):
-                                dd = data[i]
-                                # drop nans before calculating stats
-                                dd = dd[~np.isnan(dd)]
-                                [num_outliersi, meani, vmini, vmaxi, sdi, n_statsi] = cf.variable_statistics(dd,
-                                                                                                             sd_calc)
-                                num_outliers.append(num_outliersi)
-                                mean.append(meani)
-                                vmin.append(vmini)
-                                vmax.append(vmaxi)
-                                sd.append(sdi)
-                                n_stats.append(n_statsi)
-
-                        else:
-                            [dataind, g_min, g_max, n_nan, n_fv, n_grange] = index_dataset(r, vinfo['var_name'], data,
-                                                                                           fill_value)
-                            t_final = t[dataind]
-                            if len(t_final) > 0:
-                                t0 = pd.to_datetime(min(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
-                                t1 = pd.to_datetime(max(t_final)).strftime('%Y-%m-%dT%H:%M:%S')
-                                data_final = data[dataind]
-                                # if sv == 'Dissolved Oxygen Concentration':
-                                #     xx = (data_final > 0) & (data_final < 400)
-                                #     data_final = data_final[xx]
-                                #     t_final = t_final[xx]
-                                # if sv == 'Seawater Conductivity':
-                                #     xx = (data_final > 1) & (data_final < 400)
-                                #     data_final = data_final[xx]
-                                #     t_final = t_final[xx]
-                                deploy_final = vinfo['deployments'][dataind]
-                                deploy = list(np.unique(deploy_final))
-                                deployments = [int(dd) for dd in deploy]
-
-                                if len(data_final) > 1:
-                                    [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(data_final,
-                                                                                                           sd_calc)
-                                else:
-                                    sdcalc = None
-                                    num_outliers = None
-                                    mean = None
-                                    vmin = None
-                                    vmax = None
-                                    sd = None
-                                    n_stats = None
-                            else:
-                                sdcalc = None
-                                num_outliers = None
-                                mean = None
-                                vmin = None
-                                vmax = None
-                                sd = None
-                                n_stats = None
-                                deployments = None
-                                t0 = None
-                                t1 = None
-                    else:
-                        sdcalc = None
-                        num_outliers = None
-                        mean = None
-                        vmin = None
-                        vmax = None
-                        sd = None
-                        n_stats = None
-                        deployments = None
-                        t0 = None
-                        t1 = None
-                        t_final = []
-
-                    if sd_calc:
-                        print_sd = sd_calc
-                    else:
-                        print_sd = sdcalc
-
-                    rows.append([m, list(np.unique(pms)), deployments, sv, lunits, t0, t1, fv_lst, [g_min, g_max],
-                                 n_all, n_nan, n_fv, n_grange, print_sd, num_outliers, n_stats, mean, vmin, vmax, sd])
-
-                    if len(t_final) > 0:
-                        # plot data used for stats
-                        psave_dir = os.path.join(plotting_sDir, array, subsite, r, 'timeseries_reviewed_datarange')
-                        cf.create_dir(psave_dir)
-
-                        dr_data = cf.refdes_datareview_json(r)
-                        deployments = []
-                        end_times = []
-                        for index, row in ps_df.iterrows():
-                            deploy = row['deployment']
-                            deploy_info = cf.get_deployment_information(dr_data, int(deploy[-4:]))
-                            deployments.append(int(deploy[-4:]))
-                            end_times.append(pd.to_datetime(deploy_info['stop_date']))
-
-                        sname = '-'.join((r, sv))
-
-                        # plot hourly averages for streaming data
-                        if 'streamed' in sci_vars_dict[list(sci_vars_dict.keys())[0]]['ms'][0]:
-                            sname = '-'.join((sname, 'hourlyavg'))
-                            df = pd.DataFrame({'dfx': t_final, 'dfy': data_final})
-                            dfr = df.resample('H', on='dfx').mean()
-
-                            # Plot all data
-                            fig, ax = pf.plot_timeseries_all(dfr.index, dfr['dfy'], sv, lunits[0], stdev=None)
-                            ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
-                                         fontsize=8)
-                            for etimes in end_times:
-                                ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
-                            pf.save_fig(psave_dir, sname)
-
-                            if sd_calc:
-                                sname = '-'.join((sname, 'hourlyavg_rmoutliers'))
-                                fig, ax = pf.plot_timeseries_all(dfr.index, dfr['dfy'], sv, lunits[0], stdev=sd_calc)
-                                ax.set_title(
-                                    (r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
-                                    fontsize=8)
-                                for etimes in end_times:
-                                    ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
-                                pf.save_fig(psave_dir, sname)
-
-                        elif 'SPKIR' in r:
-                            fig, ax = pf.plot_spkir(t_final, dd_data, sv, lunits[0])
-                            ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
-                                         fontsize=8)
-                            for etimes in end_times:
-                                ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
-                            pf.save_fig(psave_dir, sname)
-
-                            # plot each wavelength
-                            wavelengths = ['412nm', '443nm', '490nm', '510nm', '555nm', '620nm', '683nm']
-                            for wvi in range(len(dd_data)):
-                                fig, ax = pf.plot_spkir_wv(t_final, dd_data[wvi], sv, lunits[0], wvi)
-                                ax.set_title(
-                                    (r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
-                                    fontsize=8)
-                                for etimes in end_times:
-                                    ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
-                                snamewvi = '-'.join((sname, wavelengths[wvi]))
-                                pf.save_fig(psave_dir, snamewvi)
-                        elif 'presf_abc_wave_burst' in m:
-                            fig, ax = pf.plot_presf_2d(t_final, dd_data, sv, lunits[0])
-                            ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
-                                         fontsize=8)
-                            for etimes in end_times:
-                                ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
-                            snamewave = '-'.join((sname, m))
-                            pf.save_fig(psave_dir, snamewave)
-
-                        else:  # plot all data if not streamed
-                            fig, ax = pf.plot_timeseries_all(t_final, data_final, sv, lunits[0], stdev=None)
-                            ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
-                                         fontsize=8)
-                            for etimes in end_times:
-                                ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
-                            pf.save_fig(psave_dir, sname)
-
-                            if sd_calc:
-                                sname = '-'.join((r, sv, 'rmoutliers'))
-                                fig, ax = pf.plot_timeseries_all(t_final, data_final, sv, lunits[0], stdev=sd_calc)
-                                ax.set_title(
-                                    (r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
-                                    fontsize=8)
-                                for etimes in end_times:
-                                    ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
-                                pf.save_fig(psave_dir, sname)
-
-        fsum = pd.DataFrame(rows, columns=headers)
-        fsum.to_csv('{}/{}_data_ranges.csv'.format(save_dir, r), index=False)
+        df_F.to_csv(sDir+array+'/'+subsite+'/'+r+'_data_ranges.csv', columns=columns, index=False)
 
 
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
-    sDir = '/Users/leila/Documents/NSFEduSupport/github/data-review-tools/data_review/data_ranges'
-    plotting_sDir = '/Users/leila/Documents/NSFEduSupport/review/figures'
-    sd_calc = 1  # number of standard deviations for outlier calculation. options: int or None
+    preferred_only = 'yes'
+    sDir = '/Users/leila/Documents/NSFEduSupport/github/data-review-tools/data_review/data_ranges/'
 
-    url_list = [
-        'https://opendap.oceanobservatories.org/thredds/catalog/ooi/leila.ocean@gmail.com/20190613T205912883Z-CE04OSPS-SF01B-2B-PHSENA108-streamed-phsen_data_record/catalog.html']
+    url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190111T191340-CE06ISSM-RID16-04-VELPTA000-telemetered-velpt_ab_dcl_instrument/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190111T191211-CE06ISSM-RID16-04-VELPTA000-recovered_inst-velpt_ab_instrument_recovered/catalog.html',
+                'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190111T191157-CE06ISSM-RID16-04-VELPTA000-recovered_host-velpt_ab_instrument_recovered/catalog.html']
 
-main(sDir, plotting_sDir, url_list, sd_calc)
+    name_list = ['upward_velocity', 'eastward_velocity', 'northward_velocity', 'roll', 'pitch']
+
+    main(sDir, url_list, preferred_only, name_list)
