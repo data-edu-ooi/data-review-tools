@@ -1,0 +1,4 @@
+common_stream_name,preferred_methods_streams,deployments,long_name,units,t0,t1,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,define_stdev,n_outliers,n_stats,mean,min,max,stdev
+pco2w_abc_instrument,['recovered_host-pco2w_abc_imodem_instrument_recovered'],"[1, 2]",Thermistor Temperature,['ºC'],2015-03-15T22:00:09,2016-07-31T22:00:09,[-9999999.0],"[-2.0, 40.0]",3649.0,0.0,0.0,0.0,,,3649.0,12.6052,8.4898,17.4496,1.6064
+pco2w_abc_instrument,['recovered_host-pco2w_abc_imodem_instrument_recovered'],"[1, 2]",pCO2 Seawater,['µatm'],2015-03-19T00:00:09,2016-07-30T22:00:09,[-9999999.0],"[100.0, 600.0]",3649.0,0.0,1811.0,1811.0,,,1838.0,343.8675,297.9741,395.0742,13.7086
+pco2w_abc_instrument_blank,['recovered_host-pco2w_abc_imodem_instrument_recovered'],,Thermistor Temperature,[],,,[],"[-2.0, 40.0]",,,,,,,,,,,
