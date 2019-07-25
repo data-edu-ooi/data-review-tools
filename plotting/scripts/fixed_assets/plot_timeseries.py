@@ -91,7 +91,7 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
 
                 for var in vars:
                     print(var)
-                    if var != 'id':
+                    if var not in ['id', 'record_type', 'unique_id']:  # if var != 'id'
                         y = ds[var]
                         try:
                             fv = y._FillValue

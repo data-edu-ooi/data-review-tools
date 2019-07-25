@@ -63,7 +63,7 @@ def plot_presf_2d(tm, var, varname, varunits):
             plt.grid()
             format_date_axis(ax, fig)
 
-    # plt.ylim(-.5, .5)
+    # plt.ylim(101, 106)
     ax.set_ylabel((varname + " (" + varunits + ")"), fontsize=9)
 
     return fig, ax
@@ -214,6 +214,7 @@ def plot_timeseries(x, y, y_name, stdev=None):
         leg_text = ()
     else:
         ind = cf.reject_extreme_values(yval)
+        n_ev = np.sum(~ind) - np.sum(np.isnan(yval))  # don't count nans as extreme values or outliers
         ydata = yval[ind]
         xdata = x[ind]
 
@@ -221,7 +222,7 @@ def plot_timeseries(x, y, y_name, stdev=None):
             ind2 = cf.reject_outliers(ydata, stdev)
             yD = ydata[ind2]
             xD = xdata[ind2]
-            outliers = str(len(y) - len(yD))
+            outliers = str(np.sum(~ind2) - n_ev)
             leg_text = ('removed {} outliers (SD={})'.format(outliers, stdev),)
         else:
             xD = []
