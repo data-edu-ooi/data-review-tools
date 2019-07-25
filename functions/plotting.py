@@ -222,7 +222,10 @@ def plot_timeseries(x, y, y_name, stdev=None):
             ind2 = cf.reject_outliers(ydata, stdev)
             yD = ydata[ind2]
             xD = xdata[ind2]
-            outliers = str(np.sum(~ind2) - n_ev)
+            try:
+                outliers = str(np.sum(~ind2) - n_ev)
+            except TypeError:
+                outliers = str(np.sum(~np.array(ind2)) - n_ev)
             leg_text = ('removed {} outliers (SD={})'.format(outliers, stdev),)
         else:
             xD = []
