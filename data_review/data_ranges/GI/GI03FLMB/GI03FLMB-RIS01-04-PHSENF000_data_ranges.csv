@@ -1,0 +1,5 @@
+common_stream_name,preferred_methods_streams,deployments,long_name,units,t0,t1,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,define_stdev,n_outliers,n_stats,mean,min,max,stdev
+phsen_abcdef_instrument,['recovered_inst-phsen_abcdef_instrument'],"[1, 2, 3]",Thermistor Temperature at End of Measurement,['V'],2014-09-16T18:00:00,2017-04-30T23:59:59,[-9999999.0],"[None, None]",9548.0,0.0,0.0,no global ranges,2,468.0,9080.0,4.8734,3.2425,8.3567,1.4519
+phsen_abcdef_instrument,['recovered_inst-phsen_abcdef_instrument'],"[1, 2, 3]",pH,['1'],2014-09-16T18:00:00,2017-04-30T23:59:59,[-9999999.0],"[7.3, 8.5]",9548.0,0.0,0.0,5,2,93.0,9450.0,8.0898,8.0445,8.1434,0.0185
+phsen_abcdef_sio_mule_instrument,['recovered_inst-phsen_abcdef_instrument'],,Thermistor Temperature at End of Measurement,[],,,[],"[None, None]",,,,,2,,,,,,
+phsen_abcdef_sio_mule_instrument,['recovered_inst-phsen_abcdef_instrument'],,pH,[],,,[],"[7.3, 8.5]",,,,,2,,,,,,
