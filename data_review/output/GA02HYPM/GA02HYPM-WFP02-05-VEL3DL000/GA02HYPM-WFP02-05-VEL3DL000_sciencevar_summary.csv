@@ -3,11 +3,14 @@ deployment0001,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_eastward_v
 deployment0001,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_northward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",2901021,0,0,0,16,2901005,100.0,0.0083,-0.3171,0.3315,0.0653
 deployment0001,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_upward_velocity_ascending,m s-1,-9999999.0,"[-1.0, 1.0]",2901021,0,0,0,0,2901021,100.0,-0.0472,-0.2968,0.2741,0.1514
 deployment0001,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_upward_velocity_descending,m s-1,-9999999.0,"[-1.0, 1.0]",2901021,0,0,0,0,2901021,100.0,0.0682,-0.2728,0.3825,0.1557
+deployment0001,recovered_wfp,vel3d_l_wfp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",2901021,0,0,no global ranges,0,2901021,100.0,1396.5595,169.871,2629.5236,714.4598
 deployment0002,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_eastward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",2395290,0,0,0,24,2395266,100.0,-0.0468,-0.4683,0.3675,0.0843
 deployment0002,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_northward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",2395290,0,0,0,43,2395247,100.0,0.0195,-0.3615,0.3185,0.0762
 deployment0002,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_upward_velocity_ascending,m s-1,-9999999.0,"[-1.0, 1.0]",2395290,0,0,0,0,2395290,100.0,-0.0299,-0.2955,0.5391,0.1556
 deployment0002,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_upward_velocity_descending,m s-1,-9999999.0,"[-1.0, 1.0]",2395290,0,0,0,0,2395290,100.0,0.0911,-0.4279,0.3302,0.1533
+deployment0002,recovered_wfp,vel3d_l_wfp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",2395290,0,0,no global ranges,0,2395290,100.0,1530.608,178.064,5320.9958,1010.4208
 deployment0003,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_eastward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",4112354,0,0,0,301,4112053,99.99,-0.0743,-0.395,0.2459,0.0641
 deployment0003,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_northward_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",4112354,0,0,0,356,4111998,99.99,0.0188,-0.317,0.3545,0.0671
 deployment0003,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_upward_velocity_ascending,m s-1,-9999999.0,"[-1.0, 1.0]",4112354,0,0,0,0,4112354,100.0,-0.0621,-0.3253,0.2868,0.1411
 deployment0003,recovered_wfp,vel3d_l_wfp_instrument_recovered,vel3d_l_upward_velocity_descending,m s-1,-9999999.0,"[-1.0, 1.0]",4112354,0,0,0,0,4112354,100.0,0.0244,-0.316,0.32,0.1374
+deployment0003,recovered_wfp,vel3d_l_wfp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",4112354,0,0,no global ranges,36908,4075446,99.1,1352.1763,180.7864,2588.7094,666.7783

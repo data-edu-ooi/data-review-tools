@@ -2,9 +2,12 @@ deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all
 deployment0001,recovered_wfp,dosta_ln_wfp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",283362,0,0,0,903,282459,99.68,188.36,154.0284,256.7923,25.7712
 deployment0001,recovered_wfp,dosta_ln_wfp_instrument_recovered,estimated_oxygen_concentration,µmol L-1,-9999999.0,"[0.0, 400.0]",283362,0,0,0,903,282459,99.68,234.2238,190.76,328.259,34.9776
 deployment0001,recovered_wfp,dosta_ln_wfp_instrument_recovered,optode_temperature,ºC,-9999999.0,"[-2.0, 40.0]",283362,0,0,0,1358,282004,99.52,3.0326,0.0,7.43,0.8072
+deployment0001,recovered_wfp,dosta_ln_wfp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",283362,0,0,no global ranges,0,283362,100.0,1396.3707,170.0209,2629.4683,698.5002
 deployment0002,recovered_wfp,dosta_ln_wfp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",229825,0,0,0,3006,226819,98.69,197.1934,159.2288,280.9487,28.9929
 deployment0002,recovered_wfp,dosta_ln_wfp_instrument_recovered,estimated_oxygen_concentration,µmol L-1,-9999999.0,"[0.0, 400.0]",229825,0,0,0,3006,226819,98.69,244.983,192.655,348.849,39.2623
 deployment0002,recovered_wfp,dosta_ln_wfp_instrument_recovered,optode_temperature,ºC,-9999999.0,"[-2.0, 40.0]",229825,0,0,0,633,229192,99.72,2.9706,0.0,7.847,0.9356
+deployment0002,recovered_wfp,dosta_ln_wfp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",229825,0,0,no global ranges,0,229825,100.0,1469.3899,178.184,5320.9296,881.9302
 deployment0003,recovered_wfp,dosta_ln_wfp_instrument_recovered,dissolved_oxygen,µmol kg-1,-9999999.0,"[0.0, 400.0]",401898,0,0,5,2142,399751,99.47,210.2598,96.2597,289.1673,28.7193
 deployment0003,recovered_wfp,dosta_ln_wfp_instrument_recovered,estimated_oxygen_concentration,µmol L-1,-9999999.0,"[0.0, 400.0]",401898,0,0,5,2142,399751,99.47,261.8031,118.171,370.153,38.9989
 deployment0003,recovered_wfp,dosta_ln_wfp_instrument_recovered,optode_temperature,ºC,-9999999.0,"[-2.0, 40.0]",401898,0,0,0,2384,399514,99.41,2.9934,0.0,7.29,0.7608
+deployment0003,recovered_wfp,dosta_ln_wfp_instrument_recovered,int_ctd_pressure,dbar,nan,"[None, None]",401898,0,0,no global ranges,0,401898,100.0,1353.7199,180.85,2588.5116,653.1046
