@@ -5,13 +5,13 @@ import pandas as pd
 import xarray as xr
 import numpy as np
 import functions.common as cf
-import matplotlib
-from matplotlib import pyplot
+import matplotlib.pyplot as plt
 import datetime
 import matplotlib.dates as mdates
 import matplotlib.ticker as ticker
 from matplotlib.dates import (YEARLY, DateFormatter, rrulewrapper, RRuleLocator, drange)
 from matplotlib.ticker import MaxNLocator
+
 
 def reject_err_data_1_dims(y, y_fill, r, sv, n=None):
     n_nan = np.sum(np.isnan(y)) # count nans in data
@@ -104,23 +104,23 @@ def prepare_axis(r, time, deployment, ax, ii, f_num, name, unit, err_count=None)
 
 def plot_velocity_variables(r, fdatasets, num_plots, save_dir):
 
-    fig, ax = pyplot.subplots(nrows=num_plots, ncols=1, sharey=True)
+    fig, ax = plt.subplots(nrows=num_plots, ncols=1, sharey=True)
     fig.tight_layout(pad=0.4, w_pad=0.5, h_pad=1.0)
     fig_file = 'calculated_currents_plot'
 
-    fig0, ax0 = pyplot.subplots(nrows=num_plots, ncols=1, sharey=True)
+    fig0, ax0 = plt.subplots(nrows=num_plots, ncols=1, sharey=True)
     fig0.tight_layout(pad=0.4, w_pad=0.5, h_pad=1.0)
     fig0_file = 'uvw_plots'
 
-    fig1, ax1 = pyplot.subplots(nrows=num_plots, ncols=1, sharey=True)
+    fig1, ax1 = plt.subplots(nrows=num_plots, ncols=1, sharey=True)
     fig1.tight_layout(pad=0.4, w_pad=0.5, h_pad=1.0)
     fig1_file = 'pressure_plots'
 
-    fig2, ax2 = pyplot.subplots(nrows=num_plots, ncols=1, sharey=True)
+    fig2, ax2 = plt.subplots(nrows=num_plots, ncols=1, sharey=True)
     fig2.tight_layout(pad=0.4, w_pad=0.5, h_pad=1.0)
     fig2_file = 'roll_plots'
 
-    fig3, ax3 = pyplot.subplots(nrows=num_plots, ncols=1, sharey=True)
+    fig3, ax3 = plt.subplots(nrows=num_plots, ncols=1, sharey=True)
     fig3.tight_layout(pad=0.4, w_pad=0.5, h_pad=1.0)
     fig3_file = 'pitch_plots'
 
@@ -147,61 +147,74 @@ def plot_velocity_variables(r, fdatasets, num_plots, save_dir):
         '''
         var_list = cf.notin_list(ds.data_vars.keys(), ['time', '_qc_'])
 
-        z_data, z_unit, z_name, z_fill = cf.add_pressure_to_dictionary_of_sci_vars(ds)
+        z_name, z_data, z_unit, z_name, z_fill = cf.add_pressure_to_dictionary_of_sci_vars(ds)
         z_data, err_count_z = reject_err_data_1_dims(z_data, z_fill[0], r, z_name[0], n=5)
 
-        w_id, w_data, w_unit, w_name, w_fill = get_variable_data(ds, var_list, 'upward_velocity')
-        w_data, err_count_w = reject_err_data_1_dims(w_data, w_fill, r, w_id, n=5)
+        if 'VELPT' in r:
+            w_id, w_data, w_unit, w_name, w_fill = get_variable_data(ds, var_list, 'upward_velocity')
+            w_data, err_count_w = reject_err_data_1_dims(w_data, w_fill, r, w_id, n=5)
 
-        u_id, u_data, u_unit, u_name, u_fill = get_variable_data(ds, var_list, 'eastward_velocity')
-        u_data, err_count_u = reject_err_data_1_dims(u_data, u_fill, r, u_id, n=5)
+            u_id, u_data, u_unit, u_name, u_fill = get_variable_data(ds, var_list, 'eastward_velocity')
+            u_data, err_count_u = reject_err_data_1_dims(u_data, u_fill, r, u_id, n=5)
 
-        v_id, v_data, v_unit, v_name, v_fill = get_variable_data(ds, var_list, 'northward_velocity')
-        v_data, err_count_v = reject_err_data_1_dims(v_data, v_fill, r, v_id, n=5)
+            v_id, v_data, v_unit, v_name, v_fill = get_variable_data(ds, var_list, 'northward_velocity')
+            v_data, err_count_v = reject_err_data_1_dims(v_data, v_fill, r, v_id, n=5)
 
-        roll_id, roll_data, roll_unit, roll_name, roll_fill = get_variable_data(ds, var_list, 'roll')
-        roll_data, err_count_roll = reject_err_data_1_dims(roll_data, roll_fill, r, roll_id, n=5)
+            roll_id, roll_data, roll_unit, roll_name, roll_fill = get_variable_data(ds, var_list, 'roll')
+            roll_data, err_count_roll = reject_err_data_1_dims(roll_data, roll_fill, r, roll_id, n=5)
 
-        pitch_id, pitch_data, pitch_unit, pitch_name, pitch_fill = get_variable_data(ds, var_list, 'pitch')
-        pitch_data, err_count_pitch = reject_err_data_1_dims(pitch_data, pitch_fill, r, pitch_id, n=5)
+            pitch_id, pitch_data, pitch_unit, pitch_name, pitch_fill = get_variable_data(ds, var_list, 'pitch')
+            pitch_data, err_count_pitch = reject_err_data_1_dims(pitch_data, pitch_fill, r, pitch_id, n=5)
 
-        '''
-        According to VELPT manufacturer, data are suspect when the instrument is tilted more than 20 degrees
-        redmine ticket # 12960
-        '''
+            '''
+            According to VELPT manufacturer, data are suspect when the instrument is tilted more than 20 degrees
+            redmine ticket # 12960
+            '''
 
-        tilt_ind = np.logical_or(abs(pitch_data) > 200, abs(roll_data) > 200)
-        percent_good = ((len(time) - len(time[tilt_ind])) / len(time)) * 100
+            tilt_ind = np.logical_or(abs(pitch_data) > 200, abs(roll_data) > 200)
+            percent_good = ((len(time) - len(time[tilt_ind])) / len(time)) * 100
+
+        elif 'VEL3D' in r:
+            w_id, w_data, w_unit, w_name, w_fill = get_variable_data(ds, var_list, 'upward_turbulent_velocity')
+            w_data, err_count_w = reject_err_data_1_dims(w_data, w_fill, r, w_id, n=5)
+
+            u_id, u_data, u_unit, u_name, u_fill = get_variable_data(ds, var_list, 'eastward_turbulent_velocity')
+            u_data, err_count_u = reject_err_data_1_dims(u_data, u_fill, r, u_id, n=5)
+
+            v_id, v_data, v_unit, v_name, v_fill = get_variable_data(ds, var_list, 'northward_turbulent_velocity')
+            v_data, err_count_v = reject_err_data_1_dims(v_data, v_fill, r, v_id, n=5)
 
         '''
         Plot pressure
         '''
         ax1[ii].plot(time, z_data, 'b.', linestyle='None', marker='.', markersize=0.5) #linestyle='--', linewidth=.6
-        ax1[ii].plot(time[tilt_ind], z_data[tilt_ind], 'r.', linestyle='None', marker='.', markersize=0.5,
-                                                                        label= str(round(100 - percent_good, 2))+'%')
+        if 'VELPT' in r:
+            ax1[ii].plot(time[tilt_ind], z_data[tilt_ind], 'r.', linestyle='None', marker='.', markersize=0.5,
+                         label=str(round(100 - percent_good, 2))+'%')
         prepare_axis(r, time, deployment, ax1[ii], ii, len(fdatasets), z_name[0], z_unit[0], err_count=err_count_z)
 
         fig1_file = fig1_file + str(deployment)
 
-        '''
-        plot roll
-        '''
-        ax2[ii].plot(time, roll_data, 'b.', linestyle='None', marker='.', markersize=0.5)
-        ax2[ii].plot(time[tilt_ind], roll_data[tilt_ind], 'r.', linestyle='None', marker='.', markersize=0.5,
-                                                                            label= str(round(100 - percent_good, 2)) + '%')
-        prepare_axis(r, time, deployment, ax2[ii], ii, len(fdatasets), roll_name, roll_unit, err_count=err_count_roll)
+        if 'VELPT' in r:
+            '''
+            plot roll
+            '''
+            ax2[ii].plot(time, roll_data, 'b.', linestyle='None', marker='.', markersize=0.5)
+            ax2[ii].plot(time[tilt_ind], roll_data[tilt_ind], 'r.', linestyle='None', marker='.', markersize=0.5,
+                         label=str(round(100 - percent_good, 2)) + '%')
+            prepare_axis(r, time, deployment, ax2[ii], ii, len(fdatasets), roll_name, roll_unit, err_count=err_count_roll)
 
-        fig2_file = fig2_file + str(deployment)
+            fig2_file = fig2_file + str(deployment)
 
-        '''
-        plot pitch
-        '''
-        ax3[ii].plot(time, pitch_data, 'b.', linestyle='None', marker='.', markersize=0.5)
-        ax3[ii].plot(time[tilt_ind], pitch_data[tilt_ind], 'r.', linestyle='None', marker='.', markersize=0.5,
-                                                                      label= str(round(100 - percent_good, 2)) + '%')
-        prepare_axis(r, time, deployment, ax3[ii], ii, len(fdatasets), pitch_name, pitch_unit, err_count= err_count_pitch)
+            '''
+            plot pitch
+            '''
+            ax3[ii].plot(time, pitch_data, 'b.', linestyle='None', marker='.', markersize=0.5)
+            ax3[ii].plot(time[tilt_ind], pitch_data[tilt_ind], 'r.', linestyle='None', marker='.', markersize=0.5,
+                         label=str(round(100 - percent_good, 2)) + '%')
+            prepare_axis(r, time, deployment, ax3[ii], ii, len(fdatasets), pitch_name, pitch_unit, err_count= err_count_pitch)
 
-        fig3_file = fig3_file + str(deployment)
+            fig3_file = fig3_file + str(deployment)
 
         '''
         1D Quiver plot
@@ -209,12 +222,13 @@ def plot_velocity_variables(r, fdatasets, num_plots, save_dir):
         ax[ii].quiver(time, 0, u_data, v_data, color='b',  units='y', scale_units='y', scale=1, headlength=1,
                       headaxislength=1, width=0.004, alpha=0.5)
 
-        ax[ii].quiver(time[tilt_ind], 0, u_data[tilt_ind], v_data[tilt_ind], color='r', units='y',  scale_units='y',
-                      scale=1, headlength=1, headaxislength=1, width=0.004, alpha=0.5,
-                      label=str(round(100 - percent_good, 2)) + '%')
+        if 'VELPT' in r:
+            ax[ii].quiver(time[tilt_ind], 0, u_data[tilt_ind], v_data[tilt_ind], color='r', units='y',  scale_units='y',
+                          scale=1, headlength=1, headaxislength=1, width=0.004, alpha=0.5,
+                          label=str(round(100 - percent_good, 2)) + '%')
 
         uv_magnitude = np.sqrt(u_data ** 2 + v_data ** 2)
-        uv_maxmag = max(uv_magnitude)
+        uv_maxmag = np.nanmax(uv_magnitude)
 
         ax[ii].set_ylim(-uv_maxmag, uv_maxmag)
         prepare_axis(r, time, deployment, ax[ii], ii, len(fdatasets), 'Current Velocity', u_unit, err_count=None)
@@ -224,13 +238,18 @@ def plot_velocity_variables(r, fdatasets, num_plots, save_dir):
         '''
         Plot u and v components
         '''
-
         ax0[ii].plot(time, v_data, 'b.', linestyle='None', marker='.', markersize=0.5, label='V')
-        ax0[ii].plot(time[tilt_ind], v_data[tilt_ind], 'r', linestyle='None', marker='.', markersize=0.5, label=str(round(100 - percent_good,2)) + '%')
+        if 'VELPT' in r:
+            ax0[ii].plot(time[tilt_ind], v_data[tilt_ind], 'r', linestyle='None', marker='.', markersize=0.5,
+                         label=str(round(100 - percent_good, 2)) + '%')
         ax0[ii].plot(time, u_data, 'g.', linestyle='None', marker='.', markersize=0.5, label='U')
-        ax0[ii].plot(time[tilt_ind], u_data[tilt_ind], 'y', linestyle='None', marker='.', markersize=0.5, label=str(round(100 - percent_good,2)) + '%')
+        if 'VELPT' in r:
+            ax0[ii].plot(time[tilt_ind], u_data[tilt_ind], 'y', linestyle='None', marker='.', markersize=0.5,
+                         label=str(round(100 - percent_good, 2)) + '%')
         ax0[ii].plot(time, w_data, 'm.', linestyle='None', marker='.', markersize=0.5, label='W')
-        ax0[ii].plot(time[tilt_ind], w_data[tilt_ind], 'c', linestyle='None', marker='.', markersize=0.5, label=str(round(100 - percent_good,2)) + '%')
+        if 'VELPT' in r:
+            ax0[ii].plot(time[tilt_ind], w_data[tilt_ind], 'c', linestyle='None', marker='.', markersize=0.5,
+                         label=str(round(100 - percent_good, 2)) + '%')
 
         prepare_axis(r, time, deployment, ax0[ii], ii, len(fdatasets), 'Velocity Components', u_unit, err_count=None)
 
@@ -251,6 +270,8 @@ def plot_velocity_variables(r, fdatasets, num_plots, save_dir):
 
     save_file = os.path.join(save_dir, fig3_file)
     fig3.savefig(str(save_file), dpi=150, bbox_inches='tight')
+
+    plt.close('all')
 
 
 def main(sDir, url_list, preferred_only):
