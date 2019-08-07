@@ -2,8 +2,8 @@ deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all
 deployment0002,recovered_inst,vel3d_cd_dcl_velocity_data_recovered,turbulent_velocity_east,mm s-1,-9999,"[-3000.0, 3000.0]",185760,0,0,4,5,185751,100.0,-296.3965,-2837.0,2246.0,512.0492
 deployment0002,recovered_inst,vel3d_cd_dcl_velocity_data_recovered,turbulent_velocity_north,mm s-1,-9999,"[-3000.0, 3000.0]",185760,0,0,16,12,185732,99.98,-67.7404,-2829.0,2691.0,552.2838
 deployment0002,recovered_inst,vel3d_cd_dcl_velocity_data_recovered,turbulent_velocity_vertical,mm s-1,-9999,"[-1000.0, 1000.0]",185760,0,0,18,418,185324,99.77,129.0083,-452.0,711.0,111.9284
-deployment0002,recovered_inst,vel3d_cd_dcl_velocity_data_recovered,vel3d_c_eastward_turbulent_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",185760,0,0,7,4,185749,99.99,-0.3037,-2.6321,2.3308,0.5316
-deployment0002,recovered_inst,vel3d_cd_dcl_velocity_data_recovered,vel3d_c_northward_turbulent_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",185760,0,0,14,17,185729,99.98,0.0158,-2.6381,2.6766,0.5333
+deployment0002,recovered_inst,vel3d_cd_dcl_velocity_data_recovered,vel3d_c_eastward_turbulent_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",185760,0,0,7,4,185749,99.99,-0.3036,-2.6321,2.3308,0.5316
+deployment0002,recovered_inst,vel3d_cd_dcl_velocity_data_recovered,vel3d_c_northward_turbulent_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",185760,0,0,14,17,185729,99.98,0.0157,-2.6381,2.6766,0.5334
 deployment0002,recovered_inst,vel3d_cd_dcl_velocity_data_recovered,vel3d_c_upward_turbulent_velocity,m s-1,-9999999.0,"[-1.0, 1.0]",185760,0,0,18,418,185324,99.77,0.129,-0.452,0.711,0.1119
 deployment0002,recovered_inst,vel3d_cd_dcl_velocity_data_recovered,seawater_pressure_mbar,0.001 dbar,-9999999,"[0.0, 1100000.0]",185760,0,0,0,0,185760,100.0,546109.6675,542592.0,549303.0,879.9897
 deployment0003,recovered_inst,vel3d_cd_dcl_velocity_data_recovered,turbulent_velocity_east,mm s-1,-9999,"[-3000.0, 3000.0]",4593600,0,0,407,2014,4591179,99.95,-60.1744,-1943.0,1840.0,377.5192
