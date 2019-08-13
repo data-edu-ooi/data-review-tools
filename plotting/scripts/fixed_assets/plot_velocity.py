@@ -39,6 +39,8 @@ def reject_err_data_1_dims(y, y_fill, r, sv, n=None):
         y = np.where(abs(y - np.nanmean(y)) < n * stdev, y, np.nan) # replace 5 STD by nans in data
         n_std = np.sum(np.isnan(y)) - ~np.isnan(n_grange) - n_ev - n_fv - n_nan # re-count nans in data
         n_std = n_std.item()
+    else:
+        n_std = 0
 
     err_count = pd.DataFrame({'n_nan':[n_nan],
                              'n_fv':[n_fv],
