@@ -48,7 +48,7 @@ def reject_err_data_1_dims(y, y_fill, r, sv, n=None):
     err_count = pd.DataFrame({'global_ranges':[[g_min,g_max]], 'n_nans':[n_nan], 'n_fillvalues':[n_fv],
                               'n_extremvalues':[n_ev], 'n_grange':[n_grange], 'define_stdev':[n],'n_outliers':[n_std],
                               'n_stats':[np.sum(~np.isnan(y))]}, index=[0])
-    return  y, err_count
+    return y, err_count
 
 
 # exist in sub_function
@@ -69,7 +69,7 @@ def get_variable_data(ds, var_list, keyword):
 
 
 # exist in main function
-def compare_variable_attributes(fdatasets, r):
+def compare_variable_attributes(fdatasets, r, name_list, sDir):
     vars_df = pd.DataFrame()
     for ii in range(len(fdatasets)):
 
@@ -152,7 +152,7 @@ def main(sDir, url_list, preferred_only, name_list):
         main_sensor = r.split('-')[-1]
         fdatasets = cf.filter_collocated_instruments(main_sensor, fdatasets)
 
-        vars_df = compare_variable_attributes(fdatasets, r)
+        vars_df = compare_variable_attributes(fdatasets, r, name_list, sDir)
         if len(np.unique(vars_df.index.values)) == 1 and len(vars_df['var_id']) == len(name_list)+1:
             print('Pass: variables exist in all files')
         else:
@@ -171,7 +171,7 @@ def main(sDir, url_list, preferred_only, name_list):
 
         add_to_df = pd.DataFrame()
 
-        for ii in range(len(fdatasets)):
+        for ii in range(len(fdatasets)):  # [4, 5]
             print('\n', fdatasets[ii].split('/')[-1])
             ds = xr.open_dataset(fdatasets[ii], mask_and_scale=False)
             var_ms = '-'.join((ds.collection_method, ds.stream))
@@ -181,8 +181,8 @@ def main(sDir, url_list, preferred_only, name_list):
             time_d = ds['time'].values
 
             for vv in range(len(vars_df['var_id'])):
-
-                if ii == 0:
+                print(vars_df['var_id'].values[vv])
+                if ii == 0:  #if ii == 4
                     vD = vars_df[vars_df['values'].values == vars_df['var_id'].values[vv]]
                     data_v = ds[vD['var_id'][0]].values
                     if len(np.unique(data_v)) == 1:
@@ -221,8 +221,11 @@ def main(sDir, url_list, preferred_only, name_list):
         df_F = pd.DataFrame()
         for keyword in ['eastward', 'northward', 'upward', 'pressure']: #
             df_k = all_in_one_df[all_in_one_df.var_id.str.contains(keyword) == True]
-            df_k.at[df_k.index.values[0], 't1'] = max(df_F['t1'].values[0])
-            df_F.at[df_k.index.values[0], 't0'] = min(df_F['t0'].values[0])
+            print(keyword, len(df_k['t0'].values), len(df_k['t1'].values))
+            if len(df_k['t1'].values) > 1:
+                df_k.at[df_k.index.values[0], 't1'] = max(df_k['t1'].values[0])
+            if len(df_k['t0'].values) > 1:
+                df_k.at[df_k.index.values[0], 't0'] = min(df_k['t0'].values[0])
 
             u = df_k['values'].values[0]
             uu = u[ind]
@@ -251,7 +254,8 @@ def main(sDir, url_list, preferred_only, name_list):
 if __name__ == '__main__':
     pd.set_option('display.width', 320, "display.max_columns", 10)  # for display in pycharm console
     preferred_only = 'yes'
-    sDir = '/Users/leila/Documents/NSFEduSupport/github/data-review-tools/data_review/data_ranges/'
+    #sDir = '/Users/leila/Documents/NSFEduSupport/github/data-review-tools/data_review/data_ranges/'
+    sDir = '/Users/lgarzio/Documents/repo/OOI/ooi-data-lab/data-review-tools/data_review/data_ranges'
 
     url_list = ['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190111T191340-CE06ISSM-RID16-04-VELPTA000-telemetered-velpt_ab_dcl_instrument/catalog.html',
                 'https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190111T191211-CE06ISSM-RID16-04-VELPTA000-recovered_inst-velpt_ab_instrument_recovered/catalog.html',
