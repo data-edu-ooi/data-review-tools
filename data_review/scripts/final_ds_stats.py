@@ -469,8 +469,10 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                         else:  # plot all data if not streamed or 2D
                             if type(vinfo['values']) != dict:  # if the variable is not a 2D array
                                 fig, ax = pf.plot_timeseries_all(t_final, data_final, sv, lunits[0], stdev=None)
-                                ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
-                                             fontsize=8)
+                                ttl = r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1
+                                if 'VELPT' in r:
+                                    ttl = ttl + '\n data removed where pitch/roll > 20 degrees'
+                                ax.set_title(ttl, fontsize=8)
                                 for etimes in end_times:
                                     ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
                                 pf.save_fig(psave_dir, sname)
@@ -478,8 +480,7 @@ def main(sDir, plotting_sDir, url_list, sd_calc):
                                 if sd_calc:
                                     sname = '-'.join((r, sv, 'rmoutliers'))
                                     fig, ax = pf.plot_timeseries_all(t_final, data_final, sv, lunits[0], stdev=sd_calc)
-                                    ax.set_title((r + '\nDeployments: ' + str(sorted(deployments)) + '\n' + t0 + ' - ' + t1),
-                                                 fontsize=8)
+                                    ax.set_title(ttl, fontsize=8)
                                     for etimes in end_times:
                                         ax.axvline(x=etimes, color='k', linestyle='--', linewidth=.6)
                                     pf.save_fig(psave_dir, sname)

@@ -74,6 +74,15 @@ def append_variable_data(ds, variable_dict, common_stream_name, exclude_times):
                     if p_name not in pressure_name:
                         pressure_name.append(p_name)
 
+                    if 'VELPT' in ds.sensor:  # remove data where pitch and roll are >20 degrees
+                        pitch = ds['pitch_decidegree'].values
+                        roll = ds['roll_decidegree'].values
+                        tilt_ind = np.logical_or(abs(pitch) < 200, abs(roll) < 200)
+                        tD = tD[tilt_ind]
+                        varD = varD[tilt_ind]
+                        deployD = deployD[tilt_ind]
+                        pD = pD[tilt_ind]
+
                     if len(ds[var].dims) == 1:
                         if len(exclude_times) > 0:
                             for et in exclude_times:
