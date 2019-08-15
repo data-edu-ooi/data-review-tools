@@ -48,8 +48,10 @@ def reject_err_data_1_dims(y, y_fill, r, sv, n=None):
         y = np.where(abs(y - np.nanmean(y)) < n * stdev, y, np.nan) # replace 5 STD by nans in data
         n_std = np.sum(np.isnan(y)) - n_grange - n_ev - n_fv - n_nan # re-count nans in data
         n_std = n_std.item()
+    else:
+        n_std = 0
 
-    return  y, n_nan, n_fv, n_ev, n_grange, g_min, g_max, n_std
+    return y, n_nan, n_fv, n_ev, n_grange, g_min, g_max, n_std
 
 
 def reject_err_data_2_dims(y, y_bad_beams, y_fill, r, sv):
@@ -148,7 +150,7 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
             fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(fd)
             sci_vars = cf.return_science_vars(stream)
             # drop the following list of key words from science variables list
-            sci_vars = notin_list(sci_vars, ['bin_depths', 'salinity', 'temperature', 'beam'])
+            sci_vars = notin_list(sci_vars, ['bin_depths', 'salinity', 'temperature'])
             sci_vars = [name for name in sci_vars if ds[name].units != 'mm s-1']
 
 
@@ -170,22 +172,25 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                 v_name = v.long_name
 
                 if len(v.dims) == 1:
-                    v, n_nan, n_fv, n_ev, n_grange, g_min, g_max, n_std  = reject_err_data_1_dims(v, fv, r, var, n=5)
+                    v, n_nan, n_fv, n_ev, n_grange, g_min, g_max, n_std = reject_err_data_1_dims(v, fv, r, var, n=5)
 
-                    # Plot all data
-                    fig, ax = pf.plot_timeseries(tm, v, v_name, stdev=None)
-                    ax.set_title((title_text + '\n' + t0 + ' - ' + t1), fontsize=9)
-                    sfile = '-'.join((filename, v_name, t0[:10]))
-                    pf.save_fig(save_dir, sfile)
+                    if len(tm) > np.sum(np.isnan(v)):  # only plot if the array contains values
+                        # Plot all data
+                        fig, ax = pf.plot_timeseries(tm, v, v_name, stdev=None)
+                        ax.set_title((title_text + '\n' + t0 + ' - ' + t1), fontsize=9)
+                        sfile = '-'.join((filename, v_name, t0[:10]))
+                        pf.save_fig(save_dir, sfile)
 
-                    # Plot data with outliers removed
-                    fig, ax = pf.plot_timeseries(tm, v, v_name, stdev=5)
-                    title_i = 'removed: {} nans, {} fill values, {} extreme values, {} GR [{}, {}],' \
-                              ' {} outliers +/- 5 SD'.format(n_nan, n_fv , n_ev, n_grange, g_min, g_max, n_std)
+                        # Plot data with outliers removed
+                        fig, ax = pf.plot_timeseries(tm, v, v_name, stdev=5)
+                        title_i = 'removed: {} nans, {} fill values, {} extreme values, {} GR [{}, {}],' \
+                                  ' {} outliers +/- 5 SD'.format(n_nan, n_fv , n_ev, n_grange, g_min, g_max, n_std)
 
-                    ax.set_title((title_text + '\n' + t0 + ' - ' + t1 + '\n' + title_i), fontsize=8)
-                    sfile = '-'.join((filename, v_name, t0[:10])) + '_rmoutliers'
-                    pf.save_fig(save_dir, sfile)
+                        ax.set_title((title_text + '\n' + t0 + ' - ' + t1 + '\n' + title_i), fontsize=8)
+                        sfile = '-'.join((filename, v_name, t0[:10])) + '_rmoutliers'
+                        pf.save_fig(save_dir, sfile)
+                    else:
+                        print('Array of all nans - skipping plot')
 
                 else:
                     v = v.values.T.astype(float)
