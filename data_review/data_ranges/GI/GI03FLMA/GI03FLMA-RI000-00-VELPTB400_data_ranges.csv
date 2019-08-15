@@ -1,0 +1,5 @@
+common_stream_name,preferred_methods_streams,deployments,long_name,units,t0,t1,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,define_stdev,n_outliers,n_stats,mean,min,max,stdev
+velpt_ab_instrument,['recovered_inst-velpt_ab_instrument_recovered'],"[1, 2, 3, 4]",Eastward Mean Point Seawater Velocity,['m s-1'],2014-09-12T21:00:00,2018-06-15T07:00:00,[-9999999.0],"[-3.0, 3.0]",33097,0,0,0,6,0.0,33097.0,-0.0261,-0.4591,0.3356,0.0991
+velpt_ab_instrument,['recovered_inst-velpt_ab_instrument_recovered'],"[1, 2, 3, 4]",Northward Mean Point Seawater Velocity,['m s-1'],2014-09-12T21:00:00,2018-06-15T07:00:00,[-9999999.0],"[-3.0, 3.0]",33097,0,0,0,6,0.0,33097.0,-0.0077,-0.4002,0.3941,0.0947
+velpt_ab_instrument,['recovered_inst-velpt_ab_instrument_recovered'],,Seawater Pressure,['0.001 dbar'],,,[-9999999],"[0.0, 1100000.0]",33097,0,0,33097,6,,,,,,
+velpt_ab_instrument,['recovered_inst-velpt_ab_instrument_recovered'],"[1, 2, 3, 4]",Upward Mean Point Seawater Velocity,['m s-1'],2014-09-12T21:00:00,2018-06-15T07:00:00,[-9999999.0],"[-1.0, 1.0]",33097,0,0,1,6,0.0,33096.0,0.0056,-0.071,0.081,0.0182
