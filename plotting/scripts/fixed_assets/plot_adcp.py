@@ -23,22 +23,22 @@ import functions.plotting as pf
 
 
 def reject_err_data_1_dims(y, y_fill, r, sv, n=None):
-    n_nan = np.sum(np.isnan(y)) # count nans in data
+    n_nan = np.sum(np.isnan(y))  # count nans in data
     n_nan = n_nan.item()
-    y = np.where(y != y_fill, y, np.nan) # replace fill_values by nans in data
-    y = np.where(y != -9999, y, np.nan) # replace -9999 by nans in data
-    n_fv = np.sum(np.isnan(y)) - n_nan # re-count nans in data
+    y = np.where(y != y_fill, y, np.nan)  # replace fill_values by nans in data
+    y = np.where(y != -9999, y, np.nan)  # replace -9999 by nans in data
+    n_fv = np.sum(np.isnan(y)) - n_nan  # re-count nans in data
     n_fv = n_fv.item()
-    y = np.where(y > -1e10, y, np.nan) # replace extreme values by nans in data
+    y = np.where(y > -1e10, y, np.nan)  # replace extreme values by nans in data
     y = np.where(y < 1e10, y, np.nan)
-    n_ev = np.sum(np.isnan(y)) - n_fv - n_nan # re-count nans in data
+    n_ev = np.sum(np.isnan(y)) - n_fv - n_nan  # re-count nans in data
     n_ev = n_ev.item()
 
-    g_min, g_max = cf.get_global_ranges(r, sv) # get global ranges:
+    g_min, g_max = cf.get_global_ranges(r, sv)  # get global ranges:
     if g_min and g_max:
-        y = np.where(y >= g_min, y, np.nan) # replace extreme values by nans in data
+        y = np.where(y >= g_min, y, np.nan)  # replace extreme values by nans in data
         y = np.where(y <= g_max, y, np.nan)
-        n_grange = np.sum(np.isnan(y)) - n_ev - n_fv - n_nan # re-count nans in data
+        n_grange = np.sum(np.isnan(y)) - n_ev - n_fv - n_nan  # re-count nans in data
         n_grange = n_grange.item()
     else:
         n_grange = np.nan
@@ -55,34 +55,34 @@ def reject_err_data_1_dims(y, y_fill, r, sv, n=None):
 
 
 def reject_err_data_2_dims(y, y_bad_beams, y_fill, r, sv):
-    n_nan = np.sum(np.isnan(y)) # count nans in data
-    y[y == y_fill] = np.nan # replace fill_values by nans in data
-    y[y == -9999] = np.nan # replace -99999 by nans in data
-    n_fv = np.sum(np.isnan(y)) - n_nan # re-count nans in data
-    y[y < -1e10] = np.nan # replace extreme values by nans in data
+    n_nan = np.sum(np.isnan(y))  # count nans in data
+    y[y == y_fill] = np.nan  # replace fill_values by nans in data
+    y[y == -9999] = np.nan  # replace -99999 by nans in data
+    n_fv = np.sum(np.isnan(y)) - n_nan  # re-count nans in data
+    y[y < -1e10] = np.nan  # replace extreme values by nans in data
     y[y > 1e10] = np.nan
     n_ev = np.sum(np.isnan(y)) - n_fv - n_nan  # re-count nans in data
-    y[y_bad_beams > 25] = np.nan # replace bad beams by nans in data
-    n_bb = np.sum(np.isnan(y)) - n_ev - n_fv - n_nan # re-count nans in data
+    y[y_bad_beams > 25] = np.nan  # replace bad beams by nans in data
+    n_bb = np.sum(np.isnan(y)) - n_ev - n_fv - n_nan  # re-count nans in data
 
-    [g_min, g_max] = cf.get_global_ranges(r, sv) # get global ranges
+    [g_min, g_max] = cf.get_global_ranges(r, sv)  # get global ranges
     if g_min is not None and g_max is not None:
-        y[y < g_min] = np.nan # replace extreme values by nans in data
+        y[y < g_min] = np.nan  # replace extreme values by nans in data
         y[y > g_max] = np.nan
         n_grange = np.sum(np.isnan(y)) - n_bb - n_ev - n_fv - n_nan  # re-count nans in data
     else:
         n_grange = np.nan
 
-    return  y, n_nan, n_fv, n_ev, n_bb, n_grange, g_min, g_max
+    return y, n_nan, n_fv, n_ev, n_bb, n_grange, g_min, g_max
 
 
 def dropna(arr, *args, **kwarg):
     # turn 2D numpy array into a data frame and drop nan
     assert isinstance(arr, np.ndarray)
-    dropped=pd.DataFrame(arr).dropna(*args, **kwarg)
+    dropped = pd.DataFrame(arr).dropna(*args, **kwarg)
 
-    if arr.ndim==1:
-        dropped=dropped.values.flatten()
+    if arr.ndim == 1:
+        dropped = dropped.values.flatten()
     return dropped
 
 
@@ -153,7 +153,6 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
             sci_vars = notin_list(sci_vars, ['bin_depths', 'salinity', 'temperature'])
             sci_vars = [name for name in sci_vars if ds[name].units != 'mm s-1']
 
-
             print('\nPlotting {} {}'.format(r, deployment))
             array = subsite[0:2]
             filename = '_'.join(fname.split('_')[:-1])
@@ -164,6 +163,12 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
             t0 = pd.to_datetime(tm.min()).strftime('%Y-%m-%dT%H:%M:%S')
             t1 = pd.to_datetime(tm.max()).strftime('%Y-%m-%dT%H:%M:%S')
             title_text = ' '.join((deployment, refdes, method))
+
+            try:
+                ylabel = 'bin_depths ({})'.format(ds['bin_depths'].units)
+            except KeyError:
+                print('No bin_depth variable in file: cannot create plots')
+                continue
 
             for var in sci_vars:
                 print(var)
@@ -194,20 +199,24 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
 
                 else:
                     v = v.values.T.astype(float)
-                    v_bad_beams = ds['percent_bad_beams'] # get bad beams percent
-                    fv_bad_beam = v_bad_beams._FillValue
-                    v_bad_beams = v_bad_beams.values.T.astype(float)
-                    v_bad_beams[v_bad_beams == fv_bad_beam] = np.nan # mask fill values
+                    try:
+                        v_bad_beams = ds['percent_bad_beams']  # get bad beams percent
+                        fv_bad_beam = v_bad_beams._FillValue
+                        v_bad_beams = v_bad_beams.values.T.astype(float)
+                        v_bad_beams[v_bad_beams == fv_bad_beam] = np.nan  # mask fill values
+                    except KeyError:
+                        print('No percent_bad_beams variable in file')
+                        v_bad_beams = np.empty(np.shape(v))
+                        v_bad_beams[:] = np.nan
 
-                    v, n_nan, n_fv , n_ev, n_bb, n_grange, g_min, g_max = reject_err_data_2_dims(v, v_bad_beams, fv, r, var)
+                    v, n_nan, n_fv, n_ev, n_bb, n_grange, g_min, g_max = reject_err_data_2_dims(v, v_bad_beams, fv, r, var)
 
-                    ylabel = 'bin_depths ({})'.format(ds['bin_depths'].units)
                     clabel = '{} ({})'.format(var, ds[var].units)
 
                     # check bin depths for extreme values
                     y = ds['bin_depths'].values.T
                     y_nan = np.sum(np.isnan(y))
-                    y = np.where(y < 6000, y, np.nan) # replace extreme bin_depths by nans
+                    y = np.where(y < 6000, y, np.nan)  # replace extreme bin_depths by nans
                     bin_nan = np.sum(np.isnan(y)) - y_nan
                     bin_title = 'removed: {} bin depths > 6000'.format(bin_nan)
 
@@ -216,14 +225,14 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                     else:
                         color = 'RdBu'
 
-                    new_y = dropna(y, axis=1) # convert to DataFrame to drop nan
+                    new_y = dropna(y, axis=1)  # convert to DataFrame to drop nan
                     y_mask = new_y.loc[list(new_y.index), list(new_y.columns)]
                     v_new = pd.DataFrame(v)
                     v_mask = v_new.loc[list(new_y.index), list(new_y.columns)]
                     tm_mask = tm[new_y.columns]
 
                     fig, ax, __ = pf.plot_adcp(tm_mask, np.array(y_mask), np.array(v_mask), ylabel, clabel, color,
-                                               n_stdev = None)
+                                               n_stdev=None)
 
                     if bin_nan > 0:
                         ax.set_title((title_text + '\n' + t0 + ' - ' + t1 + '\n' + bin_title), fontsize=8)
@@ -234,7 +243,7 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                     pf.save_fig(save_dir, sfile)
 
                     fig, ax, n_nans_all = pf.plot_adcp(tm_mask, np.array(y_mask), np.array(v_mask), ylabel, clabel, color, n_stdev=5)
-                    title_i = 'removed: {} nans {} fill values, {} extreme values, {} bad beams, {} GR [{}, {}]'.format(
+                    title_i = 'removed: {} nans, {} fill values, {} extreme values, {} bad beams, {} GR [{}, {}]'.format(
                         n_nan, n_fv , n_ev, n_bb, n_grange, g_min, g_max)
 
                     if bin_nan > 0:
