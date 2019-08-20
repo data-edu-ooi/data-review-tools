@@ -1,0 +1,16 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,streamed,trhph_sample,resistivity_temp_degc,ºC,-9999999.0,"[None, None]",1166739,0,0,no global ranges,0,1166739,100.0,113.6895,2.1,318.4,130.7009
+deployment0001,streamed,trhph_sample,vent_fluid_temperaure,ºC,-9999999.0,"[0.0, 400.0]",1166739,0,0,0,0,1166739,100.0,114.1739,1.7932,321.045,132.0145
+deployment0001,streamed,trhph_sample,vent_fluid_chloride_conc,mmol kg-1,-9999999.0,"[0.0, 600.0]",1166739,973958,0,185,1503,191093,16.38,85.7558,54.0,279.0,15.0448
+deployment0001,streamed,trhph_sample,vent_fluid_orp,mV,-9999999.0,"[None, None]",1166739,0,0,no global ranges,0,1166739,100.0,-500.8911,-501.0,-500.0,0.3115
+deployment0001,streamed,trhph_sample,trhph_thermistor_temp,ºC,-9999999.0,"[None, None]",1166739,0,0,no global ranges,6811,1159928,99.42,2.6068,1.996,4.3378,0.304
+deployment0002,streamed,trhph_sample,resistivity_temp_degc,ºC,-9999999.0,"[None, None]",1604281,0,0,no global ranges,2212,1602069,99.86,265.133,225.1,282.0,7.7144
+deployment0002,streamed,trhph_sample,vent_fluid_temperaure,ºC,-9999999.0,"[0.0, 400.0]",1604281,0,0,0,2217,1602064,99.86,267.2074,226.7307,284.2621,7.7842
+deployment0002,streamed,trhph_sample,vent_fluid_chloride_conc,mmol kg-1,-9999999.0,"[0.0, 600.0]",1604281,1157350,0,9,174,446748,27.85,95.0053,60.0,145.0,7.8342
+deployment0002,streamed,trhph_sample,vent_fluid_orp,mV,-9999999.0,"[None, None]",1604281,48492,0,no global ranges,102494,1453295,90.59,-2.6588,-4.0,-2.0,0.4748
+deployment0002,streamed,trhph_sample,trhph_thermistor_temp,ºC,-9999999.0,"[None, None]",1604281,0,0,no global ranges,815,1603466,99.95,2.4182,1.9317,3.1818,0.1532
+deployment0003,streamed,trhph_sample,resistivity_temp_degc,ºC,-9999999.0,"[None, None]",1647534,0,0,no global ranges,814,1646720,99.95,261.7076,240.6,274.2,4.172
+deployment0003,streamed,trhph_sample,vent_fluid_temperaure,ºC,-9999999.0,"[0.0, 400.0]",1647534,0,0,0,805,1646729,99.95,263.7655,242.3656,276.3261,4.2145
+deployment0003,streamed,trhph_sample,vent_fluid_chloride_conc,mmol kg-1,-9999999.0,"[0.0, 600.0]",1647534,1189051,0,5,1083,457395,27.76,95.2889,70.0,196.0,19.34
+deployment0003,streamed,trhph_sample,vent_fluid_orp,mV,-9999999.0,"[None, None]",1647534,0,0,no global ranges,1647534,0,0.0,,,,
+deployment0003,streamed,trhph_sample,trhph_thermistor_temp,ºC,-9999999.0,"[None, None]",1647534,0,0,no global ranges,6505,1641029,99.61,2.3454,1.8032,3.1818,0.1471
