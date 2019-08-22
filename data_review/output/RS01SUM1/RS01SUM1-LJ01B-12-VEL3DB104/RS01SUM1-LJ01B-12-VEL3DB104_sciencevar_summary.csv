@@ -1,0 +1,22 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,streamed,vel3d_b_sample,temperature,ºC,-9999999.0,"[-2.0, 40.0]",56608303,0,0,0.0,0.0,56608303,100.0,4.3679,3.86,5.03,0.1373
+deployment0001,streamed,vel3d_b_sample,turbulent_velocity_east,cm s-1,-9999999.0,"[-3000.0, 3000.0]",56608303,0,0,0.0,762085.0,55846218,98.65,4.7357,-202.5,201.4,8.5446
+deployment0001,streamed,vel3d_b_sample,turbulent_velocity_north,cm s-1,-9999999.0,"[-3000.0, 3000.0]",56608303,0,0,0.0,762085.0,55846218,98.65,0.9176,-161.9,209.3,12.716
+deployment0001,streamed,vel3d_b_sample,turbulent_velocity_up,cm s-1,-9999999.0,"[-1000.0, 1000.0]",56608303,0,0,0.0,762085.0,55846218,98.65,-0.9703,-182.7,104.3,7.3868
+deployment0001,streamed,vel3d_b_sample,eastward_turbulent_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",56608303,0,0,762085.0,245201.0,55601017,98.22,0.0482,-0.3964,0.4925,0.0676
+deployment0001,streamed,vel3d_b_sample,northward_turbulent_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",56608303,0,0,762085.0,638017.0,55208201,97.53,-0.0053,-0.6278,0.6199,0.0749
+deployment0001,streamed,vel3d_b_sample,upward_turbulent_velocity,m s-1,-9999999.0,"[-1.0, 1.0]",56608303,0,0,799905.0,766214.0,55042184,97.23,-0.007,-0.342,0.324,0.0296
+deployment0002,streamed,vel3d_b_sample,temperature,ºC,-9999999.0,"[-2.0, 40.0]",32418718,0,0,0.0,17.0,32418701,100.0,4.0951,3.63,4.65,0.1126
+deployment0002,streamed,vel3d_b_sample,turbulent_velocity_east,cm s-1,-9999999.0,"[-3000.0, 3000.0]",32418718,0,0,0.0,0.0,32418718,100.0,999.0,999.0,999.0,0.0
+deployment0002,streamed,vel3d_b_sample,turbulent_velocity_north,cm s-1,-9999999.0,"[-3000.0, 3000.0]",32418718,0,0,0.0,0.0,32418718,100.0,999.0,999.0,999.0,0.0
+deployment0002,streamed,vel3d_b_sample,turbulent_velocity_up,cm s-1,-9999999.0,"[-1000.0, 1000.0]",32418718,0,0,0.0,0.0,32418718,100.0,999.0,999.0,999.0,0.0
+deployment0002,streamed,vel3d_b_sample,eastward_turbulent_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",32418718,0,0,,,0,0.0,,,,
+deployment0002,streamed,vel3d_b_sample,northward_turbulent_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",32418718,0,0,,,0,0.0,,,,
+deployment0002,streamed,vel3d_b_sample,upward_turbulent_velocity,m s-1,-9999999.0,"[-1.0, 1.0]",32418718,0,0,,,0,0.0,,,,
+deployment0003,streamed,vel3d_b_sample,temperature,ºC,-9999999.0,"[-2.0, 40.0]",26876108,0,0,0.0,81.0,26876027,100.0,4.2527,3.81,4.78,0.1063
+deployment0003,streamed,vel3d_b_sample,turbulent_velocity_east,cm s-1,-9999999.0,"[-3000.0, 3000.0]",26876108,0,0,0.0,75385.0,26800723,99.72,15.5917,-280.0,282.4,64.7032
+deployment0003,streamed,vel3d_b_sample,turbulent_velocity_north,cm s-1,-9999999.0,"[-3000.0, 3000.0]",26876108,0,0,0.0,75385.0,26800723,99.72,27.1752,-277.2,284.1,63.1017
+deployment0003,streamed,vel3d_b_sample,turbulent_velocity_up,cm s-1,-9999999.0,"[-1000.0, 1000.0]",26876108,0,0,0.0,75385.0,26800723,99.72,-16.9495,-258.9,139.2,44.9848
+deployment0003,streamed,vel3d_b_sample,eastward_turbulent_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",26876108,0,0,75385.0,0.0,26800723,99.72,0.2221,-2.7007,2.7248,0.7024
+deployment0003,streamed,vel3d_b_sample,northward_turbulent_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",26876108,0,0,75385.0,4.0,26800719,99.72,0.2209,-2.381,2.7378,0.5687
+deployment0003,streamed,vel3d_b_sample,upward_turbulent_velocity,m s-1,-9999999.0,"[-1.0, 1.0]",26876108,0,0,603631.0,0.0,26272477,97.75,-0.1508,-1.0,1.0,0.4283
