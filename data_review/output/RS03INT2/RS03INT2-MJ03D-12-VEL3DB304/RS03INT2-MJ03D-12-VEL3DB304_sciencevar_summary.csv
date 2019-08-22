@@ -1,0 +1,15 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,streamed,vel3d_b_sample,temperature,ºC,-9999999.0,"[-2.0, 40.0]",58287488,0,0,0,696939,57590549,98.8,2.4281,2.22,2.91,0.0708
+deployment0001,streamed,vel3d_b_sample,turbulent_velocity_east,cm s-1,-9999999.0,"[-3000.0, 3000.0]",58287488,0,0,0,47511,58239977,99.92,0.8998,-135.6,140.7,2.4962
+deployment0001,streamed,vel3d_b_sample,turbulent_velocity_north,cm s-1,-9999999.0,"[-3000.0, 3000.0]",58287488,0,0,0,47521,58239967,99.92,-0.0412,-142.0,143.0,2.6424
+deployment0001,streamed,vel3d_b_sample,turbulent_velocity_up,cm s-1,-9999999.0,"[-1000.0, 1000.0]",58287488,0,0,0,47502,58239986,99.92,-0.0219,-87.9,124.1,1.1943
+deployment0001,streamed,vel3d_b_sample,eastward_turbulent_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",58287488,0,0,47499,18946,58221043,99.89,0.0085,-0.1123,0.1293,0.0208
+deployment0001,streamed,vel3d_b_sample,northward_turbulent_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",58287488,0,0,47499,19214,58220775,99.89,-0.0028,-0.1388,0.133,0.0245
+deployment0001,streamed,vel3d_b_sample,upward_turbulent_velocity,m s-1,-9999999.0,"[-1.0, 1.0]",58287488,0,0,47511,18007,58221970,99.89,-0.0003,-0.059,0.059,0.0065
+deployment0002,streamed,vel3d_b_sample,temperature,ºC,-9999999.0,"[-2.0, 40.0]",59719601,0,0,0,225,59719376,100.0,2.5164,2.33,2.73,0.044
+deployment0002,streamed,vel3d_b_sample,turbulent_velocity_east,cm s-1,-9999999.0,"[-3000.0, 3000.0]",59719601,0,0,0,97230,59622371,99.84,-1.7996,-64.3,61.0,9.0629
+deployment0002,streamed,vel3d_b_sample,turbulent_velocity_north,cm s-1,-9999999.0,"[-3000.0, 3000.0]",59719601,0,0,0,6093,59713508,99.99,0.002,-39.1,38.0,2.5852
+deployment0002,streamed,vel3d_b_sample,turbulent_velocity_up,cm s-1,-9999999.0,"[-1000.0, 1000.0]",59719601,0,0,0,85203,59634398,99.86,1.0636,-47.1,51.8,6.3658
+deployment0002,streamed,vel3d_b_sample,eastward_turbulent_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",59719601,0,0,3317,1449514,58266770,97.57,-0.0039,-0.5281,0.4854,0.0256
+deployment0002,streamed,vel3d_b_sample,northward_turbulent_velocity,m s-1,-9999999.0,"[-3.0, 3.0]",59719601,0,0,3317,51402,59664882,99.91,0.0046,-0.0932,0.1024,0.0185
+deployment0002,streamed,vel3d_b_sample,upward_turbulent_velocity,m s-1,-9999999.0,"[-1.0, 1.0]",59719601,0,0,3317,1454225,58262059,97.56,0.0009,-0.344,0.363,0.0078
