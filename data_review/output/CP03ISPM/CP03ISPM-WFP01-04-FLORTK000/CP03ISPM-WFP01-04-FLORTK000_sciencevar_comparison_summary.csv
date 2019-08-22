@@ -4,4 +4,4 @@ deployment0001,recovered_wfp-flort_sample,telemetered-flort_sample,Chlorophyll-a
 deployment0001,recovered_wfp-flort_sample,telemetered-flort_sample,CDOM Concentration,fluorometric_cdom,ppb,pass,69064,0,no missing data,69030,0.0,0.0,0.0,0.0
 deployment0001,recovered_wfp-flort_sample,telemetered-flort_sample,Total Volume Scattering Coefficient,total_volume_scattering_coefficient,m-1 sr-1,pass,69064,0,no missing data,69030,0.0,0.0,0.0,0.0
 deployment0001,recovered_wfp-flort_sample,telemetered-flort_sample,Optical Backscatter,optical_backscatter,m-1,pass,69064,0,no missing data,69030,0.0,0.0,0.0,0.0
-deployment0001,recovered_wfp-flort_sample,telemetered-flort_sample,Seawater Pressure,pressure_depth,dbar,pass,69064,69064,No valid data to compare,0,,,,
+deployment0001,recovered_wfp-flort_sample,telemetered-flort_sample,CTD Seawater Pressure,pressure_depth,dbar,pass,69064,69064,No valid data to compare,0,,,,

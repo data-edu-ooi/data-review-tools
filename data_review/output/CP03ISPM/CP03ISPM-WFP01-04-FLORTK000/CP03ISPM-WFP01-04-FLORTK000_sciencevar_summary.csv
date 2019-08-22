@@ -4,4 +4,5 @@ deployment0001,recovered_wfp,flort_sample,fluorometric_chlorophyll_a,µg L-1,-99
 deployment0001,recovered_wfp,flort_sample,fluorometric_cdom,ppb,-9999999.0,"[None, None]",69064,0,0,no global ranges,7.0,69057,99.99,1.384,0.8181,1.9998,0.1287
 deployment0001,recovered_wfp,flort_sample,total_volume_scattering_coefficient,m-1 sr-1,-9999999.0,"[None, None]",69064,0,0,no global ranges,0.0,69064,100.0,0.0028,0.0001,0.0122,0.0037
 deployment0001,recovered_wfp,flort_sample,optical_backscatter,m-1,-9999999.0,"[None, None]",69064,0,0,no global ranges,0.0,69064,100.0,0.0188,0.0007,0.0822,0.0247
-deployment0001,recovered_wfp,flort_sample,pressure_depth,dbar,-9999999.0,"[None, None]",69064,0,69064,no global ranges,,0,0.0,,,,
+deployment0001,recovered_wfp,flort_sample,pressure_depth,dbar,-9999999.0,"[None, None]",69064,0,69064,,,0,0.0,,,,
+deployment0001,recovered_wfp,flort_sample,int_ctd_pressure,dbar,nan,"[None, None]",69064,0,0,no global ranges,0.0,69064,100.0,47.4808,23.5321,70.7661,12.9586
