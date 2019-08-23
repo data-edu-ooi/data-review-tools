@@ -1,7 +1,7 @@
 deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
-deployment0001,recovered_host,parad_m_glider_recovered,sci_bsipar_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",3116520,0,0,3114178,3,2339,0.08,0.0,0.0,0.0,0.0
-deployment0001,recovered_host,parad_m_glider_recovered,sci_bsipar_temp,ºC,nan,"[-2.0, 40.0]",3116520,0,0,0,3156,3113364,99.9,10.6299,8.18,16.89,1.2686
-deployment0001,recovered_host,parad_m_glider_recovered,parad_m_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",3116520,0,0,1379,17965,3097176,99.38,5.4399,0.0,447.817,29.6548
+deployment0001,recovered_host,parad_m_glider_recovered,sci_bsipar_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",3116562,0,0,3114220,3,2339,0.08,0.0,0.0,0.0,0.0
+deployment0001,recovered_host,parad_m_glider_recovered,sci_bsipar_temp,ºC,nan,"[-2.0, 40.0]",3116562,0,0,0,3156,3113406,99.9,10.6299,8.18,16.89,1.2686
+deployment0001,recovered_host,parad_m_glider_recovered,parad_m_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",3116562,0,0,1379,17965,3097218,99.38,5.4398,0.0,447.817,29.6546
 deployment0002,recovered_host,parad_m_glider_recovered,sci_bsipar_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",915606,0,0,914965,0,641,0.07,0.0,0.0,0.0,0.0
 deployment0002,recovered_host,parad_m_glider_recovered,sci_bsipar_temp,ºC,nan,"[-2.0, 40.0]",915606,0,0,0,642,914964,99.93,12.9735,9.84,19.38,1.6508
 deployment0002,recovered_host,parad_m_glider_recovered,parad_m_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",915606,0,0,95,7606,907905,99.16,6.9988,0.0,332.349,30.3569
