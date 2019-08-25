@@ -1,17 +1,17 @@
 deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
-deployment0001,recovered_host,adcp_velocity_glider,salinity,1,-1,"[None, None]",46455,0,0,no global ranges,0.0,46455.0,100.0,35.0,35.0,35.0,0.0
-deployment0001,recovered_host,adcp_velocity_glider,temperature,cdeg_C,-9999,"[None, None]",46455,0,0,no global ranges,42.0,46413.0,99.91,1183.7823,1035.0,1556.0,73.4027
-deployment0001,recovered_host,adcp_velocity_glider,pressure,daPa,0,"[None, None]",46455,0,46455,no global ranges,,0.0,0.0,,,,
-deployment0001,recovered_host,adcp_velocity_glider,"water_velocity_east (dims: ['time', 'bin'])",mm s-1,-32768,"[-3000.0, 3000.0]","[46455, 1393650]",0,1190668,683,,,14.52,,,,
-deployment0001,recovered_host,adcp_velocity_glider,"water_velocity_north (dims: ['time', 'bin'])",mm s-1,-32768,"[-3000.0, 3000.0]","[46455, 1393650]",0,1190668,712,,,14.51,,,,
-deployment0001,recovered_host,adcp_velocity_glider,"water_velocity_up (dims: ['time', 'bin'])",mm s-1,-32768,"[-1000.0, 1000.0]","[46455, 1393650]",0,1190668,1236,,,14.48,,,,
-deployment0001,recovered_host,adcp_velocity_glider,"error_velocity (dims: ['time', 'bin'])",mm s-1,-32768,"[-1000.0, 1000.0]","[46455, 1393650]",0,1243762,64,,,10.75,,,,
-deployment0001,recovered_host,adcp_velocity_glider,"corrected_echo_intensity_beam1 (dims: ['time', 'bin'])",dB,-9999999.0,"[0.0, 255.0]","[46455, 1393650]",0,0,0,,,100.0,,,,
-deployment0001,recovered_host,adcp_velocity_glider,"corrected_echo_intensity_beam2 (dims: ['time', 'bin'])",dB,-9999999.0,"[0.0, 255.0]","[46455, 1393650]",0,0,0,,,100.0,,,,
-deployment0001,recovered_host,adcp_velocity_glider,"corrected_echo_intensity_beam3 (dims: ['time', 'bin'])",dB,-9999999.0,"[0.0, 255.0]","[46455, 1393650]",0,0,0,,,100.0,,,,
-deployment0001,recovered_host,adcp_velocity_glider,"corrected_echo_intensity_beam4 (dims: ['time', 'bin'])",dB,-9999999.0,"[0.0, 255.0]","[46455, 1393650]",0,0,0,,,100.0,,,,
-deployment0001,recovered_host,adcp_velocity_glider,"upward_seawater_velocity (dims: ['time', 'bin'])",m s-1,-9999999.0,"[-1.0, 1.0]","[46455, 1393650]",1190668,0,1236,,,14.48,,,,
-deployment0001,recovered_host,adcp_velocity_glider,"error_seawater_velocity (dims: ['time', 'bin'])",m s-1,-9999999.0,"[-1.0, 1.0]","[46455, 1393650]",1243762,0,64,,,10.75,,,,
-deployment0001,recovered_host,adcp_velocity_glider,"eastward_seawater_velocity (dims: ['time', 'eastward_seawater_velocity_dim_0'])",m s-1,-9999999.0,"[-3.0, 3.0]","[46455, 1393650]",1190668,0,684,,,14.52,,,,
-deployment0001,recovered_host,adcp_velocity_glider,"northward_seawater_velocity (dims: ['time', 'northward_seawater_velocity_dim_0'])",m s-1,-9999999.0,"[-3.0, 3.0]","[46455, 1393650]",1190668,0,706,,,14.51,,,,
-deployment0001,recovered_host,adcp_velocity_glider,"bin_depths (dims: ['time', 'bin'])",m,-9999999.0,"[None, None]","[46455, 1393650]",0,0,no global ranges,,,100.0,,,,
+deployment0001,recovered_host,adcp_velocity_glider,salinity,1,-1,"[None, None]",46455,0,0,no global ranges,0.0,46455,100.0,35.0,35.0,35.0,0.0
+deployment0001,recovered_host,adcp_velocity_glider,temperature,cdeg_C,-9999,"[None, None]",46455,0,0,no global ranges,42.0,46413,99.91,1183.7823,1035.0,1556.0,73.4027
+deployment0001,recovered_host,adcp_velocity_glider,pressure,daPa,0,"[None, None]",46455,0,46455,,,0,0.0,,,,
+deployment0001,recovered_host,adcp_velocity_glider,"water_velocity_east (dims: ['time', 'bin'])",mm s-1,-32768,"[-3000.0, 3000.0]","[46455, 1393650]",0,1190668,683,671.0,201628,14.47,28.4403,-1114.0,1167.0,196.4401
+deployment0001,recovered_host,adcp_velocity_glider,"water_velocity_north (dims: ['time', 'bin'])",mm s-1,-32768,"[-3000.0, 3000.0]","[46455, 1393650]",0,1190668,712,777.0,201493,14.46,66.3587,-854.0,981.0,135.7908
+deployment0001,recovered_host,adcp_velocity_glider,"water_velocity_up (dims: ['time', 'bin'])",mm s-1,-32768,"[-1000.0, 1000.0]","[46455, 1393650]",0,1190668,1236,537.0,201209,14.44,163.881,-243.0,569.0,74.3414
+deployment0001,recovered_host,adcp_velocity_glider,"error_velocity (dims: ['time', 'bin'])",mm s-1,-32768,"[-1000.0, 1000.0]","[46455, 1393650]",0,1243762,64,185.0,149639,10.74,-17.6801,-354.0,318.0,64.9949
+deployment0001,recovered_host,adcp_velocity_glider,"corrected_echo_intensity_beam1 (dims: ['time', 'bin'])",dB,-9999999.0,"[0.0, 255.0]","[46455, 1393650]",0,0,0,13269.0,1380381,99.05,37.9648,35.99,61.61,3.195
+deployment0001,recovered_host,adcp_velocity_glider,"corrected_echo_intensity_beam2 (dims: ['time', 'bin'])",dB,-9999999.0,"[0.0, 255.0]","[46455, 1393650]",0,0,0,13647.0,1380003,99.02,38.0656,35.99,62.83,3.3923
+deployment0001,recovered_host,adcp_velocity_glider,"corrected_echo_intensity_beam3 (dims: ['time', 'bin'])",dB,-9999999.0,"[0.0, 255.0]","[46455, 1393650]",0,0,0,13704.0,1379946,99.02,38.0475,35.99,62.22,3.2527
+deployment0001,recovered_host,adcp_velocity_glider,"corrected_echo_intensity_beam4 (dims: ['time', 'bin'])",dB,-9999999.0,"[0.0, 255.0]","[46455, 1393650]",0,0,0,13462.0,1380188,99.03,34.1281,31.72,57.95,3.2636
+deployment0001,recovered_host,adcp_velocity_glider,"upward_seawater_velocity (dims: ['time', 'bin'])",m s-1,-9999999.0,"[-1.0, 1.0]","[46455, 1393650]",1190668,0,1236,537.0,201209,14.44,0.1639,-0.243,0.569,0.0743
+deployment0001,recovered_host,adcp_velocity_glider,"error_seawater_velocity (dims: ['time', 'bin'])",m s-1,-9999999.0,"[-1.0, 1.0]","[46455, 1393650]",1243762,0,64,185.0,149639,10.74,-0.0177,-0.354,0.318,0.065
+deployment0001,recovered_host,adcp_velocity_glider,"eastward_seawater_velocity (dims: ['time', 'eastward_seawater_velocity_dim_0'])",m s-1,-9999999.0,"[-3.0, 3.0]","[46455, 1393650]",1190668,0,684,606.0,201692,14.47,0.0453,-1.1027,1.1932,0.2017
+deployment0001,recovered_host,adcp_velocity_glider,"northward_seawater_velocity (dims: ['time', 'northward_seawater_velocity_dim_0'])",m s-1,-9999999.0,"[-3.0, 3.0]","[46455, 1393650]",1190668,0,706,792.0,201484,14.46,0.0562,-0.8392,0.9257,0.1281
+deployment0001,recovered_host,adcp_velocity_glider,"bin_depths (dims: ['time', 'bin'])",m,-9999999.0,"[None, None]","[46455, 1393650]",0,0,no global ranges,0.0,1393650,100.0,121.2522,3.1751,254.4405,54.7679
