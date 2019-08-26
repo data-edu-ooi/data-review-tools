@@ -1,0 +1,5 @@
+common_stream_name,preferred_methods_streams,deployments,long_name,units,t0,t1,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,define_stdev,n_outliers,n_stats,mean,min,max,stdev
+vel3d_b_sample,['streamed-vel3d_b_sample'],"[1, 2]",Eastward Turbulent Point Seawater Velocity,['m s-1'],2014-08-29T23:51:40,2017-11-30T23:59:59,[-9999999.0],"[-3.0, 3.0]",99884430,0,0,50791,8,17931,99815708,0.0032,-0.1965,0.2017,0.023
+vel3d_b_sample,['streamed-vel3d_b_sample'],"[1, 2]",Northward Turbulent Point Seawater Velocity,['m s-1'],2014-08-29T23:51:40,2017-11-30T23:59:59,[-9999999.0],"[-3.0, 3.0]",99884430,0,0,50791,8,19463,99814176,-0.0001,-0.1918,0.1918,0.0219
+vel3d_b_sample,['streamed-vel3d_b_sample'],"[1, 2]",Seawater Temperature,['ºC'],2014-08-29T23:51:40,2017-11-30T23:59:59,[-9999999.0],"[-2.0, 40.0]",99884430,0,0,0,8,10107,99874323,2.4709,2.22,3.18,0.0898
+vel3d_b_sample,['streamed-vel3d_b_sample'],"[1, 2]",Upward Turbulent Point Seawater Velocity,['m s-1'],2014-08-29T23:51:40,2017-11-30T23:59:59,[-9999999.0],"[-1.0, 1.0]",99884430,0,0,50803,8,20459,99813168,0.0004,-0.081,0.082,0.0063
