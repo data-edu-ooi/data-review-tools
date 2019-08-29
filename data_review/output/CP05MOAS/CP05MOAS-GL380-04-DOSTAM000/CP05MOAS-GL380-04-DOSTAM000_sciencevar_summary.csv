@@ -1,0 +1,25 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_oxygen,µmol L-1,nan,"[0.0, 400.0]",3558843,0,0,0,1254,3557589,99.96,210.8995,141.004,316.98,41.4493
+deployment0001,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_saturation,percent,nan,"[0.0, 110.0]",3558843,0,0,0,0,3558843,100.0,63.4831,0.0,99.549,14.279
+deployment0001,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_temp,1,nan,"[None, None]",3558843,0,0,no global ranges,0,3558843,100.0,12.5838,0.0,23.157,4.9847
+deployment0001,recovered_host,dosta_abcdjm_glider_recovered,sci_abs_oxygen,µmol kg-1,nan,"[0.0, 400.0]",3558843,148,0,0,0,3558695,100.0,165.9788,0.0,252.8937,33.2494
+deployment0002,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_oxygen,µmol L-1,nan,"[0.0, 400.0]",3226837,0,0,0,1657,3225180,99.95,203.7501,141.643,362.819,39.7802
+deployment0002,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_saturation,percent,nan,"[0.0, 110.0]",3226837,0,0,0,0,3226837,100.0,61.0794,0.0,109.782,13.5565
+deployment0002,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_temp,1,nan,"[None, None]",3226837,0,0,no global ranges,0,3226837,100.0,12.5105,0.0,29.703,5.6403
+deployment0002,recovered_host,dosta_abcdjm_glider_recovered,sci_abs_oxygen,µmol kg-1,nan,"[0.0, 400.0]",3226837,0,0,2,1657,3225178,99.95,160.4581,111.5984,284.2753,31.7999
+deployment0003,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_oxygen,µmol L-1,nan,"[0.0, 400.0]",3491667,0,0,0,0,3491667,100.0,194.1399,0.0,260.716,40.0189
+deployment0003,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_saturation,percent,nan,"[0.0, 110.0]",3491667,0,0,0,982,3490685,99.97,66.3135,43.387,103.868,12.5887
+deployment0003,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_temp,1,nan,"[None, None]",3491667,0,0,no global ranges,0,3491667,100.0,8.6793,0.0,23.093,4.445
+deployment0003,recovered_host,dosta_abcdjm_glider_recovered,sci_abs_oxygen,µmol kg-1,nan,"[0.0, 400.0]",3491667,0,0,0,0,3491667,100.0,153.0216,0.0,205.6037,32.0334
+deployment0004,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_oxygen,µmol L-1,nan,"[0.0, 400.0]",2614154,0,0,210,920,2613024,99.96,255.7346,159.905,399.974,48.3329
+deployment0004,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_saturation,percent,nan,"[0.0, 110.0]",2614154,0,0,15516,920,2597718,99.37,69.3986,45.141,110.0,13.0983
+deployment0004,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_temp,1,nan,"[None, None]",2614154,0,0,no global ranges,0,2614154,100.0,8.4776,0.0,26.355,4.0084
+deployment0004,recovered_host,dosta_abcdjm_glider_recovered,sci_abs_oxygen,µmol kg-1,nan,"[0.0, 400.0]",2614154,0,0,0,920,2613234,99.96,201.524,125.5714,326.1029,38.7702
+deployment0005,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_oxygen,µmol L-1,nan,"[0.0, 400.0]",802895,0,0,0,0,802895,100.0,200.4734,0.0,255.274,40.607
+deployment0005,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_saturation,percent,nan,"[0.0, 110.0]",802895,0,0,0,246,802649,99.97,68.1678,46.725,100.612,12.4095
+deployment0005,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_temp,1,nan,"[None, None]",802895,0,0,no global ranges,0,802895,100.0,8.5018,0.0,20.272,4.4018
+deployment0005,recovered_host,dosta_abcdjm_glider_recovered,sci_abs_oxygen,µmol kg-1,nan,"[0.0, 400.0]",802895,0,0,0,0,802895,100.0,158.0065,0.0,202.9518,32.5629
+deployment0006,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_oxygen,µmol L-1,nan,"[0.0, 400.0]",199308,0,0,0,161,199147,99.92,229.9387,134.841,290.514,42.0375
+deployment0006,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_saturation,percent,nan,"[0.0, 110.0]",199308,0,0,0,161,199147,99.92,83.9197,48.192,101.315,14.7507
+deployment0006,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_temp,1,nan,"[None, None]",199308,0,0,no global ranges,161,199147,99.92,11.4473,4.521,14.013,1.9095
+deployment0006,recovered_host,dosta_abcdjm_glider_recovered,sci_abs_oxygen,µmol kg-1,nan,"[0.0, 400.0]",199308,0,0,0,161,199147,99.92,180.4036,105.6989,228.8896,32.8936
