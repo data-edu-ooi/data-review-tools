@@ -1,0 +1,4 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_host,parad_m_glider_recovered,sci_bsipar_par,µmol photons m-2 s-1,nan,"[None, None]",634334,0,0,no global ranges,6088,628246,99.04,25.4567,-0.0634,1249.62,112.7421
+deployment0001,recovered_host,parad_m_glider_recovered,sci_bsipar_temp,ºC,nan,"[None, None]",634334,0,0,no global ranges,14,634320,100.0,12.6059,0.0,27.26,3.0058
+deployment0001,recovered_host,parad_m_glider_recovered,parad_m_par,µmol photons m-2 s-1,nan,"[None, None]",634334,0,0,no global ranges,6088,628246,99.04,0.0,-0.0,0.0012,0.0001

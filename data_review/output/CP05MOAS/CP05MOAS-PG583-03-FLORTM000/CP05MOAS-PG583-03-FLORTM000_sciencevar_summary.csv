@@ -1,0 +1,6 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_host,flort_m_sample,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",591767,0,0,no global ranges,1423,590344,99.76,0.0006,0.0006,0.0006,0.0
+deployment0001,recovered_host,flort_m_sample,optical_backscatter,m-1,-9999999.0,"[None, None]",591767,0,0,no global ranges,2069,589698,99.65,0.002,-0.0004,0.0116,0.0013
+deployment0001,recovered_host,flort_m_sample,sci_flbbcd_bb_units,m-1 sr-1,nan,"[None, None]",591767,0,0,no global ranges,2069,589698,99.65,0.0003,-0.0001,0.0017,0.0002
+deployment0001,recovered_host,flort_m_sample,sci_flbbcd_cdom_units,ppb,nan,"[None, None]",591767,0,0,no global ranges,1825,589942,99.69,2.2121,0.3608,4.059,0.2445
+deployment0001,recovered_host,flort_m_sample,sci_flbbcd_chlor_units,µg L-1,nan,"[None, None]",591767,0,0,no global ranges,2021,589746,99.66,0.5068,-0.8856,4.1256,0.6405

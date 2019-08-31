@@ -1,0 +1,26 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_host,flort_m_sample,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",2393694,0,0,no global ranges,790,2392904,99.97,0.0006,0.0006,0.0007,0.0
+deployment0001,recovered_host,flort_m_sample,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",2393694,0,0,789,23160,2369745,99.0,0.001,0.0005,0.0177,0.0013
+deployment0001,recovered_host,flort_m_sample,sci_flbbcd_bb_units,m-1 sr-1,nan,"[0.0, 0.0079]",2393694,0,0,0,23160,2370534,99.03,0.0002,0.0,0.0026,0.0002
+deployment0001,recovered_host,flort_m_sample,sci_flbbcd_cdom_units,ppb,nan,"[0.0, 375.0]",2393694,0,0,19,1590,2392085,99.93,2.8883,1.78,4.005,0.2153
+deployment0001,recovered_host,flort_m_sample,sci_flbbcd_chlor_units,µg L-1,nan,"[0.0, 50.0]",2393694,0,0,9,17599,2376086,99.26,0.1304,0.0,1.044,0.1478
+deployment0003,recovered_host,flort_m_sample,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",2847549,0,0,no global ranges,1293,2846256,99.95,0.0006,0.0006,0.0007,0.0
+deployment0003,recovered_host,flort_m_sample,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",2847549,0,0,1104,13894,2832551,99.47,0.0008,0.0003,0.0105,0.0006
+deployment0003,recovered_host,flort_m_sample,sci_flbbcd_bb_units,m-1 sr-1,nan,"[0.0, 0.0079]",2847549,0,0,1,13894,2833654,99.51,0.0001,0.0,0.0016,0.0001
+deployment0003,recovered_host,flort_m_sample,sci_flbbcd_cdom_units,ppb,nan,"[0.0, 375.0]",2847549,0,0,74,217,2847258,99.99,2.7473,0.0,11.392,0.2324
+deployment0003,recovered_host,flort_m_sample,sci_flbbcd_chlor_units,µg L-1,nan,"[0.0, 50.0]",2847549,0,0,13,25349,2822187,99.11,0.1294,0.0,1.224,0.1637
+deployment0004,recovered_host,flort_m_sample,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",1878909,0,0,no global ranges,557,1878352,99.97,0.0006,0.0006,0.0007,0.0
+deployment0004,recovered_host,flort_m_sample,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",1878909,0,0,558,4039,1874312,99.76,0.0007,0.0004,0.0078,0.0002
+deployment0004,recovered_host,flort_m_sample,sci_flbbcd_bb_units,m-1 sr-1,nan,"[0.0, 0.0079]",1878909,0,0,1,4039,1874869,99.78,0.0001,0.0,0.0012,0.0
+deployment0004,recovered_host,flort_m_sample,sci_flbbcd_cdom_units,ppb,nan,"[0.0, 375.0]",1878909,0,0,94,2761,1876054,99.85,2.6824,1.602,3.738,0.1963
+deployment0004,recovered_host,flort_m_sample,sci_flbbcd_chlor_units,µg L-1,nan,"[0.0, 50.0]",1878909,0,0,76,18891,1859942,98.99,0.1146,0.0,1.0584,0.1098
+deployment0005,recovered_host,flort_m_sample,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",3281090,10,0,no global ranges,6192,3274888,99.81,0.0006,0.0006,0.0007,0.0
+deployment0005,recovered_host,flort_m_sample,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",3281090,10,0,1031,13227,3266822,99.57,0.001,0.0005,0.0102,0.0006
+deployment0005,recovered_host,flort_m_sample,sci_flbbcd_bb_units,m-1 sr-1,nan,"[0.0, 0.0079]",3281090,0,0,0,13229,3267861,99.6,0.0002,0.0,0.0015,0.0001
+deployment0005,recovered_host,flort_m_sample,sci_flbbcd_cdom_units,ppb,nan,"[0.0, 375.0]",3281090,0,0,46081,362,3234647,98.58,1.387,0.0,6.1685,0.7458
+deployment0005,recovered_host,flort_m_sample,sci_flbbcd_chlor_units,µg L-1,nan,"[0.0, 50.0]",3281090,0,0,4,25066,3256020,99.24,0.1433,0.0,1.8936,0.24
+deployment0006,recovered_host,flort_m_sample,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",3368721,0,0,no global ranges,999,3367722,99.97,0.0006,0.0006,0.0007,0.0
+deployment0006,recovered_host,flort_m_sample,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",3368721,0,0,990,12138,3355593,99.61,0.0008,0.0005,0.0086,0.0004
+deployment0006,recovered_host,flort_m_sample,sci_flbbcd_bb_units,m-1 sr-1,nan,"[0.0, 0.0079]",3368721,0,0,0,12138,3356583,99.64,0.0001,0.0,0.0013,0.0001
+deployment0006,recovered_host,flort_m_sample,sci_flbbcd_cdom_units,ppb,nan,"[0.0, 375.0]",3368721,0,0,91580,73,3277068,97.28,1.3772,0.0,4.8399,0.6938
+deployment0006,recovered_host,flort_m_sample,sci_flbbcd_chlor_units,µg L-1,nan,"[0.0, 50.0]",3368721,0,0,0,28258,3340463,99.16,0.1081,0.0,1.3752,0.2025

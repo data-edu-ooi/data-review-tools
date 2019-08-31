@@ -1,0 +1,11 @@
+deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
+deployment0001,recovered_host-adcp_bottom_track_earth,no other methods available for comparison,,,,,,,,,,,,
+deployment0001,recovered_host-adcp_velocity_glider,no other methods available for comparison,,,,,,,,,,,,
+deployment0003,recovered_host-adcp_bottom_track_earth,no other methods available for comparison,,,,,,,,,,,,
+deployment0003,recovered_host-adcp_velocity_glider,no other methods available for comparison,,,,,,,,,,,,
+deployment0004,recovered_host-adcp_bottom_track_earth,no other methods available for comparison,,,,,,,,,,,,
+deployment0004,recovered_host-adcp_velocity_glider,no other methods available for comparison,,,,,,,,,,,,
+deployment0005,recovered_host-adcp_bottom_track_earth,no other methods available for comparison,,,,,,,,,,,,
+deployment0005,recovered_host-adcp_velocity_glider,no other methods available for comparison,,,,,,,,,,,,
+deployment0006,recovered_host-adcp_bottom_track_earth,no other methods available for comparison,,,,,,,,,,,,
+deployment0006,recovered_host-adcp_velocity_glider,no other methods available for comparison,,,,,,,,,,,,

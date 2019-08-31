@@ -1,0 +1,13 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_host,parad_m_glider_recovered,sci_bsipar_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",1017359,0,0,877394,0,139965,13.76,1041.2121,0.0,2074.6899,847.7782
+deployment0001,recovered_host,parad_m_glider_recovered,sci_bsipar_temp,ºC,nan,"[-2.0, 40.0]",1017359,0,0,0,1175,1016184,99.88,14.4779,9.01,21.04,1.5034
+deployment0001,recovered_host,parad_m_glider_recovered,parad_m_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",1017359,0,0,287255,8458,721646,70.93,31.3199,0.0,1112.6799,123.5939
+deployment0002,recovered_host,parad_m_glider_recovered,sci_bsipar_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",1362234,0,0,1238086,0,124148,9.11,961.9497,0.0,2074.6899,844.3845
+deployment0002,recovered_host,parad_m_glider_recovered,sci_bsipar_temp,ºC,nan,"[-2.0, 40.0]",1362234,0,0,0,1084,1361150,99.92,16.2895,9.84,23.11,2.185
+deployment0002,recovered_host,parad_m_glider_recovered,parad_m_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",1362234,0,0,686058,6195,669981,49.18,10.8993,0.0,545.322,46.1906
+deployment0003,recovered_host,parad_m_glider_recovered,sci_bsipar_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",1457154,0,0,1380987,0,76167,5.23,677.2694,0.0,1663.89,817.4399
+deployment0003,recovered_host,parad_m_glider_recovered,sci_bsipar_temp,ºC,nan,"[-2.0, 40.0]",1457154,0,0,0,1112,1456042,99.92,15.9598,9.42,23.53,2.3934
+deployment0003,recovered_host,parad_m_glider_recovered,parad_m_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",1457154,0,0,853505,6530,597119,40.98,25.5464,0.0,942.546,95.7328
+deployment0004,recovered_host,parad_m_glider_recovered,sci_bsipar_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",1610339,0,0,1412032,0,198307,12.31,850.9704,0.0,1663.89,831.7274
+deployment0004,recovered_host,parad_m_glider_recovered,sci_bsipar_temp,ºC,nan,"[-2.0, 40.0]",1610339,0,0,0,1903,1608436,99.88,12.8362,7.76,19.38,1.3259
+deployment0004,recovered_host,parad_m_glider_recovered,parad_m_par,µmol photons m-2 s-1,nan,"[0.0, 2500.0]",1610339,0,0,300945,14126,1295268,80.43,19.6147,0.0,941.463,88.6172
