@@ -1,0 +1,7 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,streamed,pco2w_b_sami_data_record,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",6198,0,0,0,0,6198,100.0,9.0376,7.0052,13.8108,1.7999
+deployment0001,streamed,pco2w_b_sami_data_record,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",6198,0,0,5119,0,1079,17.41,465.6722,336.0176,599.9364,74.1056
+deployment0003,streamed,pco2w_b_sami_data_record,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",9523,0,0,0,0,9523,100.0,9.0059,6.8503,13.9934,1.786
+deployment0003,streamed,pco2w_b_sami_data_record,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",9523,0,0,9121,0,402,4.22,528.6674,429.6117,599.9427,49.3933
+deployment0004,streamed,pco2w_b_sami_data_record,pco2w_thermistor_temperature,ºC,-9999999.0,"[-2.0, 40.0]",6707,0,0,0,0,6707,100.0,9.0504,7.2044,11.6372,1.0969
+deployment0004,streamed,pco2w_b_sami_data_record,pco2_seawater,µatm,-9999999.0,"[100.0, 600.0]",6707,861,98,5662,0,86,1.28,513.4641,138.561,598.9838,124.6873
