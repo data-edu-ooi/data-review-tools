@@ -74,7 +74,7 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                         continue
 
                 fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(fd)
-                if 'NUTNR' in refdes:
+                if 'NUTNR' in refdes or 'VEL3D in refdes':
                     vars = cf.return_science_vars(stream)
                 else:
                     vars = cf.return_raw_vars(ds_vars)
