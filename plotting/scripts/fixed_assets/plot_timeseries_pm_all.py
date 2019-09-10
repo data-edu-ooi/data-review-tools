@@ -97,13 +97,18 @@ def main(sDir, url_list, start_time, end_time):
 
         main_sensor = r.split('-')[-1]
         fdatasets_sel = cf.filter_collocated_instruments(main_sensor, fdatasets)
-
+   
         # get science variable long names from the Data Review Database
         #stream_sci_vars = cd.sci_var_long_names(r)
         if 'SPKIR' in r or 'PRESF' in r:  # only get the main science variable for SPKIR
             stream_vars = cd.sci_var_long_names(r)
         else:
             stream_vars = var_long_names(r)
+
+        subsite = r.split('-')[0]
+        array = subsite[0:2]
+        save_dir = os.path.join(sDir, array, subsite, r, 'timeseries_plots_preferred_all')
+        cf.create_dir(save_dir)
 
         # check if the science variable long names are the same for each stream and initialize empty arrays
         sci_vars_dict = cd.sci_var_long_names_check(stream_vars)
@@ -125,11 +130,6 @@ def main(sDir, url_list, start_time, end_time):
             deploy_info = get_deployment_information(dr_data, int(deploy[-4:]))
             deployments.append(int(deploy[-4:]))
             dend_times.append(pd.to_datetime(deploy_info['stop_date']))
-
-        subsite = r.split('-')[0]
-        array = subsite[0:2]
-        save_dir = os.path.join(sDir, array, subsite, r, 'timeseries_plots_preferred_all')
-        cf.create_dir(save_dir)
 
         print('\nPlotting data')
         for m, n in sci_vars_dict.items():
@@ -249,10 +249,25 @@ def main(sDir, url_list, start_time, end_time):
 
                                     plt_deploy = [int(x) for x in list(np.unique(vinfo['deployments']))]
 
-                                    # plot hourly averages for cabled and FDCHP data
-                                    if 'streamed' in sci_vars_dict[list(sci_vars_dict.keys())[0]]['ms'][0] or 'FDCHP' in r:
+                                    # # plot hourly averages for cabled and FDCHP data
+                                    # if 'streamed' in sci_vars_dict[list(sci_vars_dict.keys())[0]]['ms'][0] or 'FDCHP' in r:
+                                    #     if 'VEL3D' in r:
+                                    #         sname = '-'.join((sname, 'dailyavg'))
+                                    #         df = pd.DataFrame(
+                                    #             {'dfx': x_nonan_nofv_nE_nogr, 'dfy': y_nonan_nofv_nE_nogr})
+                                    #         dfr = df.resample('D', on='dfx').mean()
+                                    #     else:
+                                    #         sname = '-'.join((sname, 'hourlyavg'))
+                                    #         df = pd.DataFrame({'dfx': x_nonan_nofv_nE_nogr, 'dfy': y_nonan_nofv_nE_nogr})
+                                    #         dfr = df.resample('H', on='dfx').mean()
+
+                                    if 'streamed' in sci_vars_dict[list(sci_vars_dict.keys())[0]]['ms'][0]:
                                         sname = '-'.join((sname, 'hourlyavg'))
-                                        df = pd.DataFrame({'dfx': x_nonan_nofv_nE_nogr, 'dfy': y_nonan_nofv_nE_nogr})
+
+                                    if 'FDCHP' in r:  # plot hourly averages for FDCHP
+                                        sname = '-'.join((sname, 'hourlyavg'))
+                                        df = pd.DataFrame(
+                                            {'dfx': x_nonan_nofv_nE_nogr, 'dfy': y_nonan_nofv_nE_nogr})
                                         dfr = df.resample('H', on='dfx').mean()
 
                                         # Plot all data

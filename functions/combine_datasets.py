@@ -63,16 +63,30 @@ def append_variable_data(ds, variable_dict, common_stream_name, exclude_times):
                         vars_dict[long_name]['fv'].append(ds[var]._FillValue)
                     if ds[var].units not in vars_dict[long_name]['units']:
                         vars_dict[long_name]['units'].append(ds[var].units)
-                    tD = ds['time'].values
-                    varD = ds[var].values
-                    deployD = ds['deployment'].values
 
-                    # find the pressure to use from the data file
-                    pvar, pD, p_unit, p_name, p_fv = cf.add_pressure_to_dictionary_of_sci_vars(ds)
-                    if p_unit not in pressure_unit:
-                        pressure_unit.append(p_unit)
-                    if p_name not in pressure_name:
-                        pressure_name.append(p_name)
+                    # calculate daily averages if the method is streamed
+                    if ds.collection_method == 'streamed':
+                        ds_hourly = ds[[var]].load().resample(time='H').mean()
+                        tD = ds_hourly['time'].values
+                        try:
+                            varD = ds_hourly[var].values
+                            deployD = ds['deployment'].values
+                            pD = np.empty(np.shape(tD))
+                            pD[:] = np.nan
+                        except KeyError:
+                            continue
+                    else:
+                        tD = ds['time'].values
+                        varD = ds[var].values
+                        deployD = ds['deployment'].values
+
+                        # find the pressure to use from the data file
+                        pvar, pD, p_unit, p_name, p_fv = cf.add_pressure_to_dictionary_of_sci_vars(ds)
+
+                        if p_unit not in pressure_unit:
+                            pressure_unit.append(p_unit)
+                        if p_name not in pressure_name:
+                            pressure_name.append(p_name)
 
                     if 'VELPT' in ds.sensor:  # remove data where pitch and roll are >20 degrees
                         pitch = ds['pitch_decidegree'].values
