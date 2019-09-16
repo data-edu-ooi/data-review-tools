@@ -98,6 +98,7 @@ def get_deployment_information(data, deployment):
     else:
         return None
 
+
 def get_url_content(url_address):
     # get content of a url in a json format
     r = requests.get(url_address)
@@ -108,11 +109,16 @@ def get_url_content(url_address):
         url_content = r.json()
     return url_content
 
+
 def get_global_ranges(refdes, variable, api_user=None, api_token=None):
+    print('getting global ranges')
+    api_user = 'OOIAPI-BJOX1E3EIP431N'
+    api_token = 'MS122F2C06J1V7'
     port = '12578'
     spl = refdes.split('-')
     base_url = '{}/qcparameters/inv/{}/{}/{}/'.format(port, spl[0], spl[1], '-'.join((spl[2], spl[3])))
     url = 'https://ooinet.oceanobservatories.org/api/m2m/{}'.format(base_url)
+    print(url)
     if (api_user is None) or (api_token is None):
         r = requests.get(url, verify=False)
     else:
@@ -496,6 +502,7 @@ def add_pressure_to_dictionary_of_sci_vars(ds):
     y_unit = []
     y_name = []
     y_fillvalue = []
+
     if 'MOAS' in ds.subsite:
         if 'CTD' in ds.sensor:  # for glider CTDs, pressure is a coordinate
             pressure = 'sci_water_pressure_dbar'
@@ -645,13 +652,14 @@ def reject_erroneous_data(r, v, t, y, z, fz, lat=None, lon=None):
 
     return dtime, zpressure, ndata, n_fv, n_nan, n_ev, n_gr, global_min, global_max, lat, lon
 
+
 def reject_suspect_data(t, y, z, timestamps):
-    print(timestamps[1], type(timestamps[1]))
+    #print(timestamps[1], type(timestamps[1]))
     data = pd.DataFrame({'yy': y, 'zz': z, 'tt': t}, index=t)
     l0 = len(data['tt'])
 
     dtime = [(np.datetime64(str(row))) for row in timestamps]
-    print(dtime[1], type(dtime[1]), pd.to_datetime(min(dtime)), min(dtime))
+    #print(dtime[1], type(dtime[1]), pd.to_datetime(min(dtime)), min(dtime))
 
     if pd.to_datetime(t.max()) > pd.to_datetime(min(dtime)) or pd.to_datetime(t.min()) < pd.to_datetime(max(dtime)):
         ind = np.where((dtime >= t.min()) & (dtime <= t.max()))
