@@ -62,7 +62,11 @@ def reject_err_data_2_dims(y, y_bad_beams, y_fill, r, sv):
     y[y < -1e10] = np.nan  # replace extreme values by nans in data
     y[y > 1e10] = np.nan
     n_ev = np.sum(np.isnan(y)) - n_fv - n_nan  # re-count nans in data
-    y[y_bad_beams > 25] = np.nan  # replace bad beams by nans in data
+    if type(y_bad_beams) == dict:  # if it's a dictionary, it's actually the percent of good beams
+        for k in list(y_bad_beams.keys()):
+            y[y_bad_beams[k] < 75] = np.nan
+    else:
+        y[y_bad_beams > 25] = np.nan  # replace bad beams by nans in data
     n_bb = np.sum(np.isnan(y)) - n_ev - n_fv - n_nan  # re-count nans in data
 
     [g_min, g_max] = cf.get_global_ranges(r, sv)  # get global ranges
@@ -206,8 +210,20 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                         v_bad_beams[v_bad_beams == fv_bad_beam] = np.nan  # mask fill values
                     except KeyError:
                         print('No percent_bad_beams variable in file')
-                        v_bad_beams = np.empty(np.shape(v))
-                        v_bad_beams[:] = np.nan
+                        try:
+                            # for cabled data, it's percent good beams
+                            percentgood = {'percent_good_beam1': [], 'percent_good_beam2': [], 'percent_good_beam3': [], 'percent_good_beam4': []}
+                            for pg in list(percentgood.keys()):
+                                vv = ds[pg]
+                                fv_vv = vv._FillValue
+                                vv = vv.values.T.astype(float)
+                                vv[vv == fv_vv] = np.nan
+                                percentgood[pg] = vv
+                            v_bad_beams = percentgood
+                        except KeyError:
+                            print('No percent_good_beams in file')
+                            v_bad_beams = np.empty(np.shape(v))
+                            v_bad_beams[:] = np.nan
 
                     v, n_nan, n_fv, n_ev, n_bb, n_grange, g_min, g_max = reject_err_data_2_dims(v, v_bad_beams, fv, r, var)
 
@@ -215,6 +231,9 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
 
                     # check bin depths for extreme values
                     y = ds['bin_depths'].values.T
+                    # if all the values are negative, take the absolute value (cabled data bin depths are negative)
+                    if int(np.nanmin(y)) < 0 and int(np.nanmax(y)) < 0:
+                        y = abs(y)
                     y_nan = np.sum(np.isnan(y))
                     y = np.where(y < 6000, y, np.nan)  # replace extreme bin_depths by nans
                     bin_nan = np.sum(np.isnan(y)) - y_nan
@@ -244,7 +263,7 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
 
                     fig, ax, n_nans_all = pf.plot_adcp(tm_mask, np.array(y_mask), np.array(v_mask), ylabel, clabel, color, n_stdev=5)
                     title_i = 'removed: {} nans, {} fill values, {} extreme values, {} bad beams, {} GR [{}, {}]'.format(
-                        n_nan, n_fv , n_ev, n_bb, n_grange, g_min, g_max)
+                        n_nan, n_fv, n_ev, n_bb, n_grange, g_min, g_max)
 
                     if bin_nan > 0:
                         ax.set_title((title_text + '\n' + t0 + ' - ' + t1 + '\n' + title_i + '\n' + bin_title), fontsize=8)
