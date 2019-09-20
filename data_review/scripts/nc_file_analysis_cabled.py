@@ -101,6 +101,7 @@ def main(sDir, url_list, deployment_num):
                             continue
 
                     rdatasets = [s for s in udatasets if rev_dep in s]
+                    rdatasets.sort()
                     if len(rdatasets) > 0:
                         datasets = []
                         for dss in rdatasets:  # filter out collocated data files
