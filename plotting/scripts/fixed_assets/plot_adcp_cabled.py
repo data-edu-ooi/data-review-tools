@@ -105,7 +105,7 @@ def reject_err_data_2_dims(y, y_bad_beams, y_fill, r, sv):
     return y, n_nan, n_fv, n_ev, n_bb, n_grange, g_min, g_max
 
 
-def main(sDir, url_list, start_time, end_time, deployment_num):
+def main(sDir, url_list, start_time, end_time, deployment_num, interval):
     rd_list = []
     for uu in url_list:
         elements = uu.split('/')[-2].split('-')
@@ -158,7 +158,12 @@ def main(sDir, url_list, start_time, end_time, deployment_num):
                            'percent_good_beam3': dict(values=np.array([])),
                            'percent_good_beam4': dict(values=np.array([]))}
 
-            for dtri in range(len(dt_range) - 1):
+            if interval is None:
+                toplot = range(len(dt_range) - 1)
+            else:
+                toplot = [interval - 1]
+
+            for dtri in toplot:
                 stime = dt.datetime.strptime(dt_range[dtri], '%Y-%m-%d')
                 etime = dt.datetime.strptime(dt_range[dtri + 1], '%Y-%m-%d')
                 if len(rdatasets) > 0:
@@ -323,4 +328,5 @@ if __name__ == '__main__':
     start_time = None  # dt.datetime(2014, 10, 1, 0, 0, 0)  # optional, set to None if plotting all data
     end_time = None  # dt.datetime(2014, 10, 10, 0, 0, 0)  # optional, set to None if plotting all data
     deployment_num = 1  # None or int
-    main(sDir, url_list, start_time, end_time, deployment_num)
+    interval = 3
+    main(sDir, url_list, start_time, end_time, deployment_num, interval)
