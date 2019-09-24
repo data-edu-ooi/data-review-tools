@@ -1,0 +1,33 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,streamed,adcp_velocity_beam,"bin_depths (dims: [81, 12651112])",['m'],-9999999.0,"[None, None]","[81, 1024740072]",0,0,no global ranges,0,1024740072,100.0,240.6016,-92.8747,574.1482,187.0652
+deployment0001,streamed,adcp_velocity_beam,"eastward_seawater_velocity (dims: [81, 12651112])",['m s-1'],-9999999.0,"[-3.0, 3.0]","[81, 1024740072]",153520836,0,100936,8241730,862876570,84.2,0.0187,-1.1376,1.1816,0.1704
+deployment0001,streamed,adcp_velocity_beam,"error_seawater_velocity (dims: [81, 12651112])",['m s-1'],-9999999.0,"[-1.0, 1.0]","[81, 1024740072]",153520836,0,1616965,5916103,863686168,84.28,-0.0018,-0.5944,0.5913,0.1014
+deployment0001,streamed,adcp_velocity_beam,"northward_seawater_velocity (dims: [81, 12651112])",['m s-1'],-9999999.0,"[-3.0, 3.0]","[81, 1024740072]",153520836,0,305942,10489737,860423557,83.97,0.0297,-1.7683,1.8005,0.2674
+deployment0001,streamed,adcp_velocity_beam,pressure,['daPa'],0,"[None, None]",12651112,0,0,no global ranges,10489737,860423557,6801.17,0.0297,-1.7683,1.8005,0.2674
+deployment0001,streamed,adcp_velocity_beam,salinity,['1'],-1,"[None, None]",12651112,0,0,no global ranges,10489737,860423557,6801.17,0.0297,-1.7683,1.8005,0.2674
+deployment0001,streamed,adcp_velocity_beam,temperature,['cdeg_C'],-9999,"[None, None]",12651112,0,0,no global ranges,10489737,860423557,6801.17,0.0297,-1.7683,1.8005,0.2674
+deployment0001,streamed,adcp_velocity_beam,"upward_seawater_velocity (dims: [81, 12651112])",['m s-1'],-9999999.0,"[-1.0, 1.0]","[81, 1024740072]",153520836,0,303,5627300,865591633,84.47,0.0021,-0.1906,0.1952,0.0317
+deployment0002,streamed,adcp_velocity_beam,"bin_depths (dims: [73, 13944225])",['m'],-9999999.0,"[None, None]","[73, 1017928425]",0,0,no global ranges,0,1017928425,100.0,276.0732,-24.0462,575.3064,168.582
+deployment0002,streamed,adcp_velocity_beam,"eastward_seawater_velocity (dims: [73, 13944225])",['m s-1'],-9999999.0,"[-3.0, 3.0]","[73, 1017928425]",51419115,0,165153,9481983,956862174,94.0,0.0216,-1.1408,1.1974,0.1647
+deployment0002,streamed,adcp_velocity_beam,"error_seawater_velocity (dims: [73, 13944225])",['m s-1'],-9999999.0,"[-1.0, 1.0]","[73, 1017928425]",51419115,0,2203045,6856913,957449352,94.06,0.0002,-0.5706,0.5706,0.0957
+deployment0002,streamed,adcp_velocity_beam,"northward_seawater_velocity (dims: [73, 13944225])",['m s-1'],-9999999.0,"[-3.0, 3.0]","[73, 1017928425]",51419115,0,412445,12174880,953921985,93.71,0.014,-1.6749,1.6832,0.24
+deployment0002,streamed,adcp_velocity_beam,pressure,['daPa'],0,"[None, None]",13944225,0,0,no global ranges,12174880,953921985,6840.98,0.014,-1.6749,1.6832,0.24
+deployment0002,streamed,adcp_velocity_beam,salinity,['1'],-1,"[None, None]",13944225,0,0,no global ranges,12174880,953921985,6840.98,0.014,-1.6749,1.6832,0.24
+deployment0002,streamed,adcp_velocity_beam,temperature,['cdeg_C'],-9999,"[None, None]",13944225,0,0,no global ranges,12174880,953921985,6840.98,0.014,-1.6749,1.6832,0.24
+deployment0002,streamed,adcp_velocity_beam,"upward_seawater_velocity (dims: [73, 13944225])",['m s-1'],-9999999.0,"[-1.0, 1.0]","[73, 1017928425]",51419115,0,1532,7002657,959505121,94.26,-0.0009,-0.1916,0.1902,0.0291
+deployment0003,streamed,adcp_velocity_beam,"bin_depths (dims: [81, 14801559])",['m'],-9999999.0,"[None, None]","[81, 1198926279]",0,0,no global ranges,0,1198926279,100.0,241.4701,-95.88,579.4289,187.0698
+deployment0003,streamed,adcp_velocity_beam,"eastward_seawater_velocity (dims: [81, 14801559])",['m s-1'],-9999999.0,"[-3.0, 3.0]","[81, 1198926279]",181262605,0,221720,10030320,1007411634,84.03,0.0116,-1.2489,1.2855,0.1828
+deployment0003,streamed,adcp_velocity_beam,"error_seawater_velocity (dims: [81, 14801559])",['m s-1'],-9999999.0,"[-1.0, 1.0]","[81, 1198926279]",181262605,0,2513712,7153916,1007996046,84.07,-0.0005,-0.614,0.613,0.1048
+deployment0003,streamed,adcp_velocity_beam,"northward_seawater_velocity (dims: [81, 14801559])",['m s-1'],-9999999.0,"[-3.0, 3.0]","[81, 1198926279]",181262605,0,398742,11341915,1005923017,83.9,0.011,-1.7612,1.7584,0.2711
+deployment0003,streamed,adcp_velocity_beam,pressure,['daPa'],0,"[None, None]",14801559,0,0,no global ranges,11341915,1005923017,6796.06,0.011,-1.7612,1.7584,0.2711
+deployment0003,streamed,adcp_velocity_beam,salinity,['1'],-1,"[None, None]",14801559,0,0,no global ranges,11341915,1005923017,6796.06,0.011,-1.7612,1.7584,0.2711
+deployment0003,streamed,adcp_velocity_beam,temperature,['cdeg_C'],-9999,"[None, None]",14801559,0,0,no global ranges,11341915,1005923017,6796.06,0.011,-1.7612,1.7584,0.2711
+deployment0003,streamed,adcp_velocity_beam,"upward_seawater_velocity (dims: [81, 14801559])",['m s-1'],-9999999.0,"[-1.0, 1.0]","[81, 1198926279]",181262605,0,1660,6957420,1010704594,84.3,-0.0036,-0.2031,0.1957,0.0318
+deployment0004,streamed,adcp_velocity_beam,"bin_depths (dims: [60, 12506975])",['m'],-9999999.0,"[None, None]","[60, 750418500]",0,0,no global ranges,0,750418500,100.0,324.2416,-37.1159,572.8495,140.5851
+deployment0004,streamed,adcp_velocity_beam,"eastward_seawater_velocity (dims: [60, 12506975])",['m s-1'],-9999999.0,"[-3.0, 3.0]","[60, 750418500]",36551762,0,691,1317009,712549038,94.95,0.0033,-0.5337,0.5433,0.1001
+deployment0004,streamed,adcp_velocity_beam,"error_seawater_velocity (dims: [60, 12506975])",['m s-1'],-9999999.0,"[-1.0, 1.0]","[60, 750418500]",36551762,0,23594,725311,713117833,95.03,0.0001,-0.3752,0.3752,0.0731
+deployment0004,streamed,adcp_velocity_beam,"northward_seawater_velocity (dims: [60, 12506975])",['m s-1'],-9999999.0,"[-3.0, 3.0]","[60, 750418500]",36551762,0,4210,1938639,711923889,94.87,0.021,-0.7111,0.7452,0.1186
+deployment0004,streamed,adcp_velocity_beam,pressure,['daPa'],0,"[None, None]",12506975,0,0,no global ranges,1938639,711923889,5692.21,0.021,-0.7111,0.7452,0.1186
+deployment0004,streamed,adcp_velocity_beam,salinity,['1'],-1,"[None, None]",12506975,0,0,no global ranges,1938639,711923889,5692.21,0.021,-0.7111,0.7452,0.1186
+deployment0004,streamed,adcp_velocity_beam,temperature,['cdeg_C'],-9999,"[None, None]",12506975,0,0,no global ranges,1938639,711923889,5692.21,0.021,-0.7111,0.7452,0.1186
+deployment0004,streamed,adcp_velocity_beam,"upward_seawater_velocity (dims: [60, 12506975])",['m s-1'],-9999999.0,"[-1.0, 1.0]","[60, 750418500]",36551762,0,1053,822592,713043093,95.02,-0.0019,-0.1089,0.1049,0.0207
