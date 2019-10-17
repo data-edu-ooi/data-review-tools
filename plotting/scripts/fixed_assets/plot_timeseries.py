@@ -99,12 +99,13 @@ def main(sDir, url_list, start_time, end_time, preferred_only):
                             fv = np.nan
                         if len(y.dims) == 1:
                             # Check if the array is all NaNs
+                            y[y == fv] = np.nan  # turn fill values to nans
                             if sum(np.isnan(y.values)) == len(y.values):
-                                print('Array of all NaNs - skipping plot.')
+                                print('Array of all NaNs and/or fill values - skipping plot.')
 
                             # Check if the array is all fill values
-                            elif len(y[y != fv]) == 0:
-                                print('Array of all fill values - skipping plot.')
+                            # elif len(y[y != fv]) == 0:
+                            #     print('Array of all fill values - skipping plot.')
 
                             else:
                                 # reject fill values
