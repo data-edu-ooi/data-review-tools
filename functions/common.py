@@ -111,14 +111,13 @@ def get_url_content(url_address):
 
 
 def get_global_ranges(refdes, variable, api_user=None, api_token=None):
-    print('getting global ranges')
+    #print('getting global ranges')
     api_user = 'OOIAPI-BJOX1E3EIP431N'
     api_token = 'MS122F2C06J1V7'
     port = '12578'
     spl = refdes.split('-')
     base_url = '{}/qcparameters/inv/{}/{}/{}/'.format(port, spl[0], spl[1], '-'.join((spl[2], spl[3])))
     url = 'https://ooinet.oceanobservatories.org/api/m2m/{}'.format(base_url)
-    print(url)
     if (api_user is None) or (api_token is None):
         r = requests.get(url, verify=False)
     else:
