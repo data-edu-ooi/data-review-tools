@@ -446,6 +446,8 @@ def main(sDir, url_list, deployment_num):
                                                     else:
                                                         if vnum_dims > 1:
                                                             var_gr = vD.flatten()
+                                                        else:
+                                                            var_gr = vD
                                                         # drop nans before calculating stats
                                                         var_gr = var_gr[~np.isnan(var_gr)]
                                                         [num_outliers, mean, vmin, vmax, sd, n_stats] = cf.variable_statistics(var_gr, 5)

@@ -243,7 +243,7 @@ def main(sDir, url_list, start_time, end_time, deployment_num, interval):
                     bd = sci_vars_dict['bin_depths']
                     ylabel = 'bin_depths ({})'.format(bd['units'][0])
 
-                    print('\nPlotting')
+                    print('\nPlotting interval {}'.format(int(dtri) + 1))
                     for var in sci_vars:
                         print('----{}'.format(var))
                         v = sci_vars_dict[var]

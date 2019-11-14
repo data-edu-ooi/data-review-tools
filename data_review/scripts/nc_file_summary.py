@@ -234,6 +234,8 @@ def main(f, ps, mc):
                             time_test = 'pass unique test - ascending not tested'
                         elif 'not_tested' in str(at) and 'fail' in str(ut):
                             time_test = 'fail unique test - ascending not tested'
+                        elif 'not_tested' in str(at) and str(ut) == '':
+                            time_test = 'unique and ascending not tested'
 
                         # Location difference from first deployment of instrument
                         loc_diff = []

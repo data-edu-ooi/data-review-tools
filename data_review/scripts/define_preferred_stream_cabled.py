@@ -20,7 +20,10 @@ def main(directory):
     for d in deployments:
         f = [y for y in ff if d in y]
         data = json.load(open(f[0], 'r'))
-        refdes = data['refdes']
+        try:
+            refdes = data['refdes']
+        except KeyError:
+            continue
         info = []
         ddata = data['deployments'][d]
         for m in ddata['method'].keys():
