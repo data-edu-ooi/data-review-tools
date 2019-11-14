@@ -312,7 +312,7 @@ def main(sDir, url_list, deployment_num):
                                 pressure_max = round(ds[press].values.tolist()[0], 2)
 
                             try:
-                                pressure_units = pressure['units']
+                                pressure_units = pressure['units'][0]
                             except AttributeError:
                                 pressure_units = 'no units attribute for pressure'
 
