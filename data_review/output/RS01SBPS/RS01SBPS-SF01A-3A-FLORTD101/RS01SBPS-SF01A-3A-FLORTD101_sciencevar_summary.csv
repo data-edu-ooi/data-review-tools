@@ -1,0 +1,31 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,streamed,flort_d_data_record,fluorometric_cdom,['ppb'],-9999999.0,"[0.0, 375.0]",15852399,0,0,791,17540,15834068,99.88,1.5893,0.7304,2.4651,0.1124
+deployment0001,streamed,flort_d_data_record,fluorometric_chlorophyll_a,['µg L-1'],-9999999.0,"[0.0, 50.0]",15852399,0,0,15700898,611,150890,0.95,0.5247,0.0,5.566,0.7167
+deployment0001,streamed,flort_d_data_record,int_ctd_pressure,['dbar'],nan,"[None, None]",15852399,0,0,no global ranges,20657,15831742,99.87,196.1803,194.1444,200.4158,0.8273
+deployment0001,streamed,flort_d_data_record,optical_backscatter,['m-1'],-9999999.0,"[0.0003, 1.0]",15852399,0,0,35,58538,15793826,99.63,0.0008,0.0003,0.0122,0.0005
+deployment0001,streamed,flort_d_data_record,seawater_scattering_coefficient,['m-1'],-9999999.0,"[None, None]",15852399,0,0,no global ranges,8511,15843888,99.95,0.0006,0.0006,0.0006,0.0
+deployment0001,streamed,flort_d_data_record,total_volume_scattering_coefficient,['m-1 sr-1'],-9999999.0,"[0.0, 0.0079]",15852399,0,0,0,58538,15793861,99.63,0.0001,0.0,0.0018,0.0001
+deployment0002,streamed,flort_d_data_record,fluorometric_cdom,['ppb'],-9999999.0,"[0.0, 375.0]",21505958,0,0,10,1401,21504547,99.99,2.4996,0.3624,4.8018,0.2907
+deployment0002,streamed,flort_d_data_record,fluorometric_chlorophyll_a,['µg L-1'],-9999999.0,"[0.0, 50.0]",21505958,0,0,1135168,122767,20248023,94.15,0.1359,0.0,2.0207,0.2663
+deployment0002,streamed,flort_d_data_record,int_ctd_pressure,['dbar'],nan,"[None, None]",21505958,0,0,no global ranges,0,21505958,100.0,145.9886,5.4017,204.9142,59.4745
+deployment0002,streamed,flort_d_data_record,optical_backscatter,['m-1'],-9999999.0,"[0.0003, 1.0]",21505958,0,0,0,41090,21464868,99.81,0.001,0.0004,0.0068,0.0005
+deployment0002,streamed,flort_d_data_record,seawater_scattering_coefficient,['m-1'],-9999999.0,"[None, None]",21505958,0,0,no global ranges,124,21505834,100.0,0.0006,0.0006,0.0006,0.0
+deployment0002,streamed,flort_d_data_record,total_volume_scattering_coefficient,['m-1 sr-1'],-9999999.0,"[0.0, 0.0079]",21505958,0,0,0,41090,21464868,99.81,0.0002,0.0001,0.001,0.0001
+deployment0003,streamed,flort_d_data_record,fluorometric_cdom,['ppb'],-9999999.0,"[0.0, 375.0]",13918963,0,0,107,2800,13916056,99.98,2.186,0.724,3.62,0.2842
+deployment0003,streamed,flort_d_data_record,fluorometric_chlorophyll_a,['µg L-1'],-9999999.0,"[0.0, 50.0]",13918963,0,0,0,17566,13901397,99.87,0.2005,0.0119,1.4994,0.2433
+deployment0003,streamed,flort_d_data_record,int_ctd_pressure,['dbar'],nan,"[None, None]",13918963,0,0,no global ranges,0,13918963,100.0,134.0411,4.862,196.8869,60.7953
+deployment0003,streamed,flort_d_data_record,optical_backscatter,['m-1'],-9999999.0,"[0.0003, 1.0]",13918963,0,0,0,26859,13892104,99.81,0.0008,0.0004,0.0047,0.0003
+deployment0003,streamed,flort_d_data_record,seawater_scattering_coefficient,['m-1'],-9999999.0,"[None, None]",13918963,0,0,no global ranges,65783,13853180,99.53,0.0006,0.0006,0.0006,0.0
+deployment0003,streamed,flort_d_data_record,total_volume_scattering_coefficient,['m-1 sr-1'],-9999999.0,"[0.0, 0.0079]",13918963,0,0,0,26859,13892104,99.81,0.0001,0.0001,0.0007,0.0
+deployment0004,streamed,flort_d_data_record,fluorometric_cdom,['ppb'],-9999999.0,"[0.0, 375.0]",15948958,0,0,20,12679,15936259,99.92,2.1084,0.5058,3.7935,0.2361
+deployment0004,streamed,flort_d_data_record,fluorometric_chlorophyll_a,['µg L-1'],-9999999.0,"[0.0, 50.0]",15948958,0,0,603,57579,15890776,99.64,0.1491,0.0,1.2075,0.1944
+deployment0004,streamed,flort_d_data_record,int_ctd_pressure,['dbar'],nan,"[None, None]",15948958,0,0,no global ranges,0,15948958,100.0,136.4183,-59.0493,203.6225,59.4092
+deployment0004,streamed,flort_d_data_record,optical_backscatter,['m-1'],-9999999.0,"[0.0003, 1.0]",15948958,0,0,0,39813,15909145,99.75,0.0013,0.0005,0.0103,0.0006
+deployment0004,streamed,flort_d_data_record,seawater_scattering_coefficient,['m-1'],-9999999.0,"[None, None]",15948958,0,0,no global ranges,82,15948876,100.0,0.0006,0.0006,0.0006,0.0
+deployment0004,streamed,flort_d_data_record,total_volume_scattering_coefficient,['m-1 sr-1'],-9999999.0,"[0.0, 0.0079]",15948958,0,0,6541,45472,15896945,99.67,0.0002,0.0001,0.0012,0.0001
+deployment0005,streamed,flort_d_data_record,fluorometric_cdom,['ppb'],-9999999.0,"[0.0, 375.0]",1029224,0,0,0,747,1028477,99.93,1.5004,0.5805,2.3865,0.161
+deployment0005,streamed,flort_d_data_record,fluorometric_chlorophyll_a,['µg L-1'],-9999999.0,"[0.0, 50.0]",1029224,0,0,205,8117,1020902,99.19,0.0918,0.0,1.4161,0.1854
+deployment0005,streamed,flort_d_data_record,int_ctd_pressure,['dbar'],nan,"[None, None]",1029224,0,0,no global ranges,0,1029224,100.0,148.2121,4.8185,195.7871,49.9155
+deployment0005,streamed,flort_d_data_record,optical_backscatter,['m-1'],-9999999.0,"[0.0003, 1.0]",1029224,0,0,0,1434,1027790,99.86,0.0012,0.0006,0.0086,0.0004
+deployment0005,streamed,flort_d_data_record,seawater_scattering_coefficient,['m-1'],-9999999.0,"[None, None]",1029224,0,0,no global ranges,0,1029224,100.0,0.0006,0.0006,0.0006,0.0
+deployment0005,streamed,flort_d_data_record,total_volume_scattering_coefficient,['m-1 sr-1'],-9999999.0,"[0.0, 0.0079]",1029224,0,0,563,3202,1025459,99.63,0.0002,0.0001,0.0006,0.0001
