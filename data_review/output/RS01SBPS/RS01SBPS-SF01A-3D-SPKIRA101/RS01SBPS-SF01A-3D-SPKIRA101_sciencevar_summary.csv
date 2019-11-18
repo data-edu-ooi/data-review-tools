@@ -1,0 +1,11 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,streamed,spkir_data_record,int_ctd_pressure,['dbar'],nan,"[None, None]",75192234,0,0,no global ranges,101089,75091145,99.87,196.1694,194.1441,200.3514,0.8157
+deployment0001,streamed,spkir_data_record,"spkir_downwelling_vector (dims: [7, 75192234])",['µW cm-2 nm-1'],-9999999.0,"[0.0, 300.0]","[7, 526345638]",0,0,19913669,5853,506426116,96.22,0.0181,0.0,0.0625,0.0089
+deployment0002,streamed,spkir_data_record,int_ctd_pressure,['dbar'],nan,"[None, None]",121126039,946327,0,no global ranges,0,120179712,99.22,153.2016,5.2834,204.9149,58.389
+deployment0002,streamed,spkir_data_record,"spkir_downwelling_vector (dims: [7, 121126039])",['µW cm-2 nm-1'],-9999999.0,"[0.0, 300.0]","[7, 847882273]",0,0,521977388,2262852,323642033,38.17,0.1356,0.0,6.8262,0.5658
+deployment0003,streamed,spkir_data_record,int_ctd_pressure,['dbar'],nan,"[None, None]",66481984,0,0,no global ranges,0,66481984,100.0,134.0153,4.8622,196.8894,60.8902
+deployment0003,streamed,spkir_data_record,"spkir_downwelling_vector (dims: [7, 66481984])",['µW cm-2 nm-1'],-9999999.0,"[0.0, 300.0]","[7, 465373888]",0,0,74588870,2508499,388276519,83.43,0.1582,0.0,11.4533,0.8268
+deployment0004,streamed,spkir_data_record,int_ctd_pressure,['dbar'],nan,"[None, None]",76229685,0,0,no global ranges,0,76229685,100.0,136.421,-150.4948,203.6225,59.4042
+deployment0004,streamed,spkir_data_record,"spkir_downwelling_vector (dims: [7, 76229685])",['µW cm-2 nm-1'],-9999999.0,"[0.0, 300.0]","[7, 533607795]",0,0,303150997,1805160,228651638,42.85,0.1417,0.0,6.0776,0.561
+deployment0005,streamed,spkir_data_record,int_ctd_pressure,['dbar'],nan,"[None, None]",4901953,0,0,no global ranges,0,4901953,100.0,148.1341,4.8159,195.7871,49.9834
+deployment0005,streamed,spkir_data_record,"spkir_downwelling_vector (dims: [7, 4901953])",['µW cm-2 nm-1'],-9999999.0,"[0.0, 300.0]","[7, 34313671]",0,0,11756678,181453,22375540,65.21,0.358,0.0,21.6188,1.8872
