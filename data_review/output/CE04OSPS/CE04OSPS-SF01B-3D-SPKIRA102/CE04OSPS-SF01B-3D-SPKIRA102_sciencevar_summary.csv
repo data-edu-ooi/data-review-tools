@@ -1,0 +1,7 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0002,streamed,spkir_data_record,int_ctd_pressure,['dbar'],nan,"[None, None]",36917204,0,0,no global ranges,235628,36681576,99.36,187.4329,41.6141,218.9587,26.2634
+deployment0002,streamed,spkir_data_record,"spkir_downwelling_vector (dims: [7, 36917204])",['µW cm-2 nm-1'],-9999999.0,"[0.0, 300.0]","[7, 258420428]",0,0,210706162,147496,47566770,18.41,0.0365,0.0,3.8087,0.2029
+deployment0003,streamed,spkir_data_record,int_ctd_pressure,['dbar'],nan,"[None, None]",127295726,0,0,no global ranges,0,127295726,100.0,171.882,4.5315,199.567,46.5107
+deployment0003,streamed,spkir_data_record,"spkir_downwelling_vector (dims: [7, 127295726])",['µW cm-2 nm-1'],-9999999.0,"[0.0, 300.0]","[7, 891070082]",0,0,458360472,1726942,430982668,48.37,0.058,0.0,7.0823,0.3691
+deployment0004,streamed,spkir_data_record,int_ctd_pressure,['dbar'],nan,"[None, None]",15058897,0,0,no global ranges,0,15058897,100.0,135.3348,13.5589,290.6435,59.2823
+deployment0004,streamed,spkir_data_record,"spkir_downwelling_vector (dims: [7, 15058897])",['µW cm-2 nm-1'],-9999999.0,"[0.0, 300.0]","[7, 105412279]",0,0,67692282,317387,37402610,35.48,0.1663,0.0,6.5554,0.6299

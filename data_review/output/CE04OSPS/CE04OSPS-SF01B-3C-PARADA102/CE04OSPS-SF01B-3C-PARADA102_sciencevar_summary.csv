@@ -1,0 +1,5 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0003,streamed,parad_sa_sample,int_ctd_pressure,['dbar'],nan,"[None, None]",8996402,0,0,no global ranges,0,8996402,100.0,156.4909,4.5727,199.5439,60.7895
+deployment0003,streamed,parad_sa_sample,par_counts_output,['µmol photons m-2 s-1'],-100000000.0,"[0.0, 2500.0]",8996402,0,0,95582,46634,8854186,98.42,0.9947,0.0002,88.8758,5.653
+deployment0004,streamed,parad_sa_sample,int_ctd_pressure,['dbar'],nan,"[None, None]",13269158,0,0,no global ranges,0,13269158,100.0,135.4215,13.5673,290.6434,59.2646
+deployment0004,streamed,parad_sa_sample,par_counts_output,['µmol photons m-2 s-1'],-100000000.0,"[0.0, 2500.0]",13269158,0,0,8286423,44080,4938655,37.22,3.0902,0.0003,85.89,9.741

@@ -1,0 +1,13 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0002,streamed,nutnr_a_sample,int_ctd_pressure,[],nan,"[None, None]",39280,90,0,no global ranges,0,39190,99.77,157.2251,15.1641,202.6237,56.8006
+deployment0002,streamed,nutnr_a_sample,nitrate_concentration,['µMol L-1'],-9999999.0,"[0.0, 40.0]",39280,0,0,4040,0,35240,89.71,28.0487,3.26,40.0,8.5374
+deployment0002,streamed,nutnr_a_sample,nutnr_nitrogen_in_nitrate,['mg/l'],-9999999.0,"[0.0, 2.5]",39280,0,0,1,1,39278,99.99,0.4138,0.0457,0.9475,0.1296
+deployment0002,streamed,nutnr_a_sample,salinity_corrected_nitrate,['µmol L-1'],-9999999.0,"[0.0, 40.0]",39280,0,90,3,0,39187,99.76,25.7149,1.0399,38.9266,9.1173
+deployment0003,streamed,nutnr_a_sample,int_ctd_pressure,['dbar'],nan,"[None, None]",53092,0,0,no global ranges,0,53092,100.0,143.5849,4.6676,198.9476,60.9171
+deployment0003,streamed,nutnr_a_sample,nitrate_concentration,['µMol L-1'],-9999999.0,"[0.0, 40.0]",53092,0,0,20,0,53072,99.96,27.2791,-0.0,38.88,8.5054
+deployment0003,streamed,nutnr_a_sample,nutnr_nitrogen_in_nitrate,['mg/l'],-9999999.0,"[0.0, 2.5]",53092,0,0,20,0,53072,99.96,0.3821,-0.0,0.5446,0.1191
+deployment0003,streamed,nutnr_a_sample,salinity_corrected_nitrate,['µmol L-1'],-9999999.0,"[0.0, 40.0]",53092,0,0,204,0,52888,99.62,25.6183,0.0012,35.5517,8.3668
+deployment0004,streamed,nutnr_a_sample,int_ctd_pressure,['dbar'],nan,"[None, None]",15136,0,0,no global ranges,0,15136,100.0,102.4914,15.32,194.7392,51.3702
+deployment0004,streamed,nutnr_a_sample,nitrate_concentration,['µMol L-1'],-9999999.0,"[0.0, 40.0]",15136,0,0,58,0,15078,99.62,24.3894,-0.0,39.94,8.1105
+deployment0004,streamed,nutnr_a_sample,nutnr_nitrogen_in_nitrate,['mg/l'],-9999999.0,"[0.0, 2.5]",15136,0,0,55,0,15081,99.64,0.3417,0.0005,0.5761,0.1136
+deployment0004,streamed,nutnr_a_sample,salinity_corrected_nitrate,['µmol L-1'],-9999999.0,"[0.0, 40.0]",15136,0,0,42,0,15094,99.72,23.5821,0.001,32.8726,7.9464
