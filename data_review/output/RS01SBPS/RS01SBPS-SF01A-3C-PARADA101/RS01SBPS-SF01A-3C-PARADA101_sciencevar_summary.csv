@@ -1,0 +1,11 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,streamed,parad_sa_sample,int_ctd_pressure,['dbar'],nan,"[None, None]",63845132,0,0,no global ranges,88087,63757045,99.86,196.1709,194.1442,200.3657,0.8177
+deployment0001,streamed,parad_sa_sample,par_counts_output,['µmol photons m-2 s-1'],-100000000.0,"[0.0, 2500.0]",63845132,0,0,0,59,63845073,100.0,0.5144,0.2136,0.8177,0.0607
+deployment0002,streamed,parad_sa_sample,int_ctd_pressure,['dbar'],nan,"[None, None]",110191457,608529,0,no global ranges,0,109582928,99.45,153.0402,5.2831,204.915,58.4213
+deployment0002,streamed,parad_sa_sample,par_counts_output,['µmol photons m-2 s-1'],-100000000.0,"[0.0, 2500.0]",110191457,0,0,9292209,649497,100249751,90.98,0.8017,0.0001,49.7741,3.5861
+deployment0003,streamed,parad_sa_sample,int_ctd_pressure,['dbar'],nan,"[None, None]",58388118,0,0,no global ranges,0,58388118,100.0,134.0296,4.9001,196.8897,60.8891
+deployment0003,streamed,parad_sa_sample,par_counts_output,['µmol photons m-2 s-1'],-100000000.0,"[0.0, 2500.0]",58388118,0,0,205233,405072,57777813,98.95,1.7368,0.0001,88.7882,6.9588
+deployment0004,streamed,parad_sa_sample,int_ctd_pressure,['dbar'],nan,"[None, None]",67382104,0,0,no global ranges,1,67382103,100.0,136.4017,-112.5279,203.6225,59.41
+deployment0004,streamed,parad_sa_sample,par_counts_output,['µmol photons m-2 s-1'],-100000000.0,"[0.0, 2500.0]",67382104,0,0,14634982,417164,52329958,77.66,1.0172,0.0002,45.4975,4.0463
+deployment0005,streamed,parad_sa_sample,int_ctd_pressure,['dbar'],nan,"[None, None]",4299676,0,0,no global ranges,0,4299676,100.0,148.168,4.8161,195.7871,49.9363
+deployment0005,streamed,parad_sa_sample,par_counts_output,['µmol photons m-2 s-1'],-100000000.0,"[0.0, 2500.0]",4299676,0,0,3853297,3578,442801,10.3,33.0141,0.0001,439.2786,61.1108
