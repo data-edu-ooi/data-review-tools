@@ -1,0 +1,13 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,streamed,pco2w_a_sami_data_record,int_ctd_pressure,['dbar'],nan,"[None, None]",6298,0,0,no global ranges,7,6291,99.89,196.1644,194.167,200.1462,0.7864
+deployment0001,streamed,pco2w_a_sami_data_record,pco2_seawater,['µatm'],-9999999.0,"[200.0, 2000.0]",6298,4,0,5708,0,586,9.3,1521.0492,1008.4618,1990.7268,140.3931
+deployment0001,streamed,pco2w_a_sami_data_record,pco2w_thermistor_temperature,['ºC'],-9999999.0,"[-2.0, 40.0]",6298,0,0,0,0,6298,100.0,7.7131,6.9388,8.6452,0.2165
+deployment0002,streamed,pco2w_a_sami_data_record,int_ctd_pressure,['dbar'],nan,"[None, None]",8299,0,0,no global ranges,0,8299,100.0,153.4524,19.5139,204.8462,57.6503
+deployment0002,streamed,pco2w_a_sami_data_record,pco2_seawater,['µatm'],-9999999.0,"[200.0, 2000.0]",8299,0,0,94,0,8205,98.87,880.1789,338.0301,1564.1158,242.0653
+deployment0002,streamed,pco2w_a_sami_data_record,pco2w_thermistor_temperature,['ºC'],-9999999.0,"[-2.0, 40.0]",8299,0,0,0,1,8298,99.99,8.5007,6.8282,14.2908,1.2397
+deployment0004,streamed,pco2w_a_sami_data_record,int_ctd_pressure,['dbar'],nan,"[None, None]",270,0,0,no global ranges,0,270,100.0,116.5668,23.2708,198.643,59.3705
+deployment0004,streamed,pco2w_a_sami_data_record,pco2_seawater,['µatm'],-9999999.0,"[200.0, 2000.0]",270,0,0,0,0,270,100.0,1052.2323,447.7609,1631.1229,295.3484
+deployment0004,streamed,pco2w_a_sami_data_record,pco2w_thermistor_temperature,['ºC'],-9999999.0,"[-2.0, 40.0]",270,0,0,0,0,270,100.0,8.3872,7.1159,11.6147,0.9679
+deployment0005,streamed,pco2w_a_sami_data_record,int_ctd_pressure,['dbar'],nan,"[None, None]",164,0,0,no global ranges,0,164,100.0,117.0249,14.9391,195.782,63.4377
+deployment0005,streamed,pco2w_a_sami_data_record,pco2_seawater,['µatm'],-9999999.0,"[200.0, 2000.0]",164,0,0,63,0,101,61.59,466.5676,204.3084,704.3691,139.3763
+deployment0005,streamed,pco2w_a_sami_data_record,pco2w_thermistor_temperature,['ºC'],-9999999.0,"[-2.0, 40.0]",164,0,0,0,0,164,100.0,8.8975,7.3151,16.4171,1.6833
