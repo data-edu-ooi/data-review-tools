@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 Created on Apr 11 2019 by Lori Garzio
-@brief This is a wrapper script that imports tools to plot data for mobile assets (profilers and gliders.
+@brief This is a wrapper script that imports tools to plot data for mobile assets (profilers and gliders).
 @usage
 sDir: location to save summary output
 bathy_files: location on local machine where https://github.com/ooi-data-lab/data-review-tools is cloned
@@ -22,7 +22,7 @@ sDir = '/Users/lgarzio/Documents/OOI/DataReviews'
 ooidatalab_dir = '/Users/lgarzio/Documents/repo/OOI/ooi-data-lab/data-review-tools'
 bathy_files = os.path.join(ooidatalab_dir, 'data_review/bathymetry_files')
 mDir = os.path.join(ooidatalab_dir, 'data_review/data_ranges')
-f = '/Users/lgarzio/Documents/OOI/DataReviews/CP/CP05MOAS/data_request_summary_gl340.csv'
+f = '/Users/lgarzio/Documents/OOI/DataReviews/CE/CE04OSPS/data_request_summary_pco2.csv'
 
 # boardwalk
 # sDir = '/home/lgarzio/OOI/DataReviews'
@@ -36,16 +36,17 @@ preferred_only = 'yes'  # options: 'yes', 'no'
 
 zdbar = None  # remove data below this depth for analysis and plotting
 n_std = None
-inpercentile = 2.5
+inpercentile = 0.5
 
-zcell_size = 10  # depth cell size for data grouping
+zcell_size = 5  # depth cell size for data grouping
 deployment_num = None  # None or 3
 
 ff = pd.read_csv(f)
 url_list = ff['outputUrl'].tolist()
 url_list = [u for u in url_list if u not in 'no_output_url']
 
-scripts.map_gliders.main(url_list, sDir, 'glider_track', start_time, end_time, deployment_num, bathy_files)
-scripts.plot_profile_xsection.main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n_std, inpercentile, zcell_size, zdbar)
+#scripts.map_gliders.main(url_list, sDir, 'glider_track', start_time, end_time, deployment_num, bathy_files)
+#scripts.plot_profile_xsection.main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n_std, inpercentile, zcell_size, zdbar)
+scripts.plot_profile_xsection_cabled.main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n_std, inpercentile, zcell_size, zdbar)
 #scripts.plot_profile_xsection_rm_suspect_data.main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, zdbar, n_std, inpercentile, zcell_size)
-#data_review.scripts.mobile_data_range.main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time)
+#data_review.scripts.mobile_data_range.main(url_list, sDir, mDir, zcell_size, zdbar, start_time, end_time, inpercentile)
