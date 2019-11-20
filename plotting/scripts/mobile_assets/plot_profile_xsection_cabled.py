@@ -144,8 +144,8 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                 data_start = pd.to_datetime(min(sci_vars_dict['time']['values'])).strftime('%Y-%m-%dT%H:%M:%S')
                 data_stop = pd.to_datetime(max(sci_vars_dict['time']['values'])).strftime('%Y-%m-%dT%H:%M:%S')
                 time1 = sci_vars_dict['time']['values']
-                ds_lat1 = None
-                ds_lon1 = None
+                ds_lat1 = np.empty(np.shape(time1))
+                ds_lon1 = np.empty(np.shape(time1))
 
                 # define pressure variable
                 try:
