@@ -108,8 +108,9 @@ def plot_profiles(x, y, t, ylabel, xlabel, clabel, stdev=None):
     #cbar.ax.set_yticklabels(pd.to_datetime(cbar.get_ticks()).strftime(date_format='%Y-%m-%d'))
     cbar.ax.set_yticklabels(pd.to_datetime(cbar.ax.get_yticks()).strftime(date_format='%Y-%m-%d'))
 
+    #plt.xlim([-.5, .5])
+    #plt.ylim([-10, 210])
     ax.invert_yaxis()
-    #plt.xlim([-0.5, 0.5])
     ax.set_xlabel(xlabel, fontsize=9)
     ax.set_ylabel(ylabel, fontsize=9)
     ax.legend(leg_text, loc='best', fontsize=6)
@@ -479,7 +480,7 @@ def pressure_var(dataset, vars):
             else:
                 try:
                     units = dataset[press_var].units
-                    if units in ['dbar', '0.001 dbar']:
+                    if units in ['dbar', '0.001 dbar', 'daPa']:
                         pvars.append(str(press_var))
                 except AttributeError:
                     continue
