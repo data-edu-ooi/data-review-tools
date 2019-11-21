@@ -263,9 +263,12 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                                 cf.create_dir(save_dir_profile)
                                 cf.create_dir(save_dir_xsection)
                                 sname = '-'.join((r, method, sv))
-                                sfileall = '_'.join(('all_data', sname, pd.to_datetime(time1.min()).strftime('%Y%m%d')))
-                                tm0 = pd.to_datetime(time1.min()).strftime('%Y-%m-%dT%H:%M:%S')
-                                tm1 = pd.to_datetime(time1.max()).strftime('%Y-%m-%dT%H:%M:%S')
+                                # sfileall = '_'.join(('all_data', sname, pd.to_datetime(time1.min()).strftime('%Y%m%d')))
+                                # tm0 = pd.to_datetime(time1.min()).strftime('%Y-%m-%dT%H:%M:%S')
+                                # tm1 = pd.to_datetime(time1.max()).strftime('%Y-%m-%dT%H:%M:%S')
+                                sfileall = '_'.join((sname, pd.to_datetime(t_portal.min()).strftime('%Y%m%d')))
+                                tm0 = pd.to_datetime(t_portal.min()).strftime('%Y-%m-%dT%H:%M:%S')
+                                tm1 = pd.to_datetime(t_portal.max()).strftime('%Y-%m-%dT%H:%M:%S')
                                 title = ' '.join((deployment, refdes, method)) + '\n' + tm0 + ' to ' + tm1
                                 if 'SPKIR' in r:
                                     title = title + '\nWavelength = 510 nm'
@@ -277,7 +280,8 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                                 ylabel = pname + " (" + y_units + ")"
                                 clabel = 'Time'
 
-                                fig, ax = pf.plot_profiles(z1, y1, time1, ylabel, xlabel, clabel, stdev=None)
+                                # fig, ax = pf.plot_profiles(z1, y1, time1, ylabel, xlabel, clabel, stdev=None)
+                                fig, ax = pf.plot_profiles(z_portal, y_portal, t_portal, ylabel, xlabel, clabel, stdev=None)
 
                                 ax.set_title(title, fontsize=9)
                                 fig.tight_layout()
@@ -289,7 +293,9 @@ def main(url_list, sDir, deployment_num, start_time, end_time, preferred_only, n
                                 clabel = sv + " (" + sv_units + ")"
                                 ylabel = pname + " (" + y_units + ")"
 
-                                fig, ax, bar = pf.plot_xsection(subsite, time1, y1, z1, clabel, ylabel, t_eng=None,
+                                # fig, ax, bar = pf.plot_xsection(subsite, time1, y1, z1, clabel, ylabel, t_eng=None,
+                                #                                 m_water_depth=None, inpercentile=None, stdev=None)
+                                fig, ax, bar = pf.plot_xsection(subsite, t_portal, y_portal, z_portal, clabel, ylabel, t_eng=None,
                                                                 m_water_depth=None, inpercentile=None, stdev=None)
 
                                 if fig:
