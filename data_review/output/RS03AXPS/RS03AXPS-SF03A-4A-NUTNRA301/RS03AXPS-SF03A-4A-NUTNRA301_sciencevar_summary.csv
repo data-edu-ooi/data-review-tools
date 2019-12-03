@@ -1,0 +1,17 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,streamed,nutnr_a_sample,int_ctd_pressure,[],nan,"[None, None]",106540,2118,0,no global ranges,0,104422,98.01,154.9314,-86.0617,194.3985,52.843
+deployment0001,streamed,nutnr_a_sample,nitrate_concentration,['µMol L-1'],-9999999.0,"[0.0, 40.0]",106540,0,0,73296,0,33244,31.2,27.2155,1.88,35.19,6.9772
+deployment0001,streamed,nutnr_a_sample,nutnr_nitrogen_in_nitrate,['mg/l'],-9999999.0,"[0.0, 2.5]",106540,0,0,0,0,106540,100.0,0.6982,0.0264,0.963,0.238
+deployment0001,streamed,nutnr_a_sample,salinity_corrected_nitrate,['µmol L-1'],-9999999.0,"[0.0, 40.0]",106540,0,2118,13133,0,91289,85.69,20.9248,0.0005,29.3041,5.8686
+deployment0002,streamed,nutnr_a_sample,int_ctd_pressure,[],nan,"[None, None]",47665,288,0,no global ranges,0,47377,99.4,147.7362,11.678,198.223,58.346
+deployment0002,streamed,nutnr_a_sample,nitrate_concentration,['µMol L-1'],-9999999.0,"[0.0, 40.0]",47665,0,0,31,0,47634,99.93,22.5722,0.04,39.72,9.5642
+deployment0002,streamed,nutnr_a_sample,nutnr_nitrogen_in_nitrate,['mg/l'],-9999999.0,"[0.0, 2.5]",47665,0,0,13,0,47652,99.97,0.3163,0.0006,0.8196,0.1341
+deployment0002,streamed,nutnr_a_sample,salinity_corrected_nitrate,['µmol L-1'],-9999999.0,"[0.0, 40.0]",47665,12,288,1,0,47364,99.37,21.6949,1.0439,35.409,9.353
+deployment0003,streamed,nutnr_a_sample,int_ctd_pressure,['dbar'],nan,"[None, None]",76300,0,0,no global ranges,0,76300,100.0,98.2283,4.181,191.9144,56.6696
+deployment0003,streamed,nutnr_a_sample,nitrate_concentration,['µMol L-1'],-9999999.0,"[0.0, 40.0]",76300,0,0,10286,0,66014,86.52,15.6177,-0.0,40.0,8.4914
+deployment0003,streamed,nutnr_a_sample,nutnr_nitrogen_in_nitrate,['mg/l'],-9999999.0,"[0.0, 2.5]",76300,0,0,10236,14,66050,86.57,0.219,-0.0,0.8186,0.1193
+deployment0003,streamed,nutnr_a_sample,salinity_corrected_nitrate,['µmol L-1'],-9999999.0,"[0.0, 40.0]",76300,0,0,4936,0,71364,93.53,12.6101,0.0001,29.0312,9.4638
+deployment0004,streamed,nutnr_a_sample,int_ctd_pressure,['dbar'],nan,"[None, None]",142915,0,0,no global ranges,0,142915,100.0,101.1011,3.8049,190.4122,52.3637
+deployment0004,streamed,nutnr_a_sample,nitrate_concentration,['µMol L-1'],-9999999.0,"[0.0, 40.0]",142915,0,0,141,0,142774,99.9,21.0235,0.02,39.98,10.727
+deployment0004,streamed,nutnr_a_sample,nutnr_nitrogen_in_nitrate,['mg/l'],-9999999.0,"[0.0, 2.5]",142915,0,0,12,0,142903,99.99,0.2947,0.0002,0.6225,0.1504
+deployment0004,streamed,nutnr_a_sample,salinity_corrected_nitrate,['µmol L-1'],-9999999.0,"[0.0, 40.0]",142915,0,0,299,0,142616,99.79,17.564,0.0011,36.634,10.5601

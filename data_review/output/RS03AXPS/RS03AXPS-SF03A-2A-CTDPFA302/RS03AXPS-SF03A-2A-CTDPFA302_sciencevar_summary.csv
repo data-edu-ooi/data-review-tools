@@ -1,0 +1,25 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,streamed,ctdpf_sbe43_sample,corrected_dissolved_oxygen,['µmol kg-1'],-9999999.0,"[0.0, 400.0]",18034593,0,0,0,0,18034593,100.0,157.4956,60.1406,263.4435,40.6441
+deployment0001,streamed,ctdpf_sbe43_sample,density,['kg m-3'],-9999999.0,"[1000.0, 1100.0]",18034593,0,0,0,22,18034571,100.0,1027.9529,1024.514,1028.4607,0.7284
+deployment0001,streamed,ctdpf_sbe43_sample,practical_salinity,['1'],-9999999.0,"[0.0, 42.0]",18034593,0,0,0,62,18034531,100.0,34.9047,32.866,35.4355,0.4316
+deployment0001,streamed,ctdpf_sbe43_sample,seawater_conductivity,['S m-1'],-9999999.0,"[0.0, 6.0]",18034593,0,0,0,44381,17990212,99.75,3.6257,3.2502,4.0499,0.0814
+deployment0001,streamed,ctdpf_sbe43_sample,seawater_pressure,['dbar'],-9999999.0,"[0.0, 6000.0]",18034593,0,0,14,0,18034579,100.0,168.3602,0.6046,194.5204,42.429
+deployment0001,streamed,ctdpf_sbe43_sample,seawater_temperature,['ºC'],-9999999.0,"[-2.0, 40.0]",18034593,0,0,0,1681,18032912,99.99,8.0795,7.0792,14.5572,1.2937
+deployment0002,streamed,ctdpf_sbe43_sample,corrected_dissolved_oxygen,['µmol kg-1'],-9999999.0,"[0.0, 400.0]",30766676,0,0,0,0,30766676,100.0,180.7783,90.4234,285.8455,45.746
+deployment0002,streamed,ctdpf_sbe43_sample,density,['kg m-3'],-9999999.0,"[1000.0, 1100.0]",30766676,0,0,0,0,30766676,100.0,1026.5979,1022.2361,1027.4352,0.9242
+deployment0002,streamed,ctdpf_sbe43_sample,practical_salinity,['1'],-9999999.0,"[0.0, 42.0]",30766676,0,0,0,7,30766669,100.0,33.3767,30.8204,33.9415,0.5431
+deployment0002,streamed,ctdpf_sbe43_sample,seawater_conductivity,['S m-1'],-9999999.0,"[0.0, 6.0]",30766676,0,0,0,162323,30604353,99.47,3.5192,3.3639,4.0285,0.0909
+deployment0002,streamed,ctdpf_sbe43_sample,seawater_pressure,['dbar'],-9999999.0,"[0.0, 6000.0]",30766676,0,0,0,0,30766676,100.0,149.6588,8.1734,198.2624,57.8572
+deployment0002,streamed,ctdpf_sbe43_sample,seawater_temperature,['ºC'],-9999999.0,"[-2.0, 40.0]",30766676,0,0,0,88438,30678238,99.71,8.4996,6.9015,16.5882,1.5475
+deployment0003,streamed,ctdpf_sbe43_sample,corrected_dissolved_oxygen,['µmol kg-1'],-9999999.0,"[0.0, 400.0]",32685196,0,0,0,0,32685196,100.0,223.4286,39.5705,310.804,51.5237
+deployment0003,streamed,ctdpf_sbe43_sample,density,['kg m-3'],-9999999.0,"[1000.0, 1100.0]",32685196,0,0,0,95,32685101,100.0,1025.923,1021.1544,1027.4074,0.954
+deployment0003,streamed,ctdpf_sbe43_sample,practical_salinity,['1'],-9999999.0,"[0.0, 42.0]",32685196,0,0,0,7057,32678139,99.98,32.98,30.0967,34.0656,0.5745
+deployment0003,streamed,ctdpf_sbe43_sample,seawater_conductivity,['S m-1'],-9999999.0,"[0.0, 6.0]",32685196,0,0,0,103734,32581462,99.68,3.531,3.0768,4.2647,0.1404
+deployment0003,streamed,ctdpf_sbe43_sample,seawater_pressure,['dbar'],-9999999.0,"[0.0, 6000.0]",32685196,0,0,0,0,32685196,100.0,90.8102,1.3048,192.0617,59.8127
+deployment0003,streamed,ctdpf_sbe43_sample,seawater_temperature,['ºC'],-9999999.0,"[-2.0, 40.0]",32685196,0,0,0,0,32685196,100.0,9.0935,6.9302,18.1214,1.9106
+deployment0004,streamed,ctdpf_sbe43_sample,corrected_dissolved_oxygen,['µmol kg-1'],-9999999.0,"[0.0, 400.0]",28276400,0,0,0,0,28276400,100.0,216.1971,79.7285,365.6097,73.0742
+deployment0004,streamed,ctdpf_sbe43_sample,density,['kg m-3'],-9999999.0,"[1000.0, 1100.0]",28276400,0,0,0,205,28276195,100.0,1026.4954,1021.5759,1027.5063,0.9855
+deployment0004,streamed,ctdpf_sbe43_sample,practical_salinity,['1'],-9999999.0,"[0.0, 42.0]",28276400,0,0,0,325,28276075,100.0,33.3806,30.5541,34.0493,0.574
+deployment0004,streamed,ctdpf_sbe43_sample,seawater_conductivity,['S m-1'],-9999999.0,"[0.0, 6.0]",28276400,0,0,0,278578,27997822,99.01,3.5152,2.9458,4.2294,0.1188
+deployment0004,streamed,ctdpf_sbe43_sample,seawater_pressure,['dbar'],-9999999.0,"[0.0, 6000.0]",28276400,0,0,0,0,28276400,100.0,128.1019,3.2251,194.427,59.7299
+deployment0004,streamed,ctdpf_sbe43_sample,seawater_temperature,['ºC'],-9999999.0,"[-2.0, 40.0]",28276400,0,0,0,96858,28179542,99.66,8.4974,6.7437,18.2328,1.8507
