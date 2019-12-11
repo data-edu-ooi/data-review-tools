@@ -1,1 +1,16 @@
 deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,streamed,echo_sounding,hpies_bliley_frequency,['Hz'],-99999.0,"[4.0, 200.0]",39569,0,0,,,0,0.0,,,,
+deployment0001,streamed,echo_sounding,hpies_bliley_temperature,['0.001 ºC'],0,"[None, None]",39569,0,0,no global ranges,8.0,39561,99.98,967.9204,920.0,1030.0,13.338
+deployment0001,streamed,echo_sounding,hpies_bliley_temperature_L1,['ºC'],-99999.0,"[-2.0, 40.0]",39569,0,0,0,8.0,39561,99.98,0.9679,0.92,1.03,0.0133
+deployment0001,streamed,echo_sounding,hpies_pressure_L1,['dbar'],-99999.0,"[None, None]",39569,0,0,no global ranges,147.0,39422,99.63,2957.2158,2954.015,30527.71,158.2848
+deployment0001,streamed,echo_sounding,hpies_temperature,['ºC'],-99999.0,"[-2.0, 40.0]",39569,0,0,26,148.0,39395,99.56,0.509,0.476,0.54,0.009
+deployment0002,streamed,echo_sounding,hpies_bliley_frequency,['Hz'],-99999.0,"[4.0, 200.0]",51186,0,0,,,0,0.0,,,,
+deployment0002,streamed,echo_sounding,hpies_bliley_temperature,['0.001 ºC'],0,"[None, None]",51186,0,0,no global ranges,7.0,51179,99.99,1428.8482,1360.0,1500.0,14.8727
+deployment0002,streamed,echo_sounding,hpies_bliley_temperature_L1,['ºC'],-99999.0,"[-2.0, 40.0]",51186,0,0,0,7.0,51179,99.99,1.4288,1.36,1.5,0.0149
+deployment0002,streamed,echo_sounding,hpies_pressure_L1,['dbar'],-99999.0,"[None, None]",51186,0,0,no global ranges,0.0,51186,100.0,2954.8486,2952.933,2956.482,0.7291
+deployment0002,streamed,echo_sounding,hpies_temperature,['ºC'],-99999.0,"[-2.0, 40.0]",51186,0,0,0,0.0,51186,100.0,1.4242,1.388,1.519,0.0221
+deployment0003,streamed,echo_sounding,hpies_bliley_frequency,['Hz'],-99999.0,"[4.0, 200.0]",10452,0,0,,,0,0.0,,,,
+deployment0003,streamed,echo_sounding,hpies_bliley_temperature,['0.001 ºC'],0,"[None, None]",10452,0,0,no global ranges,3.0,10449,99.97,1065.1823,1000.0,1120.0,14.8088
+deployment0003,streamed,echo_sounding,hpies_bliley_temperature_L1,['ºC'],-99999.0,"[-2.0, 40.0]",10452,0,0,0,3.0,10449,99.97,1.0652,1.0,1.12,0.0148
+deployment0003,streamed,echo_sounding,hpies_pressure_L1,['dbar'],-99999.0,"[None, None]",10452,0,0,no global ranges,0.0,10452,100.0,1638582.7127,2954.179,4242721.486,1149624.4364
+deployment0003,streamed,echo_sounding,hpies_temperature,['ºC'],-99999.0,"[-2.0, 40.0]",10452,0,0,7176,2.0,3274,31.32,0.6056,0.0,0.915,0.2093
