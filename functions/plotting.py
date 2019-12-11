@@ -470,7 +470,7 @@ def pressure_var(dataset, vars):
                      'ctdbp_seawater_pressure', 'ctdmo_seawater_pressure', 'ctdbp_no_seawater_pressure',
                      'sci_water_pressure_dbar', 'pressure_depth', 'abs_seafloor_pressure', 'presf_tide_pressure',
                      'presf_wave_burst_pressure', 'pressure', 'velpt_pressure', 'ctd_dbar', 'vel3d_k_pressure',
-                     'seafloor_pressure', 'pressure_mbar']
+                     'seafloor_pressure', 'pressure_mbar', 'hpies_pressure_L1']
     pvariables = list(set(pressure_variables).intersection(vars))
     if pvariables:
         pvars = []
