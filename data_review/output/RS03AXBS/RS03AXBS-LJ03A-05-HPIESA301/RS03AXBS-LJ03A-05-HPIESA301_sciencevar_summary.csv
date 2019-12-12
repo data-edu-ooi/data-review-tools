@@ -1,9 +1,9 @@
 deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
-deployment0001,streamed,echo_sounding,hpies_bliley_frequency,['Hz'],-99999.0,"[4.0, 200.0]",80336,0,0,,,0,0.0,,,,
-deployment0001,streamed,echo_sounding,hpies_bliley_temperature,['0.001 ºC'],0,"[None, None]",80336,0,0,no global ranges,0.0,80336,100.0,1227.6517,900.0,1560.0,256.4096
-deployment0001,streamed,echo_sounding,hpies_bliley_temperature_L1,['ºC'],-99999.0,"[-2.0, 40.0]",80336,0,0,0,0.0,80336,100.0,1.2277,0.9,1.56,0.2564
-deployment0001,streamed,echo_sounding,hpies_pressure_L1,['dbar'],-99999.0,"[None, None]",80336,0,0,no global ranges,147.0,80189,99.82,2805.154,2607.779,30527.71,186.2207
-deployment0001,streamed,echo_sounding,hpies_temperature,['ºC'],-99999.0,"[-2.0, 40.0]",80336,0,0,26,0.0,80310,99.97,1.1244,0.0,1.821,0.6087
+deployment0001,streamed,echo_sounding,hpies_bliley_frequency,['Hz'],-99999.0,"[4.0, 200.0]",40767,0,0,,,0,0.0,,,,
+deployment0001,streamed,echo_sounding,hpies_bliley_temperature,['0.001 ºC'],0,"[None, None]",40767,0,0,no global ranges,0.0,40767,100.0,1479.7454,1390.0,1560.0,18.9582
+deployment0001,streamed,echo_sounding,hpies_bliley_temperature_L1,['ºC'],-99999.0,"[-2.0, 40.0]",40767,0,0,0,0.0,40767,100.0,1.4797,1.39,1.56,0.019
+deployment0001,streamed,echo_sounding,hpies_pressure_L1,['dbar'],-99999.0,"[None, None]",40767,0,0,no global ranges,34.0,40733,99.92,2658.1284,2656.276,2659.647,0.6965
+deployment0001,streamed,echo_sounding,hpies_temperature,['ºC'],-99999.0,"[-2.0, 40.0]",40767,0,0,0,0.0,40767,100.0,1.7233,1.673,1.821,0.022
 deployment0002,streamed,echo_sounding,hpies_bliley_frequency,['Hz'],-99999.0,"[4.0, 200.0]",50274,0,0,,,0,0.0,,,,
 deployment0002,streamed,echo_sounding,hpies_bliley_temperature,['0.001 ºC'],0,"[None, None]",50274,0,0,no global ranges,0.0,50274,100.0,1866.2141,1790.0,1940.0,20.5277
 deployment0002,streamed,echo_sounding,hpies_bliley_temperature_L1,['ºC'],-99999.0,"[-2.0, 40.0]",50274,0,0,0,0.0,50274,100.0,1.8662,1.79,1.94,0.0205
