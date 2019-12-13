@@ -127,6 +127,7 @@ def main(sDir, url_list, start_time, end_time, deployment_num, interval):
                     if ud.split('/')[-1].split('_')[0] not in deployments:
                         deployments.append(ud.split('/')[-1].split('_')[0])
         datasets = list(itertools.chain(*datasets))
+        datasets = cf.filter_collocated_instruments(r, datasets)
         deployments.sort()
 
         fdatasets = np.unique(datasets).tolist()
@@ -182,6 +183,7 @@ def main(sDir, url_list, start_time, end_time, deployment_num, interval):
                             print(fname)
                         except NameError:
                             fname, subsite, refdes, method, stream, deployment = cf.nc_attributes(rdatasets[0])
+                            array = subsite[0:2]
                             sci_vars = cf.return_science_vars(stream)
                             # drop the following list of key words from science variables list
                             sci_vars = notin_list(sci_vars, ['salinity', 'temperature', 'bin_depths', 'beam'])
@@ -230,103 +232,104 @@ def main(sDir, url_list, start_time, end_time, deployment_num, interval):
                             else:
                                 k['values'] = np.concatenate((k['values'], pgvv), axis=1)
 
-                    array = subsite[0:2]
-                    filename = '_'.join(fname.split('_')[:-1])
-                    save_dir = os.path.join(sDir, array, subsite, refdes, 'plots', deployment)
-                    cf.create_dir(save_dir)
+                    if len(sci_vars_dict['time']['values']) > 0:
+                        filename = '_'.join(fname.split('_')[:-1])
+                        save_dir = os.path.join(sDir, array, subsite, refdes, 'plots', deployment)
+                        cf.create_dir(save_dir)
 
-                    tm = sci_vars_dict['time']['values']
-                    t0 = pd.to_datetime(tm.min()).strftime('%Y-%m-%dT%H:%M:%S')
-                    t1 = pd.to_datetime(tm.max()).strftime('%Y-%m-%dT%H:%M:%S')
-                    title_text = ' '.join((deployment, refdes, method))
+                        tm = sci_vars_dict['time']['values']
+                        t0 = pd.to_datetime(tm.min()).strftime('%Y-%m-%dT%H:%M:%S')
+                        t1 = pd.to_datetime(tm.max()).strftime('%Y-%m-%dT%H:%M:%S')
+                        title_text = ' '.join((deployment, refdes, method))
 
-                    bd = sci_vars_dict['bin_depths']
-                    ylabel = 'bin_depths ({})'.format(bd['units'][0])
+                        bd = sci_vars_dict['bin_depths']
+                        ylabel = 'bin_depths ({})'.format(bd['units'][0])
 
-                    print('\nPlotting interval {}'.format(int(dtri) + 1))
-                    for var in sci_vars:
-                        print('----{}'.format(var))
-                        v = sci_vars_dict[var]
-                        fv = v['fv'][0]
-                        v_name = v['ln'][0]
-                        units = v['units'][0]
+                        print('\nPlotting interval {}'.format(int(dtri) + 1))
+                        for var in sci_vars:
+                            print('----{}'.format(var))
+                            v = sci_vars_dict[var]
+                            fv = v['fv'][0]
+                            v_name = v['ln'][0]
+                            units = v['units'][0]
 
-                        if len(np.shape(v['values'])) == 1:
-                            v, n_nan, n_fv, n_ev, n_grange, g_min, g_max, n_std = reject_err_data_1_dims(v['values'], fv, r, var, n=5)
+                            if len(np.shape(v['values'])) == 1:
+                                v, n_nan, n_fv, n_ev, n_grange, g_min, g_max, n_std = reject_err_data_1_dims(v['values'], fv, r, var, n=5)
 
-                            if len(tm) > np.sum(np.isnan(v)):  # only plot if the array contains values
-                                # Plot all data
-                                fig, ax = pf.plot_timeseries(tm, v, v_name, stdev=None)
-                                ax.set_title((title_text + '\n' + t0 + ' - ' + t1), fontsize=9)
-                                sfile = '-'.join((filename, v_name, t0[:10]))
+                                if len(tm) > np.sum(np.isnan(v)):  # only plot if the array contains values
+                                    # Plot all data
+                                    fig, ax = pf.plot_timeseries(tm, v, v_name, stdev=None)
+                                    ax.set_title((title_text + '\n' + t0 + ' - ' + t1), fontsize=9)
+                                    sfile = '-'.join((filename, v_name, t0[:10]))
+                                    pf.save_fig(save_dir, sfile)
+
+                                    # Plot data with outliers removed
+                                    fig, ax = pf.plot_timeseries(tm, v, v_name, stdev=5)
+                                    title_i = 'removed: {} nans, {} fill values, {} extreme values, {} GR [{}, {}],' \
+                                              ' {} outliers +/- 5 SD'.format(n_nan, n_fv , n_ev, n_grange, g_min, g_max, n_std)
+
+                                    ax.set_title((title_text + '\n' + t0 + ' - ' + t1 + '\n' + title_i), fontsize=8)
+                                    sfile = '-'.join((filename, v_name, t0[:10])) + '_rmoutliers'
+                                    pf.save_fig(save_dir, sfile)
+                                else:
+                                    print('Array of all nans - skipping plot')
+
+                            else:
+                                v, n_nan, n_fv, n_ev, n_bb, n_grange, g_min, g_max = reject_err_data_2_dims(v['values'], percentgood, fv, r, var)
+
+                                clabel = '{} ({})'.format(var, units)
+
+                                # check bin depths for extreme values
+                                y = bd['values']
+                                # if all the values are negative, take the absolute value (cabled data bin depths are negative)
+                                if int(np.nanmin(y)) < 0 and int(np.nanmax(y)) < 0:
+                                    y = abs(y)
+                                y_nan = np.sum(np.isnan(y))
+                                y = np.where(y < 6000, y, np.nan)  # replace extreme bin_depths by nans
+                                bin_nan = np.sum(np.isnan(y)) - y_nan
+                                bin_title = 'removed: {} bin depths > 6000'.format(bin_nan)
+
+                                if 'echo' in var:
+                                    color = 'BuGn'
+                                else:
+                                    color = 'RdBu'
+
+                                new_y = dropna(y, axis=1)  # convert to DataFrame to drop nan
+                                y_mask = new_y.loc[list(new_y.index), list(new_y.columns)]
+                                v_new = pd.DataFrame(v)
+                                v_mask = v_new.loc[list(new_y.index), list(new_y.columns)]
+                                tm_mask = tm[new_y.columns]
+
+                                fig, ax, __ = pf.plot_adcp(tm_mask, np.array(y_mask), np.array(v_mask), ylabel, clabel, color,
+                                                           n_stdev=None)
+
+                                if bin_nan > 0:
+                                    ax.set_title((title_text + '\n' + t0 + ' - ' + t1 + '\n' + bin_title), fontsize=8)
+                                else:
+                                    ax.set_title((title_text + '\n' + t0 + ' - ' + t1), fontsize=8)
+
+                                sfile = '-'.join((filename, var, t0[:10]))
                                 pf.save_fig(save_dir, sfile)
 
-                                # Plot data with outliers removed
-                                fig, ax = pf.plot_timeseries(tm, v, v_name, stdev=5)
-                                title_i = 'removed: {} nans, {} fill values, {} extreme values, {} GR [{}, {}],' \
-                                          ' {} outliers +/- 5 SD'.format(n_nan, n_fv , n_ev, n_grange, g_min, g_max, n_std)
+                                fig, ax, n_nans_all = pf.plot_adcp(tm_mask, np.array(y_mask), np.array(v_mask), ylabel, clabel, color, n_stdev=5)
+                                title_i = 'removed: {} nans, {} fill values, {} extreme values, {} bad beams, {} GR [{}, {}]'.format(
+                                    n_nan, n_fv, n_ev, n_bb, n_grange, g_min, g_max)
 
-                                ax.set_title((title_text + '\n' + t0 + ' - ' + t1 + '\n' + title_i), fontsize=8)
-                                sfile = '-'.join((filename, v_name, t0[:10])) + '_rmoutliers'
+                                if bin_nan > 0:
+                                    ax.set_title((title_text + '\n' + t0 + ' - ' + t1 + '\n' + title_i + '\n' + bin_title), fontsize=8)
+                                else:
+                                    ax.set_title((title_text + '\n' + t0 + ' - ' + t1 + '\n' + title_i), fontsize=8)
+
+                                sfile = '-'.join((filename, var, t0[:10])) + '_rmoutliers'
                                 pf.save_fig(save_dir, sfile)
-                            else:
-                                print('Array of all nans - skipping plot')
-
-                        else:
-                            v, n_nan, n_fv, n_ev, n_bb, n_grange, g_min, g_max = reject_err_data_2_dims(v['values'], percentgood, fv, r, var)
-
-                            clabel = '{} ({})'.format(var, units)
-
-                            # check bin depths for extreme values
-                            y = bd['values']
-                            # if all the values are negative, take the absolute value (cabled data bin depths are negative)
-                            if int(np.nanmin(y)) < 0 and int(np.nanmax(y)) < 0:
-                                y = abs(y)
-                            y_nan = np.sum(np.isnan(y))
-                            y = np.where(y < 6000, y, np.nan)  # replace extreme bin_depths by nans
-                            bin_nan = np.sum(np.isnan(y)) - y_nan
-                            bin_title = 'removed: {} bin depths > 6000'.format(bin_nan)
-
-                            if 'echo' in var:
-                                color = 'BuGn'
-                            else:
-                                color = 'RdBu'
-
-                            new_y = dropna(y, axis=1)  # convert to DataFrame to drop nan
-                            y_mask = new_y.loc[list(new_y.index), list(new_y.columns)]
-                            v_new = pd.DataFrame(v)
-                            v_mask = v_new.loc[list(new_y.index), list(new_y.columns)]
-                            tm_mask = tm[new_y.columns]
-
-                            fig, ax, __ = pf.plot_adcp(tm_mask, np.array(y_mask), np.array(v_mask), ylabel, clabel, color,
-                                                       n_stdev=None)
-
-                            if bin_nan > 0:
-                                ax.set_title((title_text + '\n' + t0 + ' - ' + t1 + '\n' + bin_title), fontsize=8)
-                            else:
-                                ax.set_title((title_text + '\n' + t0 + ' - ' + t1), fontsize=8)
-
-                            sfile = '-'.join((filename, var, t0[:10]))
-                            pf.save_fig(save_dir, sfile)
-
-                            fig, ax, n_nans_all = pf.plot_adcp(tm_mask, np.array(y_mask), np.array(v_mask), ylabel, clabel, color, n_stdev=5)
-                            title_i = 'removed: {} nans, {} fill values, {} extreme values, {} bad beams, {} GR [{}, {}]'.format(
-                                n_nan, n_fv, n_ev, n_bb, n_grange, g_min, g_max)
-
-                            if bin_nan > 0:
-                                ax.set_title((title_text + '\n' + t0 + ' - ' + t1 + '\n' + title_i + '\n' + bin_title), fontsize=8)
-                            else:
-                                ax.set_title((title_text + '\n' + t0 + ' - ' + t1 + '\n' + title_i), fontsize=8)
-
-                            sfile = '-'.join((filename, var, t0[:10])) + '_rmoutliers'
-                            pf.save_fig(save_dir, sfile)
 
 
 if __name__ == '__main__':
+    #sDir = '/home/lgarzio/OOI/DataReviews'  # to run in server
     sDir = '/Users/lgarzio/Documents/OOI/DataReviews'
-    url_list =['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20190904T191252007Z-CE02SHBP-LJ01D-05-ADCPTB104-streamed-adcp_velocity_beam/catalog.html']
+    url_list =['https://opendap.oceanobservatories.org/thredds/catalog/ooi/lgarzio@marine.rutgers.edu/20191205T135659049Z-RS01SLBS-LJ01A-10-ADCPTE101-streamed-adcp_velocity_beam/catalog.html']
     start_time = None  # dt.datetime(2014, 10, 1, 0, 0, 0)  # optional, set to None if plotting all data
     end_time = None  # dt.datetime(2014, 10, 10, 0, 0, 0)  # optional, set to None if plotting all data
     deployment_num = 1  # None or int
-    interval = 3
+    interval = 1
     main(sDir, url_list, start_time, end_time, deployment_num, interval)
