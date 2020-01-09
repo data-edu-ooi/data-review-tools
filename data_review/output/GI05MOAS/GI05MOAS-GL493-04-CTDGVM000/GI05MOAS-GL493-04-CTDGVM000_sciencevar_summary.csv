@@ -3,5 +3,5 @@ deployment0002,telemetered,ctdgv_m_glider_instrument,practical_salinity,1,-99999
 deployment0002,telemetered,ctdgv_m_glider_instrument,sci_water_cond,S m-1,nan,"[None, None]",28010,34,0,no global ranges,828,27148,96.92,3.2934,3.2114,3.8014,0.1165
 deployment0002,telemetered,ctdgv_m_glider_instrument,sci_water_pressure,bar,nan,"[None, None]",28010,34,0,no global ranges,0,27976,99.88,44.041,-0.015,99.577,30.1798
 deployment0002,telemetered,ctdgv_m_glider_instrument,sci_water_temp,ºC,nan,"[None, None]",28010,34,0,no global ranges,0,27976,99.88,4.1618,0.0,10.1782,1.556
-deployment0002,telemetered,ctdgv_m_glider_instrument,sci_seawater_density,kg m-3,nan,"[None, None]",28010,68,0,no global ranges,1,27941,99.75,1028.8754,999.8431,1032.3524,5.2796
+deployment0002,telemetered,ctdgv_m_glider_instrument,sci_seawater_density,kg m-3,nan,"[None, None]",28010,26435,0,no global ranges,0,1575,5.62,817.8114,-0.0,1032.3462,402.5824
 deployment0002,telemetered,ctdgv_m_glider_instrument,sci_water_pressure_dbar,dbar,nan,"[None, None]",28010,34,0,no global ranges,0,27976,99.88,440.4099,-0.15,995.77,301.7984
