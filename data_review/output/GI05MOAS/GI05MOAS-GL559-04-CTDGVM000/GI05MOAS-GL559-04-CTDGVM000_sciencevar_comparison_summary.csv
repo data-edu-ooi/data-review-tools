@@ -3,4 +3,4 @@ deployment0001,recovered_host-ctdgv_m_glider_instrument_recovered,telemetered-ct
 deployment0001,recovered_host-ctdgv_m_glider_instrument_recovered,telemetered-ctdgv_m_glider_instrument,Seawater Conductivity,sci_water_cond,S m-1,pass,1759176,0,no missing data,31107,0.0,0.0,0,0.0
 deployment0001,recovered_host-ctdgv_m_glider_instrument_recovered,telemetered-ctdgv_m_glider_instrument,Seawater Pressure,sci_water_pressure_dbar,dbar,pass,1759176,0,no missing data,31105,0.0,0.0,0,0.0
 deployment0001,recovered_host-ctdgv_m_glider_instrument_recovered,telemetered-ctdgv_m_glider_instrument,Seawater Temperature,sci_water_temp,ºC,pass,1759176,0,no missing data,31108,0.0,0.0,0,0.0
-deployment0001,recovered_host-ctdgv_m_glider_instrument_recovered,telemetered-ctdgv_m_glider_instrument,Seawater Density,sci_seawater_density,kg m-3,pass,1759176,2,no missing data,31055,0.0,1.101e-06,0,0.0
+deployment0001,recovered_host-ctdgv_m_glider_instrument_recovered,telemetered-ctdgv_m_glider_instrument,Seawater Density,sci_seawater_density,kg m-3,pass,1759176,1724128,no missing data,2755,0.0,999.8430729503,609,22.11
