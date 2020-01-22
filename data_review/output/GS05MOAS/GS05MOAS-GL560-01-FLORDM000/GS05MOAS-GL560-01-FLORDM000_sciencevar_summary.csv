@@ -1,0 +1,5 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_host,flord_m_glider_instrument_recovered,seawater_scattering_coefficient,m-1,-9999999.0,"[None, None]",5850651,0,0,no global ranges,2526,5848125,99.96,0.0006,0.0006,0.0007,0.0
+deployment0001,recovered_host,flord_m_glider_instrument_recovered,optical_backscatter,m-1,-9999999.0,"[0.0003, 1.0]",5850651,0,0,2525,18668,5829458,99.64,0.0006,0.0003,0.0101,0.0005
+deployment0001,recovered_host,flord_m_glider_instrument_recovered,sci_flbb_bb_units,m-1 sr-1,nan,"[0.0, 0.0079]",5850651,0,0,0,18668,5831983,99.68,0.0001,0.0,0.0015,0.0001
+deployment0001,recovered_host,flord_m_glider_instrument_recovered,sci_flbb_chlor_units,µg L-1,nan,"[0.0, 50.0]",5850651,0,0,29,46697,5803925,99.2,0.1704,0.0,2.3433,0.2784
