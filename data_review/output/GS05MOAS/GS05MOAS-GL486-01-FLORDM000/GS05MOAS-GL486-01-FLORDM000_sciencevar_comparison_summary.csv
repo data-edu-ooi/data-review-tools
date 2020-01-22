@@ -1,0 +1,5 @@
+deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
+deployment0001,recovered_host-flord_m_glider_instrument_recovered,telemetered-flord_m_glider_instrument,Total Scattering Coefficient of Pure Seawater,seawater_scattering_coefficient,m-1,pass,6147356,0,no missing data,105746,0.0,5.9806e-06,0,0.0
+deployment0001,recovered_host-flord_m_glider_instrument_recovered,telemetered-flord_m_glider_instrument,Optical Backscatter,optical_backscatter,m-1,pass,6147356,1,no missing data,105746,0.0,0.0007276413,0,0.0
+deployment0001,recovered_host-flord_m_glider_instrument_recovered,telemetered-flord_m_glider_instrument,Total Volume Scattering Coefficient,sci_flbb_bb_units,m-1 sr-1,pass,6147356,1,no missing data,105862,0.0,0.000105664,0,0.0
+deployment0001,recovered_host-flord_m_glider_instrument_recovered,telemetered-flord_m_glider_instrument,Chlorophyll-a Concentration,sci_flbb_chlor_units,µg L-1,pass,6147356,1,no missing data,105862,0.0,0.2016000152,0,0.0
