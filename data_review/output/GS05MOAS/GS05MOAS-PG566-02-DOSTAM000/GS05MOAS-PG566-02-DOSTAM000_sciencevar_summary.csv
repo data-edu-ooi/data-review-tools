@@ -1,0 +1,5 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_oxygen,µmol L-1,nan,"[0.0, 400.0]",512790,0,0,0,1704,511086,99.67,286.8839,274.399,311.162,5.3088
+deployment0001,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_saturation,percent,nan,"[0.0, 110.0]",512790,0,0,0,1704,511086,99.67,94.4322,89.041,103.026,2.2749
+deployment0001,recovered_host,dosta_abcdjm_glider_recovered,sci_oxy4_temp,1,nan,"[None, None]",512790,0,0,no global ranges,1704,511086,99.67,6.7014,5.306,9.252,0.7981
+deployment0001,recovered_host,dosta_abcdjm_glider_recovered,sci_abs_oxygen,µmol kg-1,nan,"[0.0, 400.0]",512790,484448,0,3,0,28339,5.53,211.5567,0.0,239.7248,53.6992
