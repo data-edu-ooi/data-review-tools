@@ -1,0 +1,7 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_host,ctdgv_m_glider_instrument_recovered,practical_salinity,1,-9999999.0,"[0.0, 42.0]",889350,0,0,0,2595,886755,99.71,34.3036,30.8106,34.6778,0.15
+deployment0001,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_cond,S m-1,nan,"[0.0, 6.0]",889350,0,0,0,2595,886755,99.71,3.4102,3.1537,3.7035,0.0726
+deployment0001,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_pressure,bar,nan,"[0.0, 6000.0]",889350,0,0,67,0,889283,99.99,9.6842,0.0,21.105,6.2654
+deployment0001,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_temp,ºC,nan,"[-2.0, 40.0]",889350,0,0,0,2593,886757,99.71,6.3396,5.2008,10.0998,0.7671
+deployment0001,recovered_host,ctdgv_m_glider_instrument_recovered,sci_seawater_density,kg m-3,nan,"[1000.0, 1100.0]",889350,837414,0,2621,104,49211,5.53,1026.878,1026.4368,1027.0678,0.0767
+deployment0001,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_pressure_dbar,dbar,nan,"[0.0, 6000.0]",889350,0,0,67,0,889283,99.99,96.8422,0.0,211.05,62.6539

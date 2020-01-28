@@ -1,0 +1,2 @@
+deployment,preferred_method_stream,comparison_method_stream,long_name,preferred_name,preferred_units,unit_comparison_test,preferred_n,preferred_n_nan,missing_data,n_comparison,min_abs_diff,max_abs_diff,n_diff_greater_zero,percent_diff_greater_zero
+deployment0001,recovered_host-nutnr_m_glider_instrument,telemetered-nutnr_m_glider_instrument,Nitrate Concentration,sci_suna_nitrate_mg,mg/L,pass,145044,6776,no missing data,31533,0.0,0.0135959983,0,0.0

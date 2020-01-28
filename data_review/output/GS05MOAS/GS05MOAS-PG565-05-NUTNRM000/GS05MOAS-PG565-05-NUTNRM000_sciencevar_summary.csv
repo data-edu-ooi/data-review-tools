@@ -1,0 +1,3 @@
+deployment,preferred_method,stream,variable,units,fill_value,global_ranges,n_all,n_nans,n_fillvalues,n_grange,n_outliers,n_stats,percent_valid_data,mean,min,max,stdev
+deployment0001,recovered_host,nutnr_m_glider_instrument,sci_suna_nitrate_um,µmol/L,nan,"[0.0, 40.0]",145044,6776,0,103,2812,135353,93.32,21.5546,3.0186,38.7317,1.9976
+deployment0001,recovered_host,nutnr_m_glider_instrument,sci_suna_nitrate_mg,mg/L,nan,"[0.0, 2.5]",145044,6776,0,64,2834,135370,93.33,0.3019,0.0389,0.5518,0.0281
