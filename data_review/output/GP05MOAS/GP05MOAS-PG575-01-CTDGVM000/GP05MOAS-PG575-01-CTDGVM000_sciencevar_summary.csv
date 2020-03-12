@@ -3,5 +3,5 @@ deployment0001,recovered_host,ctdgv_m_glider_instrument_recovered,practical_sali
 deployment0001,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_cond,S m-1,nan,"[0.0, 6.0]",22523,0,0,0,90,22433,99.6,3.3789,3.2114,3.6779,0.1533
 deployment0001,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_pressure,bar,nan,"[0.0, 6000.0]",22523,0,0,0,0,22523,100.0,9.3654,0.0,20.864,6.3772
 deployment0001,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_temp,ºC,nan,"[-2.0, 40.0]",22523,0,0,0,0,22523,100.0,7.1156,0.0,11.1096,2.2216
-deployment0001,recovered_host,ctdgv_m_glider_instrument_recovered,sci_seawater_density,kg m-3,nan,"[1000.0, 1100.0]",22523,0,0,90,0,22433,99.6,1026.3774,1024.7671,1027.7657,0.9691
+deployment0001,recovered_host,ctdgv_m_glider_instrument_recovered,sci_seawater_density,kg m-3,nan,"[1000.0, 1100.0]",22523,5510,0,61,0,16952,75.27,1026.4733,1024.7671,1027.7657,0.9396
 deployment0001,recovered_host,ctdgv_m_glider_instrument_recovered,sci_water_pressure_dbar,dbar,nan,"[0.0, 6000.0]",22523,0,0,0,0,22523,100.0,93.6545,0.0,208.64,63.7716
